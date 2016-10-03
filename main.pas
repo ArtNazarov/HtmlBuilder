@@ -17,6 +17,8 @@ const
   fsod : Char = '\';
   {$ENDIF}
 
+  DLM_MODULE = '%';
+
 type
 
 
@@ -46,6 +48,7 @@ type
     btStopServer: TButton;
     btFtpUpdate: TButton;
     cboLocale: TComboBox;
+    chkUseModules: TCheckBox;
     Label34: TLabel;
     ZipArchiverPath: TEdit;
     Label26: TLabel;
@@ -202,6 +205,7 @@ type
     procedure DBLookupListBox2Click(Sender: TObject);
     procedure DBLookupListBox3Click(Sender: TObject);
     procedure DBLookupListBox4Click(Sender: TObject);
+    procedure fContentChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
 
     procedure FormCreate(Sender: TObject);
@@ -503,6 +507,11 @@ end;
 procedure TForm1.DBLookupListBox4Click(Sender: TObject);
 begin
   DBLookupListBox4.ListSource.DataSet.Locate(DBLookupListBox4.KeyField,DBLookupListBox4.KeyValue,[]);
+end;
+
+procedure TForm1.fContentChange(Sender: TObject);
+begin
+
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -897,13 +906,15 @@ var C, Start, En_d : integer;
   replacement : String;
   R : String;
 begin
+
  R:=app;
+ if chkUseModules.Checked then begin
   C:=0;
   Start := -1;
   En_d := -1;
   while C<Length(r) do
                            begin
-                           if Copy(r, C, 1) = '%' then
+                           if Copy(r, C, 1) = DLM_MODULE then
                               begin
                                 if Start<0 then Start:=C else
                                   begin
@@ -918,6 +929,7 @@ begin
                               end;
                            C:=C+1;
                            end;
+ end; // else will be not processed
  Result:=R;
 end;
 
