@@ -4,8 +4,8 @@ Written in FreePascal/Lazarus generator of static html websites
 
 Project
 ================
-Website in Russian: 
-http://www.nazarov.ml/HtmlBuilder/
+Website in Russian: [todo:restore link]
+
 
 Usage
 ================
