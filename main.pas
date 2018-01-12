@@ -82,6 +82,7 @@ type
     Dbf2: TDbf;
     Dbf3: TDbf;
     Dbf4: TDbf;
+
     edFtpIP: TEdit;
     edFtpPort: TEdit;
     edFtpUsername: TEdit;
@@ -190,6 +191,7 @@ type
     procedure btBuildSiteClick(Sender: TObject);
     procedure btFtpUpdateClick(Sender: TObject);
     procedure btItalicClick(Sender: TObject);
+    procedure btnSaveRegionsClick(Sender: TObject);
     procedure btOrderedListClick(Sender: TObject);
     procedure btParagraphClick(Sender: TObject);
     procedure btStartServerClick(Sender: TObject);
@@ -205,6 +207,7 @@ type
     procedure DBLookupListBox2Click(Sender: TObject);
     procedure DBLookupListBox3Click(Sender: TObject);
     procedure DBLookupListBox4Click(Sender: TObject);
+    procedure DBMemo2Change(Sender: TObject);
     procedure fContentChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
 
@@ -414,6 +417,10 @@ begin
     paired('i');
 end;
 
+procedure TForm1.btnSaveRegionsClick(Sender: TObject);
+begin
+  end;
+
 procedure TForm1.btOrderedListClick(Sender: TObject);
 begin
    tagList('ol');
@@ -509,6 +516,11 @@ begin
   DBLookupListBox4.ListSource.DataSet.Locate(DBLookupListBox4.KeyField,DBLookupListBox4.KeyValue,[]);
 end;
 
+procedure TForm1.DBMemo2Change(Sender: TObject);
+begin
+
+end;
+
 procedure TForm1.fContentChange(Sender: TObject);
 begin
 
@@ -574,6 +586,7 @@ begin
     Add('id', ftString, 60, True); // ID блока
     Add('markup', ftMemo, 16, True); // Разметка блока
     Add('remark', ftMemo, 16, True); // Примечание к блоку
+    Add('regions', ftMemo, 16, True); // Регион, в который надо вывести блок
     end;
    Dbf2.CreateTable;
 
@@ -665,10 +678,14 @@ begin
   end;
 
 
+
+
+
   Dbf1.Active:=true;
   Dbf2.Active:=true;
   Dbf3.Active:=true;
   Dbf4.Active:=true;
+
 end;
 
 function TForm1.buildHead(title: String; headTemplate: string) : String;
