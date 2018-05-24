@@ -47,7 +47,9 @@ type
     btStartServer: TButton;
     btStopServer: TButton;
     btFtpUpdate: TButton;
+    btnLoad: TButton;
     cboLocale: TComboBox;
+    chkGetBlocksFromFile: TCheckBox;
     chkUseModules: TCheckBox;
     Label34: TLabel;
     ZipArchiverPath: TEdit;
@@ -78,9 +80,9 @@ type
     DBEdit7: TDBEdit;
     DBEdit8: TDBEdit;
     DBEdit9: TDBEdit;
-    Dbf1: TDbf;
+    dbPosts: TDbf;
     Dbf2: TDbf;
-    Dbf3: TDbf;
+    dbfPresets: TDbf;
     Dbf4: TDbf;
 
     edFtpIP: TEdit;
@@ -94,11 +96,11 @@ type
     DBLookupListBox4: TDBLookupListBox;
     DBMemo1: TDBMemo;
     DBMemo2: TDBMemo;
-    DBMemo3: TDBMemo;
-    DBMemo4: TDBMemo;
+    dbmTemplateOfHead: TDBMemo;
+    dbmTemplateOfBody: TDBMemo;
     DBMemo5: TDBMemo;
-    DBMemo6: TDBMemo;
-    DBMemo7: TDBMemo;
+    dbmTemplateOfSection: TDBMemo;
+    dbmTemplateOfItem: TDBMemo;
     DBMemo8: TDBMemo;
     dbNav: TDBNavigator;
     DBNavigator1: TDBNavigator;
@@ -191,7 +193,8 @@ type
     procedure btBuildSiteClick(Sender: TObject);
     procedure btFtpUpdateClick(Sender: TObject);
     procedure btItalicClick(Sender: TObject);
-    procedure btnSaveRegionsClick(Sender: TObject);
+    procedure btnLoadClick(Sender: TObject);
+
     procedure btOrderedListClick(Sender: TObject);
     procedure btParagraphClick(Sender: TObject);
     procedure btStartServerClick(Sender: TObject);
@@ -207,8 +210,8 @@ type
     procedure DBLookupListBox2Click(Sender: TObject);
     procedure DBLookupListBox3Click(Sender: TObject);
     procedure DBLookupListBox4Click(Sender: TObject);
-    procedure DBMemo2Change(Sender: TObject);
-    procedure fContentChange(Sender: TObject);
+
+
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
 
     procedure FormCreate(Sender: TObject);
@@ -232,7 +235,7 @@ type
     procedure scanSections();
     function insLinks(body : String) : String;
     function insSections(body : String) : String;
-    procedure SiteMapping();
+    procedure SiteMapping();  // Создание карты сайта
     procedure makePage(title : String; body : String; headTemplate : String;  bodyTemplate : String; filenam : String);
     procedure paired(t : String);
     procedure tagHref();
@@ -314,30 +317,43 @@ end;
 
 
 
+
 procedure TForm1.btBuildSiteClick(Sender: TObject);
 var
   filenam, dir, titl, content, headT, bodyT : String;
+  fbuffer : TStringList;
 begin
-
+  fbuffer:=TStringList.Create;
   scanLinks();
   scanSections();
 
-  Dbf3.Locate('id', edPreset.Text , []);
-  dir:=Dbf3.FieldByName('dirpath').AsString;
-  headT := useBlocks(Dbf3.FieldByName('headtpl').AsString);
-  bodyT := useBlocks(Dbf3.FieldByName('bodytpl').AsString);
+  dbfPresets.Locate('id', edPreset.Text , []);
+  dir:=dbfPresets.FieldByName('dirpath').AsString;
+  if not chkGetBlocksFromFile.Checked then
+    begin
+  headT := useBlocks(dbfPresets.FieldByName('headtpl').AsString);
+  bodyT := useBlocks(dbfPresets.FieldByName('bodytpl').AsString);
+    end
+  else
+    begin
+      fbuffer.LoadFromFile(GetCurrentDir + '\parts\head.tpl');
+      headT:=fbuffer.Text;
+      fbuffer.LoadFromFile(GetCurrentDir + '\parts\body.tpl');
+      bodyT:=fbuffer.Text;
+    end;
+    fbuffer.Free;
   if SysUtils.DirectoryExists(dir) then
   begin
-         Dbf1.First;
-                      while not Dbf1.EOF do
+         dbPosts.First;
+                      while not dbPosts.EOF do
                               begin
-                              filenam := dir+fsod+dbf1.FieldByName('id').AsString+'.'+PrefferedExtension.Text;
-                              titl := dbf1.FieldByName('caption').AsString;
-                              content := dbf1.FieldByName('content').AsString;
+                              filenam := dir+fsod+dbPosts.FieldByName('id').AsString+'.'+PrefferedExtension.Text;
+                              titl := dbPosts.FieldByName('caption').AsString;
+                              content := dbPosts.FieldByName('content').AsString;
                               makePage(titl, content, headT, bodyT, filenam);
-                                          dbf1.Next;
+                                          dbPosts.Next;
    end;                           end;
-  dbf1.First;
+  dbPosts.First;
   SiteMapping();
 end;
 
@@ -366,7 +382,7 @@ begin
   User:=edFtpUsername.Text;
   Pass:=edFtpPassword.Text;
 
-  Path:=dbf3.FieldByName('dirpath').AsString;
+  Path:=dbfPresets.FieldByName('dirpath').AsString;
 
    if FtpClient.Login then
            begin
@@ -417,9 +433,24 @@ begin
     paired('i');
 end;
 
-procedure TForm1.btnSaveRegionsClick(Sender: TObject);
+procedure TForm1.btnLoadClick(Sender: TObject);
+var fbuffer : TStringList;
 begin
-  end;
+  dbfPresets.Edit;
+  fbuffer:=TStringList.Create();
+  fbuffer.LoadFromFile( GetCurrentDir() + '\parts\head.tpl' );
+  dbmTemplateOfHead.Text:=fbuffer.text;
+  fbuffer.LoadFromFile( GetCurrentDir() + '\parts\body.tpl' );
+  dbmTemplateOfBody.Text:=fbuffer.text;
+   fbuffer.LoadFromFile( GetCurrentDir() + '\parts\section.tpl' );
+  dbmTemplateOfSection.Text:=fbuffer.text;
+   fbuffer.LoadFromFile( GetCurrentDir() + '\parts\item.tpl' );
+  dbmTemplateOfItem.Text:=fbuffer.text;
+
+  fbuffer.Free;
+end;
+
+
 
 procedure TForm1.btOrderedListClick(Sender: TObject);
 begin
@@ -475,7 +506,7 @@ end;
 procedure TForm1.Button1Click(Sender: TObject);
 var dir : String;
 begin
-  dir:=dbf3.FieldByName('dirpath').AsString;
+  dir:=dbfPresets.FieldByName('dirpath').AsString;
   Process1.CommandLine:=ziparchiverpath.Text+' '+
   dir+'\site.zip '+dir+fsod+'*.*';
   Process1.Execute;
@@ -516,15 +547,7 @@ begin
   DBLookupListBox4.ListSource.DataSet.Locate(DBLookupListBox4.KeyField,DBLookupListBox4.KeyValue,[]);
 end;
 
-procedure TForm1.DBMemo2Change(Sender: TObject);
-begin
 
-end;
-
-procedure TForm1.fContentChange(Sender: TObject);
-begin
-
-end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
@@ -535,12 +558,12 @@ end;
 procedure TForm1.initdb;
 begin
   // ТАБЛИЦА № 1 - КОНТЕНТ
-  Dbf1.TableName:='content.dbf';
-  Dbf1.Exclusive:=True;
-  Dbf1.Active:=False;
+  dbPosts.TableName:='content.dbf';
+  dbPosts.Exclusive:=True;
+  dbPosts.Active:=False;
   if not SysUtils.FileExists('content.dbf') then
   begin
-   with Dbf1.FieldDefs do
+   with dbPosts.FieldDefs do
     begin
     Add('id', ftString, 60, True); // ID страницы
     Add('caption', ftString, 255, True); // Заголовок страницы
@@ -554,26 +577,26 @@ begin
     Add('uf6', ftString, 60, True); // Доп. поле 6
     Add('uf7', ftMemo, 16, True); // Доп. поле 7
     end;
-   Dbf1.CreateTable;
-   Dbf1.Active:=true;
-   Dbf1.Insert;
-   Dbf1.FieldByName('id').AsString:='index';
-   Dbf1.FieldByName('caption').AsString:='Hello!';
-   Dbf1.FieldByName('content').AsString:='This is my first static page. Here link <<blog>> to section';
-   Dbf1.FieldByName('section').AsString:='blog';
-   Dbf1.Post;
-   Dbf1.Insert;
-   Dbf1.FieldByName('id').AsString:='p1';
-   Dbf1.FieldByName('caption').AsString:='Second page';
-   Dbf1.FieldByName('content').AsString:='This is my second static page. Link to other <<index>> section.';
-   Dbf1.FieldByName('section').AsString:='blog';
-   Dbf1.Post;
-   Dbf1.Insert;
-   Dbf1.FieldByName('id').AsString:='p2';
-   Dbf1.FieldByName('caption').AsString:='Third page';
-   Dbf1.FieldByName('content').AsString:='This is my third static page.';
-   Dbf1.FieldByName('section').AsString:='index';
-   Dbf1.Post;
+   dbPosts.CreateTable;
+   dbPosts.Active:=true;
+   dbPosts.Insert;
+   dbPosts.FieldByName('id').AsString:='index';
+   dbPosts.FieldByName('caption').AsString:='Hello!';
+   dbPosts.FieldByName('content').AsString:='This is my first static page. Here link <<blog>> to section';
+   dbPosts.FieldByName('section').AsString:='blog';
+   dbPosts.Post;
+   dbPosts.Insert;
+   dbPosts.FieldByName('id').AsString:='p1';
+   dbPosts.FieldByName('caption').AsString:='Second page';
+   dbPosts.FieldByName('content').AsString:='This is my second static page. Link to other <<index>> section.';
+   dbPosts.FieldByName('section').AsString:='blog';
+   dbPosts.Post;
+   dbPosts.Insert;
+   dbPosts.FieldByName('id').AsString:='p2';
+   dbPosts.FieldByName('caption').AsString:='Third page';
+   dbPosts.FieldByName('content').AsString:='This is my third static page.';
+   dbPosts.FieldByName('section').AsString:='index';
+   dbPosts.Post;
   end;
   // ТАБЛИЦА № 2 - ГЛОБАЛЬНЫЕ БЛОКИ
   Dbf2.TableName:='blocks.dbf';
@@ -600,12 +623,12 @@ begin
 
   end;
   // ТАБЛИЦА № 3 - ПРЕСЕТЫ (НАСТРОЙКИ И ШАБЛОНЫ)
-  Dbf3.TableName:='presets.dbf';
-  Dbf3.Exclusive:=True;
-  Dbf3.Active:=False;
+  dbfPresets.TableName:='presets.dbf';
+  dbfPresets.Exclusive:=True;
+  dbfPresets.Active:=False;
   if not SysUtils.FileExists('presets.dbf') then
   begin
-   with Dbf3.FieldDefs do
+   with dbfPresets.FieldDefs do
     begin
     Add('id', ftString, 60, True); // ID пресета
     Add('sitename', ftString, 60, True); // Название сайта
@@ -622,30 +645,30 @@ begin
     Add('ufn6', ftString, 60, True); // Название доп. поля 6
     Add('ufn7', ftString, 60, True); // Название доп. поля 7
     end;
-   Dbf3.CreateTable;
-   Dbf3.Active:=true;
-   Dbf3.Insert;
-   Dbf3.FieldByName('id').AsString:='basis';
-   Dbf3.FieldByName('sitename').AsString:='My Site';
+   dbfPresets.CreateTable;
+   dbfPresets.Active:=true;
+   dbfPresets.Insert;
+   dbfPresets.FieldByName('id').AsString:='basis';
+   dbfPresets.FieldByName('sitename').AsString:='My Site';
    // path on linux
 
   {$IFDEF UNIX}
- Dbf3.FieldByName('dirpath').AsString:=expandfilename('~/MySite');
+ dbfPresets.FieldByName('dirpath').AsString:=expandfilename('~/MySite');
   {$ELSE}
- Dbf3.FieldByName('dirpath').AsString:='C:\MySite';
+ dbfPresets.FieldByName('dirpath').AsString:='C:\MySite';
   {$ENDIF}
-   Dbf3.FieldByName('headtpl').AsString:='<meta charset="utf-8"><title>{sitename}-{title}</title>';
-   Dbf3.FieldByName('bodytpl').AsString:='{mainmenu}<h1>{title}</h1><p>{content}</p>';
-   Dbf3.FieldByName('sectiontpl').AsString:='{mainmenu}<h1>Тема: {sectionTitle}</h1> Материалы :<ul>{items}</ul>';
-   Dbf3.FieldByName('itemtpl').AsString:='<li><a href="{itemUrl}.htm">{itemTitle}</a></li>';
-   Dbf3.FieldByName('ufn1').AsString:='UserField1';
-   Dbf3.FieldByName('ufn2').AsString:='UserField2';
-   Dbf3.FieldByName('ufn3').AsString:='UserField3';
-   Dbf3.FieldByName('ufn4').AsString:='UserField4';
-   Dbf3.FieldByName('ufn5').AsString:='UserField5';
-   Dbf3.FieldByName('ufn6').AsString:='UserField6';
-   Dbf3.FieldByName('ufn7').AsString:='UserField7';
-   Dbf3.Post;
+   dbfPresets.FieldByName('headtpl').AsString:='<meta charset="utf-8"><title>{sitename}-{title}</title>';
+   dbfPresets.FieldByName('bodytpl').AsString:='{mainmenu}<h1>{title}</h1><p>{content}</p>';
+   dbfPresets.FieldByName('sectiontpl').AsString:='{mainmenu}<h1>Тема: {sectionTitle}</h1> Материалы :<ul>{items}</ul>';
+   dbfPresets.FieldByName('itemtpl').AsString:='<li><a href="{itemUrl}.htm">{itemTitle}</a></li>';
+   dbfPresets.FieldByName('ufn1').AsString:='UserField1';
+   dbfPresets.FieldByName('ufn2').AsString:='UserField2';
+   dbfPresets.FieldByName('ufn3').AsString:='UserField3';
+   dbfPresets.FieldByName('ufn4').AsString:='UserField4';
+   dbfPresets.FieldByName('ufn5').AsString:='UserField5';
+   dbfPresets.FieldByName('ufn6').AsString:='UserField6';
+   dbfPresets.FieldByName('ufn7').AsString:='UserField7';
+   dbfPresets.Post;
   end;
 
     // ТАБЛИЦА № 4 - РАЗДЕЛЫ САЙТА
@@ -681,9 +704,9 @@ begin
 
 
 
-  Dbf1.Active:=true;
+  dbPosts.Active:=true;
   Dbf2.Active:=true;
-  Dbf3.Active:=true;
+  dbfPresets.Active:=true;
   Dbf4.Active:=true;
 
 end;
@@ -693,7 +716,7 @@ var r : String;
 begin
   r := headTemplate;
   r:=StringReplace(r, '{title}', title, [rfReplaceAll]);
-  r:=StringReplace(r, '{sitename}', Dbf3.FieldByName('sitename').AsString, [rfReplaceAll]);
+  r:=StringReplace(r, '{sitename}', dbfPresets.FieldByName('sitename').AsString, [rfReplaceAll]);
   Result:=r;
 end;
 
@@ -703,23 +726,48 @@ begin
  r:=bodyTemplate;
  r:=StringReplace(r, '{title}', title, [rfReplaceAll]);
  r:=StringReplace(r, '{content}', body, [rfReplaceAll]);
- r:=StringReplace(r, '{sitename}', Dbf3.FieldByName('sitename').AsString, [rfReplaceAll]);
+ r:=StringReplace(r, '{sitename}', dbfPresets.FieldByName('sitename').AsString, [rfReplaceAll]);
  Result:=R;
 end;
 
 
 function TForm1.useBlocks(part: String): String;
-var r : String;
+var r : String; i, j : Integer; h, t : String;  fbuffer : TStringList;  blockFiles : TStringList;
 begin
   r := part;
+
+  if not chkGetBlocksFromFile.Checked then // use database
+  begin
   dbf2.First;
   while not dbf2.EOF do begin
         r:=StringReplace(r, '{'+dbf2.FieldByName('id').AsString+'}', dbf2.FieldByName('markup').AsString, [rfReplaceAll]);
         dbf2.Next;
   end;
   dbf2.First;
+  end
+  else begin
+
+    fbuffer:=TStringList.Create;
+    blockFiles := FindAllFiles(GetCurrentDir()+'\blocks\', '*.blk', true);
+    for i:=0 to blockFiles.Count-1 do
+        begin
+          fbuffer.Text:=blockFiles[0];
+          fbuffer.SaveToFile(GetCurrentDir()+'\log.txt');
+          fbuffer.LoadFromFile( blockFiles[i] ); // already have abs paths
+          h:=fbuffer.Strings[0];
+          t:='';
+          for j:=1 to fbuffer.Count-1 do
+              begin
+                t:=t+fbuffer.Strings[i];
+              end;
+          r:=StringReplace(r, '{'+h+'}', t, [rfReplaceAll]);
+        end;
+    fbuffer.Free;
+
+  end;
   Result:=r;
 end;
+
 
 procedure TForm1.scanLinks;
 begin
@@ -727,14 +775,14 @@ begin
   Titles.Clear;
   Urls.Clear;
   Sections.Clear;
-  dbf1.First;
-  while not dbf1.eof do begin
-           Titles.Lines.Add(dbf1.FieldByName('caption').AsString);
-           Urls.Lines.Add(dbf1.FieldByName('id').AsString);
-           Sections.Lines.Add(dbf1.FieldByName('section').AsString);
-           dbf1.Next;
+  dbPosts.First;
+  while not dbPosts.eof do begin
+           Titles.Lines.Add(dbPosts.FieldByName('caption').AsString);
+           Urls.Lines.Add(dbPosts.FieldByName('id').AsString);
+           Sections.Lines.Add(dbPosts.FieldByName('section').AsString);
+           dbPosts.Next;
   end;
-dbf1.First;
+dbPosts.First;
 end;
 
 procedure TForm1.scanSections;
@@ -778,6 +826,7 @@ begin
   Result:=r;
 end;
 
+
 procedure TForm1.SiteMapping;
 var i, j : integer; dir : String;  filenam : String; body : String;
   bodyTemplate, headTemplate, itemTpl, sectionTpl : String;
@@ -793,13 +842,28 @@ var i, j : integer; dir : String;  filenam : String; body : String;
   pages : array[byte] of String;
   itemTxt : String;
   itemsTotal : byte;
+  fbuffer : TStringList;
+  ext : String;
 begin
+  ext := PrefferedExtension.Text;
+  fbuffer := TStringList.Create;
   itemsPerPage := 7;
-  dir:=dbf3.FieldByName('dirpath').AsString;
+  dir:=dbfPresets.FieldByName('dirpath').AsString;
   bodyTemplate:= '{content}';
-  headTemplate:=dbf3.FieldByName('headtpl').AsString;
-  itemTpl := dbf3.FieldByName('itemtpl').AsString;
-  sectionTpl := dbf3.FieldByName('sectionTpl').AsString;
+  if chkGetBlocksFromFile.Checked then
+  begin                      // забираем из файла
+     fbuffer.LoadFromFile(GetCurrentDir() + '\parts\head.tpl'); // шаблон оформления
+     headTemplate:=fbuffer.Text;
+     fbuffer.LoadFromFile(GetCurrentDir() +'\parts\item.tpl'); // шаблон элемента списка
+     itemTpl:=fbuffer.Text;
+     fbuffer.LoadFromFile(GetCurrentDir() +'\parts\section.tpl'); // шаблон представления списка
+     sectionTpl:=fbuffer.Text;
+     fbuffer.Free;
+  end else begin                          // забираем из базы
+  headTemplate:=dbfPresets.FieldByName('headtpl').AsString;
+  itemTpl := dbfPresets.FieldByName('itemtpl').AsString;
+  sectionTpl := dbfPresets.FieldByName('sectionTpl').AsString;
+  end;
   i:=0;
   while i<SiteSectionUrls.Lines.Count do
                            begin
@@ -839,9 +903,9 @@ begin
   buffer.lines.add(buildPagination(SiteSectionUrls.Lines[i], page, pagesTotal));
 //  stub:=InputBox('A', 'A', buildPagination(SiteSectionUrls.Lines[i], page, pagesTotal));
   if page=1 then
-  filenam := dir + fsod+'section_'+SiteSectionUrls.Lines[i]+'.'+PrefferedExtension.text
+  filenam := dir + fsod+'section_'+SiteSectionUrls.Lines[i]+'.'+ext
   else
-   filenam := dir +fsod+'section_'+SiteSectionUrls.Lines[i]+'_'+IntToStr(page)+'.'+PrefferedExtension.text;
+   filenam := dir +fsod+'section_'+SiteSectionUrls.Lines[i]+'_'+IntToStr(page)+'.'+ext;
   body:=insSections(insLinks(buildSection(sectionTpl, SiteSectionUrls.lines[i], SiteSectionTitles.Lines[i], buffer.Text)));
 //  stub:=InputBox('B', 'B', body);
   makePage(SiteSectionTitles.Lines[i], body, headTemplate, bodyTemplate, filenam);
@@ -865,7 +929,10 @@ begin
                               Buffer.Lines.Add('</head><body>');
                               Buffer.Lines.Add(buildOwnFields(useOwnTags(useModules(insSections(insLinks(useBlocks(buildBody(title, body, bodyTemplate))))))));
                               Buffer.Lines.Add('</body></html>');
+                              try
                               Buffer.Lines.SaveToFile(filenam);
+                              except
+                              end;
 end;
 
 procedure TForm1.paired(t : String);
@@ -875,6 +942,10 @@ begin
   else
     fContent.Lines.Add('<'+t+'></'+t+'>');
 end;
+
+
+
+
 
 procedure TForm1.tagHref;
 begin
@@ -1127,6 +1198,9 @@ begin
     ASocket.SendString('HTTP/1.0 404' + CRLF);
 end;
 
+
+
+
 procedure TForm1.StartOwnServer;
 begin
   ListenerSocket := TTCPBlockSocket.Create;
@@ -1162,7 +1236,7 @@ var path : String; filename : String; Buf : TMemo;
   r : String;
 begin
   if uri = '/' then uri:='/index.'+PrefferedExtension.text;
-  path := dbf3.FieldByName('dirpath').AsString;
+  path := dbfPresets.FieldByName('dirpath').AsString;
   Buf:=TMemo.Create(Self);
   Buf.Lines.LoadFromFile(path+uri);
   r:=Buf.Text;
@@ -1176,8 +1250,8 @@ begin
    r:=html;
    for i:=1 to 7 do begin
       t:=IntToStr(i);
-      r:=StringReplace(r, '{f'+t+'}', Dbf3.FieldByName('ufn'+t).AsString, [rfReplaceAll]);
-      r:=StringReplace(r, '{v'+t+'}', Dbf1.FieldByName('uf'+t).AsString, [rfReplaceAll]);
+      r:=StringReplace(r, '{f'+t+'}', dbfPresets.FieldByName('ufn'+t).AsString, [rfReplaceAll]);
+      r:=StringReplace(r, '{v'+t+'}', dbPosts.FieldByName('uf'+t).AsString, [rfReplaceAll]);
    end;
    Result:=r;
 end;
@@ -1189,6 +1263,10 @@ begin
   r:=StringReplace(r, '$$ext', PrefferedExtension.Text,[rfReplaceAll]);
   Result:=r;
 end;
+
+
+
+
 
 procedure TForm1.localeRUS;
 begin

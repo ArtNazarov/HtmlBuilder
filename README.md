@@ -13,6 +13,10 @@ Will be useful for creating websites hosted at P2P networks
 ( such Maelstrom, FreeNet, I2P etc ).
 
 
+What's new
+================
+Added import from text file or directly generation to preview another template.
+
 Other generators
 ==================
 
