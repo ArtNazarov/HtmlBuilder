@@ -733,9 +733,11 @@ end;
 
 function TForm1.useBlocks(part: String): String;
 var r : String; i, j : Integer; h, t : String;  fbuffer : TStringList;  blockFiles : TStringList;
+   log : TStringList;
+
 begin
   r := part;
-
+  log := TStringList.Create;
   if not chkGetBlocksFromFile.Checked then // use database
   begin
   dbf2.First;
@@ -748,22 +750,28 @@ begin
   else begin
 
     fbuffer:=TStringList.Create;
-    blockFiles := FindAllFiles(GetCurrentDir()+'\blocks\', '*.blk', true);
+    blockFiles := FindAllFiles(GetCurrentDir()+'\blocks\', '*.blk', false); // получили список блоков
+    // первая строка - id блока
+    // остальные HTML разметка
     for i:=0 to blockFiles.Count-1 do
         begin
-          fbuffer.Text:=blockFiles[0];
-          fbuffer.SaveToFile(GetCurrentDir()+'\log.txt');
           fbuffer.LoadFromFile( blockFiles[i] ); // already have abs paths
           h:=fbuffer.Strings[0];
           t:='';
           for j:=1 to fbuffer.Count-1 do
               begin
-                t:=t+fbuffer.Strings[i];
+                t:=t+fbuffer.Strings[j];
               end;
           r:=StringReplace(r, '{'+h+'}', t, [rfReplaceAll]);
+          log.Add('Replace in '+r+'{'+h+'} on '+t);
+          log.Add('===== Result is ====');
+          log.Add(r);
+          log.Add('======/Result======');
+
         end;
     fbuffer.Free;
-
+    log.SaveToFile('log.txt');
+    log.Free;
   end;
   Result:=r;
 end;

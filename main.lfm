@@ -28,9 +28,9 @@ object Form1: TForm1
     Height = 520
     Top = 0
     Width = 879
-    ActivePage = tabCommonSettings
+    ActivePage = tabPages
     Align = alTop
-    TabIndex = 3
+    TabIndex = 0
     TabOrder = 1
     object tabPages: TTabSheet
       Caption = 'Страницы'
