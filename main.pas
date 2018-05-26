@@ -81,7 +81,7 @@ type
     DBEdit8: TDBEdit;
     DBEdit9: TDBEdit;
     dbPosts: TDbf;
-    Dbf2: TDbf;
+    dbfBlocks: TDbf;
     dbfPresets: TDbf;
     Dbf4: TDbf;
 
@@ -434,10 +434,23 @@ begin
 end;
 
 procedure TForm1.btnLoadClick(Sender: TObject);
-var fbuffer : TStringList;
+var fbuffer : TStringList; idOfBlocksInBase : TStringList;
+   blockFiles : TStringList;
+   id, markup : String;
+   i, j, k : Integer;
+   InstalledIds, InstalledMarkups : TStringList;
+   exists : Boolean;
+   indexToUpdate : Integer;
 begin
-  dbfPresets.Edit;
+
   fbuffer:=TStringList.Create();
+  // Получим список всех id из текстовых файлов /blocks/*.blk и разметку markup
+    idOfBlocksInBase:=TStringList.Create;
+    installedIds:=TStringList.Create;
+    installedMarkups:=TStringList.Create;
+    fbuffer:=TStringList.Create;
+  // Установка разметки контейнеров
+  dbfPresets.Edit;
   fbuffer.LoadFromFile( GetCurrentDir() + '\parts\head.tpl' );
   dbmTemplateOfHead.Text:=fbuffer.text;
   fbuffer.LoadFromFile( GetCurrentDir() + '\parts\body.tpl' );
@@ -446,8 +459,72 @@ begin
   dbmTemplateOfSection.Text:=fbuffer.text;
    fbuffer.LoadFromFile( GetCurrentDir() + '\parts\item.tpl' );
   dbmTemplateOfItem.Text:=fbuffer.text;
+  dbfPresets.Post; // Применяем изменения
+  // Получим список всех ID в таблице dbfBlocks
+  dbfBlocks.First;
+  while not dbfBlocks.EOF do begin
+      idOfBlocksInBase.Add( dbfBlocks.FieldByName('id').AsString);
+      dbfBlocks.Next;
+  end;
+
+    blockFiles := FindAllFiles(GetCurrentDir()+'\blocks\', '*.blk', false); // получили список блоков
+    // первая строка - id блока
+    // остальные HTML разметка
+    for i:=0 to blockFiles.Count-1 do
+        begin
+          fbuffer.LoadFromFile( blockFiles[i] ); // already have abs paths
+          id:=fbuffer.Strings[0];
+          markup:='';
+          for j:=1 to fbuffer.Count-1 do
+              begin
+                markup:=markup+fbuffer.Strings[j];
+              end;
+              InstalledIds.Add(id);
+              InstalledMarkups.Add(markup);
+        end;
+
+     for i:=0 to InstalledIds.Count-1 do
+         begin
+           exists:=false;
+           indexToUpdate := -1;
+           for j:=0 to  idOfBlocksInBase.Count -1 do
+               begin
+                 if idOfBlocksInBase[j]=InstalledIds[i] then
+                   begin
+                        exists:=true; IndexToUpdate := j; break;
+                   end;
+               end;
+           if exists then
+              begin
+                   dbfBlocks.First; k := 0;
+                   while not dbfBlocks.EOF do
+                         begin
+                            if k<>indexToUpdate then
+
+                             inc(k) else break;
+
+                             dbfBlocks.Next;
+
+                         end;
+                   dbfBlocks.Edit;
+                   dbfBlocks.FieldByName('id').AsString := installedIds[i];
+                   dbfBlocks.FieldByName('markup').AsString := installedMarkups[i];
+                   dbfBlocks.Post;
+              end
+           else
+           begin
+                 dbfBlocks.Insert;
+                 dbfBLocks.FieldByName('id').AsString := installedIds[i];
+                 dbfBlocks.FieldByName('markup').AsString := installedMarkups[i];
+                 dbfBlocks.Post;
+           end;
+         end;
+
 
   fbuffer.Free;
+  idOfBlocksInBase.Free;
+  installedMarkups.Free;
+  installedIds.Free;
 end;
 
 
@@ -599,27 +676,27 @@ begin
    dbPosts.Post;
   end;
   // ТАБЛИЦА № 2 - ГЛОБАЛЬНЫЕ БЛОКИ
-  Dbf2.TableName:='blocks.dbf';
-  Dbf2.Exclusive:=True;
-  Dbf2.Active:=False;
+  dbfBlocks.TableName:='blocks.dbf';
+  dbfBlocks.Exclusive:=True;
+  dbfBlocks.Active:=False;
   if not SysUtils.FileExists('blocks.dbf') then
   begin
-   with Dbf2.FieldDefs do
+   with dbfBlocks.FieldDefs do
     begin
     Add('id', ftString, 60, True); // ID блока
     Add('markup', ftMemo, 16, True); // Разметка блока
     Add('remark', ftMemo, 16, True); // Примечание к блоку
     Add('regions', ftMemo, 16, True); // Регион, в который надо вывести блок
     end;
-   Dbf2.CreateTable;
+   dbfBlocks.CreateTable;
 
-   Dbf2.CreateTable;
-   Dbf2.Active:=true;
-   Dbf2.Insert;
-   Dbf2.FieldByName('id').AsString:='mainmenu';
-   Dbf2.FieldByName('markup').AsString:='<div style="background-color:#e8e8e8"><ul><li>[index]</li><li>[p1]</li></ul></div>';
-   Dbf2.FieldByName('remark').AsString:='Меню';
-   Dbf2.Post;
+   dbfBlocks.CreateTable;
+   dbfBlocks.Active:=true;
+   dbfBlocks.Insert;
+   dbfBlocks.FieldByName('id').AsString:='mainmenu';
+   dbfBlocks.FieldByName('markup').AsString:='<div style="background-color:#e8e8e8"><ul><li>[index]</li><li>[p1]</li></ul></div>';
+   dbfBlocks.FieldByName('remark').AsString:='Меню';
+   dbfBlocks.Post;
 
   end;
   // ТАБЛИЦА № 3 - ПРЕСЕТЫ (НАСТРОЙКИ И ШАБЛОНЫ)
@@ -705,7 +782,7 @@ begin
 
 
   dbPosts.Active:=true;
-  Dbf2.Active:=true;
+  dbfBlocks.Active:=true;
   dbfPresets.Active:=true;
   Dbf4.Active:=true;
 
@@ -740,12 +817,12 @@ begin
   log := TStringList.Create;
   if not chkGetBlocksFromFile.Checked then // use database
   begin
-  dbf2.First;
-  while not dbf2.EOF do begin
-        r:=StringReplace(r, '{'+dbf2.FieldByName('id').AsString+'}', dbf2.FieldByName('markup').AsString, [rfReplaceAll]);
-        dbf2.Next;
+  dbfBlocks.First;
+  while not dbfBlocks.EOF do begin
+        r:=StringReplace(r, '{'+dbfBlocks.FieldByName('id').AsString+'}', dbfBlocks.FieldByName('markup').AsString, [rfReplaceAll]);
+        dbfBlocks.Next;
   end;
-  dbf2.First;
+  dbfBlocks.First;
   end
   else begin
 

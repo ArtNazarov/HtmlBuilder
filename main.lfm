@@ -1581,7 +1581,7 @@ object Form1: TForm1
     left = 680
     top = 72
   end
-  object Dbf2: TDbf
+  object dbfBlocks: TDbf
     IndexDefs = <>
     TableLevel = 4
     FilterOptions = []
@@ -1589,7 +1589,7 @@ object Form1: TForm1
     top = 192
   end
   object Datasource2: TDataSource
-    DataSet = Dbf2
+    DataSet = dbfBlocks
     left = 896
     top = 104
   end
