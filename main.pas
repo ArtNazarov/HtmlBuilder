@@ -17,7 +17,7 @@ const
   fsod : Char = '\';
   {$ENDIF}
 
-  DLM_MODULE = '%';
+  DLM_MODULE = '`';
 
 type
 
