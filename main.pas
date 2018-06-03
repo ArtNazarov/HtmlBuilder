@@ -258,6 +258,7 @@ type
     procedure localeRUS();
     procedure localeENG();
 
+
   end;
 
 var
@@ -1004,6 +1005,8 @@ end;
 
 procedure TForm1.makePage(title: String; body: String; headTemplate: String;
   bodyTemplate: String; filenam : String);
+var
+  id : String;
 begin
     if FileExists(filenam) then DeleteFile(filenam);
     Buffer.Clear;
@@ -1014,6 +1017,13 @@ begin
                               Buffer.Lines.Add('</head><body>');
                               Buffer.Lines.Add(buildOwnFields(useOwnTags(useModules(insSections(insLinks(useBlocks(buildBody(title, body, bodyTemplate))))))));
                               Buffer.Lines.Add('</body></html>');
+
+
+                              // id of pages
+                              id := ExtractFileName(filenam);
+                              id := Copy(id, 1, Pos('.', id)-1);
+                              Buffer.Text:=StringReplace(Buffer.Text, '{id}',
+                              id , [rfReplaceAll]);
                               try
                               Buffer.Lines.SaveToFile(filenam);
                               except
