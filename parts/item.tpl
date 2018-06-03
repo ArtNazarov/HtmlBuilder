@@ -1,1 +1,1 @@
-<li><a href="{itemUrl}.htm">{itemTitle}</a></li>
+<li><a href="{itemUrl}.{ext}>{itemTitle}</a></li>

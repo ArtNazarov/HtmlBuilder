@@ -737,7 +737,7 @@ begin
    dbfPresets.FieldByName('headtpl').AsString:='<meta charset="utf-8"><title>{sitename}-{title}</title>';
    dbfPresets.FieldByName('bodytpl').AsString:='{mainmenu}<h1>{title}</h1><p>{content}</p>';
    dbfPresets.FieldByName('sectiontpl').AsString:='{mainmenu}<h1>Тема: {sectionTitle}</h1> Материалы :<ul>{items}</ul>';
-   dbfPresets.FieldByName('itemtpl').AsString:='<li><a href="{itemUrl}.htm">{itemTitle}</a></li>';
+   dbfPresets.FieldByName('itemtpl').AsString:='<li><a href="{itemUrl}.{ext}">{itemTitle}</a></li>';
    dbfPresets.FieldByName('ufn1').AsString:='UserField1';
    dbfPresets.FieldByName('ufn2').AsString:='UserField2';
    dbfPresets.FieldByName('ufn3').AsString:='UserField3';
@@ -1190,6 +1190,7 @@ begin
  r:=itemTpl;
  r:=StringReplace(r, '{itemUrl}', itemUrl, [rfReplaceAll]);
  r:=StringReplace(r, '{itemTitle}', itemTitle, [rfReplaceAll]);
+ r:=StringReplace(r, '{ext}', PrefferedExtension.Text , [rfReplaceAll]);
  r:=insSections(insLinks(r));
  r:=prefExtension(r);
  Result:=R;

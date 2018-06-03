@@ -34,22 +34,22 @@ object Form1: TForm1
     TabOrder = 1
     object tabPages: TTabSheet
       Caption = 'Страницы'
-      ClientHeight = 491
+      ClientHeight = 490
       ClientWidth = 871
       object Panel1: TPanel
         Left = 0
-        Height = 491
+        Height = 490
         Top = 0
         Width = 871
         Align = alClient
         Caption = 'Panel1'
-        ClientHeight = 491
+        ClientHeight = 490
         ClientWidth = 871
         ParentColor = False
         TabOrder = 0
         object fCaption: TDBEdit
           Left = 108
-          Height = 24
+          Height = 25
           Top = 80
           Width = 752
           DataField = 'caption'
@@ -60,15 +60,15 @@ object Form1: TForm1
         end
         object Label1: TLabel
           Left = 116
-          Height = 16
+          Height = 17
           Top = 56
-          Width = 135
+          Width = 126
           Caption = 'Заголовок страницы'
           ParentColor = False
         end
         object fID: TDBEdit
           Left = 108
-          Height = 24
+          Height = 25
           Top = 32
           Width = 752
           DataField = 'id'
@@ -79,9 +79,9 @@ object Form1: TForm1
         end
         object Label4: TLabel
           Left = 116
-          Height = 16
+          Height = 17
           Top = 8
-          Width = 82
+          Width = 79
           Caption = 'ID страницы'
           ParentColor = False
         end
@@ -105,7 +105,7 @@ object Form1: TForm1
         end
         object DBEdit8: TDBEdit
           Left = 108
-          Height = 24
+          Height = 25
           Top = 424
           Width = 754
           DataField = 'section'
@@ -116,9 +116,9 @@ object Form1: TForm1
         end
         object Label17: TLabel
           Left = 108
-          Height = 16
+          Height = 17
           Top = 400
-          Width = 83
+          Width = 82
           Caption = 'ID категории'
           ParentColor = False
         end
@@ -132,22 +132,22 @@ object Form1: TForm1
           TabOrder = 4
           object TabSheet11: TTabSheet
             Caption = 'Основной текст'
-            ClientHeight = 257
+            ClientHeight = 256
             ClientWidth = 744
             object Panel13: TPanel
               Left = 0
-              Height = 257
+              Height = 256
               Top = 0
               Width = 744
               Align = alClient
               Caption = 'Panel13'
-              ClientHeight = 257
+              ClientHeight = 256
               ClientWidth = 744
               ParentColor = False
               TabOrder = 0
               object fContent: TDBMemo
                 Left = 1
-                Height = 221
+                Height = 220
                 Top = 35
                 Width = 742
                 Align = alClient
@@ -1113,25 +1113,25 @@ object Form1: TForm1
     end
     object tabSpecial: TTabSheet
       Caption = 'Специальное'
-      ClientHeight = 491
+      ClientHeight = 490
       ClientWidth = 871
       object Panel17: TPanel
         Left = 0
-        Height = 491
+        Height = 490
         Top = 0
         Width = 871
         Align = alClient
-        ClientHeight = 491
+        ClientHeight = 490
         ClientWidth = 871
         ParentColor = False
         ParentFont = False
         TabOrder = 0
         object PrefferedExtension: TComboBox
           Left = 12
-          Height = 24
+          Height = 25
           Top = 32
           Width = 100
-          ItemHeight = 16
+          ItemHeight = 17
           ItemIndex = 1
           Items.Strings = (
             'htm'
@@ -1142,15 +1142,15 @@ object Form1: TForm1
         end
         object Label25: TLabel
           Left = 12
-          Height = 16
+          Height = 17
           Top = 8
-          Width = 83
+          Width = 76
           Caption = 'Расширение'
           ParentColor = False
         end
         object ZipArchiverPath: TEdit
           Left = 12
-          Height = 24
+          Height = 25
           Top = 88
           Width = 544
           TabOrder = 1
@@ -1158,26 +1158,26 @@ object Form1: TForm1
         end
         object Label26: TLabel
           Left = 12
-          Height = 16
+          Height = 17
           Top = 63
-          Width = 266
+          Width = 247
           Caption = 'Командная строка для архивации сайта'
           ParentColor = False
         end
         object Label34: TLabel
           Left = 12
-          Height = 16
+          Height = 17
           Top = 120
-          Width = 172
+          Width = 161
           Caption = 'Локализация / Localization'
           ParentColor = False
         end
         object cboLocale: TComboBox
           Left = 12
-          Height = 24
+          Height = 25
           Top = 144
           Width = 541
-          ItemHeight = 16
+          ItemHeight = 17
           ItemIndex = 0
           Items.Strings = (
             'Русский - Russian'
@@ -1189,17 +1189,17 @@ object Form1: TForm1
         end
         object chkUseModules: TCheckBox
           Left = 12
-          Height = 20
+          Height = 21
           Top = 184
-          Width = 166
+          Width = 159
           Caption = 'Использовать модули'
           TabOrder = 3
         end
         object chkGetBlocksFromFile: TCheckBox
           Left = 12
-          Height = 20
+          Height = 21
           Top = 216
-          Width = 368
+          Width = 352
           Caption = 'Глобальные блоки из файлов txt в текущем каталоге'
           TabOrder = 4
         end
@@ -1542,9 +1542,9 @@ object Form1: TForm1
   end
   object Label12: TLabel
     Left = 48
-    Height = 16
+    Height = 17
     Top = 523
-    Width = 47
+    Width = 46
     Caption = 'Пресет'
     ParentColor = False
   end
@@ -1559,7 +1559,7 @@ object Form1: TForm1
   end
   object edPreset: TDBLookupComboBox
     Left = 136
-    Height = 24
+    Height = 25
     Top = 523
     Width = 136
     KeyField = 'id'
