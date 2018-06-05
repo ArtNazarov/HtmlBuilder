@@ -83,7 +83,7 @@ type
     dbPosts: TDbf;
     dbfBlocks: TDbf;
     dbfPresets: TDbf;
-    Dbf4: TDbf;
+    dbfSections: TDbf;
 
     edFtpIP: TEdit;
     edFtpPort: TEdit;
@@ -750,32 +750,32 @@ begin
   end;
 
     // ТАБЛИЦА № 4 - РАЗДЕЛЫ САЙТА
-  Dbf4.TableName:='sections.dbf';
-  Dbf4.Exclusive:=True;
-  Dbf4.Active:=False;
+  dbfSections.TableName:='sections.dbf';
+  dbfSections.Exclusive:=True;
+  dbfSections.Active:=False;
   if not SysUtils.FileExists('sections.dbf') then
   begin
-   with Dbf4.FieldDefs do
+   with dbfSections.FieldDefs do
     begin
     Add('id', ftString, 60, True); // ID пресета
     Add('section', ftString, 60, True); // Название сайта
     Add('preset', ftString, 60, True); // Путь к папке в результатами
     Add('note', ftMemo, 16, True); // Заголовочная часть шаблона
     end;
-   Dbf4.CreateTable;
-   Dbf4.Active:=true;
-   Dbf4.Insert;
-   Dbf4.FieldByName('id').AsString:='blog';
-   Dbf4.FieldByName('section').AsString:='Блог';
-   Dbf4.FieldByName('preset').AsString:='basis';
-   Dbf4.FieldByName('note').AsString:='Мой блог';
-   Dbf4.Post;
-   Dbf4.Insert;
-   Dbf4.FieldByName('id').AsString:='index';
-   Dbf4.FieldByName('section').AsString:='Прочее';
-   Dbf4.FieldByName('preset').AsString:='basis';
-   Dbf4.FieldByName('note').AsString:='Мой блог';
-   Dbf4.Post;
+   dbfSections.CreateTable;
+   dbfSections.Active:=true;
+   dbfSections.Insert;
+   dbfSections.FieldByName('id').AsString:='blog';
+   dbfSections.FieldByName('section').AsString:='Блог';
+   dbfSections.FieldByName('preset').AsString:='basis';
+   dbfSections.FieldByName('note').AsString:='Мой блог';
+   dbfSections.Post;
+   dbfSections.Insert;
+   dbfSections.FieldByName('id').AsString:='index';
+   dbfSections.FieldByName('section').AsString:='Прочее';
+   dbfSections.FieldByName('preset').AsString:='basis';
+   dbfSections.FieldByName('note').AsString:='Мой блог';
+   dbfSections.Post;
   end;
 
 
@@ -785,7 +785,7 @@ begin
   dbPosts.Active:=true;
   dbfBlocks.Active:=true;
   dbfPresets.Active:=true;
-  Dbf4.Active:=true;
+  dbfSections.Active:=true;
 
 end;
 
@@ -805,6 +805,7 @@ begin
  r:=StringReplace(r, '{title}', title, [rfReplaceAll]);
  r:=StringReplace(r, '{content}', body, [rfReplaceAll]);
  r:=StringReplace(r, '{sitename}', dbfPresets.FieldByName('sitename').AsString, [rfReplaceAll]);
+ r:=StringReplace(r, '{ext}', PrefferedExtension.Text , [rfReplaceAll]);
  Result:=R;
 end;
 
@@ -875,13 +876,13 @@ procedure TForm1.scanSections;
 begin
   SiteSectionUrls.Clear;
   SiteSectionTitles.Clear;
-  dbf4.First;
-  while not dbf4.eof do begin
-           SiteSectionTitles.Lines.Add(dbf4.FieldByName('section').AsString);
-           SiteSectionUrls.Lines.Add(dbf4.FieldByName('id').AsString);
-           dbf4.Next;
+  dbfSections.First;
+  while not dbfSections.eof do begin
+           SiteSectionTitles.Lines.Add(dbfSections.FieldByName('section').AsString);
+           SiteSectionUrls.Lines.Add(dbfSections.FieldByName('id').AsString);
+           dbfSections.Next;
   end;
-dbf4.First;
+dbfSections.First;
 end;
 
 function TForm1.insLinks(body: String): String;
@@ -930,6 +931,7 @@ var i, j : integer; dir : String;  filenam : String; body : String;
   itemsTotal : byte;
   fbuffer : TStringList;
   ext : String;
+  bodyTpl : String;
 begin
   ext := PrefferedExtension.Text;
   fbuffer := TStringList.Create;
@@ -944,11 +946,14 @@ begin
      itemTpl:=fbuffer.Text;
      fbuffer.LoadFromFile(GetCurrentDir() +'\parts\section.tpl'); // шаблон представления списка
      sectionTpl:=fbuffer.Text;
+     fbuffer.LoadFromFile(GetCurrentDir() +'\parts\body.tpl'); // шаблон представления списка
+     bodyTpl:=fbuffer.Text;
      fbuffer.Free;
   end else begin                          // забираем из базы
   headTemplate:=dbfPresets.FieldByName('headtpl').AsString;
   itemTpl := dbfPresets.FieldByName('itemtpl').AsString;
   sectionTpl := dbfPresets.FieldByName('sectionTpl').AsString;
+  bodyTpl := dbfPresets.FieldByName('bodyTpl').AsString;
   end;
   i:=0;
   while i<SiteSectionUrls.Lines.Count do
@@ -1001,6 +1006,19 @@ begin
               i:=i+1;
                                        end;
 
+ // карта категорий
+  fbuffer.Clear;
+  fbuffer.Add('<ul>');
+  dbfSections.First;
+  while not dbfSections.EOF do
+        begin
+             fbuffer.Add(
+             '<li><a href="./section_' + dbfSections.FieldByName('id').AsString + '.{ext}">'+
+             dbfSections.FieldByName('section').AsString+'</a></li>');
+             dbfSections.Next;
+        end;
+  fbuffer.Add('</ul>');
+  makePage('Карта сайта', fbuffer.Text, headTemplate, bodyTpl, dir+fsod+'sitemap.'+ext);
 end;
 
 procedure TForm1.makePage(title: String; body: String; headTemplate: String;

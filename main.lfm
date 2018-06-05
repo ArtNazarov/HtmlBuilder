@@ -28,9 +28,9 @@ object Form1: TForm1
     Height = 520
     Top = 0
     Width = 879
-    ActivePage = tabPages
+    ActivePage = tabSpecial
     Align = alTop
-    TabIndex = 0
+    TabIndex = 4
     TabOrder = 1
     object tabPages: TTabSheet
       Caption = 'Страницы'
@@ -1132,13 +1132,13 @@ object Form1: TForm1
           Top = 32
           Width = 100
           ItemHeight = 17
-          ItemIndex = 1
+          ItemIndex = 0
           Items.Strings = (
             'htm'
             'html'
           )
           TabOrder = 0
-          Text = 'html'
+          Text = 'htm'
         end
         object Label25: TLabel
           Left = 12
@@ -1626,11 +1626,11 @@ object Form1: TForm1
     top = 72
   end
   object Datasource4: TDataSource
-    DataSet = Dbf4
+    DataSet = dbfSections
     left = 888
     top = 176
   end
-  object Dbf4: TDbf
+  object dbfSections: TDbf
     IndexDefs = <>
     TableLevel = 4
     FilterOptions = []
