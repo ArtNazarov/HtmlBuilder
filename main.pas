@@ -1325,6 +1325,7 @@ begin
   end
   else
     ASocket.SendString('HTTP/1.0 404' + CRLF);
+    ASocket.CloseSocket;
 end;
 
 procedure TForm1.StartOwnServer();
@@ -1360,13 +1361,18 @@ end;
 
 function TForm1.OutputHTMLFile(uri: String): String;
 var path : String; filename : String; Buf : TMemo;
-  r : String;
+  r : String;   fullq : String;
 begin
+
   if uri = '/' then uri:='/index.'+PrefferedExtension.text;
   path := dbfPresets.FieldByName('dirpath').AsString;
   Buf:=TMemo.Create(Self);
-  Buf.Lines.LoadFromFile(path+uri);
+  r:='';
+  fullq:=path+uri;
+  if FileExists(fullq) then begin
+  Buf.Lines.LoadFromFile(fullq);
   r:=Buf.Text;
+  end;
   Buf.Free;
   result:=r;
 end;
