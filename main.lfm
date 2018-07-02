@@ -901,8 +901,6 @@ object Form1: TForm1
           Height = 473
           Top = 7
           Width = 132
-          DataField = 'caption'
-          DataSource = Datasource1
           KeyField = 'id'
           ListField = 'caption'
           ListFieldIndex = 0
