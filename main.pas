@@ -48,10 +48,14 @@ type
     btStopServer: TButton;
     btFtpUpdate: TButton;
     btnLoad: TButton;
+    Button2: TButton;
+    Button3: TButton;
     cboLocale: TComboBox;
     chkGetBlocksFromFile: TCheckBox;
     chkUseModules: TCheckBox;
     Label34: TLabel;
+    SynEdit1: TSynEdit;
+    SynHTMLSyn1: TSynHTMLSyn;
     ZipArchiverPath: TEdit;
     Label26: TLabel;
     PrefferedExtension: TComboBox;
@@ -102,7 +106,6 @@ type
     dbmTemplateOfSection: TDBMemo;
     dbmTemplateOfItem: TDBMemo;
     DBMemo8: TDBMemo;
-    dbNav: TDBNavigator;
     DBNavigator1: TDBNavigator;
     DBNavigator2: TDBNavigator;
     DBNavigator3: TDBNavigator;
@@ -114,7 +117,6 @@ type
     DBText6: TDBText;
     DBText7: TDBText;
     fCaption: TDBEdit;
-    fContent: TDBMemo;
     fID: TDBEdit;
     Label1: TLabel;
     Label10: TLabel;
@@ -205,11 +207,17 @@ type
     procedure btUnorderedListClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btHrefClick(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
     procedure cboLocaleChange(Sender: TObject);
+    procedure Datasource1DataChange(Sender: TObject; Field: TField);
     procedure DBLookupListBox1Click(Sender: TObject);
     procedure DBLookupListBox2Click(Sender: TObject);
     procedure DBLookupListBox3Click(Sender: TObject);
     procedure DBLookupListBox4Click(Sender: TObject);
+
+
+
 
 
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -217,9 +225,9 @@ type
     procedure FormCreate(Sender: TObject);
     procedure bodyTplChange(Sender: TObject);
     procedure btImgClick(Sender: TObject);
-    procedure PageControl2Change(Sender: TObject);
-    procedure Panel2Click(Sender: TObject);
-    procedure Panel5Click(Sender: TObject);
+
+
+
   private
     { private declarations }
   public
@@ -300,23 +308,6 @@ procedure TForm1.btImgClick(Sender: TObject);
 begin
   tagImg();
 end;
-
-procedure TForm1.PageControl2Change(Sender: TObject);
-begin
-
-end;
-
-procedure TForm1.Panel2Click(Sender: TObject);
-begin
-
-end;
-
-procedure TForm1.Panel5Click(Sender: TObject);
-begin
-
-end;
-
-
 
 
 procedure TForm1.btBuildSiteClick(Sender: TObject);
@@ -597,12 +588,27 @@ begin
   tagHref();
 end;
 
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  dbPosts.Append;
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+  dbPosts.Post;
+end;
+
 procedure TForm1.cboLocaleChange(Sender: TObject);
 begin
   if  cboLocale.itemindex=0 then
       LocaleRUS()
   else
       LocaleENG();
+end;
+
+procedure TForm1.Datasource1DataChange(Sender: TObject; Field: TField);
+begin
+ SynEdit1.Text:=dbPosts.FieldByName('content').AsString;
 end;
 
 procedure TForm1.DBLookupListBox1Click(Sender: TObject);
@@ -625,15 +631,13 @@ begin
   DBLookupListBox4.ListSource.DataSet.Locate(DBLookupListBox4.KeyField,DBLookupListBox4.KeyValue,[]);
 end;
 
-
-
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   if ListenerSocket<>NIL then ListenerSocket.Free;
   if ConnectionSocket<>NIL then  ConnectionSocket.Free;
 end;
 
-procedure TForm1.initdb;
+procedure TForm1.initdb();
 begin
   // ТАБЛИЦА № 1 - КОНТЕНТ
   dbPosts.TableName:='content.dbf';
@@ -757,10 +761,10 @@ begin
   begin
    with dbfSections.FieldDefs do
     begin
-    Add('id', ftString, 60, True); // ID пресета
-    Add('section', ftString, 60, True); // Название сайта
-    Add('preset', ftString, 60, True); // Путь к папке в результатами
-    Add('note', ftMemo, 16, True); // Заголовочная часть шаблона
+    Add('id', ftString, 60, True); // ID категории
+    Add('section', ftString, 60, True); // Название категории
+    Add('preset', ftString, 60, True); // Оформление категории
+    Add('note', ftMemo, 16, True); // Примечание
     end;
    dbfSections.CreateTable;
    dbfSections.Active:=true;
@@ -799,11 +803,24 @@ begin
 end;
 
 function TForm1.buildBody(title : String; body : String; bodyTemplate  : String)  : String;
-var r : String;
+var r : String; s, s2 : string;
 begin
  r:=bodyTemplate;
  r:=StringReplace(r, '{title}', title, [rfReplaceAll]);
  r:=StringReplace(r, '{content}', body, [rfReplaceAll]);
+ s:=dbPosts.FieldByName('section').AsString;
+ r:=StringReplace(r, '{section}', s, [rfReplaceAll]);
+ dbfSections.First;
+ while not dbfSections.EOF do
+       begin
+            s2:=dbfSections.FieldByName('id').AsString;
+            if s2=s then
+               begin
+                 r:=StringReplace(r, '{sectionName}', dbfSections.FieldByName('section').AsString, [rfReplaceAll]);
+                 break;
+               end;
+               dbfSections.Next;
+       end;
  r:=StringReplace(r, '{sitename}', dbfPresets.FieldByName('sitename').AsString, [rfReplaceAll]);
  r:=StringReplace(r, '{ext}', PrefferedExtension.Text , [rfReplaceAll]);
  Result:=R;
@@ -855,8 +872,7 @@ begin
   Result:=r;
 end;
 
-
-procedure TForm1.scanLinks;
+procedure TForm1.scanLinks();
 begin
 
   Titles.Clear;
@@ -872,7 +888,8 @@ begin
 dbPosts.First;
 end;
 
-procedure TForm1.scanSections;
+
+procedure TForm1.scanSections();
 begin
   SiteSectionUrls.Clear;
   SiteSectionTitles.Clear;
@@ -913,8 +930,7 @@ begin
   Result:=r;
 end;
 
-
-procedure TForm1.SiteMapping;
+procedure TForm1.SiteMapping();
 var i, j : integer; dir : String;  filenam : String; body : String;
   bodyTemplate, headTemplate, itemTpl, sectionTpl : String;
   stub : String;
@@ -1050,32 +1066,31 @@ end;
 
 procedure TForm1.paired(t : String);
 begin
-  if (fContent.SelText <> '') then
-  fContent.SelText:='<'+t+'>'+  fContent.SelText+'</'+t+'>'
+  if (SynEdit1.SelText <> '') then
+  SynEdit1.SelText:='<'+t+'>'+  SynEdit1.SelText+'</'+t+'>'
   else
-    fContent.Lines.Add('<'+t+'></'+t+'>');
+    SynEdit1.Lines.Add('<'+t+'></'+t+'>');
+end;
+
+
+procedure TForm1.tagHref();
+begin
+  SynEdit1.Lines.Add('<a href=""></a>');
 end;
 
 
 
-
-
-procedure TForm1.tagHref;
+procedure TForm1.tagImg();
 begin
-  fContent.Lines.Add('<a href=""></a>');
-end;
-
-procedure TForm1.tagImg;
-begin
-fContent.Lines.Add('<img src="" />');
+  SynEdit1.Lines.Add('<img src="" />');
 end;
 
 procedure TForm1.tagList(t: String);
 begin
- fContent.Lines.Add('<'+t+'>');
- fContent.Lines.Add('<li>Элемент списка 1</li>');
- fContent.Lines.Add('<li>Элемент списка 2</li>');
- fContent.Lines.Add('</'+t+'>');
+  SynEdit1.Lines.Add('<'+t+'>');
+ SynEdit1.Lines.Add('<li>Элемент списка 1</li>');
+ SynEdit1.Lines.Add('<li>Элемент списка 2</li>');
+ SynEdit1.Lines.Add('</'+t+'>');
 end;
 
 function TForm1.moduleexec(cmd: String): String;
@@ -1312,10 +1327,7 @@ begin
     ASocket.SendString('HTTP/1.0 404' + CRLF);
 end;
 
-
-
-
-procedure TForm1.StartOwnServer;
+procedure TForm1.StartOwnServer();
 begin
   ListenerSocket := TTCPBlockSocket.Create;
   ConnectionSocket := TTCPBlockSocket.Create;
@@ -1338,7 +1350,8 @@ begin
   ConnectionSocket.Free;
 end;
 
-procedure TForm1.StopOwnServer;
+
+procedure TForm1.StopOwnServer();
 begin
  ListenerSocket.AbortSocket;
  ConnectionSocket.AbortSocket;
@@ -1381,8 +1394,7 @@ end;
 
 
 
-
-procedure TForm1.localeRUS;
+procedure TForm1.localeRUS();
 begin
   {НАЧАЛО ЛОКАЛИЗАЦИИ}
   {НАЗВАНИЕ ОКНА ПРОГРАММЫ}
@@ -1397,7 +1409,7 @@ begin
   tabHelp.Caption:='О программе';
 end;
 
-procedure TForm1.localeENG;
+procedure TForm1.localeENG();
 begin
   {START ENG LOCALE}
   Form1.Caption:='Generator of static HTML websites';
