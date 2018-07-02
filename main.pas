@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, db, dbf, process, FileUtil, SynHighlighterHTML, SynEdit,
   Forms, Controls, Graphics, Dialogs, DbCtrls, StdCtrls, ExtCtrls, ComCtrls,
-  Menus, blcksock, sockets, Synautil,   synaip,   synsock, ftpsend; {Use Synaptic}
+  Menus, ActnList, blcksock, sockets, Synautil, synaip, synsock, ftpsend; {Use Synaptic}
 
 const
 
@@ -48,13 +48,14 @@ type
     btStopServer: TButton;
     btFtpUpdate: TButton;
     btnLoad: TButton;
-    Button2: TButton;
-    Button3: TButton;
     cboLocale: TComboBox;
     chkGetBlocksFromFile: TCheckBox;
     chkUseModules: TCheckBox;
+    DBNavigator4: TDBNavigator;
     Label34: TLabel;
-    SynEdit1: TSynEdit;
+    fContent: TSynEdit;
+    mEditPost: TMenuItem;
+    PopupMenu1: TPopupMenu;
     SynHTMLSyn1: TSynHTMLSyn;
     ZipArchiverPath: TEdit;
     Label26: TLabel;
@@ -82,7 +83,7 @@ type
     DBEdit5: TDBEdit;
     DBEdit6: TDBEdit;
     DBEdit7: TDBEdit;
-    DBEdit8: TDBEdit;
+    fSection: TDBEdit;
     DBEdit9: TDBEdit;
     dbPosts: TDbf;
     dbfBlocks: TDbf;
@@ -191,6 +192,10 @@ type
     TabSheet7: TTabSheet;
     TabSheet8: TTabSheet;
     TabSheet9: TTabSheet;
+    procedure actDeletePostExecute(Sender: TObject);
+    procedure actEditExecute(Sender: TObject);
+    procedure actNewPostExecute(Sender: TObject);
+    procedure actSavePostExecute(Sender: TObject);
     procedure btBoldClick(Sender: TObject);
     procedure btBuildSiteClick(Sender: TObject);
     procedure btFtpUpdateClick(Sender: TObject);
@@ -207,14 +212,16 @@ type
     procedure btUnorderedListClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btHrefClick(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
+    procedure btnNewPostClick(Sender: TObject);
+    procedure btnSavePostClick(Sender: TObject);
     procedure cboLocaleChange(Sender: TObject);
     procedure Datasource1DataChange(Sender: TObject; Field: TField);
     procedure DBLookupListBox1Click(Sender: TObject);
     procedure DBLookupListBox2Click(Sender: TObject);
     procedure DBLookupListBox3Click(Sender: TObject);
     procedure DBLookupListBox4Click(Sender: TObject);
+    procedure dbPostsBeforeInsert(DataSet: TDataSet);
+    procedure dbPostsBeforePost(DataSet: TDataSet);
 
 
 
@@ -228,6 +235,7 @@ type
 
 
 
+
   private
     { private declarations }
   public
@@ -236,6 +244,7 @@ type
      SiteSectionUrls, SiteSectionTitles : TMemo;
      ListenerSocket, ConnectionSocket: TTCPBlockSocket;
      Cache : tStringList;
+     PostsEditorState : String;
     procedure initdb();
     function buildHead(title : String; headTemplate : string) : String;
     function buildBody(title : String; body : String; bodyTemplate  : String) : String;
@@ -310,6 +319,8 @@ procedure TForm1.btImgClick(Sender: TObject);
 begin
   tagImg();
 end;
+
+
 
 
 procedure TForm1.btBuildSiteClick(Sender: TObject);
@@ -533,6 +544,32 @@ begin
     paired('b');
 end;
 
+procedure TForm1.actNewPostExecute(Sender: TObject);
+begin
+  fId.Text:='';
+  fSection.Text:='';
+  fContent.Text:='';
+  fCaption.Text:='';
+  dbPosts.Insert;
+end;
+
+procedure TForm1.actSavePostExecute(Sender: TObject);
+begin
+
+  dbPosts.FieldByName('content').AsString:=fContent.Text;
+  dbPosts.Post;
+end;
+
+procedure TForm1.actDeletePostExecute(Sender: TObject);
+begin
+   dbPosts.Delete;
+end;
+
+procedure TForm1.actEditExecute(Sender: TObject);
+begin
+  dbPosts.Edit;
+end;
+
 procedure TForm1.btParagraphClick(Sender: TObject);
 begin
   paired('p');
@@ -590,14 +627,14 @@ begin
   tagHref();
 end;
 
-procedure TForm1.Button2Click(Sender: TObject);
+procedure TForm1.btnNewPostClick(Sender: TObject);
 begin
-  dbPosts.Append;
+
 end;
 
-procedure TForm1.Button3Click(Sender: TObject);
+procedure TForm1.btnSavePostClick(Sender: TObject);
 begin
-  dbPosts.Post;
+
 end;
 
 procedure TForm1.cboLocaleChange(Sender: TObject);
@@ -610,13 +647,13 @@ end;
 
 procedure TForm1.Datasource1DataChange(Sender: TObject; Field: TField);
 begin
- SynEdit1.Text:=dbPosts.FieldByName('content').AsString;
+ fContent.Text:=dbPosts.FieldByName('content').AsString;
 end;
 
 procedure TForm1.DBLookupListBox1Click(Sender: TObject);
 begin
   DBLookupListBox1.ListSource.DataSet.Locate(DBLookupListBox1.KeyField,DBLookupListBox1.KeyValue,[]);
-  dbPosts.Edit;
+
 end;
 
 procedure TForm1.DBLookupListBox2Click(Sender: TObject);
@@ -632,6 +669,16 @@ end;
 procedure TForm1.DBLookupListBox4Click(Sender: TObject);
 begin
   DBLookupListBox4.ListSource.DataSet.Locate(DBLookupListBox4.KeyField,DBLookupListBox4.KeyValue,[]);
+end;
+
+procedure TForm1.dbPostsBeforeInsert(DataSet: TDataSet);
+begin
+
+end;
+
+procedure TForm1.dbPostsBeforePost(DataSet: TDataSet);
+begin
+  dbPosts.FieldByName('content').AsString:=fContent.text;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -1070,31 +1117,31 @@ end;
 
 procedure TForm1.paired(t : String);
 begin
-  if (SynEdit1.SelText <> '') then
-  SynEdit1.SelText:='<'+t+'>'+  SynEdit1.SelText+'</'+t+'>'
+  if (fContent.SelText <> '') then
+  fContent.SelText:='<'+t+'>'+  fContent.SelText+'</'+t+'>'
   else
-    SynEdit1.Lines.Add('<'+t+'></'+t+'>');
+    fContent.Lines.Add('<'+t+'></'+t+'>');
 end;
 
 
 procedure TForm1.tagHref();
 begin
-  SynEdit1.Lines.Add('<a href=""></a>');
+  fContent.Lines.Add('<a href=""></a>');
 end;
 
 
 
 procedure TForm1.tagImg();
 begin
-  SynEdit1.Lines.Add('<img src="" />');
+  fContent.Lines.Add('<img src="" />');
 end;
 
 procedure TForm1.tagList(t: String);
 begin
-  SynEdit1.Lines.Add('<'+t+'>');
- SynEdit1.Lines.Add('<li>Элемент списка 1</li>');
- SynEdit1.Lines.Add('<li>Элемент списка 2</li>');
- SynEdit1.Lines.Add('</'+t+'>');
+  fContent.Lines.Add('<'+t+'>');
+ fContent.Lines.Add('<li>Элемент списка 1</li>');
+ fContent.Lines.Add('<li>Элемент списка 2</li>');
+ fContent.Lines.Add('</'+t+'>');
 end;
 
 function TForm1.moduleexec(cmd: String): String;
