@@ -235,6 +235,7 @@ type
      Titles, Urls, Sections : TMemo;
      SiteSectionUrls, SiteSectionTitles : TMemo;
      ListenerSocket, ConnectionSocket: TTCPBlockSocket;
+     Cache : tStringList;
     procedure initdb();
     function buildHead(title : String; headTemplate : string) : String;
     function buildBody(title : String; body : String; bodyTemplate  : String) : String;
@@ -281,6 +282,7 @@ implementation
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   initdb();
+    Cache:=TStringList.Create;
     Titles := TMemo.Create(Self); // Заголовки
     Urls := TMemo.Create(Self); // URL страниц
     Sections := TMemo.Create(Self); // Разделы страниц
@@ -633,6 +635,7 @@ end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  Cache.Free;
   if ListenerSocket<>NIL then ListenerSocket.Free;
   if ConnectionSocket<>NIL then  ConnectionSocket.Free;
 end;
@@ -1369,9 +1372,12 @@ begin
   Buf:=TMemo.Create(Self);
   r:='';
   fullq:=path+uri;
+  if Cache.Values[uri] <> '' then r:=Cache.values[uri] else begin
   if FileExists(fullq) then begin
   Buf.Lines.LoadFromFile(fullq);
+  cache.values[uri]:=Buf.text;
   r:=Buf.Text;
+  end;
   end;
   Buf.Free;
   result:=r;
