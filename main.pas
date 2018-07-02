@@ -616,6 +616,7 @@ end;
 procedure TForm1.DBLookupListBox1Click(Sender: TObject);
 begin
   DBLookupListBox1.ListSource.DataSet.Locate(DBLookupListBox1.KeyField,DBLookupListBox1.KeyValue,[]);
+  dbPosts.Edit;
 end;
 
 procedure TForm1.DBLookupListBox2Click(Sender: TObject);
