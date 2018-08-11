@@ -8,7 +8,6 @@ object Form1: TForm1
   Caption = 'Генератор статических HTML сайтов'
   ClientHeight = 566
   ClientWidth = 926
-  DesignTimePPI = 120
   Menu = MainMenu1
   OnClose = FormClose
   OnCreate = FormCreate
@@ -34,22 +33,22 @@ object Form1: TForm1
     TabOrder = 1
     object tabPages: TTabSheet
       Caption = 'Страницы'
-      ClientHeight = 490
+      ClientHeight = 494
       ClientWidth = 918
       object Panel1: TPanel
         Left = 0
-        Height = 490
+        Height = 494
         Top = 0
         Width = 918
         Align = alClient
         Caption = 'Panel1'
-        ClientHeight = 490
+        ClientHeight = 494
         ClientWidth = 918
         ParentColor = False
         TabOrder = 0
         object fCaption: TDBEdit
           Left = 144
-          Height = 25
+          Height = 21
           Top = 88
           Width = 752
           DataField = 'caption'
@@ -60,15 +59,15 @@ object Form1: TForm1
         end
         object Label1: TLabel
           Left = 144
-          Height = 17
+          Height = 13
           Top = 64
-          Width = 126
+          Width = 111
           Caption = 'Заголовок страницы'
           ParentColor = False
         end
         object fID: TDBEdit
           Left = 144
-          Height = 25
+          Height = 21
           Top = 32
           Width = 160
           DataField = 'id'
@@ -79,15 +78,15 @@ object Form1: TForm1
         end
         object Label4: TLabel
           Left = 144
-          Height = 17
+          Height = 13
           Top = 8
-          Width = 79
+          Width = 66
           Caption = 'ID страницы'
           ParentColor = False
         end
         object fSection: TDBEdit
           Left = 328
-          Height = 25
+          Height = 21
           Top = 32
           Width = 130
           DataField = 'section'
@@ -98,9 +97,9 @@ object Form1: TForm1
         end
         object Label17: TLabel
           Left = 328
-          Height = 17
+          Height = 13
           Top = 7
-          Width = 82
+          Width = 70
           Caption = 'ID категории'
           ParentColor = False
         end
@@ -114,16 +113,16 @@ object Form1: TForm1
           TabOrder = 3
           object TabSheet11: TTabSheet
             Caption = 'Основной текст'
-            ClientHeight = 306
+            ClientHeight = 310
             ClientWidth = 744
             object Panel13: TPanel
               Left = 0
-              Height = 306
+              Height = 310
               Top = 0
               Width = 744
               Align = alClient
               Caption = 'Panel13'
-              ClientHeight = 306
+              ClientHeight = 310
               ClientWidth = 744
               ParentColor = False
               TabOrder = 0
@@ -239,7 +238,7 @@ object Form1: TForm1
               end
               inline fContent: TSynEdit
                 Left = 1
-                Height = 270
+                Height = 274
                 Top = 35
                 Width = 742
                 Align = alClient
@@ -250,7 +249,7 @@ object Form1: TForm1
                 ParentColor = False
                 ParentFont = False
                 TabOrder = 1
-                Gutter.Width = 59
+                Gutter.Width = 57
                 Gutter.MouseActions = <>
                 RightGutter.Width = 0
                 RightGutter.MouseActions = <>
@@ -707,7 +706,7 @@ object Form1: TForm1
                     MouseActions = <>
                   end
                   object SynGutterLineNumber1: TSynGutterLineNumber
-                    Width = 17
+                    Width = 15
                     MouseActions = <>
                     MarkupInfo.Background = clBtnFace
                     MarkupInfo.Foreground = clNone
@@ -1617,10 +1616,10 @@ object Form1: TForm1
         TabOrder = 0
         object PrefferedExtension: TComboBox
           Left = 12
-          Height = 25
+          Height = 21
           Top = 32
           Width = 100
-          ItemHeight = 17
+          ItemHeight = 13
           ItemIndex = 0
           Items.Strings = (
             'htm'
@@ -1663,10 +1662,10 @@ object Form1: TForm1
         end
         object cboLocale: TComboBox
           Left = 12
-          Height = 25
+          Height = 21
           Top = 144
           Width = 541
-          ItemHeight = 17
+          ItemHeight = 13
           ItemIndex = 0
           Items.Strings = (
             'Русский - Russian'
@@ -2031,9 +2030,9 @@ object Form1: TForm1
   end
   object Label12: TLabel
     Left = 48
-    Height = 17
+    Height = 13
     Top = 523
-    Width = 46
+    Width = 37
     Caption = 'Пресет'
     ParentColor = False
   end
@@ -2048,7 +2047,7 @@ object Form1: TForm1
   end
   object edPreset: TDBLookupComboBox
     Left = 136
-    Height = 25
+    Height = 21
     Top = 523
     Width = 136
     KeyField = 'id'

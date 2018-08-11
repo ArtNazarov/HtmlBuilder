@@ -273,6 +273,7 @@ type
     function OutputHTMLFile(uri : String) : String;
     function buildOwnFields(html : String) : String;
     function prefExtension(lin : String) : String;
+    function Pager(layout : String; pages : String) : String;
     procedure localeRUS();
     procedure localeENG();
 
@@ -999,6 +1000,7 @@ var i, j : integer; dir : String;  filenam : String; body : String;
   fbuffer : TStringList;
   ext : String;
   bodyTpl : String;
+  pags : String;
 begin
   ext := PrefferedExtension.Text;
   fbuffer := TStringList.Create;
@@ -1058,7 +1060,8 @@ begin
   for page:=1 to pagesTotal do begin
   Buffer.Clear;
   buffer.lines.add(pages[page]);
-  buffer.lines.add(buildPagination(SiteSectionUrls.Lines[i], page, pagesTotal));
+// не добавляем buffer.lines.add(buildPagination(SiteSectionUrls.Lines[i], page, pagesTotal));
+pags :=  buildPagination(SiteSectionUrls.Lines[i], page, pagesTotal);
 //  stub:=InputBox('A', 'A', buildPagination(SiteSectionUrls.Lines[i], page, pagesTotal));
   if page=1 then
   filenam := dir + fsod+'section_'+SiteSectionUrls.Lines[i]+'.'+ext
@@ -1066,6 +1069,7 @@ begin
    filenam := dir +fsod+'section_'+SiteSectionUrls.Lines[i]+'_'+IntToStr(page)+'.'+ext;
   body:=insSections(insLinks(buildSection(sectionTpl, SiteSectionUrls.lines[i], SiteSectionTitles.Lines[i], buffer.Text)));
 //  stub:=InputBox('B', 'B', body);
+  body:=Pager(body, pags);
   makePage(SiteSectionTitles.Lines[i], body, headTemplate, bodyTemplate, filenam);
                    end; {/for}
 
@@ -1449,6 +1453,11 @@ begin
   r:=lin;
   r:=StringReplace(r, '$$ext', PrefferedExtension.Text,[rfReplaceAll]);
   Result:=r;
+end;
+
+function TForm1.Pager(layout: String; pages: String): String;
+begin
+  Result:=StringReplace(layout, '{pager}', pages, [rfReplaceAll]);
 end;
 
 
