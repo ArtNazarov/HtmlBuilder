@@ -1,9 +1,9 @@
 {==============================================================================|
-| Project : Ararat Synapse                                       | 001.001.000 |
+| Project : Ararat Synapse                                       | 001.001.002 |
 |==============================================================================|
 | Content: SSL/SSH support by Peter Gutmann's CryptLib                         |
 |==============================================================================|
-| Copyright (c)1999-2012, Lukas Gebauer                                        |
+| Copyright (c)1999-2015, Lukas Gebauer                                        |
 | All rights reserved.                                                         |
 |                                                                              |
 | Redistribution and use in source and binary forms, with or without           |
@@ -33,7 +33,7 @@
 | DAMAGE.                                                                      |
 |==============================================================================|
 | The Initial Developer of the Original Code is Lukas Gebauer (Czech Republic).|
-| Portions created by Lukas Gebauer are Copyright (c)2005-2012.                |
+| Portions created by Lukas Gebauer are Copyright (c)2005-2015.                |
 | All Rights Reserved.                                                         |
 |==============================================================================|
 | Contributor(s):                                                              |
@@ -78,6 +78,10 @@ and @link(TCustomSSL.password). You can use special SSH channels too, see
   {$MODE DELPHI}
 {$ENDIF}
 {$H+}
+
+{$IFDEF NEXTGEN}
+  {$ZEROBASEDSTRINGS OFF}
+{$ENDIF}
 
 unit ssl_cryptlib;
 
@@ -142,7 +146,7 @@ type
     {:See @inherited}
     function GetPeerName: string; override;
     {:See @inherited}
-    function GetPeerFingerprint: string; override;
+    function GetPeerFingerprint: ansistring; override;
     {:See @inherited}
     function GetVerifyCert: integer; override;
   published
@@ -286,6 +290,8 @@ var
   keysetobj: CRYPT_KEYSET;
   cryptContext: CRYPT_CONTEXT;
   x: integer;
+  aUserName : AnsiString;
+  aPassword: AnsiString;
 begin
   Result := False;
   FLastErrorDesc := '';
@@ -294,7 +300,7 @@ begin
   FcryptSession := CRYPT_SESSION(CRYPT_SESSION_NONE);
   if server then
     case FSSLType of
-      LT_all, LT_SSLv3, LT_TLSv1, LT_TLSv1_1:
+      LT_all, LT_SSLv3, LT_TLSv1, LT_TLSv1_1, LT_TLSv1_2, LT_TLSv1_3:
         st := CRYPT_SESSION_SSL_SERVER;
       LT_SSHv2:
         st := CRYPT_SESSION_SSH_SERVER;
@@ -303,7 +309,7 @@ begin
     end
   else
     case FSSLType of
-      LT_all, LT_SSLv3, LT_TLSv1, LT_TLSv1_1:
+      LT_all, LT_SSLv3, LT_TLSv1, LT_TLSv1_1, LT_TLSv1_2, LT_TLSv1_3:
         st := CRYPT_SESSION_SSL;
       LT_SSHv2:
         st := CRYPT_SESSION_SSH;
@@ -320,6 +326,10 @@ begin
       x := 1;
     LT_TLSv1_1:
       x := 2;
+    LT_TLSv1_2:
+      x := 3;
+    LT_TLSv1_3:
+      x := 4;
   end;
   if x >= 0 then
     if not SSLCheck(cryptSetAttribute(FCryptSession, CRYPT_SESSINFO_VERSION, x)) then
@@ -332,10 +342,12 @@ begin
 
   if FUsername <> '' then
   begin
+    aUserName := fUserName;
+    aPassword := fPassword;
     cryptSetAttributeString(FcryptSession, CRYPT_SESSINFO_USERNAME,
-      Pointer(FUsername), Length(FUsername));
+      Pointer(aUsername), Length(aUsername));
     cryptSetAttributeString(FcryptSession, CRYPT_SESSINFO_PASSWORD,
-      Pointer(FPassword), Length(FPassword));
+      Pointer(aPassword), Length(aPassword));
   end;
   if FSSLType = LT_SSHv2 then
     if FSSHChannelType <> '' then
@@ -503,7 +515,7 @@ begin
   if FcryptSession = CRYPT_SESSION(CRYPT_SESSION_NONE) then
     Exit;
   cryptGetAttribute(FCryptSession, CRYPT_SESSINFO_VERSION, x);
-  if FSSLType in [LT_SSLv3, LT_TLSv1, LT_TLSv1_1, LT_all] then
+  if FSSLType in [LT_SSLv3, LT_TLSv1, LT_TLSv1_1, LT_TLSv1_2, LT_TLSv1_3, LT_all] then
     case x of
       0:
         Result := 'SSLv3';
@@ -511,6 +523,10 @@ begin
         Result := 'TLSv1';
       2:
         Result := 'TLSv1.1';
+      3:
+        Result := 'TLSv1.2';
+      4:
+        Result := 'TLSv1.3';
     end;
   if FSSLType in [LT_SSHv2] then
     case x of
@@ -560,7 +576,7 @@ begin
   cryptDestroyCert(cert);
 end;
 
-function TSSLCryptLib.GetPeerFingerprint: string;
+function TSSLCryptLib.GetPeerFingerprint: ansistring;
 var
   cert: CRYPT_CERTIFICATE;
 begin
@@ -673,5 +689,3 @@ initialization
 finalization
   cryptEnd;
 end.
-
-

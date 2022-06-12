@@ -1,9 +1,9 @@
 {==============================================================================|
-| Project : Ararat Synapse                                       | 007.005.002 |
+| Project : Ararat Synapse                                       | 007.007.000 |
 |==============================================================================|
 | Content: Serial port support                                                 |
 |==============================================================================|
-| Copyright (c)2001-2011, Lukas Gebauer                                        |
+| Copyright (c)2001-2022, Lukas Gebauer                                        |
 | All rights reserved.                                                         |
 |                                                                              |
 | Redistribution and use in source and binary forms, with or without           |
@@ -33,7 +33,7 @@
 | DAMAGE.                                                                      |
 |==============================================================================|
 | The Initial Developer of the Original Code is Lukas Gebauer (Czech Republic).|
-| Portions created by Lukas Gebauer are Copyright (c)2001-2011.                |
+| Portions created by Lukas Gebauer are Copyright (c)2001-2021.                |
 | All Rights Reserved.                                                         |
 |==============================================================================|
 | Contributor(s):                                                              |
@@ -83,14 +83,39 @@ case with my USB modem):
   {$ENDIF}
 {$ENDIF}
 
+{$IFDEF UNIX}
+  {$DEFINE USE_LINUX_LOCK}
+{$ENDIF}
+
+{$IFDEF ANDROID}
+  {$DEFINE UNIX}
+  {$UNDEF USE_LINUX_LOCK}
+{$ENDIF}
+
 {$IFDEF FPC}
   {$MODE DELPHI}
   {$IFDEF MSWINDOWS}
-    {$ASMMODE intel}
+    {$IFDEF CPUI386}
+      {$ASMMODE INTEL}
+    {$ENDIF}
+    {$IFDEF CPUX86_64}
+      {$ASMMODE INTEL}
+    {$ENDIF}
   {$ENDIF}
   {define working mode w/o LIBC for fpc}
   {$DEFINE NO_LIBC}
 {$ENDIF}
+
+{$IFDEF POSIX}
+  {$WARN UNIT_PLATFORM OFF}
+  {$WARN SYMBOL_PLATFORM OFF}
+{$ENDIF}
+
+{$IFDEF NEXTGEN}
+  {$LEGACYIFEND ON}
+  {$ZEROBASEDSTRINGS OFF}
+{$ENDIF}
+
 {$Q-}
 {$H+}
 {$M+}
@@ -101,11 +126,18 @@ interface
 
 uses
 {$IFNDEF MSWINDOWS}
-  {$IFNDEF NO_LIBC}
-  Libc,
-  KernelIoctl,
+  {$IFDEF POSIX}
+    Posix.Termios, Posix.Fcntl, Posix.Unistd, Posix.Stropts, Posix.SysSelect, Posix.SysTime,
+    {$IFDEF LINUX}
+      Linuxapi.KernelIoctl,
+    {$ENDIF}
   {$ELSE}
-  termio, baseunix, unix,
+    {$IFNDEF NO_LIBC}
+       Libc,
+       KernelIoctl,
+    {$ELSE}
+       termio, baseunix, unix,
+    {$ENDIF}
   {$ENDIF}
   {$IFNDEF FPC}
   Types,
@@ -127,6 +159,7 @@ const
 
   LockfileDirectory = '/var/lock'; {HGJ}
   PortIsClosed = -1;               {HGJ}
+  ErrAccessDenied = 9990;          {DSA}
   ErrAlreadyOwned = 9991;          {HGJ}
   ErrAlreadyInUse = 9992;          {HGJ}
   ErrWrongParameter = 9993;        {HGJ}
@@ -197,10 +230,14 @@ type
 
 const
 {$IFDEF UNIX}
-  {$IFDEF DARWIN}
-  MaxRates = 18;  //MAC
+  {$IFDEF BSD}
+    MaxRates = 18;  //MAC
   {$ELSE}
-   MaxRates = 30; //UNIX
+    {$IFDEF CPUARM}
+    MaxRates = 19; //CPUARM
+    {$ELSE}
+    MaxRates = 30; //UNIX
+    {$ENDIF}
   {$ENDIF}
 {$ELSE}
   MaxRates = 19;  //WIN
@@ -226,9 +263,10 @@ const
     (57600, B57600),
     (115200, B115200),
     (230400, B230400)
-{$IFNDEF DARWIN}
+{$IFNDEF BSD}
     ,(460800, B460800)
   {$IFDEF UNIX}
+    {$IFNDEF CPUARM}
     ,(500000, B500000),
     (576000, B576000),
     (921600, B921600),
@@ -240,19 +278,37 @@ const
     (3000000, B3000000),
     (3500000, B3500000),
     (4000000, B4000000)
+    {$ENDIF}
   {$ENDIF}
 {$ENDIF}
     );
 {$ENDIF}
 
-{$IFDEF DARWIN}
+{$IFDEF BSD}
 const // From fcntl.h
   O_SYNC = $0080;  { synchronous writes }
+{$ENDIF}
+
+{$IFDEF ANDROID}
+const
+  TIOCMSET = $5418;
+  TIOCMGET = $5415;
+  TCSBRK   = $5409;
 {$ENDIF}
 
 const
   sOK = 0;
   sErr = integer(-1);
+
+{$IFDEF POSIX}
+const
+  TIOCM_DTR = $002;
+  TIOCM_RTS = $004;
+  TIOCM_CTS = $020;
+  TIOCM_CAR = $040;
+  TIOCM_RNG = $080;
+  TIOCM_DSR = $100;
+{$ENDIF}
 
 type
 
@@ -314,8 +370,10 @@ type
     FPortAddr: Word;
     function CanEvent(Event: dword; Timeout: integer): boolean;
     procedure DecodeCommError(Error: DWord); virtual;
+ {$IFDEF WIN32}
     function GetPortAddr: Word;  virtual;
     function ReadTxEmpty(PortAddr: Word): Boolean; virtual;
+ {$ENDIF}
 {$ENDIF}
     procedure SetSizeRecvBuffer(size: integer); virtual;
     function GetDSR: Boolean; virtual;
@@ -328,9 +386,11 @@ type
     procedure GetComNr(Value: string); virtual;
     function PreTestFailing: boolean; virtual;{HGJ}
     function TestCtrlLine: Boolean; virtual;
-{$IFDEF UNIX}    
+{$IFNDEF MSWINDOWS}
     procedure DcbToTermios(const dcb: TDCB; var term: termios); virtual;
     procedure TermiosToDcb(const term: termios; var dcb: TDCB); virtual;
+{$ENDIF}
+{$IFDEF USE_LINUX_LOCK}
     function ReadLockfile: integer; virtual;
     function LockfileName: String; virtual;
     procedure CreateLockfile(PidNr: integer); virtual;
@@ -341,7 +401,7 @@ type
     {: data Control Block with communication parameters. Usable only when you
      need to call API directly.}
     DCB: Tdcb;
-{$IFDEF UNIX}
+{$IFNDEF MSWINDOWS}
     TermiosStruc: termios;
 {$ENDIF}
     {:Object constructor.}
@@ -619,7 +679,7 @@ type
 
     {:Raise Synaser error with ErrNumber code. Usually used by internal routines.}
     procedure RaiseSynaError(ErrNumber: integer); virtual;
-{$IFDEF UNIX}
+{$IFDEF USE_LINUX_LOCK}
     function  cpomComportAccessible: boolean; virtual;{HGJ}
     procedure cpomReleaseComport; virtual; {HGJ}
 {$ENDIF}
@@ -780,7 +840,7 @@ end;
 
 class function TBlockSerial.GetVersion: string;
 begin
-	Result := 'SynaSer 7.5.0';
+	Result := 'SynaSer 7.6.0';
 end;
 
 procedure TBlockSerial.CloseSocket;
@@ -794,7 +854,7 @@ begin
   end;
   if InstanceActive then
   begin
-    {$IFDEF UNIX}
+    {$IFDEF USE_LINUX_LOCK}
     if FLinuxLock then
       cpomReleaseComport;
     {$ENDIF}
@@ -806,7 +866,7 @@ begin
   DoStatus(HR_SerialClose, FDevice);
 end;
 
-{$IFDEF MSWINDOWS}
+{$IFDEF WIN32}
 function TBlockSerial.GetPortAddr: Word;
 begin
   Result := 0;
@@ -869,7 +929,7 @@ begin
         sleep(x);
       end;
     end;
-    Next := GetTick + Trunc((Length / MaxB) * 1000);
+    Next := GetTick + LongWord(Trunc((Length / MaxB) * 1000));
   end;
 end;
 
@@ -933,23 +993,34 @@ begin
 {$IFNDEF MSWINDOWS}
   if FComNr <> PortIsClosed then
     FDevice := '/dev/ttyS' + IntToStr(FComNr);
-  // Comport already owned by another process?          {HGJ}
-  if FLinuxLock then
-    if not cpomComportAccessible then
-    begin
-      RaiseSynaError(ErrAlreadyOwned);
-      Exit;
-    end;
-{$IFNDEF FPC}
-  FHandle := THandle(Libc.open(pchar(FDevice), O_RDWR or O_SYNC));
-{$ELSE}
-  FHandle := THandle(fpOpen(FDevice, O_RDWR or O_SYNC));
-{$ENDIF}
+  {$IFDEF USE_LINUX_LOCK}
+    // Comport already owned by another process?          {HGJ}
+    if FLinuxLock then
+      if not cpomComportAccessible then
+      begin
+        if FileExists(LockfileName) then
+          RaiseSynaError(ErrAlreadyOwned)
+        else
+          RaiseSynaError(ErrAccessDenied);
+
+        Exit;
+      end;
+  {$ENDIF}
+
+  {$IFNDEF FPC}
+    {$IFDEF POSIX}
+      FHandle := open(MarshaledAString(AnsiString(FDevice)), O_RDWR or O_SYNC);
+    {$ELSE}
+      FHandle := THandle(Libc.open(pchar(FDevice), O_RDWR or O_SYNC));
+    {$ENDIF}
+  {$ELSE}
+    FHandle := THandle(fpOpen(FDevice, O_RDWR or O_SYNC));
+  {$ENDIF}
   if FHandle = INVALID_HANDLE_VALUE then  //because THandle is not integer on all platforms!
     SerialCheck(-1)
   else
     SerialCheck(0);
-  {$IFDEF UNIX}
+  {$IFDEF USE_LINUX_LOCK}
   if FLastError <> sOK then
     if FLinuxLock then
       cpomReleaseComport;
@@ -977,14 +1048,16 @@ begin
   CommTimeOuts.WriteTotalTimeoutMultiplier := 0;
   CommTimeOuts.WriteTotalTimeoutConstant := 0;
   SetCommTimeOuts(FHandle, CommTimeOuts);
+  {$IFDEF WIN32}
   FPortAddr := GetPortAddr;
+  {$ENDIF}
 {$ENDIF}
   SetSynaError(sOK);
   if not TestCtrlLine then  {HGJ}
   begin
     SetSynaError(ErrNoDeviceAnswer);
     FileClose(FHandle);         {HGJ}
-    {$IFDEF UNIX}
+    {$IFDEF USE_LINUX_LOCK}
     if FLinuxLock then
       cpomReleaseComport;                {HGJ}
     {$ENDIF}                             {HGJ}
@@ -1039,6 +1112,7 @@ begin
   end
   else
     SetSynaError(y);
+  err := 0;
   ClearCommError(FHandle, err, nil);
   if err <> 0 then
     DecodeCommError(err);
@@ -1154,6 +1228,7 @@ begin
   end
   else
     SetSynaError(y);
+  err := 0;
   ClearCommError(FHandle, err, nil);
   if err <> 0 then
     DecodeCommError(err);
@@ -1460,6 +1535,7 @@ var
   stat: TComStat;
   err: DWORD;
 begin
+  err := 0;
   if ClearCommError(FHandle, err, @stat) then
   begin
     SetSynaError(sOK);
@@ -1495,6 +1571,7 @@ var
   err: DWORD;
 begin
   SetSynaError(sOK);
+  err := 0;
   if not ClearCommError(FHandle, err, @stat) then
     serialcheck(sErr);
   ExceptCheck;
@@ -1629,7 +1706,11 @@ end;
 procedure TBlockSerial.SetCommState;
 begin
   DcbToTermios(dcb, termiosstruc);
-  SerialCheck(tcsetattr(FHandle, TCSANOW, termiosstruc));
+  {$IfDef POSIX}
+    ioctl(Fhandle, TCSANOW, PInteger(@TermiosStruc));
+  {$Else}
+    SerialCheck(tcsetattr(FHandle, TCSANOW, termiosstruc));
+  {$EndIf}
   ExceptCheck;
 end;
 {$ELSE}
@@ -1770,6 +1851,7 @@ begin
     else
     begin
       y := 0;
+      ex := 0;
       if not WaitCommEvent(FHandle, ex, @Overlapped) then
         y := GetLastError;
       if y = ERROR_IO_PENDING then
@@ -1791,7 +1873,7 @@ end;
 {$IFNDEF MSWINDOWS}
 function TBlockSerial.CanRead(Timeout: integer): boolean;
 var
-  FDSet: TFDSet;
+  FDSet: {$IFDEF POSIX}FD_Set{$ELSE}TFDSet{$ENDIF};
   TimeVal: PTimeVal;
   TimeV: TTimeVal;
   x: Integer;
@@ -1803,7 +1885,7 @@ begin
     TimeVal := nil;
   {$IFNDEF FPC}
   FD_ZERO(FDSet);
-  FD_SET(FHandle, FDSet);
+  {$IFDEF POSIX}_FD_SET{$ELSE}FD_SET{$ENDIF}(FHandle, FDSet);
   x := Select(FHandle + 1, @FDSet, nil, nil, TimeVal);
   {$ELSE}
   fpFD_ZERO(FDSet);
@@ -1833,7 +1915,7 @@ end;
 {$IFNDEF MSWINDOWS}
 function TBlockSerial.CanWrite(Timeout: integer): boolean;
 var
-  FDSet: TFDSet;
+  FDSet: {$IFDEF POSIX}FD_Set{$ELSE}TFDSet{$ENDIF};
   TimeVal: PTimeVal;
   TimeV: TTimeVal;
   x: Integer;
@@ -1845,7 +1927,7 @@ begin
     TimeVal := nil;
   {$IFNDEF FPC}
   FD_ZERO(FDSet);
-  FD_SET(FHandle, FDSet);
+  {$IFDEF POSIX}_FD_SET{$ELSE}FD_SET{$ENDIF}(FHandle, FDSet);
   x := Select(FHandle + 1, nil, @FDSet, nil, TimeVal);
   {$ELSE}
   fpFD_ZERO(FDSet);
@@ -1862,12 +1944,15 @@ begin
 end;
 {$ELSE}
 function TBlockSerial.CanWrite(Timeout: integer): boolean;
+{$IFDEF WIN32}
 var
   t: LongWord;
+{$ENDIF}
 begin
   Result := SendingData = 0;
   if not Result then
 	  Result := CanEvent(EV_TXEMPTY, Timeout);
+  {$IFDEF WIN32}
   if Result and (Win32Platform <> VER_PLATFORM_WIN32_NT) then
   begin
     t := GetTick;
@@ -1878,6 +1963,7 @@ begin
       Sleep(0);
     end;
   end;
+  {$ENDIF}
   if Result then
     DoStatus(HR_CanWrite, '');
 end;
@@ -1920,7 +2006,11 @@ end;
 procedure TBlockSerial.Flush;
 begin
 {$IFNDEF MSWINDOWS}
-  SerialCheck(tcdrain(FHandle));
+  {$IFDEF ANDROID}
+    ioctl(FHandle, TCSBRK, 1);
+  {$ELSE}
+    SerialCheck(tcdrain(FHandle));
+  {$ENDIF}
 {$ELSE}
   SetSynaError(sOK);
   if not Flushfilebuffers(FHandle) then
@@ -1936,9 +2026,9 @@ begin
   SerialCheck(ioctl(FHandle, TCFLSH, TCIOFLUSH));
   {$ELSE}
     {$IFDEF DARWIN}
-    SerialCheck(fpioctl(FHandle, TCIOflush, TCIOFLUSH));
+    SerialCheck(fpioctl(FHandle, TCIOflush, Pointer(PtrInt(TCIOFLUSH))));
     {$ELSE}
-    SerialCheck(fpioctl(FHandle, TCFLSH, Pointer(PtrInt(TCIOFLUSH))));
+    SerialCheck(fpioctl(FHandle, {$IFDEF FreeBSD}TCIOFLUSH{$ELSE}TCFLSH{$ENDIF}, Pointer(PtrInt(TCIOFLUSH))));
     {$ENDIF}
   {$ENDIF}
   FBuffer := '';
@@ -2076,7 +2166,7 @@ begin
         break;
       if s = 'NO DIALTONE' then
         break;
-      if Pos('CONNECT', s) = 1 then
+      if Pos('CONNECT', {$IFDEF UNICODE} string {$ENDIF} (s)) = 1 then
       begin
         FAtResult := True;
         break;
@@ -2175,7 +2265,7 @@ end;
   Ownership Manager.
 }
 
-{$IFDEF UNIX}
+{$IFDEF USE_LINUX_LOCK}
 
 function TBlockSerial.LockfileName: String;
 var
@@ -2187,8 +2277,13 @@ end;
 
 procedure TBlockSerial.CreateLockfile(PidNr: integer);
 var
-  f: TextFile;
   s: string;
+{$IFDEF FPC}
+  m: Word;
+  FS: TFileStream;
+{$ELSE}
+  f: TextFile;
+{$ENDIF}
 begin
   // Create content for file
   s := IntToStr(PidNr);
@@ -2196,6 +2291,7 @@ begin
     s := ' ' + s;
   // Create file
   try
+{$IFNDEF FPC}
     AssignFile(f, LockfileName);
     try
       Rewrite(f);
@@ -2203,6 +2299,21 @@ begin
     finally
       CloseFile(f);
     end;
+{$ELSE}
+    s := s + sLineBreak;
+    if FileExists(LockfileName) then
+      m := fmOpenReadWrite
+    else
+      m := fmCreate;
+    FS := TFileStream.Create(LockfileName, m or fmShareDenyWrite);
+    try
+      FS.Seek(0, soEnd);
+      FS.Write(Pointer(s)^, Length(s));
+    finally
+      FS.Free ;
+    end;
+{$ENDIF}
+
     // Allow all users to enjoy the benefits of cpom
     s := 'chmod a+rw ' + LockfileName;
 {$IFNDEF FPC}
@@ -2241,7 +2352,7 @@ var
 begin
   Filename := LockfileName;
   {$IFNDEF FPC}
-  MyPid := Libc.getpid;
+  MyPid := {$IFNDEF POSIX}Libc.{$ENDIF}getpid;
   {$ELSE}
   MyPid := fpGetPid;
   {$ENDIF}
@@ -2249,20 +2360,20 @@ begin
   if not DirectoryExists(LockfileDirectory) then
     CreateDir(LockfileDirectory);
   // Check the Lockfile
-  if not FileExists (Filename) then
+  if not FileExists(Filename) then
   begin // comport is not locked. Lock it for us.
     CreateLockfile(MyPid);
-    result := true;
+    result := FileExists(Filename);
     exit;  // done.
   end;
   // Is port owned by orphan? Then it's time for error recovery.
   //FPC forgot to add getsid.. :-(
   {$IFNDEF FPC}
-  if Libc.getsid(ReadLockfile) = -1 then
+  if {$IFNDEF POSIX}Libc.{$ENDIF}getsid(ReadLockfile) = -1 then
   begin //  Lockfile was left from former desaster
     DeleteFile(Filename); // error recovery
     CreateLockfile(MyPid);
-    result := true;
+    result := FileExists(Filename);
     exit;
   end;
   {$ENDIF}
@@ -2297,7 +2408,7 @@ begin
     reg.OpenKey('\HARDWARE\DEVICEMAP\SERIALCOMM', false);
     reg.GetValueNames(l);
     for n := 0 to l.Count - 1 do
-      v.Add(reg.ReadString(l[n]));
+      v.Add(PChar(reg.ReadString(l[n])));
     Result := v.CommaText;
   finally
     reg.Free;
@@ -2308,31 +2419,40 @@ end;
 {$ENDIF}
 {$IFNDEF MSWINDOWS}
 function GetSerialPortNames: string;
+const
+  ATTR = {$IFDEF POSIX}$7FFFFFFF{$ELSE}$FFFFFFFF{$ENDIF};
 var
-  Index: Integer;
-  Data: string;
-  TmpPorts: String;
   sr : TSearchRec;
 begin
-  try
-    TmpPorts := '';
-    if FindFirst('/dev/ttyS*', $FFFFFFFF, sr) = 0 then
-    begin
-      repeat
-        if (sr.Attr and $FFFFFFFF) = Sr.Attr then
-        begin
-          data := sr.Name;
-          index := length(data);
-          while (index > 1) and (data[index] <> '/') do
-            index := index - 1;
-          TmpPorts := TmpPorts + ' ' + copy(data, 1, index + 1);
-        end;
-      until FindNext(sr) <> 0;
-    end;
-    FindClose(sr);
-  finally
-    Result:=TmpPorts;
+  Result := '';
+  if FindFirst('/dev/ttyS*', ATTR, sr) = 0 then
+    repeat
+      if (sr.Attr and ATTR) = Sr.Attr then
+      begin
+        if Result <> '' then
+          Result := Result + ',';
+        Result := Result + '/dev/' + sr.Name;
+      end;
+    until FindNext(sr) <> 0;
+  FindClose(sr);
+  if FindFirst('/dev/ttyUSB*', ATTR, sr) = 0 then begin
+    repeat
+      if (sr.Attr and ATTR) = Sr.Attr then begin
+        if Result <> '' then Result := Result + ',';
+        Result := Result + '/dev/' + sr.Name;
+      end;
+    until FindNext(sr) <> 0;
   end;
+  FindClose(sr);
+  if FindFirst('/dev/ttyAM*', ATTR, sr) = 0 then begin
+    repeat
+      if (sr.Attr and ATTR) = Sr.Attr then begin
+        if Result <> '' then Result := Result + ',';
+        Result := Result + '/dev/' + sr.Name;
+      end;
+    until FindNext(sr) <> 0;
+  end;
+  FindClose(sr);
 end;
 {$ENDIF}
 

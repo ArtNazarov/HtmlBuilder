@@ -1,9 +1,9 @@
 {==============================================================================|
-| Project : Ararat Synapse                                       | 002.003.000 |
+| Project : Ararat Synapse                                       | 002.003.001 |
 |==============================================================================|
 | Content: Socket Independent Platform Layer - Win32/64 definition include     |
 |==============================================================================|
-| Copyright (c)1999-2011, Lukas Gebauer                                        |
+| Copyright (c)1999-2012, Lukas Gebauer                                        |
 | All rights reserved.                                                         |
 |                                                                              |
 | Redistribution and use in source and binary forms, with or without           |
@@ -33,7 +33,7 @@
 | DAMAGE.                                                                      |
 |==============================================================================|
 | The Initial Developer of the Original Code is Lukas Gebauer (Czech Republic).|
-| Portions created by Lukas Gebauer are Copyright (c)2003-2011.                |
+| Portions created by Lukas Gebauer are Copyright (c)2003-2012.                |
 | All Rights Reserved.                                                         |
 |==============================================================================|
 | Contributor(s):                                                              |
@@ -234,6 +234,41 @@ For IPv6 support you must have new API!
   (*$HPPEMIT '#undef PVD_CONFIG' *)
   (*$HPPEMIT '#undef AF_INET6' *)
   (*$HPPEMIT '#undef PF_INET6' *)
+  (*$HPPEMIT '#undef NI_MAXHOST' *)
+  (*$HPPEMIT '#undef NI_MAXSERV' *)
+  (*$HPPEMIT '#undef NI_NOFQDN' *)
+  (*$HPPEMIT '#undef NI_NUMERICHOST' *)
+  (*$HPPEMIT '#undef NI_NAMEREQD' *)
+  (*$HPPEMIT '#undef NI_NUMERICSERV' *)
+  (*$HPPEMIT '#undef NI_DGRAM' *)
+  (*$HPPEMIT '#undef AI_PASSIVE' *)
+  (*$HPPEMIT '#undef AI_CANONNAME' *)
+  (*$HPPEMIT '#undef AI_NUMERICHOST' *)
+  (*$HPPEMIT '#undef EWOULDBLOCK' *)
+  (*$HPPEMIT '#undef EINPROGRESS' *)
+  (*$HPPEMIT '#undef EALREADY' *)
+  (*$HPPEMIT '#undef ENOTSOCK' *)
+  (*$HPPEMIT '#undef EDESTADDRREQ' *)
+  (*$HPPEMIT '#undef EMSGSIZE' *)
+  (*$HPPEMIT '#undef EPROTOTYPE' *)
+  (*$HPPEMIT '#undef ENOPROTOOPT' *)
+  (*$HPPEMIT '#undef EPROTONOSUPPORT' *)
+  (*$HPPEMIT '#undef EOPNOTSUPP' *)
+  (*$HPPEMIT '#undef EAFNOSUPPORT' *)
+  (*$HPPEMIT '#undef EADDRINUSE' *)
+  (*$HPPEMIT '#undef EADDRNOTAVAIL' *)
+  (*$HPPEMIT '#undef ENETDOWN' *)
+  (*$HPPEMIT '#undef ENETUNREACH' *)
+  (*$HPPEMIT '#undef ENETRESET' *)
+  (*$HPPEMIT '#undef ECONNABORTED' *)
+  (*$HPPEMIT '#undef ECONNRESET' *)
+  (*$HPPEMIT '#undef ENOBUFS' *)
+  (*$HPPEMIT '#undef EISCONN' *)
+  (*$HPPEMIT '#undef ENOTCONN' *)
+  (*$HPPEMIT '#undef ETIMEDOUT' *)
+  (*$HPPEMIT '#undef ECONNREFUSED' *)
+  (*$HPPEMIT '#undef ELOOP' *)
+  (*$HPPEMIT '#undef EHOSTUNREACH' *)
 {$ENDIF}
 
 {$IFDEF FPC}
@@ -241,6 +276,14 @@ For IPv6 support you must have new API!
     {$ALIGN OFF}
   {$ELSE}
     {$PACKRECORDS C}
+  {$ENDIF}
+{$ELSE}
+  {$IFDEF WIN64}
+    {$ALIGN ON}
+    {$MINENUMSIZE 4}
+  {$ELSE}
+    {$MINENUMSIZE 4}
+    {$ALIGN OFF}
   {$ENDIF}
 {$ENDIF}
 
@@ -1409,7 +1452,7 @@ begin
       if ServEnt = nil then
         Result := StrToIntDef(string(Port), 0)
       else
-        Result := synsock.htons(ServEnt^.s_port);
+        Result := synsock.ntohs(ServEnt^.s_port);
     finally
       SynSockCS.Leave;
     end;
@@ -1427,9 +1470,9 @@ begin
       if (r = 0) and Assigned(Addr) then
       begin
         if Addr^.ai_family = AF_INET then
-          Result := synsock.htons(Addr^.ai_addr^.sin_port);
+          Result := synsock.ntohs(Addr^.ai_addr^.sin_port);
         if Addr^.ai_family = AF_INET6 then
-          Result := synsock.htons(PSockAddrIn6(Addr^.ai_addr)^.sin6_port);
+          Result := synsock.ntohs(PSockAddrIn6(Addr^.ai_addr)^.sin6_port);
       end;
     finally
       if Assigned(Addr) then
@@ -1498,7 +1541,6 @@ end;
 function InitSocketInterface(stack: String): Boolean;
 begin
   Result := False;
-  SockEnhancedApi := False;
   if stack = '' then
     stack := DLLStackName;
   SynSockCS.Enter;

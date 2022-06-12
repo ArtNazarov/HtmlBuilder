@@ -1,9 +1,9 @@
 {==============================================================================|
-| Project : Ararat Synapse                                       | 002.002.001 |
+| Project : Ararat Synapse                                       | 002.002.003 |
 |==============================================================================|
 | Content: Coding and decoding support                                         |
 |==============================================================================|
-| Copyright (c)1999-2012, Lukas Gebauer                                        |
+| Copyright (c)1999-2013, Lukas Gebauer                                        |
 | All rights reserved.                                                         |
 |                                                                              |
 | Redistribution and use in source and binary forms, with or without           |
@@ -33,7 +33,7 @@
 | DAMAGE.                                                                      |
 |==============================================================================|
 | The Initial Developer of the Original Code is Lukas Gebauer (Czech Republic).|
-| Portions created by Lukas Gebauer are Copyright (c)2000-2012.                |
+| Portions created by Lukas Gebauer are Copyright (c)2000-2013.                |
 | All Rights Reserved.                                                         |
 |==============================================================================|
 | Contributor(s):                                                              |
@@ -51,10 +51,21 @@
 {$H+}
 {$TYPEDADDRESS OFF}
 
+{$IFDEF CIL}
+  {$DEFINE SYNACODE_NATIVE}
+{$ENDIF}
+{$IFDEF FPC_BIG_ENDIAN}
+  {$DEFINE SYNACODE_NATIVE}
+{$ENDIF}
+
 {$IFDEF UNICODE}
   {$WARN IMPLICIT_STRING_CAST OFF}
   {$WARN IMPLICIT_STRING_CAST_LOSS OFF}
   {$WARN SUSPICIOUS_TYPECAST OFF}
+{$ENDIF}
+
+{$IFDEF NEXTGEN}
+  {$ZEROBASEDSTRINGS OFF}
 {$ENDIF}
 
 unit synacode;
@@ -62,7 +73,10 @@ unit synacode;
 interface
 
 uses
-  SysUtils;
+  SysUtils
+  {$IFDEF NEXTGEN}
+   ,synafpc
+  {$ENDIF};
 
 type
   TSpecials = set of AnsiChar;
@@ -77,8 +91,7 @@ const
   URLFullSpecialChar: TSpecials =
   [';', '/', '?', ':', '@', '=', '&', '#', '+'];
   URLSpecialChar: TSpecials =
-  [#$00..#$20, '_', '<', '>', '"', '%', '{', '}', '|', '\', '^', '~', '[', ']',
-    '`', #$7F..#$FF];
+  [#$00..#$20, '<', '>', '"', '%', '{', '}', '|', '\', '^', '[', ']', '`', #$7F..#$FF];
   TableBase64 =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
   TableBase64mod =
@@ -188,10 +201,10 @@ function DecodeXX(const Value: AnsiString): AnsiString;
 function DecodeYEnc(const Value: AnsiString): AnsiString;
 
 {:Returns a new CRC32 value after adding a new byte of data.}
-function UpdateCrc32(Value: Byte; Crc32: Integer): Integer;
+function UpdateCrc32(Value: Byte; Crc32: Cardinal): Cardinal;
 
 {:return CRC32 from a value string.}
-function Crc32(const Value: AnsiString): Integer;
+function Crc32(const Value: AnsiString): Cardinal;
 
 {:Returns a new CRC16 value after adding a new byte of data.}
 function UpdateCrc16(Value: Byte; Crc16: Word): Word;
@@ -329,14 +342,14 @@ const
     );
 
 procedure ArrByteToLong(var ArByte: Array of byte; var ArLong: Array of Integer);
-{$IFDEF CIL}
+{$IFDEF SYNACODE_NATIVE}
 var
   n: integer;
 {$ENDIF}
 begin
   if (High(ArByte) + 1) > ((High(ArLong) + 1) * 4) then
     Exit;
-  {$IFDEF CIL}
+  {$IFDEF SYNACODE_NATIVE}
   for n := 0 to ((high(ArByte) + 1) div 4) - 1 do
     ArLong[n] := ArByte[n * 4 + 0]
       + (ArByte[n * 4 + 1] shl 8)
@@ -348,14 +361,14 @@ begin
 end;
 
 procedure ArrLongToByte(var ArLong: Array of Integer; var ArByte: Array of byte);
-{$IFDEF CIL}
+{$IFDEF SYNACODE_NATIVE}
 var
   n: integer;
 {$ENDIF}
 begin
   if (High(ArByte) + 1) < ((High(ArLong) + 1) * 4) then
     Exit;
-  {$IFDEF CIL}
+  {$IFDEF SYNACODE_NATIVE}
   for n := 0 to high(ArLong) do
   begin
     ArByte[n * 4 + 0] := ArLong[n] and $000000FF;
@@ -383,7 +396,7 @@ type
     HashByte: array[0..19] of byte;
   end;
 
-  TMDTransform = procedure(var Buf: array of LongInt; const Data: array of LongInt);
+  TMDTransform = procedure(var Buf: array of Integer; const Data: array of Integer);
 
 {==============================================================================}
 
@@ -814,7 +827,7 @@ end;
 
 {==============================================================================}
 
-function UpdateCrc32(Value: Byte; Crc32: Integer): Integer;
+function UpdateCrc32(Value: Byte; Crc32: Cardinal): Cardinal;
 begin
   Result := (Crc32 shr 8)
     xor crc32tab[Byte(Value xor (Crc32 and Integer($000000FF)))];
@@ -822,11 +835,11 @@ end;
 
 {==============================================================================}
 
-function Crc32(const Value: AnsiString): Integer;
+function Crc32(const Value: AnsiString): Cardinal;
 var
   n: Integer;
 begin
-  Result := Integer($FFFFFFFF);
+  Result := $FFFFFFFF;
   for n := 1 to Length(Value) do
     Result := UpdateCrc32(Ord(Value[n]), Result);
   Result := not Result;
@@ -869,7 +882,7 @@ begin
   MDContext.State[3] := Integer($10325476);
 end;
 
-procedure MD5Transform(var Buf: array of LongInt; const Data: array of LongInt);
+procedure MD5Transform(var Buf: array of Integer; const Data: array of Integer);
 var
   A, B, C, D: LongInt;
 
@@ -984,7 +997,7 @@ end;
 procedure MDUpdate(var MDContext: TMDCtx; const Data: AnsiString; transform: TMDTransform);
 var
   Index, partLen, InputLen, I: integer;
-{$IFDEF CIL}
+{$IFDEF SYNACODE_NATIVE}
   n: integer;
 {$ENDIF}
 begin
@@ -1000,7 +1013,7 @@ begin
     if InputLen >= partLen then
     begin
       ArrLongToByte(BufLong, BufAnsiChar);
-      {$IFDEF CIL}
+      {$IFDEF SYNACODE_NATIVE}
       for n := 1 to partLen do
         BufAnsiChar[index - 1 + n] := Ord(Data[n]);
       {$ELSE}
@@ -1012,7 +1025,7 @@ begin
   		while I + 63 < InputLen do
       begin
         ArrLongToByte(BufLong, BufAnsiChar);
-        {$IFDEF CIL}
+        {$IFDEF SYNACODE_NATIVE}
         for n := 1 to 64 do
           BufAnsiChar[n - 1] := Ord(Data[i + n]);
         {$ELSE}
@@ -1027,7 +1040,7 @@ begin
     else
       I := 0;
     ArrLongToByte(BufLong, BufAnsiChar);
-    {$IFDEF CIL}
+    {$IFDEF SYNACODE_NATIVE}
     for n := 1 to InputLen-I do
       BufAnsiChar[Index + n - 1] := Ord(Data[i + n]);
     {$ELSE}
@@ -1374,7 +1387,7 @@ end;
 
 {==============================================================================}
 
-procedure MD4Transform(var Buf: array of LongInt; const Data: array of LongInt);
+procedure MD4Transform(var Buf: array of Integer; const Data: array of Integer);
 var
   A, B, C, D: LongInt;
   function LRot32(a, b: longint): longint;

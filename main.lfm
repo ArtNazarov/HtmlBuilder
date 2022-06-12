@@ -1,1315 +1,1368 @@
 object Form1: TForm1
-  Left = 121
-  Height = 566
-  Top = 101
-  Width = 926
+  Left = 51
+  Height = 725
+  Top = 56
+  Width = 1439
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = 'Генератор статических HTML сайтов'
-  ClientHeight = 566
-  ClientWidth = 926
+  ClientHeight = 725
+  ClientWidth = 1439
   Menu = MainMenu1
   OnClose = FormClose
   OnCreate = FormCreate
   Position = poDesktopCenter
-  LCLVersion = '1.8.4.0'
-  object btBuildSite: TButton
-    Left = 352
-    Height = 25
-    Top = 523
-    Width = 252
-    Caption = 'Создать сайт'
-    OnClick = btBuildSiteClick
-    TabOrder = 0
-  end
+  LCLVersion = '2.2.2.0'
   object AppPages: TPageControl
     Left = 0
-    Height = 520
+    Height = 691
     Top = 0
-    Width = 926
+    Width = 1439
     ActivePage = tabPages
-    Align = alTop
+    Align = alClient
     TabIndex = 0
-    TabOrder = 1
+    TabOrder = 0
     object tabPages: TTabSheet
       Caption = 'Страницы'
-      ClientHeight = 494
-      ClientWidth = 918
+      ClientHeight = 656
+      ClientWidth = 1435
       object Panel1: TPanel
         Left = 0
-        Height = 494
+        Height = 656
         Top = 0
-        Width = 918
+        Width = 1435
         Align = alClient
         Caption = 'Panel1'
-        ClientHeight = 494
-        ClientWidth = 918
+        ClientHeight = 656
+        ClientWidth = 1435
         ParentColor = False
         TabOrder = 0
-        object fCaption: TDBEdit
-          Left = 144
-          Height = 21
-          Top = 88
-          Width = 752
-          DataField = 'caption'
-          DataSource = Datasource1
-          CharCase = ecNormal
-          MaxLength = 0
-          TabOrder = 1
-        end
-        object Label1: TLabel
-          Left = 144
-          Height = 13
-          Top = 64
-          Width = 111
-          Caption = 'Заголовок страницы'
-          ParentColor = False
-        end
-        object fID: TDBEdit
-          Left = 144
-          Height = 21
-          Top = 32
-          Width = 160
-          DataField = 'id'
-          DataSource = Datasource1
-          CharCase = ecNormal
-          MaxLength = 0
-          TabOrder = 0
-        end
-        object Label4: TLabel
-          Left = 144
-          Height = 13
-          Top = 8
-          Width = 66
-          Caption = 'ID страницы'
-          ParentColor = False
-        end
-        object fSection: TDBEdit
-          Left = 328
-          Height = 21
-          Top = 32
-          Width = 130
-          DataField = 'section'
-          DataSource = Datasource1
-          CharCase = ecNormal
-          MaxLength = 0
-          TabOrder = 2
-        end
-        object Label17: TLabel
-          Left = 328
-          Height = 13
-          Top = 7
-          Width = 70
-          Caption = 'ID категории'
-          ParentColor = False
-        end
-        object PageControl3: TPageControl
-          Left = 144
-          Height = 336
-          Top = 120
-          Width = 752
-          ActivePage = TabSheet11
-          TabIndex = 0
-          TabOrder = 3
-          object TabSheet11: TTabSheet
-            Caption = 'Основной текст'
-            ClientHeight = 310
-            ClientWidth = 744
-            object Panel13: TPanel
-              Left = 0
-              Height = 310
-              Top = 0
-              Width = 744
-              Align = alClient
-              Caption = 'Panel13'
-              ClientHeight = 310
-              ClientWidth = 744
-              ParentColor = False
-              TabOrder = 0
-              object Panel6: TPanel
-                Left = 1
-                Height = 34
-                Top = 1
-                Width = 742
-                Align = alTop
-                ClientHeight = 34
-                ClientWidth = 742
-                TabOrder = 0
-                object btBold: TButton
-                  Left = 76
-                  Height = 32
-                  Top = 1
-                  Width = 67
-                  Align = alLeft
-                  Caption = 'Обводка'
-                  OnClick = btBoldClick
-                  TabOrder = 0
-                end
-                object btItalic: TButton
-                  Left = 143
-                  Height = 32
-                  Top = 1
-                  Width = 68
-                  Align = alLeft
-                  Caption = 'Курсив'
-                  OnClick = btItalicClick
-                  TabOrder = 1
-                end
-                object btUnderline: TButton
-                  Left = 211
-                  Height = 32
-                  Top = 1
-                  Width = 75
-                  Align = alLeft
-                  Caption = 'Подчерк.'
-                  OnClick = btUnderlineClick
-                  TabOrder = 2
-                end
-                object btSup: TButton
-                  Left = 286
-                  Height = 32
-                  Top = 1
-                  Width = 75
-                  Align = alLeft
-                  Caption = 'Верх. инд.'
-                  OnClick = btSupClick
-                  TabOrder = 3
-                end
-                object btSub: TButton
-                  Left = 361
-                  Height = 32
-                  Top = 1
-                  Width = 75
-                  Align = alLeft
-                  Caption = 'Нижн. инд.'
-                  OnClick = btSubClick
-                  TabOrder = 4
-                end
-                object btParagraph: TButton
-                  Left = 1
-                  Height = 32
-                  Top = 1
-                  Width = 75
-                  Align = alLeft
-                  Caption = 'Параграф'
-                  OnClick = btParagraphClick
-                  TabOrder = 5
-                end
-                object btOrderedList: TButton
-                  Left = 436
-                  Height = 32
-                  Top = 1
-                  Width = 75
-                  Align = alLeft
-                  Caption = 'Нум. сп.'
-                  OnClick = btOrderedListClick
-                  TabOrder = 6
-                end
-                object btUnorderedList: TButton
-                  Left = 511
-                  Height = 32
-                  Top = 1
-                  Width = 75
-                  Align = alLeft
-                  Caption = 'Марк. сп.'
-                  OnClick = btUnorderedListClick
-                  TabOrder = 7
-                end
-                object btImg: TButton
-                  Left = 586
-                  Height = 32
-                  Top = 1
-                  Width = 75
-                  Align = alLeft
-                  Caption = 'Изобр.'
-                  OnClick = btImgClick
-                  TabOrder = 8
-                end
-                object btHref: TButton
-                  Left = 661
-                  Height = 32
-                  Top = 1
-                  Width = 75
-                  Align = alLeft
-                  Caption = 'Ссылка'
-                  OnClick = btHrefClick
-                  TabOrder = 9
-                end
-              end
-              inline fContent: TSynEdit
-                Left = 1
-                Height = 274
-                Top = 35
-                Width = 742
-                Align = alClient
-                Font.Height = -13
-                Font.Name = 'Courier New'
-                Font.Pitch = fpFixed
-                Font.Quality = fqNonAntialiased
-                ParentColor = False
-                ParentFont = False
-                TabOrder = 1
-                Gutter.Width = 57
-                Gutter.MouseActions = <>
-                RightGutter.Width = 0
-                RightGutter.MouseActions = <>
-                Highlighter = SynHTMLSyn1
-                Keystrokes = <                
-                  item
-                    Command = ecUp
-                    ShortCut = 38
-                  end                
-                  item
-                    Command = ecSelUp
-                    ShortCut = 8230
-                  end                
-                  item
-                    Command = ecScrollUp
-                    ShortCut = 16422
-                  end                
-                  item
-                    Command = ecDown
-                    ShortCut = 40
-                  end                
-                  item
-                    Command = ecSelDown
-                    ShortCut = 8232
-                  end                
-                  item
-                    Command = ecScrollDown
-                    ShortCut = 16424
-                  end                
-                  item
-                    Command = ecLeft
-                    ShortCut = 37
-                  end                
-                  item
-                    Command = ecSelLeft
-                    ShortCut = 8229
-                  end                
-                  item
-                    Command = ecWordLeft
-                    ShortCut = 16421
-                  end                
-                  item
-                    Command = ecSelWordLeft
-                    ShortCut = 24613
-                  end                
-                  item
-                    Command = ecRight
-                    ShortCut = 39
-                  end                
-                  item
-                    Command = ecSelRight
-                    ShortCut = 8231
-                  end                
-                  item
-                    Command = ecWordRight
-                    ShortCut = 16423
-                  end                
-                  item
-                    Command = ecSelWordRight
-                    ShortCut = 24615
-                  end                
-                  item
-                    Command = ecPageDown
-                    ShortCut = 34
-                  end                
-                  item
-                    Command = ecSelPageDown
-                    ShortCut = 8226
-                  end                
-                  item
-                    Command = ecPageBottom
-                    ShortCut = 16418
-                  end                
-                  item
-                    Command = ecSelPageBottom
-                    ShortCut = 24610
-                  end                
-                  item
-                    Command = ecPageUp
-                    ShortCut = 33
-                  end                
-                  item
-                    Command = ecSelPageUp
-                    ShortCut = 8225
-                  end                
-                  item
-                    Command = ecPageTop
-                    ShortCut = 16417
-                  end                
-                  item
-                    Command = ecSelPageTop
-                    ShortCut = 24609
-                  end                
-                  item
-                    Command = ecLineStart
-                    ShortCut = 36
-                  end                
-                  item
-                    Command = ecSelLineStart
-                    ShortCut = 8228
-                  end                
-                  item
-                    Command = ecEditorTop
-                    ShortCut = 16420
-                  end                
-                  item
-                    Command = ecSelEditorTop
-                    ShortCut = 24612
-                  end                
-                  item
-                    Command = ecLineEnd
-                    ShortCut = 35
-                  end                
-                  item
-                    Command = ecSelLineEnd
-                    ShortCut = 8227
-                  end                
-                  item
-                    Command = ecEditorBottom
-                    ShortCut = 16419
-                  end                
-                  item
-                    Command = ecSelEditorBottom
-                    ShortCut = 24611
-                  end                
-                  item
-                    Command = ecToggleMode
-                    ShortCut = 45
-                  end                
-                  item
-                    Command = ecCopy
-                    ShortCut = 16429
-                  end                
-                  item
-                    Command = ecPaste
-                    ShortCut = 8237
-                  end                
-                  item
-                    Command = ecDeleteChar
-                    ShortCut = 46
-                  end                
-                  item
-                    Command = ecCut
-                    ShortCut = 8238
-                  end                
-                  item
-                    Command = ecDeleteLastChar
-                    ShortCut = 8
-                  end                
-                  item
-                    Command = ecDeleteLastChar
-                    ShortCut = 8200
-                  end                
-                  item
-                    Command = ecDeleteLastWord
-                    ShortCut = 16392
-                  end                
-                  item
-                    Command = ecUndo
-                    ShortCut = 32776
-                  end                
-                  item
-                    Command = ecRedo
-                    ShortCut = 40968
-                  end                
-                  item
-                    Command = ecLineBreak
-                    ShortCut = 13
-                  end                
-                  item
-                    Command = ecSelectAll
-                    ShortCut = 16449
-                  end                
-                  item
-                    Command = ecCopy
-                    ShortCut = 16451
-                  end                
-                  item
-                    Command = ecBlockIndent
-                    ShortCut = 24649
-                  end                
-                  item
-                    Command = ecLineBreak
-                    ShortCut = 16461
-                  end                
-                  item
-                    Command = ecInsertLine
-                    ShortCut = 16462
-                  end                
-                  item
-                    Command = ecDeleteWord
-                    ShortCut = 16468
-                  end                
-                  item
-                    Command = ecBlockUnindent
-                    ShortCut = 24661
-                  end                
-                  item
-                    Command = ecPaste
-                    ShortCut = 16470
-                  end                
-                  item
-                    Command = ecCut
-                    ShortCut = 16472
-                  end                
-                  item
-                    Command = ecDeleteLine
-                    ShortCut = 16473
-                  end                
-                  item
-                    Command = ecDeleteEOL
-                    ShortCut = 24665
-                  end                
-                  item
-                    Command = ecUndo
-                    ShortCut = 16474
-                  end                
-                  item
-                    Command = ecRedo
-                    ShortCut = 24666
-                  end                
-                  item
-                    Command = ecGotoMarker0
-                    ShortCut = 16432
-                  end                
-                  item
-                    Command = ecGotoMarker1
-                    ShortCut = 16433
-                  end                
-                  item
-                    Command = ecGotoMarker2
-                    ShortCut = 16434
-                  end                
-                  item
-                    Command = ecGotoMarker3
-                    ShortCut = 16435
-                  end                
-                  item
-                    Command = ecGotoMarker4
-                    ShortCut = 16436
-                  end                
-                  item
-                    Command = ecGotoMarker5
-                    ShortCut = 16437
-                  end                
-                  item
-                    Command = ecGotoMarker6
-                    ShortCut = 16438
-                  end                
-                  item
-                    Command = ecGotoMarker7
-                    ShortCut = 16439
-                  end                
-                  item
-                    Command = ecGotoMarker8
-                    ShortCut = 16440
-                  end                
-                  item
-                    Command = ecGotoMarker9
-                    ShortCut = 16441
-                  end                
-                  item
-                    Command = ecSetMarker0
-                    ShortCut = 24624
-                  end                
-                  item
-                    Command = ecSetMarker1
-                    ShortCut = 24625
-                  end                
-                  item
-                    Command = ecSetMarker2
-                    ShortCut = 24626
-                  end                
-                  item
-                    Command = ecSetMarker3
-                    ShortCut = 24627
-                  end                
-                  item
-                    Command = ecSetMarker4
-                    ShortCut = 24628
-                  end                
-                  item
-                    Command = ecSetMarker5
-                    ShortCut = 24629
-                  end                
-                  item
-                    Command = ecSetMarker6
-                    ShortCut = 24630
-                  end                
-                  item
-                    Command = ecSetMarker7
-                    ShortCut = 24631
-                  end                
-                  item
-                    Command = ecSetMarker8
-                    ShortCut = 24632
-                  end                
-                  item
-                    Command = ecSetMarker9
-                    ShortCut = 24633
-                  end                
-                  item
-                    Command = EcFoldLevel1
-                    ShortCut = 41009
-                  end                
-                  item
-                    Command = EcFoldLevel2
-                    ShortCut = 41010
-                  end                
-                  item
-                    Command = EcFoldLevel3
-                    ShortCut = 41011
-                  end                
-                  item
-                    Command = EcFoldLevel4
-                    ShortCut = 41012
-                  end                
-                  item
-                    Command = EcFoldLevel5
-                    ShortCut = 41013
-                  end                
-                  item
-                    Command = EcFoldLevel6
-                    ShortCut = 41014
-                  end                
-                  item
-                    Command = EcFoldLevel7
-                    ShortCut = 41015
-                  end                
-                  item
-                    Command = EcFoldLevel8
-                    ShortCut = 41016
-                  end                
-                  item
-                    Command = EcFoldLevel9
-                    ShortCut = 41017
-                  end                
-                  item
-                    Command = EcFoldLevel0
-                    ShortCut = 41008
-                  end                
-                  item
-                    Command = EcFoldCurrent
-                    ShortCut = 41005
-                  end                
-                  item
-                    Command = EcUnFoldCurrent
-                    ShortCut = 41003
-                  end                
-                  item
-                    Command = EcToggleMarkupWord
-                    ShortCut = 32845
-                  end                
-                  item
-                    Command = ecNormalSelect
-                    ShortCut = 24654
-                  end                
-                  item
-                    Command = ecColumnSelect
-                    ShortCut = 24643
-                  end                
-                  item
-                    Command = ecLineSelect
-                    ShortCut = 24652
-                  end                
-                  item
-                    Command = ecTab
-                    ShortCut = 9
-                  end                
-                  item
-                    Command = ecShiftTab
-                    ShortCut = 8201
-                  end                
-                  item
-                    Command = ecMatchBracket
-                    ShortCut = 24642
-                  end                
-                  item
-                    Command = ecColSelUp
-                    ShortCut = 40998
-                  end                
-                  item
-                    Command = ecColSelDown
-                    ShortCut = 41000
-                  end                
-                  item
-                    Command = ecColSelLeft
-                    ShortCut = 40997
-                  end                
-                  item
-                    Command = ecColSelRight
-                    ShortCut = 40999
-                  end                
-                  item
-                    Command = ecColSelPageDown
-                    ShortCut = 40994
-                  end                
-                  item
-                    Command = ecColSelPageBottom
-                    ShortCut = 57378
-                  end                
-                  item
-                    Command = ecColSelPageUp
-                    ShortCut = 40993
-                  end                
-                  item
-                    Command = ecColSelPageTop
-                    ShortCut = 57377
-                  end                
-                  item
-                    Command = ecColSelLineStart
-                    ShortCut = 40996
-                  end                
-                  item
-                    Command = ecColSelLineEnd
-                    ShortCut = 40995
-                  end                
-                  item
-                    Command = ecColSelEditorTop
-                    ShortCut = 57380
-                  end                
-                  item
-                    Command = ecColSelEditorBottom
-                    ShortCut = 57379
-                  end>
-                MouseActions = <>
-                MouseTextActions = <>
-                MouseSelActions = <>
-                Lines.Strings = (
-                  'fContent'
-                )
-                VisibleSpecialChars = [vscSpace, vscTabAtLast]
-                SelectedColor.BackPriority = 50
-                SelectedColor.ForePriority = 50
-                SelectedColor.FramePriority = 50
-                SelectedColor.BoldPriority = 50
-                SelectedColor.ItalicPriority = 50
-                SelectedColor.UnderlinePriority = 50
-                SelectedColor.StrikeOutPriority = 50
-                BracketHighlightStyle = sbhsBoth
-                BracketMatchColor.Background = clNone
-                BracketMatchColor.Foreground = clNone
-                BracketMatchColor.Style = [fsBold]
-                FoldedCodeColor.Background = clNone
-                FoldedCodeColor.Foreground = clGray
-                FoldedCodeColor.FrameColor = clGray
-                MouseLinkColor.Background = clNone
-                MouseLinkColor.Foreground = clBlue
-                LineHighlightColor.Background = clNone
-                LineHighlightColor.Foreground = clNone
-                inline SynLeftGutterPartList1: TSynGutterPartList
-                  object SynGutterMarks1: TSynGutterMarks
-                    Width = 24
-                    MouseActions = <>
-                  end
-                  object SynGutterLineNumber1: TSynGutterLineNumber
-                    Width = 15
-                    MouseActions = <>
-                    MarkupInfo.Background = clBtnFace
-                    MarkupInfo.Foreground = clNone
-                    DigitCount = 2
-                    ShowOnlyLineNumbersMultiplesOf = 1
-                    ZeroStart = False
-                    LeadingZeros = False
-                  end
-                  object SynGutterChanges1: TSynGutterChanges
-                    Width = 4
-                    MouseActions = <>
-                    ModifiedColor = 59900
-                    SavedColor = clGreen
-                  end
-                  object SynGutterSeparator1: TSynGutterSeparator
-                    Width = 2
-                    MouseActions = <>
-                    MarkupInfo.Background = clWhite
-                    MarkupInfo.Foreground = clGray
-                  end
-                  object SynGutterCodeFolding1: TSynGutterCodeFolding
-                    AutoSize = False
-                    Width = 12
-                    MouseActions = <>
-                    MarkupInfo.Background = clNone
-                    MarkupInfo.Foreground = clGray
-                    MouseActionsExpanded = <>
-                    MouseActionsCollapsed = <>
-                  end
-                end
-              end
-            end
-          end
-          object TabSheet12: TTabSheet
-            Caption = 'Дополнительная информация'
-            ClientHeight = 260
-            ClientWidth = 748
-            object Panel14: TPanel
-              Left = 0
-              Height = 258
-              Top = 0
-              Width = 744
-              Align = alClient
-              ClientHeight = 258
-              ClientWidth = 744
-              ParentColor = False
-              TabOrder = 0
-              object DBEdit9: TDBEdit
-                Left = 180
-                Height = 23
-                Top = 16
-                Width = 544
-                DataField = 'uf1'
-                DataSource = Datasource1
-                CharCase = ecNormal
-                MaxLength = 0
-                TabOrder = 0
-              end
-              object DBEdit10: TDBEdit
-                Left = 180
-                Height = 23
-                Top = 48
-                Width = 544
-                DataField = 'uf2'
-                DataSource = Datasource1
-                CharCase = ecNormal
-                MaxLength = 0
-                TabOrder = 1
-              end
-              object DBEdit11: TDBEdit
-                Left = 180
-                Height = 23
-                Top = 80
-                Width = 544
-                DataField = 'uf3'
-                DataSource = Datasource1
-                CharCase = ecNormal
-                MaxLength = 0
-                TabOrder = 2
-              end
-              object DBEdit12: TDBEdit
-                Left = 180
-                Height = 23
-                Top = 112
-                Width = 544
-                DataField = 'uf4'
-                DataSource = Datasource1
-                CharCase = ecNormal
-                MaxLength = 0
-                TabOrder = 3
-              end
-              object DBEdit13: TDBEdit
-                Left = 180
-                Height = 23
-                Top = 144
-                Width = 544
-                DataField = 'uf5'
-                DataSource = Datasource1
-                CharCase = ecNormal
-                MaxLength = 0
-                TabOrder = 4
-              end
-              object DBEdit14: TDBEdit
-                Left = 180
-                Height = 23
-                Top = 176
-                Width = 544
-                DataField = 'uf6'
-                DataSource = Datasource1
-                CharCase = ecNormal
-                MaxLength = 0
-                TabOrder = 5
-              end
-              object DBMemo8: TDBMemo
-                Left = 180
-                Height = 44
-                Top = 204
-                Width = 544
-                DataField = 'uf6'
-                DataSource = Datasource1
-                TabOrder = 6
-              end
-              object DBText1: TDBText
-                Left = 36
-                Height = 1
-                Top = 23
-                Width = 1
-                DataField = 'ufn1'
-                DataSource = Datasource3
-                ParentColor = False
-              end
-              object DBText2: TDBText
-                Left = 36
-                Height = 1
-                Top = 55
-                Width = 1
-                DataField = 'ufn2'
-                DataSource = Datasource3
-                ParentColor = False
-              end
-              object DBText3: TDBText
-                Left = 36
-                Height = 1
-                Top = 87
-                Width = 1
-                DataField = 'ufn3'
-                DataSource = Datasource3
-                ParentColor = False
-              end
-              object DBText4: TDBText
-                Left = 36
-                Height = 1
-                Top = 119
-                Width = 1
-                DataField = 'ufn4'
-                DataSource = Datasource3
-                ParentColor = False
-              end
-              object DBText5: TDBText
-                Left = 36
-                Height = 1
-                Top = 151
-                Width = 1
-                DataField = 'ufn5'
-                DataSource = Datasource3
-                ParentColor = False
-              end
-              object DBText6: TDBText
-                Left = 36
-                Height = 1
-                Top = 183
-                Width = 1
-                DataField = 'ufn6'
-                DataSource = Datasource3
-                ParentColor = False
-              end
-              object DBText7: TDBText
-                Left = 36
-                Height = 1
-                Top = 216
-                Width = 1
-                DataField = 'ufn7'
-                DataSource = Datasource3
-                ParentColor = False
-              end
-            end
-          end
-        end
         object DBLookupListBox1: TDBLookupListBox
-          Left = 4
-          Height = 473
-          Top = 7
-          Width = 132
+          Left = 1
+          Height = 654
+          Top = 1
+          Width = 287
+          Align = alLeft
           KeyField = 'id'
           ListField = 'caption'
           ListFieldIndex = 0
-          ListSource = Datasource1
+          ListSource = dsPages
           LookupCache = False
           OnClick = DBLookupListBox1Click
-          PopupMenu = PopupMenu1
-          TabOrder = 4
+          TabOrder = 0
         end
-        object DBNavigator4: TDBNavigator
-          Left = 552
-          Height = 31
-          Top = 456
-          Width = 301
-          BevelOuter = bvNone
-          ChildSizing.EnlargeHorizontal = crsScaleChilds
-          ChildSizing.EnlargeVertical = crsScaleChilds
-          ChildSizing.ShrinkHorizontal = crsScaleChilds
-          ChildSizing.ShrinkVertical = crsScaleChilds
-          ChildSizing.Layout = cclLeftToRightThenTopToBottom
-          ChildSizing.ControlsPerLine = 100
-          ClientHeight = 31
-          ClientWidth = 301
-          DataSource = Datasource1
-          Options = []
-          TabOrder = 5
+        object Panel18: TPanel
+          Left = 288
+          Height = 654
+          Top = 1
+          Width = 1146
+          Align = alClient
+          Caption = 'Panel18'
+          ClientHeight = 654
+          ClientWidth = 1146
+          TabOrder = 1
+          object Label4: TLabel
+            Left = 1
+            Height = 17
+            Top = 1
+            Width = 1144
+            Align = alTop
+            Caption = 'ID страницы'
+            ParentColor = False
+          end
+          object fID: TDBEdit
+            Left = 1
+            Height = 31
+            Top = 18
+            Width = 1144
+            DataField = 'id'
+            DataSource = dsPages
+            Align = alTop
+            MaxLength = 0
+            TabOrder = 0
+          end
+          object Label1: TLabel
+            Left = 1
+            Height = 17
+            Top = 49
+            Width = 1144
+            Align = alTop
+            Caption = 'Заголовок страницы'
+            ParentColor = False
+          end
+          object fCaption: TDBEdit
+            Left = 1
+            Height = 31
+            Top = 66
+            Width = 1144
+            DataField = 'caption'
+            DataSource = dsPages
+            Align = alTop
+            MaxLength = 0
+            TabOrder = 1
+          end
+          object PageControl3: TPageControl
+            Left = 1
+            Height = 483
+            Top = 97
+            Width = 1144
+            ActivePage = TabSheet11
+            Align = alClient
+            TabIndex = 0
+            TabOrder = 2
+            object TabSheet11: TTabSheet
+              Caption = 'Основной текст'
+              ClientHeight = 448
+              ClientWidth = 1140
+              object Panel13: TPanel
+                Left = 0
+                Height = 448
+                Top = 0
+                Width = 1140
+                Align = alClient
+                Caption = 'Panel13'
+                ClientHeight = 448
+                ClientWidth = 1140
+                ParentColor = False
+                TabOrder = 0
+                object dContent: TDBMemo
+                  Left = 1
+                  Height = 85
+                  Top = 35
+                  Width = 159
+                  DataField = 'content'
+                  DataSource = dsPages
+                  ScrollBars = ssAutoBoth
+                  TabOrder = 0
+                end
+                object Panel6: TPanel
+                  Left = 1
+                  Height = 34
+                  Top = 1
+                  Width = 1138
+                  Align = alTop
+                  ClientHeight = 34
+                  ClientWidth = 1138
+                  TabOrder = 1
+                  object btBold: TButton
+                    Left = 152
+                    Height = 32
+                    Top = 1
+                    Width = 147
+                    Align = alLeft
+                    Caption = 'Обводка'
+                    OnClick = btBoldClick
+                    TabOrder = 0
+                  end
+                  object btItalic: TButton
+                    Left = 299
+                    Height = 32
+                    Top = 1
+                    Width = 68
+                    Align = alLeft
+                    Caption = 'Курсив'
+                    OnClick = btItalicClick
+                    TabOrder = 1
+                  end
+                  object btUnderline: TButton
+                    Left = 367
+                    Height = 32
+                    Top = 1
+                    Width = 147
+                    Align = alLeft
+                    Caption = 'Подчерк.'
+                    OnClick = btUnderlineClick
+                    TabOrder = 2
+                  end
+                  object btSup: TButton
+                    Left = 514
+                    Height = 32
+                    Top = 1
+                    Width = 142
+                    Align = alLeft
+                    Caption = 'Верх. инд.'
+                    OnClick = btSupClick
+                    TabOrder = 3
+                  end
+                  object btSub: TButton
+                    Left = 656
+                    Height = 32
+                    Top = 1
+                    Width = 136
+                    Align = alLeft
+                    Caption = 'Нижн. инд.'
+                    OnClick = btSubClick
+                    TabOrder = 4
+                  end
+                  object btParagraph: TButton
+                    Left = 1
+                    Height = 32
+                    Top = 1
+                    Width = 151
+                    Align = alLeft
+                    Caption = 'Параграф'
+                    OnClick = btParagraphClick
+                    TabOrder = 5
+                  end
+                  object btOrderedList: TButton
+                    Left = 792
+                    Height = 32
+                    Top = 1
+                    Width = 75
+                    Align = alLeft
+                    Caption = 'Нум. сп.'
+                    OnClick = btOrderedListClick
+                    TabOrder = 6
+                  end
+                  object btUnorderedList: TButton
+                    Left = 867
+                    Height = 32
+                    Top = 1
+                    Width = 75
+                    Align = alLeft
+                    Caption = 'Марк. сп.'
+                    OnClick = btUnorderedListClick
+                    TabOrder = 7
+                  end
+                  object btImg: TButton
+                    Left = 942
+                    Height = 32
+                    Top = 1
+                    Width = 75
+                    Align = alLeft
+                    Caption = 'Изобр.'
+                    OnClick = btImgClick
+                    TabOrder = 8
+                  end
+                  object btHref: TButton
+                    Left = 1017
+                    Height = 32
+                    Top = 1
+                    Width = 123
+                    Align = alLeft
+                    Caption = 'Ссылка'
+                    OnClick = btHrefClick
+                    TabOrder = 9
+                  end
+                end
+                inline fContent: TSynEdit
+                  Left = 1
+                  Height = 412
+                  Top = 35
+                  Width = 1138
+                  Align = alClient
+                  Font.Height = 13
+                  Font.Name = 'DejaVu Sans Mono'
+                  Font.Pitch = fpFixed
+                  Font.Quality = fqNonAntialiased
+                  ParentColor = False
+                  ParentFont = False
+                  TabOrder = 2
+                  Gutter.Width = 57
+                  Gutter.MouseActions = <>
+                  RightGutter.Width = 0
+                  RightGutter.MouseActions = <>
+                  Highlighter = SynHTMLSyn1
+                  Keystrokes = <                  
+                    item
+                      Command = ecUp
+                      ShortCut = 38
+                    end                  
+                    item
+                      Command = ecSelUp
+                      ShortCut = 8230
+                    end                  
+                    item
+                      Command = ecScrollUp
+                      ShortCut = 16422
+                    end                  
+                    item
+                      Command = ecDown
+                      ShortCut = 40
+                    end                  
+                    item
+                      Command = ecSelDown
+                      ShortCut = 8232
+                    end                  
+                    item
+                      Command = ecScrollDown
+                      ShortCut = 16424
+                    end                  
+                    item
+                      Command = ecLeft
+                      ShortCut = 37
+                    end                  
+                    item
+                      Command = ecSelLeft
+                      ShortCut = 8229
+                    end                  
+                    item
+                      Command = ecWordLeft
+                      ShortCut = 16421
+                    end                  
+                    item
+                      Command = ecSelWordLeft
+                      ShortCut = 24613
+                    end                  
+                    item
+                      Command = ecRight
+                      ShortCut = 39
+                    end                  
+                    item
+                      Command = ecSelRight
+                      ShortCut = 8231
+                    end                  
+                    item
+                      Command = ecWordRight
+                      ShortCut = 16423
+                    end                  
+                    item
+                      Command = ecSelWordRight
+                      ShortCut = 24615
+                    end                  
+                    item
+                      Command = ecPageDown
+                      ShortCut = 34
+                    end                  
+                    item
+                      Command = ecSelPageDown
+                      ShortCut = 8226
+                    end                  
+                    item
+                      Command = ecPageBottom
+                      ShortCut = 16418
+                    end                  
+                    item
+                      Command = ecSelPageBottom
+                      ShortCut = 24610
+                    end                  
+                    item
+                      Command = ecPageUp
+                      ShortCut = 33
+                    end                  
+                    item
+                      Command = ecSelPageUp
+                      ShortCut = 8225
+                    end                  
+                    item
+                      Command = ecPageTop
+                      ShortCut = 16417
+                    end                  
+                    item
+                      Command = ecSelPageTop
+                      ShortCut = 24609
+                    end                  
+                    item
+                      Command = ecLineStart
+                      ShortCut = 36
+                    end                  
+                    item
+                      Command = ecSelLineStart
+                      ShortCut = 8228
+                    end                  
+                    item
+                      Command = ecEditorTop
+                      ShortCut = 16420
+                    end                  
+                    item
+                      Command = ecSelEditorTop
+                      ShortCut = 24612
+                    end                  
+                    item
+                      Command = ecLineEnd
+                      ShortCut = 35
+                    end                  
+                    item
+                      Command = ecSelLineEnd
+                      ShortCut = 8227
+                    end                  
+                    item
+                      Command = ecEditorBottom
+                      ShortCut = 16419
+                    end                  
+                    item
+                      Command = ecSelEditorBottom
+                      ShortCut = 24611
+                    end                  
+                    item
+                      Command = ecToggleMode
+                      ShortCut = 45
+                    end                  
+                    item
+                      Command = ecCopy
+                      ShortCut = 16429
+                    end                  
+                    item
+                      Command = ecPaste
+                      ShortCut = 8237
+                    end                  
+                    item
+                      Command = ecDeleteChar
+                      ShortCut = 46
+                    end                  
+                    item
+                      Command = ecCut
+                      ShortCut = 8238
+                    end                  
+                    item
+                      Command = ecDeleteLastChar
+                      ShortCut = 8
+                    end                  
+                    item
+                      Command = ecDeleteLastChar
+                      ShortCut = 8200
+                    end                  
+                    item
+                      Command = ecDeleteLastWord
+                      ShortCut = 16392
+                    end                  
+                    item
+                      Command = ecUndo
+                      ShortCut = 32776
+                    end                  
+                    item
+                      Command = ecRedo
+                      ShortCut = 40968
+                    end                  
+                    item
+                      Command = ecLineBreak
+                      ShortCut = 13
+                    end                  
+                    item
+                      Command = ecSelectAll
+                      ShortCut = 16449
+                    end                  
+                    item
+                      Command = ecCopy
+                      ShortCut = 16451
+                    end                  
+                    item
+                      Command = ecBlockIndent
+                      ShortCut = 24649
+                    end                  
+                    item
+                      Command = ecLineBreak
+                      ShortCut = 16461
+                    end                  
+                    item
+                      Command = ecInsertLine
+                      ShortCut = 16462
+                    end                  
+                    item
+                      Command = ecDeleteWord
+                      ShortCut = 16468
+                    end                  
+                    item
+                      Command = ecBlockUnindent
+                      ShortCut = 24661
+                    end                  
+                    item
+                      Command = ecPaste
+                      ShortCut = 16470
+                    end                  
+                    item
+                      Command = ecCut
+                      ShortCut = 16472
+                    end                  
+                    item
+                      Command = ecDeleteLine
+                      ShortCut = 16473
+                    end                  
+                    item
+                      Command = ecDeleteEOL
+                      ShortCut = 24665
+                    end                  
+                    item
+                      Command = ecUndo
+                      ShortCut = 16474
+                    end                  
+                    item
+                      Command = ecRedo
+                      ShortCut = 24666
+                    end                  
+                    item
+                      Command = ecGotoMarker0
+                      ShortCut = 16432
+                    end                  
+                    item
+                      Command = ecGotoMarker1
+                      ShortCut = 16433
+                    end                  
+                    item
+                      Command = ecGotoMarker2
+                      ShortCut = 16434
+                    end                  
+                    item
+                      Command = ecGotoMarker3
+                      ShortCut = 16435
+                    end                  
+                    item
+                      Command = ecGotoMarker4
+                      ShortCut = 16436
+                    end                  
+                    item
+                      Command = ecGotoMarker5
+                      ShortCut = 16437
+                    end                  
+                    item
+                      Command = ecGotoMarker6
+                      ShortCut = 16438
+                    end                  
+                    item
+                      Command = ecGotoMarker7
+                      ShortCut = 16439
+                    end                  
+                    item
+                      Command = ecGotoMarker8
+                      ShortCut = 16440
+                    end                  
+                    item
+                      Command = ecGotoMarker9
+                      ShortCut = 16441
+                    end                  
+                    item
+                      Command = ecSetMarker0
+                      ShortCut = 24624
+                    end                  
+                    item
+                      Command = ecSetMarker1
+                      ShortCut = 24625
+                    end                  
+                    item
+                      Command = ecSetMarker2
+                      ShortCut = 24626
+                    end                  
+                    item
+                      Command = ecSetMarker3
+                      ShortCut = 24627
+                    end                  
+                    item
+                      Command = ecSetMarker4
+                      ShortCut = 24628
+                    end                  
+                    item
+                      Command = ecSetMarker5
+                      ShortCut = 24629
+                    end                  
+                    item
+                      Command = ecSetMarker6
+                      ShortCut = 24630
+                    end                  
+                    item
+                      Command = ecSetMarker7
+                      ShortCut = 24631
+                    end                  
+                    item
+                      Command = ecSetMarker8
+                      ShortCut = 24632
+                    end                  
+                    item
+                      Command = ecSetMarker9
+                      ShortCut = 24633
+                    end                  
+                    item
+                      Command = EcFoldLevel1
+                      ShortCut = 41009
+                    end                  
+                    item
+                      Command = EcFoldLevel2
+                      ShortCut = 41010
+                    end                  
+                    item
+                      Command = EcFoldLevel3
+                      ShortCut = 41011
+                    end                  
+                    item
+                      Command = EcFoldLevel4
+                      ShortCut = 41012
+                    end                  
+                    item
+                      Command = EcFoldLevel5
+                      ShortCut = 41013
+                    end                  
+                    item
+                      Command = EcFoldLevel6
+                      ShortCut = 41014
+                    end                  
+                    item
+                      Command = EcFoldLevel7
+                      ShortCut = 41015
+                    end                  
+                    item
+                      Command = EcFoldLevel8
+                      ShortCut = 41016
+                    end                  
+                    item
+                      Command = EcFoldLevel9
+                      ShortCut = 41017
+                    end                  
+                    item
+                      Command = EcFoldLevel0
+                      ShortCut = 41008
+                    end                  
+                    item
+                      Command = EcFoldCurrent
+                      ShortCut = 41005
+                    end                  
+                    item
+                      Command = EcUnFoldCurrent
+                      ShortCut = 41003
+                    end                  
+                    item
+                      Command = EcToggleMarkupWord
+                      ShortCut = 32845
+                    end                  
+                    item
+                      Command = ecNormalSelect
+                      ShortCut = 24654
+                    end                  
+                    item
+                      Command = ecColumnSelect
+                      ShortCut = 24643
+                    end                  
+                    item
+                      Command = ecLineSelect
+                      ShortCut = 24652
+                    end                  
+                    item
+                      Command = ecTab
+                      ShortCut = 9
+                    end                  
+                    item
+                      Command = ecShiftTab
+                      ShortCut = 8201
+                    end                  
+                    item
+                      Command = ecMatchBracket
+                      ShortCut = 24642
+                    end                  
+                    item
+                      Command = ecColSelUp
+                      ShortCut = 40998
+                    end                  
+                    item
+                      Command = ecColSelDown
+                      ShortCut = 41000
+                    end                  
+                    item
+                      Command = ecColSelLeft
+                      ShortCut = 40997
+                    end                  
+                    item
+                      Command = ecColSelRight
+                      ShortCut = 40999
+                    end                  
+                    item
+                      Command = ecColSelPageDown
+                      ShortCut = 40994
+                    end                  
+                    item
+                      Command = ecColSelPageBottom
+                      ShortCut = 57378
+                    end                  
+                    item
+                      Command = ecColSelPageUp
+                      ShortCut = 40993
+                    end                  
+                    item
+                      Command = ecColSelPageTop
+                      ShortCut = 57377
+                    end                  
+                    item
+                      Command = ecColSelLineStart
+                      ShortCut = 40996
+                    end                  
+                    item
+                      Command = ecColSelLineEnd
+                      ShortCut = 40995
+                    end                  
+                    item
+                      Command = ecColSelEditorTop
+                      ShortCut = 57380
+                    end                  
+                    item
+                      Command = ecColSelEditorBottom
+                      ShortCut = 57379
+                    end>
+                  MouseActions = <>
+                  MouseTextActions = <>
+                  MouseSelActions = <>
+                  Lines.Strings = (
+                    'fContent'
+                  )
+                  VisibleSpecialChars = [vscSpace, vscTabAtLast]
+                  SelectedColor.BackPriority = 50
+                  SelectedColor.ForePriority = 50
+                  SelectedColor.FramePriority = 50
+                  SelectedColor.BoldPriority = 50
+                  SelectedColor.ItalicPriority = 50
+                  SelectedColor.UnderlinePriority = 50
+                  SelectedColor.StrikeOutPriority = 50
+                  BracketHighlightStyle = sbhsBoth
+                  BracketMatchColor.Background = clNone
+                  BracketMatchColor.Foreground = clNone
+                  BracketMatchColor.Style = [fsBold]
+                  FoldedCodeColor.Background = clNone
+                  FoldedCodeColor.Foreground = clGray
+                  FoldedCodeColor.FrameColor = clGray
+                  MouseLinkColor.Background = clNone
+                  MouseLinkColor.Foreground = clBlue
+                  LineHighlightColor.Background = clNone
+                  LineHighlightColor.Foreground = clNone
+                  inline SynLeftGutterPartList1: TSynGutterPartList
+                    object SynGutterMarks1: TSynGutterMarks
+                      Width = 24
+                      MouseActions = <>
+                    end
+                    object SynGutterLineNumber1: TSynGutterLineNumber
+                      Width = 17
+                      MouseActions = <>
+                      MarkupInfo.Background = clBtnFace
+                      MarkupInfo.Foreground = clNone
+                      DigitCount = 2
+                      ShowOnlyLineNumbersMultiplesOf = 1
+                      ZeroStart = False
+                      LeadingZeros = False
+                    end
+                    object SynGutterChanges1: TSynGutterChanges
+                      Width = 4
+                      MouseActions = <>
+                      ModifiedColor = 59900
+                      SavedColor = clGreen
+                    end
+                    object SynGutterSeparator1: TSynGutterSeparator
+                      Width = 2
+                      MouseActions = <>
+                      MarkupInfo.Background = clWhite
+                      MarkupInfo.Foreground = clGray
+                    end
+                    object SynGutterCodeFolding1: TSynGutterCodeFolding
+                      MouseActions = <>
+                      MarkupInfo.Background = clNone
+                      MarkupInfo.Foreground = clGray
+                      MouseActionsExpanded = <>
+                      MouseActionsCollapsed = <>
+                    end
+                  end
+                end
+              end
+            end
+            object TabSheet12: TTabSheet
+              Caption = 'Дополнительная информация'
+              ClientHeight = 448
+              ClientWidth = 1140
+              object Panel14: TPanel
+                Left = 0
+                Height = 448
+                Top = 0
+                Width = 1140
+                Align = alClient
+                ClientHeight = 448
+                ClientWidth = 1140
+                ParentColor = False
+                TabOrder = 0
+                object Panel15: TPanel
+                  Left = 1
+                  Height = 446
+                  Top = 1
+                  Width = 1138
+                  Align = alClient
+                  Caption = 'Panel15'
+                  ClientHeight = 446
+                  ClientWidth = 1138
+                  TabOrder = 0
+                  object DBText1: TDBText
+                    Left = 1
+                    Height = 17
+                    Top = 1
+                    Width = 1136
+                    Align = alTop
+                    DataField = 'ufn1'
+                    DataSource = dsPresets
+                    ParentColor = False
+                  end
+                  object dbePageField1: TDBEdit
+                    Left = 1
+                    Height = 31
+                    Top = 18
+                    Width = 1136
+                    DataField = 'uf1'
+                    DataSource = dsPages
+                    Align = alTop
+                    MaxLength = 0
+                    TabOrder = 0
+                  end
+                  object DBText2: TDBText
+                    Left = 1
+                    Height = 17
+                    Top = 49
+                    Width = 1136
+                    Align = alTop
+                    DataField = 'ufn2'
+                    DataSource = dsPresets
+                    ParentColor = False
+                  end
+                  object dbePageField2: TDBEdit
+                    Left = 1
+                    Height = 31
+                    Top = 66
+                    Width = 1136
+                    DataField = 'uf2'
+                    DataSource = dsPages
+                    Align = alTop
+                    MaxLength = 0
+                    TabOrder = 1
+                  end
+                  object DBText3: TDBText
+                    Left = 1
+                    Height = 17
+                    Top = 97
+                    Width = 1136
+                    Align = alTop
+                    DataField = 'ufn3'
+                    DataSource = dsPresets
+                    ParentColor = False
+                  end
+                  object dbePageField3: TDBEdit
+                    Left = 1
+                    Height = 31
+                    Top = 114
+                    Width = 1136
+                    DataField = 'uf3'
+                    DataSource = dsPages
+                    Align = alTop
+                    MaxLength = 0
+                    TabOrder = 2
+                  end
+                  object DBText4: TDBText
+                    Left = 1
+                    Height = 17
+                    Top = 145
+                    Width = 1136
+                    Align = alTop
+                    DataField = 'ufn4'
+                    DataSource = dsPresets
+                    ParentColor = False
+                  end
+                  object dbePageField4: TDBEdit
+                    Left = 1
+                    Height = 31
+                    Top = 162
+                    Width = 1136
+                    DataField = 'uf4'
+                    DataSource = dsPages
+                    Align = alTop
+                    MaxLength = 0
+                    TabOrder = 3
+                  end
+                  object DBText5: TDBText
+                    Left = 1
+                    Height = 17
+                    Top = 193
+                    Width = 1136
+                    Align = alTop
+                    DataField = 'ufn5'
+                    DataSource = dsPresets
+                    ParentColor = False
+                  end
+                  object dbePageField5: TDBEdit
+                    Left = 1
+                    Height = 31
+                    Top = 210
+                    Width = 1136
+                    DataField = 'uf5'
+                    DataSource = dsPages
+                    Align = alTop
+                    MaxLength = 0
+                    TabOrder = 4
+                  end
+                  object DBText6: TDBText
+                    Left = 1
+                    Height = 17
+                    Top = 241
+                    Width = 1136
+                    Align = alTop
+                    DataField = 'ufn6'
+                    DataSource = dsPresets
+                    ParentColor = False
+                  end
+                  object dbePageField6: TDBEdit
+                    Left = 1
+                    Height = 31
+                    Top = 258
+                    Width = 1136
+                    DataField = 'uf6'
+                    DataSource = dsPages
+                    Align = alTop
+                    MaxLength = 0
+                    TabOrder = 5
+                  end
+                  object DBText7: TDBText
+                    Left = 1
+                    Height = 17
+                    Top = 289
+                    Width = 1136
+                    Align = alTop
+                    DataField = 'ufn7'
+                    DataSource = dsPresets
+                    ParentColor = False
+                  end
+                  object dbePageField7: TDBMemo
+                    Left = 1
+                    Height = 36
+                    Top = 306
+                    Width = 1136
+                    Align = alTop
+                    DataField = 'uf6'
+                    DataSource = dsPages
+                    TabOrder = 6
+                  end
+                end
+              end
+            end
+          end
+          object Label17: TLabel
+            Left = 1
+            Height = 17
+            Top = 580
+            Width = 1144
+            Align = alBottom
+            Caption = 'ID категории'
+            ParentColor = False
+          end
+          object DBEdit8: TDBEdit
+            Left = 1
+            Height = 31
+            Top = 597
+            Width = 1144
+            DataField = 'section'
+            DataSource = dsPages
+            Align = alBottom
+            MaxLength = 0
+            TabOrder = 3
+          end
+          object dbNav: TDBNavigator
+            Left = 1
+            Height = 25
+            Top = 628
+            Width = 1144
+            Align = alBottom
+            BevelOuter = bvNone
+            ChildSizing.EnlargeHorizontal = crsScaleChilds
+            ChildSizing.EnlargeVertical = crsScaleChilds
+            ChildSizing.ShrinkHorizontal = crsScaleChilds
+            ChildSizing.ShrinkVertical = crsScaleChilds
+            ChildSizing.Layout = cclLeftToRightThenTopToBottom
+            ChildSizing.ControlsPerLine = 100
+            ClientHeight = 25
+            ClientWidth = 1144
+            DataSource = dsPages
+            Options = []
+            TabOrder = 4
+          end
         end
       end
     end
     object tabSections: TTabSheet
       Caption = 'Разделы'
-      ClientHeight = 490
-      ClientWidth = 918
+      ClientHeight = 656
+      ClientWidth = 1435
       object Panel5: TPanel
         Left = 0
-        Height = 490
+        Height = 656
         Top = 0
-        Width = 918
+        Width = 1435
         Align = alClient
         Caption = 'Panel5'
-        ClientHeight = 490
-        ClientWidth = 918
+        ClientHeight = 656
+        ClientWidth = 1435
         ParentColor = False
         TabOrder = 0
-        object DBEdit5: TDBEdit
-          Left = 164
-          Height = 25
-          Top = 32
-          Width = 696
-          DataField = 'id'
-          DataSource = Datasource4
-          CharCase = ecNormal
-          MaxLength = 0
-          TabOrder = 0
-        end
-        object DBEdit6: TDBEdit
-          Left = 164
-          Height = 25
-          Top = 88
-          Width = 696
-          DataField = 'section'
-          DataSource = Datasource4
-          CharCase = ecNormal
-          MaxLength = 0
-          TabOrder = 1
-        end
-        object DBMemo5: TDBMemo
-          Left = 164
-          Height = 250
-          Top = 144
-          Width = 696
-          DataField = 'note'
-          DataSource = Datasource4
-          TabOrder = 2
-        end
-        object DBEdit7: TDBEdit
-          Left = 164
-          Height = 25
-          Top = 424
-          Width = 696
-          DataField = 'preset'
-          DataSource = Datasource4
-          CharCase = ecNormal
-          MaxLength = 0
-          TabOrder = 3
-        end
-        object Label13: TLabel
-          Left = 172
-          Height = 17
-          Top = 8
-          Width = 69
-          Caption = 'ID раздела'
-          ParentColor = False
-        end
-        object Label14: TLabel
-          Left = 172
-          Height = 17
-          Top = 62
-          Width = 112
-          Caption = 'Название раздела'
-          ParentColor = False
-        end
-        object Label15: TLabel
-          Left = 172
-          Height = 17
-          Top = 118
-          Width = 142
-          Caption = 'Примечания к разделу'
-          ParentColor = False
-        end
-        object Label16: TLabel
-          Left = 172
-          Height = 17
-          Top = 408
-          Width = 46
-          Caption = 'Пресет'
-          ParentColor = False
-        end
-        object DBNavigator3: TDBNavigator
-          Left = 164
-          Height = 25
-          Top = 456
-          Width = 241
-          BevelOuter = bvNone
-          ChildSizing.EnlargeHorizontal = crsScaleChilds
-          ChildSizing.EnlargeVertical = crsScaleChilds
-          ChildSizing.ShrinkHorizontal = crsScaleChilds
-          ChildSizing.ShrinkVertical = crsScaleChilds
-          ChildSizing.Layout = cclLeftToRightThenTopToBottom
-          ChildSizing.ControlsPerLine = 100
-          ClientHeight = 25
-          ClientWidth = 241
-          DataSource = Datasource4
-          Options = []
-          TabOrder = 4
-        end
         object DBLookupListBox2: TDBLookupListBox
-          Left = 4
-          Height = 473
-          Top = 8
-          Width = 152
+          Left = 1
+          Height = 654
+          Top = 1
+          Width = 296
+          Align = alLeft
           KeyField = 'id'
           ListField = 'section'
           ListFieldIndex = 0
-          ListSource = Datasource4
+          ListSource = dsSections
           LookupCache = False
           OnClick = DBLookupListBox2Click
-          TabOrder = 5
+          TabOrder = 0
+        end
+        object Panel19: TPanel
+          Left = 297
+          Height = 654
+          Top = 1
+          Width = 1137
+          Align = alClient
+          Caption = 'Panel19'
+          ClientHeight = 654
+          ClientWidth = 1137
+          TabOrder = 1
+          object Label13: TLabel
+            Left = 1
+            Height = 17
+            Top = 1
+            Width = 1135
+            Align = alTop
+            Caption = 'ID раздела'
+            ParentColor = False
+          end
+          object dbeSectionId: TDBEdit
+            Left = 1
+            Height = 31
+            Top = 18
+            Width = 1135
+            DataField = 'id'
+            DataSource = dsSections
+            Align = alTop
+            MaxLength = 0
+            TabOrder = 0
+          end
+          object Label14: TLabel
+            Left = 1
+            Height = 17
+            Top = 49
+            Width = 1135
+            Align = alTop
+            Caption = 'Название раздела'
+            ParentColor = False
+          end
+          object dbeSectionCaption: TDBEdit
+            Left = 1
+            Height = 31
+            Top = 66
+            Width = 1135
+            DataField = 'section'
+            DataSource = dsSections
+            Align = alTop
+            MaxLength = 0
+            TabOrder = 1
+          end
+          object Label15: TLabel
+            Left = 1
+            Height = 17
+            Top = 97
+            Width = 1135
+            Align = alTop
+            Caption = 'Примечания к разделу'
+            ParentColor = False
+          end
+          object dbmSectionNote: TDBMemo
+            Left = 1
+            Height = 466
+            Top = 114
+            Width = 1135
+            Align = alClient
+            DataField = 'note'
+            DataSource = dsSections
+            TabOrder = 2
+          end
+          object Label16: TLabel
+            Left = 1
+            Height = 17
+            Top = 580
+            Width = 1135
+            Align = alBottom
+            Caption = 'Пресет'
+            ParentColor = False
+          end
+          object DBEdit7: TDBEdit
+            Left = 1
+            Height = 31
+            Top = 597
+            Width = 1135
+            DataField = 'preset'
+            DataSource = dsSections
+            Align = alBottom
+            MaxLength = 0
+            TabOrder = 3
+          end
+          object DBNavigator3: TDBNavigator
+            Left = 1
+            Height = 25
+            Top = 628
+            Width = 1135
+            Align = alBottom
+            BevelOuter = bvNone
+            ChildSizing.EnlargeHorizontal = crsScaleChilds
+            ChildSizing.EnlargeVertical = crsScaleChilds
+            ChildSizing.ShrinkHorizontal = crsScaleChilds
+            ChildSizing.ShrinkVertical = crsScaleChilds
+            ChildSizing.Layout = cclLeftToRightThenTopToBottom
+            ChildSizing.ControlsPerLine = 100
+            ClientHeight = 25
+            ClientWidth = 1135
+            DataSource = dsSections
+            Options = []
+            TabOrder = 4
+          end
         end
       end
     end
     object tabGlobalBlocks: TTabSheet
       Caption = 'Глобальные блоки'
-      ClientHeight = 490
-      ClientWidth = 918
+      ClientHeight = 656
+      ClientWidth = 1435
       object Panel4: TPanel
         Left = 0
-        Height = 490
+        Height = 656
         Top = 0
-        Width = 918
+        Width = 1435
         Align = alClient
         Caption = 'Panel4'
-        ClientHeight = 490
-        ClientWidth = 918
+        ClientHeight = 656
+        ClientWidth = 1435
         ParentColor = False
         TabOrder = 0
-        object DBEdit1: TDBEdit
-          Left = 108
-          Height = 25
-          Top = 30
-          Width = 752
-          DataField = 'id'
-          DataSource = Datasource2
-          CharCase = ecNormal
-          MaxLength = 0
-          TabOrder = 0
-        end
-        object DBMemo1: TDBMemo
-          Left = 108
-          Height = 56
-          Top = 86
-          Width = 752
-          DataField = 'remark'
-          DataSource = Datasource2
-          ScrollBars = ssAutoBoth
-          TabOrder = 1
-        end
-        object DBMemo2: TDBMemo
-          Left = 108
-          Height = 280
-          Top = 176
-          Width = 752
-          DataField = 'markup'
-          DataSource = Datasource2
-          ScrollBars = ssAutoBoth
-          TabOrder = 2
-        end
-        object DBNavigator1: TDBNavigator
-          Left = 108
-          Height = 25
-          Top = 462
-          Width = 241
-          BevelOuter = bvNone
-          ChildSizing.EnlargeHorizontal = crsScaleChilds
-          ChildSizing.EnlargeVertical = crsScaleChilds
-          ChildSizing.ShrinkHorizontal = crsScaleChilds
-          ChildSizing.ShrinkVertical = crsScaleChilds
-          ChildSizing.Layout = cclLeftToRightThenTopToBottom
-          ChildSizing.ControlsPerLine = 100
-          ClientHeight = 25
-          ClientWidth = 241
-          DataSource = Datasource2
-          Options = []
-          TabOrder = 3
-        end
-        object Label7: TLabel
-          Left = 116
-          Height = 17
-          Top = 8
-          Width = 56
-          Caption = 'ID блока'
-          ParentColor = False
-        end
-        object Label8: TLabel
-          Left = 116
-          Height = 17
-          Top = 56
-          Width = 129
-          Caption = 'Примечание к блоку'
-          ParentColor = False
-        end
-        object Label9: TLabel
-          Left = 116
-          Height = 17
-          Top = 152
-          Width = 143
-          Caption = 'HTML разметка блока'
-          ParentColor = False
-        end
         object DBLookupListBox3: TDBLookupListBox
-          Left = 4
-          Height = 479
-          Top = 8
-          Width = 100
+          Left = 1
+          Height = 654
+          Top = 1
+          Width = 268
+          Align = alLeft
           KeyField = 'id'
           ListField = 'id'
           ListFieldIndex = 0
-          ListSource = Datasource2
+          ListSource = dsBlocks
           LookupCache = False
           OnClick = DBLookupListBox3Click
-          TabOrder = 4
+          TabOrder = 0
+        end
+        object Panel20: TPanel
+          Left = 269
+          Height = 654
+          Top = 1
+          Width = 1165
+          Align = alClient
+          Caption = 'Panel20'
+          ClientHeight = 654
+          ClientWidth = 1165
+          TabOrder = 1
+          object Label7: TLabel
+            Left = 1
+            Height = 17
+            Top = 1
+            Width = 1163
+            Align = alTop
+            Caption = 'ID блока'
+            ParentColor = False
+          end
+          object dbeBlockId: TDBEdit
+            Left = 1
+            Height = 31
+            Top = 18
+            Width = 1163
+            DataField = 'id'
+            DataSource = dsBlocks
+            Align = alTop
+            MaxLength = 0
+            TabOrder = 0
+          end
+          object Label8: TLabel
+            Left = 1
+            Height = 17
+            Top = 49
+            Width = 1163
+            Align = alTop
+            Caption = 'Примечание к блоку'
+            ParentColor = False
+          end
+          object dbeBlockNote: TDBMemo
+            Left = 1
+            Height = 56
+            Top = 66
+            Width = 1163
+            Align = alTop
+            DataField = 'remark'
+            DataSource = dsBlocks
+            ScrollBars = ssAutoBoth
+            TabOrder = 1
+          end
+          object Label9: TLabel
+            Left = 1
+            Height = 17
+            Top = 122
+            Width = 1163
+            Align = alTop
+            Caption = 'HTML разметка блока'
+            ParentColor = False
+          end
+          object dbeBlockHtml: TDBMemo
+            Left = 1
+            Height = 489
+            Top = 139
+            Width = 1163
+            Align = alClient
+            DataField = 'markup'
+            DataSource = dsBlocks
+            ScrollBars = ssAutoBoth
+            TabOrder = 2
+          end
+          object DBNavigator1: TDBNavigator
+            Left = 1
+            Height = 25
+            Top = 628
+            Width = 1163
+            Align = alBottom
+            BevelOuter = bvNone
+            ChildSizing.EnlargeHorizontal = crsScaleChilds
+            ChildSizing.EnlargeVertical = crsScaleChilds
+            ChildSizing.ShrinkHorizontal = crsScaleChilds
+            ChildSizing.ShrinkVertical = crsScaleChilds
+            ChildSizing.Layout = cclLeftToRightThenTopToBottom
+            ChildSizing.ControlsPerLine = 100
+            ClientHeight = 25
+            ClientWidth = 1163
+            DataSource = dsBlocks
+            Options = []
+            TabOrder = 3
+          end
         end
       end
     end
     object tabCommonSettings: TTabSheet
       Caption = 'Общие настройки'
-      ClientHeight = 490
-      ClientWidth = 918
+      ClientHeight = 656
+      ClientWidth = 1435
       object Panel2: TPanel
         Left = 0
-        Height = 490
+        Height = 656
         Top = 0
-        Width = 918
+        Width = 1435
         Align = alClient
         Caption = 'Общие настройки'
-        ClientHeight = 490
-        ClientWidth = 918
+        ClientHeight = 656
+        ClientWidth = 1435
         ParentColor = False
         TabOrder = 0
-        object Label3: TLabel
-          Left = 132
-          Height = 17
-          Top = 112
-          Width = 51
-          Caption = 'Каталог'
-          ParentColor = False
-        end
-        object Buffer: TMemo
-          Left = 676
-          Height = 18
-          Top = 6
-          Width = 16
-          Lines.Strings = (
-            'B'
-            'u'
-            'f'
-            'f'
-            'e'
-            'r'
-          )
+        object DBLookupListBox4: TDBLookupListBox
+          Left = 1
+          Height = 654
+          Top = 1
+          Width = 184
+          Align = alLeft
+          KeyField = 'id'
+          ListField = 'id'
+          ListFieldIndex = 0
+          ListSource = dsPresets
+          LookupCache = False
+          OnClick = DBLookupListBox4Click
           TabOrder = 0
-          Visible = False
         end
-        object DBEdit2: TDBEdit
-          Left = 116
-          Height = 25
-          Top = 30
-          Width = 744
-          DataField = 'id'
-          DataSource = Datasource3
-          CharCase = ecNormal
-          MaxLength = 0
+        object Panel21: TPanel
+          Left = 185
+          Height = 654
+          Top = 1
+          Width = 1249
+          Align = alClient
+          ClientHeight = 654
+          ClientWidth = 1249
           TabOrder = 1
-        end
-        object DBEdit3: TDBEdit
-          Left = 116
-          Height = 25
-          Top = 86
-          Width = 744
-          DataField = 'sitename'
-          DataSource = Datasource3
-          CharCase = ecNormal
-          MaxLength = 0
-          TabOrder = 2
-        end
-        object DBEdit4: TDBEdit
-          Left = 116
-          Height = 25
-          Top = 134
-          Width = 744
-          DataField = 'dirpath'
-          DataSource = Datasource3
-          CharCase = ecNormal
-          MaxLength = 0
-          TabOrder = 3
-        end
-        object Label10: TLabel
-          Left = 132
-          Height = 17
-          Top = 6
-          Width = 46
-          Caption = 'Пресет'
-          ParentColor = False
-        end
-        object Label11: TLabel
-          Left = 132
-          Height = 17
-          Top = 64
-          Width = 98
-          Caption = 'Название сайта'
-          ParentColor = False
-        end
-        object DBNavigator2: TDBNavigator
-          Left = 116
-          Height = 25
-          Top = 454
-          Width = 241
-          BevelOuter = bvNone
-          ChildSizing.EnlargeHorizontal = crsScaleChilds
-          ChildSizing.EnlargeVertical = crsScaleChilds
-          ChildSizing.ShrinkHorizontal = crsScaleChilds
-          ChildSizing.ShrinkVertical = crsScaleChilds
-          ChildSizing.Layout = cclLeftToRightThenTopToBottom
-          ChildSizing.ControlsPerLine = 100
-          ClientHeight = 25
-          ClientWidth = 241
-          DataSource = Datasource3
-          Options = []
-          TabOrder = 4
-        end
-        object Panel7: TPanel
-          Left = 116
-          Height = 274
-          Top = 168
-          Width = 744
-          Caption = 'Panel7'
-          ClientHeight = 274
-          ClientWidth = 744
-          TabOrder = 5
+          object Label10: TLabel
+            Left = 1
+            Height = 17
+            Top = 1
+            Width = 1247
+            Align = alTop
+            Caption = 'Пресет'
+            ParentColor = False
+          end
+          object dbePreset: TDBEdit
+            Left = 1
+            Height = 31
+            Top = 18
+            Width = 1247
+            DataField = 'id'
+            DataSource = dsPresets
+            Align = alTop
+            MaxLength = 0
+            TabOrder = 0
+          end
+          object Label11: TLabel
+            Left = 1
+            Height = 17
+            Top = 49
+            Width = 1247
+            Align = alTop
+            Caption = 'Название сайта'
+            ParentColor = False
+          end
+          object dbeSiteName: TDBEdit
+            Left = 1
+            Height = 31
+            Top = 66
+            Width = 1247
+            DataField = 'sitename'
+            DataSource = dsPresets
+            Align = alTop
+            MaxLength = 0
+            TabOrder = 1
+          end
+          object Label3: TLabel
+            Left = 1
+            Height = 17
+            Top = 97
+            Width = 1247
+            Align = alTop
+            Caption = 'Каталог'
+            ParentColor = False
+          end
+          object dbeSiteDirectory: TDBEdit
+            Left = 1
+            Height = 31
+            Top = 114
+            Width = 1247
+            DataField = 'dirpath'
+            DataSource = dsPresets
+            Align = alTop
+            MaxLength = 0
+            TabOrder = 2
+          end
           object PageControl2: TPageControl
             Left = 1
-            Height = 272
-            Top = 1
-            Width = 742
-            ActivePage = TabSheet6
+            Height = 483
+            Top = 145
+            Width = 1247
+            ActivePage = TabSheet13
             Align = alClient
-            TabIndex = 0
-            TabOrder = 0
+            TabIndex = 4
+            TabOrder = 3
             object TabSheet6: TTabSheet
               Caption = 'Заголовок'
-              ClientHeight = 242
-              ClientWidth = 734
+              ClientHeight = 449
+              ClientWidth = 1243
               object Panel8: TPanel
                 Left = 0
-                Height = 242
+                Height = 449
                 Top = 0
-                Width = 734
+                Width = 1243
                 Align = alClient
                 Caption = 'Panel8'
-                ClientHeight = 242
-                ClientWidth = 734
+                ClientHeight = 449
+                ClientWidth = 1243
                 ParentColor = False
                 TabOrder = 0
                 object Label5: TLabel
                   Left = 1
                   Height = 17
                   Top = 1
-                  Width = 732
+                  Width = 1241
                   Align = alTop
                   Caption = 'Шаблон секции HEAD'
                   ParentColor = False
                 end
-                object dbmTemplateOfHead: TDBMemo
+                object dbmHeadTemplate: TDBMemo
                   Left = 1
-                  Height = 223
+                  Height = 430
                   Top = 18
-                  Width = 732
+                  Width = 1241
                   Align = alClient
                   DataField = 'headtpl'
-                  DataSource = Datasource3
+                  DataSource = dsPresets
                   ScrollBars = ssAutoBoth
                   TabOrder = 0
                 end
@@ -1317,36 +1370,36 @@ object Form1: TForm1
             end
             object TabSheet7: TTabSheet
               Caption = 'Документ'
-              ClientHeight = 243
-              ClientWidth = 734
+              ClientHeight = 449
+              ClientWidth = 1243
               object Panel9: TPanel
                 Left = 0
-                Height = 243
+                Height = 449
                 Top = 0
-                Width = 734
+                Width = 1243
                 Align = alClient
                 Caption = 'Panel9'
-                ClientHeight = 243
-                ClientWidth = 734
+                ClientHeight = 449
+                ClientWidth = 1243
                 ParentColor = False
                 TabOrder = 0
                 object Label6: TLabel
                   Left = 1
-                  Height = 16
+                  Height = 17
                   Top = 1
-                  Width = 732
+                  Width = 1241
                   Align = alTop
                   Caption = 'Шаблон секции BODY отдельной страницы'
                   ParentColor = False
                 end
-                object dbmTemplateOfBody: TDBMemo
+                object dbmBodyPagesTemplate: TDBMemo
                   Left = 1
-                  Height = 225
-                  Top = 17
-                  Width = 732
+                  Height = 430
+                  Top = 18
+                  Width = 1241
                   Align = alClient
                   DataField = 'bodytpl'
-                  DataSource = Datasource3
+                  DataSource = dsPresets
                   ScrollBars = ssAutoBoth
                   TabOrder = 0
                 end
@@ -1354,559 +1407,668 @@ object Form1: TForm1
             end
             object TabSheet8: TTabSheet
               Caption = 'Раздел'
-              ClientHeight = 243
-              ClientWidth = 734
+              ClientHeight = 449
+              ClientWidth = 1243
               object Panel10: TPanel
                 Left = 0
-                Height = 243
+                Height = 449
                 Top = 0
-                Width = 734
+                Width = 1243
                 Align = alClient
                 Caption = 'Panel10'
-                ClientHeight = 243
-                ClientWidth = 734
+                ClientHeight = 449
+                ClientWidth = 1243
                 ParentColor = False
                 TabOrder = 0
                 object Label18: TLabel
                   Left = 1
-                  Height = 16
+                  Height = 17
                   Top = 1
-                  Width = 732
+                  Width = 1241
                   Align = alTop
                   Caption = 'Шаблон BODY для оформления списка статей в категории'
                   ParentColor = False
                 end
-                object dbmTemplateOfSection: TDBMemo
+                object dbmBodySectionsTemplate: TDBMemo
                   Left = 1
-                  Height = 225
-                  Top = 17
-                  Width = 732
+                  Height = 430
+                  Top = 18
+                  Width = 1241
                   Align = alClient
                   DataField = 'sectiontpl'
-                  DataSource = Datasource3
+                  DataSource = dsPresets
                   TabOrder = 0
                 end
               end
             end
             object TabSheet9: TTabSheet
               Caption = 'Элемент раздела'
-              ClientHeight = 243
-              ClientWidth = 734
+              ClientHeight = 449
+              ClientWidth = 1243
               object Panel11: TPanel
                 Left = 0
-                Height = 243
+                Height = 449
                 Top = 0
-                Width = 734
+                Width = 1243
                 Align = alClient
                 Caption = 'Panel11'
-                ClientHeight = 243
-                ClientWidth = 734
+                ClientHeight = 449
+                ClientWidth = 1243
                 ParentColor = False
                 TabOrder = 0
                 object Label19: TLabel
                   Left = 1
-                  Height = 16
+                  Height = 17
                   Top = 1
-                  Width = 732
+                  Width = 1241
                   Align = alTop
                   Caption = 'Оформление элемента раздела'
                   ParentColor = False
                 end
-                object dbmTemplateOfItem: TDBMemo
+                object dbmItemListTemplate: TDBMemo
                   Left = 1
-                  Height = 225
-                  Top = 17
-                  Width = 732
+                  Height = 430
+                  Top = 18
+                  Width = 1241
                   Align = alClient
                   DataField = 'itemtpl'
-                  DataSource = Datasource3
+                  DataSource = dsPresets
                   TabOrder = 0
                 end
               end
             end
             object TabSheet13: TTabSheet
               Caption = 'Пользовательские поля'
-              ClientHeight = 268
-              ClientWidth = 738
-              object Panel15: TPanel
+              ClientHeight = 449
+              ClientWidth = 1243
+              object dbeUserField7: TPanel
                 Left = 0
-                Height = 244
+                Height = 449
                 Top = 0
-                Width = 734
+                Width = 1243
                 Align = alClient
-                ClientHeight = 244
-                ClientWidth = 734
+                ClientHeight = 449
+                ClientWidth = 1243
                 ParentColor = False
                 TabOrder = 0
-                object DBEdit15: TDBEdit
+                object dbeUserField1: TDBEdit
                   Left = 35
-                  Height = 23
+                  Height = 31
                   Top = 9
                   Width = 680
                   DataField = 'ufn1'
-                  DataSource = Datasource3
-                  CharCase = ecNormal
+                  DataSource = dsPresets
                   MaxLength = 0
                   TabOrder = 0
                 end
-                object DBEdit16: TDBEdit
+                object dbeUserField2: TDBEdit
                   Left = 35
-                  Height = 23
+                  Height = 31
                   Top = 41
                   Width = 680
                   DataField = 'ufn2'
-                  DataSource = Datasource3
-                  CharCase = ecNormal
+                  DataSource = dsPresets
                   MaxLength = 0
                   TabOrder = 1
                 end
-                object DBEdit17: TDBEdit
+                object dbeUserField3: TDBEdit
                   Left = 35
-                  Height = 23
+                  Height = 31
                   Top = 73
                   Width = 680
                   DataField = 'ufn3'
-                  DataSource = Datasource3
-                  CharCase = ecNormal
+                  DataSource = dsPresets
                   MaxLength = 0
                   TabOrder = 2
                 end
-                object DBEdit18: TDBEdit
+                object dbeUserField4: TDBEdit
                   Left = 35
-                  Height = 23
+                  Height = 31
                   Top = 105
                   Width = 680
                   DataField = 'ufn4'
-                  DataSource = Datasource3
-                  CharCase = ecNormal
+                  DataSource = dsPresets
                   MaxLength = 0
                   TabOrder = 3
                 end
-                object DBEdit19: TDBEdit
+                object dbeUserField5: TDBEdit
                   Left = 35
-                  Height = 23
+                  Height = 31
                   Top = 137
                   Width = 680
                   DataField = 'ufn5'
-                  DataSource = Datasource3
-                  CharCase = ecNormal
+                  DataSource = dsPresets
                   MaxLength = 0
                   TabOrder = 4
                 end
-                object DBEdit20: TDBEdit
+                object dbeUserField6: TDBEdit
                   Left = 35
-                  Height = 23
+                  Height = 31
                   Top = 169
                   Width = 680
                   DataField = 'ufn6'
-                  DataSource = Datasource3
-                  CharCase = ecNormal
+                  DataSource = dsPresets
                   MaxLength = 0
                   TabOrder = 5
                 end
                 object DBEdit21: TDBEdit
                   Left = 35
-                  Height = 23
+                  Height = 31
                   Top = 201
                   Width = 680
                   DataField = 'ufn7'
-                  DataSource = Datasource3
-                  CharCase = ecNormal
+                  DataSource = dsPresets
                   MaxLength = 0
                   TabOrder = 6
                 end
                 object Label27: TLabel
                   Left = 13
-                  Height = 16
+                  Height = 17
                   Top = 16
-                  Width = 10
+                  Width = 13
                   Caption = '1.'
                   ParentColor = False
                 end
                 object Label28: TLabel
                   Left = 13
-                  Height = 16
+                  Height = 17
                   Top = 48
-                  Width = 10
+                  Width = 13
                   Caption = '2.'
                   ParentColor = False
                 end
                 object Label29: TLabel
                   Left = 13
-                  Height = 16
+                  Height = 17
                   Top = 80
-                  Width = 10
+                  Width = 13
                   Caption = '3.'
                   ParentColor = False
                 end
                 object Label30: TLabel
                   Left = 11
-                  Height = 16
+                  Height = 17
                   Top = 112
-                  Width = 10
+                  Width = 13
                   Caption = '4.'
                   ParentColor = False
                 end
                 object Label31: TLabel
                   Left = 11
-                  Height = 16
+                  Height = 17
                   Top = 146
-                  Width = 10
+                  Width = 13
                   Caption = '5.'
                   ParentColor = False
                 end
                 object Label32: TLabel
                   Left = 11
-                  Height = 16
+                  Height = 17
                   Top = 176
-                  Width = 10
+                  Width = 13
                   Caption = '6.'
                   ParentColor = False
                 end
                 object Label33: TLabel
                   Left = 11
-                  Height = 16
+                  Height = 17
                   Top = 208
-                  Width = 10
+                  Width = 13
                   Caption = '7.'
                   ParentColor = False
                 end
               end
             end
           end
-        end
-        object DBLookupListBox4: TDBLookupListBox
-          Left = 4
-          Height = 471
-          Top = 8
-          Width = 104
-          KeyField = 'id'
-          ListField = 'id'
-          ListFieldIndex = 0
-          ListSource = Datasource3
-          LookupCache = False
-          OnClick = DBLookupListBox4Click
-          TabOrder = 6
-        end
-        object btnLoad: TButton
-          Left = 376
-          Height = 31
-          Top = 448
-          Width = 94
-          Caption = 'Импорт...'
-          OnClick = btnLoadClick
-          TabOrder = 7
+          object DBNavigator2: TDBNavigator
+            Left = 1
+            Height = 25
+            Top = 628
+            Width = 1247
+            Align = alBottom
+            BevelOuter = bvNone
+            ChildSizing.EnlargeHorizontal = crsScaleChilds
+            ChildSizing.EnlargeVertical = crsScaleChilds
+            ChildSizing.ShrinkHorizontal = crsScaleChilds
+            ChildSizing.ShrinkVertical = crsScaleChilds
+            ChildSizing.Layout = cclLeftToRightThenTopToBottom
+            ChildSizing.ControlsPerLine = 100
+            ClientHeight = 25
+            ClientWidth = 1247
+            DataSource = dsPresets
+            Options = []
+            TabOrder = 4
+          end
         end
       end
     end
     object tabSpecial: TTabSheet
       Caption = 'Специальное'
-      ClientHeight = 490
-      ClientWidth = 918
+      ClientHeight = 656
+      ClientWidth = 1435
       object Panel17: TPanel
         Left = 0
-        Height = 490
+        Height = 656
         Top = 0
-        Width = 918
+        Width = 1435
         Align = alClient
-        ClientHeight = 490
-        ClientWidth = 918
+        ClientHeight = 656
+        ClientWidth = 1435
         ParentColor = False
         ParentFont = False
         TabOrder = 0
-        object PrefferedExtension: TComboBox
-          Left = 12
-          Height = 21
-          Top = 32
-          Width = 100
-          ItemHeight = 13
-          ItemIndex = 0
-          Items.Strings = (
-            'htm'
-            'html'
-          )
+        object Panel22: TPanel
+          Left = 1
+          Height = 654
+          Top = 1
+          Width = 1433
+          Align = alClient
+          ClientHeight = 654
+          ClientWidth = 1433
           TabOrder = 0
-          Text = 'htm'
-        end
-        object Label25: TLabel
-          Left = 12
-          Height = 17
-          Top = 8
-          Width = 76
-          Caption = 'Расширение'
-          ParentColor = False
-        end
-        object ZipArchiverPath: TEdit
-          Left = 12
-          Height = 25
-          Top = 88
-          Width = 544
-          TabOrder = 1
-          Text = 'c:\Program Files\7-Zip\7z.exe a -r '
-        end
-        object Label26: TLabel
-          Left = 12
-          Height = 17
-          Top = 63
-          Width = 247
-          Caption = 'Командная строка для архивации сайта'
-          ParentColor = False
-        end
-        object Label34: TLabel
-          Left = 12
-          Height = 17
-          Top = 120
-          Width = 161
-          Caption = 'Локализация / Localization'
-          ParentColor = False
-        end
-        object cboLocale: TComboBox
-          Left = 12
-          Height = 21
-          Top = 144
-          Width = 541
-          ItemHeight = 13
-          ItemIndex = 0
-          Items.Strings = (
-            'Русский - Russian'
-            'Английский - English'
-          )
-          OnChange = cboLocaleChange
-          TabOrder = 2
-          Text = 'Русский - Russian'
-        end
-        object chkUseModules: TCheckBox
-          Left = 12
-          Height = 21
-          Top = 184
-          Width = 159
-          Caption = 'Использовать модули'
-          TabOrder = 3
-        end
-        object chkGetBlocksFromFile: TCheckBox
-          Left = 12
-          Height = 21
-          Top = 216
-          Width = 352
-          Caption = 'Глобальные блоки из файлов txt в текущем каталоге'
-          TabOrder = 4
+          object Label25: TLabel
+            Left = 1
+            Height = 17
+            Top = 1
+            Width = 1431
+            Align = alTop
+            Caption = 'Расширение'
+            ParentColor = False
+          end
+          object PrefferedExtension: TComboBox
+            Left = 1
+            Height = 31
+            Top = 18
+            Width = 1431
+            Align = alTop
+            ItemHeight = 23
+            ItemIndex = 1
+            Items.Strings = (
+              'htm'
+              'html'
+            )
+            TabOrder = 0
+            Text = 'html'
+          end
+          object Label26: TLabel
+            Left = 1
+            Height = 17
+            Top = 49
+            Width = 1431
+            Align = alTop
+            Caption = 'Командная строка для архивации сайта'
+            ParentColor = False
+          end
+          object ZipArchiverCommand: TEdit
+            Left = 1
+            Height = 31
+            Top = 66
+            Width = 1431
+            Align = alTop
+            TabOrder = 1
+            Text = '/bin/bash -c "zip {DEST}/{ZIPNAME} {DIR} -rj"'
+          end
+          object Label34: TLabel
+            Left = 1
+            Height = 17
+            Top = 97
+            Width = 1431
+            Align = alTop
+            Caption = 'Локализация / Localization'
+            ParentColor = False
+          end
+          object cboLocale: TComboBox
+            Left = 1
+            Height = 31
+            Top = 114
+            Width = 1431
+            Align = alTop
+            ItemHeight = 23
+            ItemIndex = 0
+            Items.Strings = (
+              'Русский - Russian'
+              'Английский - English'
+            )
+            OnChange = cboLocaleChange
+            TabOrder = 2
+            Text = 'Русский - Russian'
+          end
+          object edItemsPerPage: TEdit
+            Left = 1
+            Height = 31
+            Top = 162
+            Width = 1431
+            Align = alTop
+            TabOrder = 3
+            Text = '7'
+          end
+          object lbItemsPerPage: TLabel
+            Left = 1
+            Height = 17
+            Top = 145
+            Width = 1431
+            Align = alTop
+            Caption = 'Число записей в разделе'
+            ParentColor = False
+          end
+          object lbFileManager: TLabel
+            Left = 1
+            Height = 17
+            Top = 193
+            Width = 1431
+            Align = alTop
+            Caption = 'Файловый менеджер'
+            ParentColor = False
+          end
+          object edFileManager: TEdit
+            Left = 1
+            Height = 31
+            Top = 210
+            Width = 1431
+            Align = alTop
+            TabOrder = 4
+            Text = 'dolphin'
+          end
+          object lbPathToBuild: TLabel
+            Left = 1
+            Height = 17
+            Top = 241
+            Width = 1431
+            Align = alTop
+            Caption = 'Путь к архиву со сборкой'
+            ParentColor = False
+          end
+          object edPathToBuild: TEdit
+            Left = 1
+            Height = 31
+            Top = 258
+            Width = 1431
+            Align = alTop
+            TabOrder = 5
+            Text = '/home'
+          end
+          object lbArchiveName: TLabel
+            Left = 1
+            Height = 17
+            Top = 289
+            Width = 1431
+            Align = alTop
+            Caption = 'Имя архива'
+            ParentColor = False
+          end
+          object edArchiveName: TEdit
+            Left = 1
+            Height = 31
+            Top = 306
+            Width = 1431
+            Align = alTop
+            TabOrder = 6
+            Text = 'site.zip'
+          end
         end
       end
     end
     object tabUpdateByFTP: TTabSheet
       Caption = 'Обновление по FTP'
-      ClientHeight = 490
-      ClientWidth = 918
+      ClientHeight = 656
+      ClientWidth = 1435
       object Panel16: TPanel
         Left = 0
-        Height = 490
+        Height = 656
         Top = 0
-        Width = 918
+        Width = 1435
         Align = alClient
-        ClientHeight = 490
-        ClientWidth = 918
+        ClientHeight = 656
+        ClientWidth = 1435
         ParentColor = False
         TabOrder = 0
-        object Label21: TLabel
-          Left = 172
-          Height = 17
-          Top = 8
-          Width = 32
-          Caption = 'Порт'
-          ParentColor = False
-        end
-        object edFtpPort: TEdit
-          Left = 172
-          Height = 25
-          Top = 32
-          Width = 64
+        object Panel7: TPanel
+          Left = 1
+          Height = 654
+          Top = 1
+          Width = 1433
+          Align = alClient
+          Caption = 'Panel7'
+          ClientHeight = 654
+          ClientWidth = 1433
           TabOrder = 0
-          Text = '21'
-        end
-        object edFtpIP: TEdit
-          Left = 12
-          Height = 25
-          Top = 32
-          Width = 144
-          TabOrder = 1
-          Text = '127.0.0.1'
-        end
-        object Label2: TLabel
-          Left = 12
-          Height = 17
-          Top = 8
-          Width = 14
-          Caption = 'IP'
-          ParentColor = False
-        end
-        object Label22: TLabel
-          Left = 284
-          Height = 17
-          Top = 8
-          Width = 115
-          Caption = 'Имя пользователя'
-          ParentColor = False
-        end
-        object edFtpUsername: TEdit
-          Left = 284
-          Height = 25
-          Top = 32
-          Width = 232
-          TabOrder = 2
-          Text = 'testuser'
-        end
-        object Label23: TLabel
-          Left = 580
-          Height = 17
-          Top = 8
-          Width = 46
-          Caption = 'Пароль'
-          ParentColor = False
-        end
-        object edFtpPassword: TEdit
-          Left = 572
-          Height = 25
-          Top = 32
-          Width = 232
-          TabOrder = 3
-          Text = 'testuser'
-        end
-        object btFtpUpdate: TButton
-          Left = 12
-          Height = 25
-          Top = 64
-          Width = 107
-          Caption = 'Обновление...'
-          OnClick = btFtpUpdateClick
-          TabOrder = 4
-        end
-        object mmFtpLog: TMemo
-          Left = 8
-          Height = 360
-          Top = 112
-          Width = 848
-          ScrollBars = ssBoth
-          TabOrder = 5
-        end
-        object Label24: TLabel
-          Left = 360
-          Height = 17
-          Top = 88
-          Width = 127
-          Caption = 'Лог FTP обновления'
-          ParentColor = False
+          object Label2: TLabel
+            Left = 1
+            Height = 17
+            Top = 1
+            Width = 1431
+            Align = alTop
+            Caption = 'IP'
+            ParentColor = False
+          end
+          object edFtpIP: TEdit
+            Left = 1
+            Height = 31
+            Top = 18
+            Width = 1431
+            Align = alTop
+            TabOrder = 0
+            Text = '127.0.0.1'
+          end
+          object Label21: TLabel
+            Left = 1
+            Height = 17
+            Top = 49
+            Width = 1431
+            Align = alTop
+            Caption = 'Порт'
+            ParentColor = False
+          end
+          object edFtpPort: TEdit
+            Left = 1
+            Height = 31
+            Top = 66
+            Width = 1431
+            Align = alTop
+            TabOrder = 1
+            Text = '21'
+          end
+          object Label22: TLabel
+            Left = 1
+            Height = 17
+            Top = 97
+            Width = 1431
+            Align = alTop
+            Caption = 'Имя пользователя'
+            ParentColor = False
+          end
+          object edFtpUsername: TEdit
+            Left = 1
+            Height = 31
+            Top = 114
+            Width = 1431
+            Align = alTop
+            TabOrder = 2
+            Text = 'testuser'
+          end
+          object Label23: TLabel
+            Left = 1
+            Height = 17
+            Top = 145
+            Width = 1431
+            Align = alTop
+            Caption = 'Пароль'
+            ParentColor = False
+          end
+          object edFtpPassword: TEdit
+            Left = 1
+            Height = 31
+            Top = 162
+            Width = 1431
+            Align = alTop
+            TabOrder = 3
+            Text = 'testuser'
+          end
+          object Label24: TLabel
+            Left = 1
+            Height = 17
+            Top = 193
+            Width = 1431
+            Align = alTop
+            Caption = 'Лог FTP обновления'
+            ParentColor = False
+          end
+          object mmFtpLog: TMemo
+            Left = 1
+            Height = 418
+            Top = 210
+            Width = 1431
+            Align = alClient
+            ScrollBars = ssBoth
+            TabOrder = 4
+          end
+          object btFtpUpdate: TButton
+            Left = 1
+            Height = 25
+            Top = 628
+            Width = 1431
+            Align = alBottom
+            Caption = 'Обновление...'
+            OnClick = btFtpUpdateClick
+            TabOrder = 5
+          end
         end
       end
     end
     object tabWebServer: TTabSheet
       Caption = 'Веб-сервер'
-      ClientHeight = 490
-      ClientWidth = 918
+      ClientHeight = 656
+      ClientWidth = 1435
       object Panel12: TPanel
         Left = 0
-        Height = 490
+        Height = 656
         Top = 0
-        Width = 918
+        Width = 1435
         Align = alClient
-        ClientHeight = 490
-        ClientWidth = 918
+        ClientHeight = 656
+        ClientWidth = 1435
         ParentColor = False
         TabOrder = 0
-        object btStartServer: TButton
-          Left = 660
-          Height = 25
-          Top = 24
-          Width = 192
-          Caption = 'Запуск сервера...'
-          OnClick = btStartServerClick
+        object panWebServer: TPanel
+          Left = 1
+          Height = 654
+          Top = 1
+          Width = 1433
+          Align = alClient
+          ClientHeight = 654
+          ClientWidth = 1433
           TabOrder = 0
-        end
-        object btStopServer: TButton
-          Left = 660
-          Height = 25
-          Top = 62
-          Width = 192
-          Caption = 'Остановить сервер'
-          Enabled = False
-          OnClick = btStopServerClick
-          TabOrder = 1
-        end
-        object WebServerLog: TMemo
-          Left = 12
-          Height = 450
-          Top = 28
-          Width = 640
-          ScrollBars = ssAutoBoth
-          TabOrder = 2
-        end
-        object Label20: TLabel
-          Left = 28
-          Height = 17
-          Top = 6
-          Width = 80
-          Caption = 'Лог событий'
-          ParentColor = False
-        end
-        object ServerGuide: TMemo
-          Left = 660
-          Height = 370
-          Top = 96
-          Width = 192
-          Lines.Strings = (
-            'Встроенный веб-сервер '
-            '- экспериментальная '
-            'функция. Возможны '
-            'зависания и падения '
-            'программы. '
-            'Перед запуском '
-            'сохраните'
-            'ваши документы. '
-            'Используйте эту '
-            'функцию'
-            'на свой страх и риск!'
-            'После запуска сайт '
-            'будет доступен по IP'
-            '(:80) вашего '
-            'компьютера и по '
-            'localhost(:80). '
-            'Поддерживаются '
-            'файлы  формата htm, '
-            'css, jpg. Вывести сервер '
-            'в мир можно '
-            'с помощью сервисов '
-            'No-Ip или Free-DNS, '
-            'если у вас '
-            'динамический IP.'
-          )
-          ReadOnly = True
-          ScrollBars = ssAutoBoth
-          TabOrder = 3
+          object lbIpAddress: TLabel
+            Left = 1
+            Height = 17
+            Top = 1
+            Width = 1431
+            Align = alTop
+            Caption = 'IP локального сервера (127.0.0.1)'
+            ParentColor = False
+          end
+          object WebServerLog: TMemo
+            Left = 1
+            Height = 489
+            Top = 114
+            Width = 1431
+            Align = alClient
+            ScrollBars = ssAutoBoth
+            TabOrder = 0
+          end
+          object panServActions: TPanel
+            Left = 1
+            Height = 50
+            Top = 603
+            Width = 1431
+            Align = alBottom
+            ClientHeight = 50
+            ClientWidth = 1431
+            TabOrder = 1
+            object btStopServer: TButton
+              Left = 1238
+              Height = 48
+              Top = 1
+              Width = 192
+              Align = alRight
+              Caption = 'Остановить сервер'
+              Enabled = False
+              OnClick = btStopServerClick
+              TabOrder = 0
+            end
+            object btStartServer: TButton
+              Left = 1
+              Height = 48
+              Top = 1
+              Width = 192
+              Align = alLeft
+              Caption = 'Запуск сервера...'
+              OnClick = btStartServerClick
+              TabOrder = 1
+            end
+          end
+          object lbConnectionLog: TLabel
+            Left = 1
+            Height = 17
+            Top = 97
+            Width = 1431
+            Align = alTop
+            Caption = 'Журнал соединений'
+            ParentColor = False
+          end
+          object edIpAddress: TEdit
+            Left = 1
+            Height = 31
+            Top = 18
+            Width = 1431
+            Align = alTop
+            TabOrder = 2
+            Text = '127.0.0.1'
+          end
+          object lbPort: TLabel
+            Left = 1
+            Height = 17
+            Top = 49
+            Width = 1431
+            Align = alTop
+            Caption = 'Порт локального сервера (8080)'
+            ParentColor = False
+          end
+          object edPort: TEdit
+            Left = 1
+            Height = 31
+            Top = 66
+            Width = 1431
+            Align = alTop
+            TabOrder = 3
+            Text = '8080'
+          end
         end
       end
     end
     object tabHelp: TTabSheet
       Caption = 'О программе'
-      ClientHeight = 490
-      ClientWidth = 918
+      ClientHeight = 656
+      ClientWidth = 1435
       object Panel3: TPanel
         Left = 0
-        Height = 490
+        Height = 656
         Top = 0
-        Width = 918
+        Width = 1435
         Align = alClient
         Caption = 'Panel3'
-        ClientHeight = 490
-        ClientWidth = 918
+        ClientHeight = 656
+        ClientWidth = 1435
         ParentColor = False
         TabOrder = 0
-        object Memo3: TMemo
+        object mmAbout: TMemo
           Left = 1
-          Height = 488
+          Height = 654
           Top = 1
-          Width = 916
+          Width = 1433
           Align = alClient
           Lines.Strings = (
-            'Автор: Назаров А.А., 2012, Оренбург'
+            'Автор: Назаров А.А., 2012-2022, Оренбург'
             'Сайт: artnazarov.ru'
             'E-mail:admin@artnazarov.ru'
             ''
@@ -2028,77 +2190,115 @@ object Form1: TForm1
       end
     end
   end
-  object Label12: TLabel
-    Left = 48
-    Height = 13
-    Top = 523
-    Width = 37
-    Caption = 'Пресет'
-    ParentColor = False
+  object Buffer: TMemo
+    Left = 1320
+    Height = 80
+    Top = 56
+    Width = 81
+    Lines.Strings = (
+      'B'
+      'u'
+      'f'
+      'f'
+      'e'
+      'r'
+    )
+    TabOrder = 1
+    Visible = False
   end
-  object Button1: TButton
-    Left = 624
-    Height = 25
-    Top = 523
-    Width = 243
-    Caption = 'Архивировать'
-    OnClick = Button1Click
+  object Panel25: TPanel
+    Left = 0
+    Height = 34
+    Top = 691
+    Width = 1439
+    Align = alBottom
+    ClientHeight = 34
+    ClientWidth = 1439
     TabOrder = 2
+    object Label12: TLabel
+      Left = 1
+      Height = 32
+      Top = 1
+      Width = 63
+      Align = alLeft
+      Caption = 'Пресет'
+      ParentColor = False
+    end
+    object edPreset: TDBLookupComboBox
+      Left = 64
+      Height = 32
+      Top = 1
+      Width = 136
+      Align = alLeft
+      KeyField = 'id'
+      ListField = 'id'
+      ListFieldIndex = 0
+      ListSource = dsPresets
+      LookupCache = False
+      TabOrder = 0
+    end
+    object btBuildSite: TButton
+      Left = 943
+      Height = 32
+      Top = 1
+      Width = 252
+      Align = alRight
+      Caption = 'Создать сайт'
+      OnClick = btBuildSiteClick
+      TabOrder = 1
+    end
+    object btnMakeArchive: TButton
+      Left = 1195
+      Height = 32
+      Top = 1
+      Width = 243
+      Align = alRight
+      Caption = 'Архивировать'
+      OnClick = btnMakeArchiveClick
+      TabOrder = 2
+    end
   end
-  object edPreset: TDBLookupComboBox
-    Left = 136
-    Height = 21
-    Top = 523
-    Width = 136
-    KeyField = 'id'
-    ListField = 'id'
-    ListFieldIndex = 0
-    ListSource = Datasource3
-    LookupCache = False
-    TabOrder = 3
+  object dsPages: TDataSource
+    DataSet = dbfPages
+    OnDataChange = dsPagesDataChange
+    Left = 40
+    Top = 664
   end
-  object Datasource1: TDataSource
-    DataSet = dbPosts
-    OnDataChange = Datasource1DataChange
-    left = 952
-    top = 112
-  end
-  object dbPosts: TDbf
+  object dbfPages: TDbf
     IndexDefs = <>
-    TableLevel = 4
+    TableLevel = 7
     FilterOptions = []
-    BeforeInsert = dbPostsBeforeInsert
-    BeforePost = dbPostsBeforePost
-    left = 760
-    top = 32
+    BeforePost = dbfPagesBeforePost
+    Left = 40
+    Top = 624
   end
   object dbfBlocks: TDbf
     IndexDefs = <>
     TableLevel = 4
     FilterOptions = []
-    left = 920
-    top = 192
+    Left = 320
+    Top = 616
   end
-  object Datasource2: TDataSource
+  object dsBlocks: TDataSource
     DataSet = dbfBlocks
-    left = 896
-    top = 104
+    Left = 320
+    Top = 680
   end
   object MainMenu1: TMainMenu
-    left = 664
-    top = 32
+    Left = 1360
+    Top = 8
   end
-  object Datasource3: TDataSource
+  object dsPresets: TDataSource
     DataSet = dbfPresets
-    left = 896
-    top = 120
+    Left = 136
+    Top = 672
   end
   object dbfPresets: TDbf
     IndexDefs = <>
     TableLevel = 4
     FilterOptions = []
-    left = 960
-    top = 136
+    Left = 144
+    Top = 624
   end
   object Process1: TProcess
     Active = False
@@ -2113,32 +2313,25 @@ object Form1: TForm1
     WindowTop = 0
     WindowWidth = 0
     FillAttribute = 0
-    left = 808
-    top = 32
+    Left = 1304
+    Top = 8
   end
-  object Datasource4: TDataSource
+  object dsSections: TDataSource
     DataSet = dbfSections
-    left = 888
-    top = 176
+    Left = 240
+    Top = 672
   end
   object dbfSections: TDbf
     IndexDefs = <>
     TableLevel = 4
     FilterOptions = []
-    left = 968
-    top = 152
+    Left = 248
+    Top = 608
   end
   object SynHTMLSyn1: TSynHTMLSyn
     DefaultFilter = 'Документ HTML (*.htm,*.html)|*.htm;*.html'
     Enabled = False
-    left = 712
-    top = 32
-  end
-  object PopupMenu1: TPopupMenu
-    left = 79
-    top = 101
-    object mEditPost: TMenuItem
-      Caption = 'Edit Post'
-    end
+    Left = 693
+    Top = 360
   end
 end

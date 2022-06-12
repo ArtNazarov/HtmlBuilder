@@ -1,1 +1,0 @@
-<li><a href="{itemUrl}.{ext}>{itemTitle}</a></li>
