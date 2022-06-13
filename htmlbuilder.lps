@@ -8,11 +8,10 @@
       <Unit0>
         <Filename Value="htmlbuilder.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="97" Y="11"/>
-        <UsageCount Value="59"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="62"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -20,11 +19,11 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="522"/>
-        <CursorPos X="108" Y="524"/>
-        <UsageCount Value="59"/>
+        <TopLine Value="959"/>
+        <CursorPos X="75" Y="970"/>
+        <UsageCount Value="62"/>
       </Unit1>
       <Unit2>
         <Filename Value="E:\02 ЛИЧНОЕ\01 Документы\05 АРТЕМ [1GB]\02 ИСХОДНИКИ\Nav\modelfromdb.pas"/>
@@ -101,6 +100,9 @@
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit13>
     </Units>
+    <General>
+      <ActiveWindowIndexAtStart Value="-1"/>
+    </General>
     <JumpHistory HistoryIndex="-1"/>
     <RunParams>
       <FormatVersion Value="2"/>

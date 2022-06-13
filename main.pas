@@ -17,6 +17,8 @@ const
 
     DELIM : Char = '/';
 
+    DLM_MODULE = '`';
+
 type
 
 
@@ -43,7 +45,10 @@ type
     btUnorderedList: TButton;
     Buffer: TMemo;
     btnMakeArchive: TButton;
+    btnLoad: TButton;
     cboLocale: TComboBox;
+    chkUseModules: TCheckBox;
+    chkGetBlocksFromFile: TCheckBox;
     dbeBlockId: TDBEdit;
     dbePageField1: TDBEdit;
     dbePageField2: TDBEdit;
@@ -70,9 +75,9 @@ type
     dbeBlockHtml: TDBMemo;
     dbmHeadTemplate: TDBMemo;
     dbmBodyPagesTemplate: TDBMemo;
-    dbmSectionNote: TDBMemo;
+    dbmSectionTemplate: TDBMemo;
     dbmBodySectionsTemplate: TDBMemo;
-    dbmItemListTemplate: TDBMemo;
+    dbmTemplateOfItem: TDBMemo;
     dbNav: TDBNavigator;
     DBNavigator1: TDBNavigator;
     DBNavigator2: TDBNavigator;
@@ -152,6 +157,7 @@ type
     Panel20: TPanel;
     Panel21: TPanel;
     Panel22: TPanel;
+    Panel23: TPanel;
     panWebServer: TPanel;
     panServActions: TPanel;
     Panel25: TPanel;
@@ -207,6 +213,7 @@ type
     procedure btBuildSiteClick(Sender: TObject);
     procedure btFtpUpdateClick(Sender: TObject);
     procedure btItalicClick(Sender: TObject);
+    procedure btnLoadClick(Sender: TObject);
     procedure btOrderedListClick(Sender: TObject);
     procedure btParagraphClick(Sender: TObject);
     procedure btStartServerClick(Sender: TObject);
@@ -239,6 +246,9 @@ type
     Titles, Urls, Sections: TMemo;
     SiteSectionUrls, SiteSectionTitles: TMemo;
     ListenerSocket, ConnectionSocket: TTCPBlockSocket;
+
+    Cache : tStringList;    {{ for webserver }}
+    PostsEditorState : String;
     procedure initdb();
     function buildHead(title: string; headTemplate: string): string;
     function buildBody(title: string; body: string; bodyTemplate: string): string;
@@ -272,7 +282,7 @@ type
     procedure localeRUS();
     procedure localeENG();
 
-
+    function Pager(layout: String; pages: String): String;
 
     procedure createPages();
     procedure createSections();
@@ -294,6 +304,9 @@ implementation
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   initdb();
+
+  Cache:=TStringList.Create;
+
   dbNav.DataSource.AutoEdit := True;
   dbNav.Enabled := True;
 
@@ -318,35 +331,46 @@ end;
 
 
 
+ // КЛИК ПО КНОПКЕ СОБРАТЬ
+
 procedure TForm1.btBuildSiteClick(Sender: TObject);
 var
-  filenam, dir, titl, content, headT, bodyT: string;
+  filenam, dir, titl, content, headT, bodyT : String;
+  fbuffer : TStringList;
 begin
-
+  fbuffer:=TStringList.Create;
   scanLinks();
-  // fetch to array Titles, Urs, Sections data from contents table
   scanSections();
-  // fetch to array  SiteSectionUrls, SiteSectionTitles data from sections table
 
-  dbfPresets.Locate('id', edPreset.Text, []);
-  dir := dbfPresets.FieldByName('dirpath').AsString;
+  dbfPresets.Locate('id', edPreset.Text , []);
+  dir:=dbfPresets.FieldByName('dirpath').AsString;
+  if not chkGetBlocksFromFile.Checked then
+    begin
   headT := useBlocks(dbfPresets.FieldByName('headtpl').AsString);
   bodyT := useBlocks(dbfPresets.FieldByName('bodytpl').AsString);
+    end
+  else
+    begin
+      fbuffer.LoadFromFile(GetCurrentDir + DELIM+'parts'+DELIM+'head.tpl');
+      headT:=fbuffer.Text;
+      fbuffer.LoadFromFile(GetCurrentDir + DELIM+'parts'+DELIM+'body.tpl');
+      bodyT:=fbuffer.Text;
+    end;
+    fbuffer.Free;
   if SysUtils.DirectoryExists(dir) then
   begin
-    dbfPages.First;
-    while not dbfPages.EOF do
-    begin
-      filenam :=
-        dir + delim + dbfPages.FieldByName('id').AsString + '.' + PrefferedExtension.Text;
-      titl := dbfPages.FieldByName('caption').AsString;
-      content := dbfPages.FieldByName('content').AsString;
-      makePage(titl, content, headT, bodyT, filenam);
-      dbfPages.Next;
-    end;
-  end;
+         dbfPages.First;
+                      while not dbfPages.EOF do
+                              begin
+                              filenam := dir+DELIM+dbfPages.FieldByName('id').AsString+'.'+PrefferedExtension.Text;
+                              titl := dbfPages.FieldByName('caption').AsString;
+                              content := dbfPages.FieldByName('content').AsString;
+                              makePage(titl, content, headT, bodyT, filenam);
+                                          dbfPages.Next;
+   end;                           end;
   dbfPages.First;
   SiteMapping();
+
   // open project in file manager
   Process1.CommandLine:=edFileManager.Text+' '+dbfPresets.FieldByName('dirpath').AsString;
   Process1.Execute;
@@ -435,6 +459,102 @@ end;
 procedure TForm1.btItalicClick(Sender: TObject);
 begin
   paired('i');
+end;
+
+{{ ===============     ЗАГРУЗКА ИЗ ТЕКСТОВЫХ ФАЙЛОВ ============= }}
+
+procedure TForm1.btnLoadClick(Sender: TObject);
+var fbuffer : TStringList; idOfBlocksInBase : TStringList;
+   blockFiles : TStringList;
+   id, markup : String;
+   i, j, k : Integer;
+   InstalledIds, InstalledMarkups : TStringList;
+   exists : Boolean;
+   indexToUpdate : Integer;
+begin
+
+  fbuffer:=TStringList.Create();
+  // Получим список всех id из текстовых файлов /blocks/*.blk и разметку markup
+    idOfBlocksInBase:=TStringList.Create;
+    installedIds:=TStringList.Create;
+    installedMarkups:=TStringList.Create;
+    fbuffer:=TStringList.Create;
+  // Установка разметки контейнеров
+  dbfPresets.Edit;
+  fbuffer.LoadFromFile( GetCurrentDir() + DELIM+'parts'+DELIM+'head.tpl' );
+  Form1.dbmHeadTemplate.Text:=fbuffer.text;
+  fbuffer.LoadFromFile( GetCurrentDir() + DELIM+'parts' + DELIM+ 'body.tpl' );
+  Form1.dbmBodyPagesTemplate.Text :=fbuffer.text;
+  fbuffer.LoadFromFile( GetCurrentDir() + DELIM+'parts'+DELIM+'section.tpl' );
+  Form1.dbmSectionTemplate.Text:=fbuffer.text;
+  fbuffer.LoadFromFile( GetCurrentDir() + DELIM+'parts'+DELIM+'item.tpl' );
+  Form1.dbmTemplateOfItem.Text:=fbuffer.text;
+  dbfPresets.Post; // Применяем изменения
+  // Получим список всех ID в таблице dbfBlocks
+  dbfBlocks.First;
+  while not dbfBlocks.EOF do begin
+      idOfBlocksInBase.Add( dbfBlocks.FieldByName('id').AsString);
+      dbfBlocks.Next;
+  end;
+
+    blockFiles := FindAllFiles(GetCurrentDir()+DELIM+'blocks', '*.blk', false); // получили список блоков
+    // первая строка - id блока
+    // остальные HTML разметка
+    for i:=0 to blockFiles.Count-1 do
+        begin
+          fbuffer.LoadFromFile( blockFiles[i] ); // already have abs paths
+          id:=fbuffer.Strings[0];
+          markup:='';
+          for j:=1 to fbuffer.Count-1 do
+              begin
+                markup:=markup+fbuffer.Strings[j];
+              end;
+              InstalledIds.Add(id);
+              InstalledMarkups.Add(markup);
+        end;
+
+     for i:=0 to InstalledIds.Count-1 do
+         begin
+           exists:=false;
+           indexToUpdate := -1;
+           for j:=0 to  idOfBlocksInBase.Count -1 do
+               begin
+                 if idOfBlocksInBase[j]=InstalledIds[i] then
+                   begin
+                        exists:=true; IndexToUpdate := j; break;
+                   end;
+               end;
+           if exists then
+              begin
+                   dbfBlocks.First; k := 0;
+                   while not dbfBlocks.EOF do
+                         begin
+                            if k<>indexToUpdate then
+
+                             inc(k) else break;
+
+                             dbfBlocks.Next;
+
+                         end;
+                   dbfBlocks.Edit;
+                   dbfBlocks.FieldByName('id').AsString := installedIds[i];
+                   dbfBlocks.FieldByName('markup').AsString := installedMarkups[i];
+                   dbfBlocks.Post;
+              end
+           else
+           begin
+                 dbfBlocks.Insert;
+                 dbfBLocks.FieldByName('id').AsString := installedIds[i];
+                 dbfBlocks.FieldByName('markup').AsString := installedMarkups[i];
+                 dbfBlocks.Post;
+           end;
+         end;
+
+
+  fbuffer.Free;
+  idOfBlocksInBase.Free;
+  installedMarkups.Free;
+  installedIds.Free;
 end;
 
 procedure TForm1.btOrderedListClick(Sender: TObject);
@@ -585,34 +705,76 @@ begin
   Result := r;
 end;
 
-function TForm1.buildBody(title: string; body: string;
-  bodyTemplate: string): string;
-var
-  r: string;
+{{ ============================== ОПОРНЫЕ ЧАСТИ ДВИЖКА - СБОРКА ТЕЛА СТРАНИЦЫ =============================== }}
+function TForm1.buildBody(title : String; body : String; bodyTemplate  : String)  : String;
+var r : String; s, s2 : string;
 begin
-  r := bodyTemplate;
-  r := StringReplace(r, '{title}', title, [rfReplaceAll]);
-  r := StringReplace(r, '{content}', body, [rfReplaceAll]);
-  r := StringReplace(r, '{sitename}', dbfPresets.FieldByName('sitename').AsString,
-    [rfReplaceAll]);
-  Result := R;
+ r:=bodyTemplate;
+ r:=applyVar(r, 'title', title);
+ r:=applyVar(r, 'content', body);
+ s:=dbfPages.FieldByName('section').AsString;
+ r:=applyVar(r, '{section}', s);
+ dbfSections.First;
+ while not dbfSections.EOF do
+       begin
+            s2:=dbfSections.FieldByName('id').AsString;
+            if s2=s then
+               begin
+                 r:=applyVar(r, 'sectionName', dbfSections.FieldByName('section').AsString);
+                 break;
+               end;
+               dbfSections.Next;
+       end;
+ r:=applyVar(r, 'sitename', dbfPresets.FieldByName('sitename').AsString);
+ r:=applyVar(r, 'ext', PrefferedExtension.Text);
+ Result:=R;
 end;
 
 
-function TForm1.useBlocks(part: string): string;
-var
-  r: string;
+{{ ============================== ОПОРНЫЕ ЧАСТИ ДВИЖКА - ПРИМЕНЕНИЕ ГЛОБАЛЬНЫХ БЛОКОВ =============================== }}
+function TForm1.useBlocks(part: String): String;
+var r : String; i, j : Integer; h, t : String;  fbuffer : TStringList;  blockFiles : TStringList;
+   log : TStringList;
+
 begin
   r := part;
-  dbfBlocks.First;
-  while not dbfBlocks.EOF do
+  log := TStringList.Create;
+  if not chkGetBlocksFromFile.Checked then // use database
   begin
-    r := StringReplace(r, '{' + dbfBlocks.FieldByName('id').AsString + '}',
-      dbfBlocks.FieldByName('markup').AsString, [rfReplaceAll]);
-    dbfBlocks.Next;
+  dbfBlocks.First;
+  while not dbfBlocks.EOF do begin
+        r:=StringReplace(r, '{'+dbfBlocks.FieldByName('id').AsString+'}', dbfBlocks.FieldByName('markup').AsString, [rfReplaceAll]);
+        dbfBlocks.Next;
   end;
   dbfBlocks.First;
-  Result := r;
+  end
+  else begin
+
+    fbuffer:=TStringList.Create;
+    blockFiles := FindAllFiles(GetCurrentDir()+DELIM+'blocks'+DELIM, '*.blk', false); // получили список блоков
+    // первая строка - id блока
+    // остальные HTML разметка
+    for i:=0 to blockFiles.Count-1 do
+        begin
+          fbuffer.LoadFromFile( blockFiles[i] ); // already have abs paths
+          h:=fbuffer.Strings[0];
+          t:='';
+          for j:=1 to fbuffer.Count-1 do
+              begin
+                t:=t+fbuffer.Strings[j];
+              end;
+          r:=StringReplace(r, '{'+h+'}', t, [rfReplaceAll]);
+          log.Add('Replace in '+r+'{'+h+'} on '+t);
+          log.Add('===== Result is ====');
+          log.Add(r);
+          log.Add('======/Result======');
+
+        end;
+    fbuffer.Free;
+    log.SaveToFile('log.txt');
+    log.Free;
+  end;
+  Result:=r;
 end;
 
 procedure TForm1.scanLinks;
@@ -689,116 +851,160 @@ begin
   Result := r;
 end;
 
-procedure TForm1.SiteMapping;
-var
-  i, j: integer;
-  dir: string;
-  filenam: string;
-  body: string;
-  bodyTemplate, headTemplate, itemTpl, sectionTpl: string;
-  stub: string;
-  pagesTotal: integer;
-  pageCurrent: integer;
-  itemsPerPage: integer;
-  itemsOnPage: integer;
-  page: integer;
-  b: string;
-  items: integer;
-  paginator: string;
-  pages: array[byte] of string;
-  itemTxt: string;
-  itemsTotal: byte;
+
+function TForm1.Pager(layout: String; pages: String): String;
 begin
-  itemsPerPage := StrToInt(edItemsPerPage.Text);
-  dir := dbfPresets.FieldByName('dirpath').AsString;
-  bodyTemplate := '{content}';
-  headTemplate := dbfPresets.FieldByName('headtpl').AsString;
+  Result:=applyVar(layout, '{pager}', pages );
+end;
+
+ {{ ============================== ОПОРНЫЕ ЧАСТИ ДВИЖКА - ГЕНЕРАЦИЯ КАРТЫ САЙТА  =============================== }}
+
+
+procedure TForm1.SiteMapping();
+var i, j : integer; dir : String;  filenam : String; body : String;
+  bodyTemplate, headTemplate, itemTpl, sectionTpl : String;
+  stub : String;
+  pagesTotal : integer;
+  pageCurrent : integer;
+  itemsPerPage : integer;
+  itemsOnPage : integer;
+  page : integer;
+  b : String;
+  items : Integer;
+  paginator : String;
+  pages : array[byte] of String;
+  itemTxt : String;
+  itemsTotal : byte;
+  fbuffer : TStringList;
+  ext : String;
+  bodyTpl : String;
+  pags : String;
+begin
+  ext := PrefferedExtension.Text;
+  fbuffer := TStringList.Create;
+  itemsPerPage := 7;
+  dir:=dbfPresets.FieldByName('dirpath').AsString;
+  bodyTemplate:= '{content}';
+  if chkGetBlocksFromFile.Checked then
+  begin                      // забираем из файла
+     fbuffer.LoadFromFile(GetCurrentDir() + DELIM+'parts'+DELIM+'head.tpl'); // шаблон оформления
+     headTemplate:=fbuffer.Text;
+     fbuffer.LoadFromFile(GetCurrentDir() +DELIM+'parts'+DELIM+'item.tpl'); // шаблон элемента списка
+     itemTpl:=fbuffer.Text;
+     fbuffer.LoadFromFile(GetCurrentDir() +DELIM+'parts'+DELIM+'section.tpl'); // шаблон представления списка
+     sectionTpl:=fbuffer.Text;
+     fbuffer.LoadFromFile(GetCurrentDir() +DELIM+'parts'+DELIM+'body.tpl'); // шаблон представления списка
+     bodyTpl:=fbuffer.Text;
+     fbuffer.Free;
+  end else begin                          // забираем из базы
+  headTemplate:=dbfPresets.FieldByName('headtpl').AsString;
   itemTpl := dbfPresets.FieldByName('itemtpl').AsString;
   sectionTpl := dbfPresets.FieldByName('sectionTpl').AsString;
-  i := 0;
-  while i < SiteSectionUrls.Lines.Count do
-  begin
-    {Подсчет страниц в разделе}
-    pagesTotal := 1;
-    pageCurrent := 1;
-    itemsOnPage := 0;
-    itemsTotal := 0;
-    Buffer.Clear;
-    j := 0;
-    while j < Sections.Lines.Count do
-    begin
-      if Sections.Lines[j] = SiteSectionUrls.Lines[i] then
-      begin
-        Inc(itemsOnPage);
-        Inc(itemsTotal);
-        itemTxt :=
-          buildItem(itemtpl, Urls.Lines[j], Titles.Lines[j]);
-        Buffer.Lines.Add(itemTxt);
-        if itemsOnPage <= itemsPerPage then
-          pages[pageCurrent] := buffer.Text
-        else
-        begin
-          Inc(pageCurrent);
-          buffer.Clear;
-          buffer.Lines.Add(itemTxt);
-          pages[pageCurrent] := buffer.Text;
-          Inc(pagesTotal);
-          itemsOnPage := 1;
-        end;
-      end;
-      j := j + 1;
-    end; {/while}
-
-
-
-    for page := 1 to pagesTotal do
-    begin
-      Buffer.Clear;
-      buffer.Lines.add(pages[page]);
-      buffer.Lines.add(buildPagination(SiteSectionUrls.Lines[i], page, pagesTotal));
-      //  stub:=InputBox('A', 'A', buildPagination(SiteSectionUrls.Lines[i], page, pagesTotal));
-      if page = 1 then
-        filenam := dir + '/section_' + SiteSectionUrls.Lines[i] + '.' + PrefferedExtension.Text
-      else
-        filenam := dir + '/section_' + SiteSectionUrls.Lines[i] + '_' + IntToStr(
-          page) + '.' + PrefferedExtension.Text;
-      body := insSections(insLinks(buildSection(sectionTpl, SiteSectionUrls.Lines[i],
-        SiteSectionTitles.Lines[i], buffer.Text)));
-      //  stub:=InputBox('B', 'B', body);
-      makePage(SiteSectionTitles.Lines[i], body, headTemplate, bodyTemplate, filenam);
-    end; {/for}
-
-
-    i := i + 1;
+  bodyTpl := dbfPresets.FieldByName('bodyTpl').AsString;
   end;
+  i:=0;
+  while i<SiteSectionUrls.Lines.Count do
+                           begin
+                           {Подсчет страниц в разделе}
+                           pagesTotal := 1;
+                           pageCurrent := 1;
+                           itemsOnPage := 0;
+                           itemsTotal :=0;
+                           Buffer.Clear;
+                                              j:=0;
+                           while j<Sections.Lines.Count do begin
+                                    if Sections.lines[j] = SiteSectionUrls.lines[i] then
+                                       begin
+                                           inc(itemsOnPage);
+                                           inc(itemsTotal);
+                                           itemTxt:= buildItem(itemtpl, Urls.Lines[j], Titles.Lines[j]);
+                                           Buffer.Lines.Add(itemTxt);
+                                            if itemsOnPage<=itemsPerPage then
+                                               pages[pageCurrent]:=buffer.text
+                                               else begin
+                                               inc(pageCurrent);
+                                               buffer.Clear;
+                                               buffer.Lines.Add(itemTxt);
+                                               pages[pageCurrent]:=buffer.text;
+                                               inc(pagesTotal);
+                                               itemsOnPage:=1;
+                                               end;
+                                       end;
+                   j:=j+1;
+                                                      end; {/while}
 
-end;
 
-procedure TForm1.makePage(title: string; body: string; headTemplate: string;
-  bodyTemplate: string; filenam: string);
-begin
-  //if FileExists(filenam) then DeleteFile(filenam);
+
+  for page:=1 to pagesTotal do begin
   Buffer.Clear;
-  Buffer.Lines.Add('<!DOCTYPE html>');
-  Buffer.Lines.Add('<html><head>');
-  Buffer.Lines.Add(
-    useOwnTags(
-    useModules(useBlocks(buildHead(title, headTemplate)))));
-  Buffer.Lines.Add('</head><body>');
-  Buffer.Lines.Add(
-    buildOwnFields(useOwnTags(useModules(
-    insSections(insLinks(useBlocks(buildBody(title, body, bodyTemplate))))))));
-  Buffer.Lines.Add('</body></html>');
-  Buffer.Lines.SaveToFile(filenam);
+  buffer.lines.add(pages[page]);
+// не добавляем buffer.lines.add(buildPagination(SiteSectionUrls.Lines[i], page, pagesTotal));
+pags :=  buildPagination(SiteSectionUrls.Lines[i], page, pagesTotal);
+//  stub:=InputBox('A', 'A', buildPagination(SiteSectionUrls.Lines[i], page, pagesTotal));
+  if page=1 then
+  filenam := dir + DELIM +'section_'+SiteSectionUrls.Lines[i]+'.'+ext
+  else
+   filenam := dir + DELIM +'section_'+SiteSectionUrls.Lines[i]+'_'+IntToStr(page)+'.'+ext;
+  body:=insSections(insLinks(buildSection(sectionTpl, SiteSectionUrls.lines[i], SiteSectionTitles.Lines[i], buffer.Text)));
+//  stub:=InputBox('B', 'B', body);
+  body:=Pager(body, pags);
+  makePage(SiteSectionTitles.Lines[i], body, headTemplate, bodyTemplate, filenam);
+                   end; {/for}
 
+
+              i:=i+1;
+                                       end;
+
+ // карта категорий
+  fbuffer.Clear;
+  fbuffer.Add('<ul>');
+  dbfSections.First;
+  while not dbfSections.EOF do
+        begin
+             fbuffer.Add(
+             '<li><a href="./section_' + dbfSections.FieldByName('id').AsString + '.{ext}">'+
+             dbfSections.FieldByName('section').AsString+'</a></li>');
+             dbfSections.Next;
+        end;
+  fbuffer.Add('</ul>');
+  makePage('Карта сайта', fbuffer.Text, headTemplate, bodyTpl, dir+ DELIM +'sitemap.'+ext);
 end;
 
-procedure TForm1.paired(t: string);
+{{ ================== сборка файла  ====================== }}
+
+procedure TForm1.makePage(title: String; body: String; headTemplate: String;
+  bodyTemplate: String; filenam : String);
+var
+  id : String;
 begin
-  if (dContent.SelText <> '') then
-    dContent.SelText := '<' + t + '>' + dContent.SelText + '</' + t + '>'
+    if FileExists(filenam) then DeleteFile(filenam);
+    Buffer.Clear;
+    Buffer.Lines.Add('<!DOCTYPE html>');
+    Buffer.Lines.Add('<html><head>');
+                              Buffer.Lines.Add(
+                              useOwnTags(useModules(useBlocks(buildHead(title, headTemplate)))));
+                              Buffer.Lines.Add('</head><body>');
+                              Buffer.Lines.Add(buildOwnFields(useOwnTags(useModules(insSections(insLinks(useBlocks(buildBody(title, body, bodyTemplate))))))));
+                              Buffer.Lines.Add('</body></html>');
+
+
+                              // id of pages
+                              id := ExtractFileName(filenam);
+                              id := Copy(id, 1, Pos('.', id)-1);
+                              Buffer.Text:=StringReplace(Buffer.Text, '{id}',
+                              id , [rfReplaceAll]);
+                              try
+                              Buffer.Lines.SaveToFile(filenam);
+                              except
+                              end;
+end;
+
+procedure TForm1.paired(t : String);
+begin
+  if (fContent.SelText <> '') then
+  fContent.SelText:='<'+t+'>'+  fContent.SelText+'</'+t+'>'
   else
-    dContent.Lines.Add('<' + t + '></' + t + '>');
+    fContent.Lines.Add('<'+t+'></'+t+'>');
 end;
 
 procedure TForm1.tagHref;
@@ -844,37 +1050,38 @@ begin
   Result := R;
 end;
 
-function TForm1.useModules(app: string): string;
-var
-  C, Start, En_d: integer;
-  replacement: string;
-  R: string;
+{{ ======================== РАСШИРЕНИЕ ВОЗМОЖНОСТЕЙ МОДУЛЯМИ ================ }}
+
+function TForm1.useModules(app: String): String;
+var C, Start, En_d : integer;
+  replacement : String;
+  R : String;
 begin
-  R := app;
-  C := 0;
+
+ R:=app;
+ if chkUseModules.Checked then begin
+  C:=0;
   Start := -1;
   En_d := -1;
-  while C < Length(r) do
-  begin
-    if Copy(r, C, 1) = '%' then
-    begin
-      if Start < 0 then Start := C
-      else
-      begin
-        En_d := C;
-        replacement :=
-          moduleexec(Copy(r, Start + 1, En_d - Start - 1));
-        r :=
-          StringReplace(r, Copy(r, Start, En_d - Start + 1),
-          replacement, [rfReplaceAll]);
-        c := Start + Length(replacement) - 1;
-        Start := -1;
-        En_d := -1;
-      end;
-    end;
-    C := C + 1;
-  end;
-  Result := R;
+  while C<Length(r) do
+                           begin
+                           if Copy(r, C, 1) = DLM_MODULE then
+                              begin
+                                if Start<0 then Start:=C else
+                                  begin
+                                   En_d :=C;
+                                   replacement:=moduleexec(Copy(r, Start+1, En_d-Start-1));
+                                   r:=StringReplace(r, Copy(r, Start, En_d-Start+1),
+                                   replacement, [rfReplaceAll]);
+                                   c:=Start+Length(replacement)-1;
+                                   Start:=-1;
+                                   En_d := -1;
+                                  end;
+                              end;
+                           C:=C+1;
+                           end;
+ end; // else will be not processed
+ Result:=R;
 end;
 
 function TForm1.owntagexec(containter, cmd: string): string;
@@ -1097,20 +1304,27 @@ begin
 
 end;
 
-function TForm1.OutputHTMLFile(uri: string): string;
-var
-  path: string;
-  filename: string;
-  Buf: TMemo;
-  r: string;
+{{ ============== Чтение файла с диска / используется веб-сервером =============== }}
+
+function TForm1.OutputHTMLFile(uri: String): String;
+var path : String; filename : String; Buf : TMemo;
+  r : String;   fullq : String;
 begin
-  if uri = '/' then uri := '/index.' + PrefferedExtension.Text;
+
+  if uri = '/' then uri:='/index.'+PrefferedExtension.text;
   path := dbfPresets.FieldByName('dirpath').AsString;
-  Buf := TMemo.Create(Self);
-  Buf.Lines.LoadFromFile(path + uri);
-  r := Buf.Text;
+  Buf:=TMemo.Create(Self);
+  r:='';
+  fullq:=path+uri;
+  if Cache.Values[uri] <> '' then r:=Cache.values[uri] else begin
+  if FileExists(fullq) then begin
+  Buf.Lines.LoadFromFile(fullq);
+  cache.values[uri]:=Buf.text;
+  r:=Buf.Text;
+  end;
+  end;
   Buf.Free;
-  Result := r;
+  result:=r;
 end;
 
 function TForm1.buildOwnFields(html: string): string;
