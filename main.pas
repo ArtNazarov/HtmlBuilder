@@ -2252,10 +2252,17 @@ begin
                               Buffer.Lines.Add('</head><body>');
                               Buffer.Lines.Add(
 
-                                              useBlocks( buildBody(page.title, page.body, t))
+                                              buildBody(page.title, page.body, t)
 
                               );
                               Buffer.Lines.Add('</body></html>');
+
+                              // постобработка
+                              Buffer.Lines.Text :=
+                                        useBlocks(
+                                                  insertSectionsAndLinks(
+                                                         buffer.Lines.Text)
+                                                         );
 
 
                               // id of pages
@@ -2351,7 +2358,9 @@ begin
                        sqlRubrication.First;
                        while not sqlRubrication.EOF do
                              begin
-                                   itemHTML := itemHtml + buildItem( sqlRubrication.FieldByName('itemtpl').AsString,
+                                   itemHTML := itemHtml +
+
+                                   buildItem( sqlRubrication.FieldByName('itemtpl').AsString,
                                      sqlRubrication.FieldByName('content_id').AsString,
                                      sqlRubrication.FieldByName('caption').AsString );
                                    sqlRubrication.Next;
@@ -2361,13 +2370,21 @@ begin
 
                             sectionHtml :=
 
+
+
+
                             applyVar(
+
+
+
                             buildSection( sqlRubrication.FieldByName('sectiontpl').AsString,
                                               sqlRubrication.FieldByName('id').asString,
                                               sqlRubrication.FieldByName('section').AsString, itemHtml ),
                             'pager',
                                     buildPagination(sqlRubrication.FieldByName('id').AsString, page, pagesInRubrics)
                                     );
+
+
 
 
                             headHtml:=buildHead( sqlRubrication.FieldByName('section').AsString,
@@ -2377,6 +2394,10 @@ begin
 
                             document:=ApplyVar(document, 'header', headHtml);
                             document:=ApplyVar(document, 'body', sectionHtml);
+                            // постобработка
+                            document:=useBlocks( insertSectionsAndLinks( document ) );
+
+
                             mmRubrics.Lines.Add(document);
 
 
