@@ -4,14 +4,13 @@
     <PathDelim Value="\"/>
     <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="14">
+    <Units Count="16">
       <Unit0>
         <Filename Value="htmlbuilder.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="3"/>
-        <CursorPos X="97" Y="11"/>
-        <UsageCount Value="62"/>
+        <CursorPos Y="16"/>
+        <UsageCount Value="120"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -20,56 +19,57 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="959"/>
-        <CursorPos X="75" Y="970"/>
-        <UsageCount Value="62"/>
+        <TopLine Value="2379"/>
+        <CursorPos X="97" Y="2387"/>
+        <UsageCount Value="120"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="E:\02 ЛИЧНОЕ\01 Документы\05 АРТЕМ [1GB]\02 ИСХОДНИКИ\Nav\modelfromdb.pas"/>
         <TopLine Value="59"/>
         <CursorPos X="27" Y="44"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="7"/>
       </Unit2>
       <Unit3>
         <Filename Value="E:\02 ЛИЧНОЕ\РАЗЛИЧНЫЕ КОПИИ\COPIES\18_09_2012_12_33\pargn.lfm"/>
         <TopLine Value="31"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit3>
       <Unit4>
         <Filename Value="E:\02 ЛИЧНОЕ\РАЗЛИЧНЫЕ КОПИИ\COPIES\18_09_2012_12_31\parogenerator.lpr"/>
         <TopLine Value="6"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="7"/>
       </Unit4>
       <Unit5>
         <Filename Value="E:\02 ЛИЧНОЕ\РАЗЛИЧНЫЕ КОПИИ\COPIES\18_09_2012_12_31\pargn.pas"/>
         <TopLine Value="283"/>
         <CursorPos X="7" Y="287"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="7"/>
       </Unit5>
       <Unit6>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
         <TopLine Value="3261"/>
         <CursorPos Y="3270"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="8"/>
       </Unit6>
       <Unit7>
         <Filename Value="C:\LAZARUS_LIB\SYNAPSE\blcksock.pas"/>
         <TopLine Value="1916"/>
         <CursorPos X="13" Y="1925"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="9"/>
       </Unit7>
       <Unit8>
         <Filename Value="C:\LAZARUS_LIB\SYNAPSE\ftpsend.pas"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="7"/>
       </Unit8>
       <Unit9>
         <Filename Value="C:\lazarus\components\synedit\syneditlazdsgn.pas"/>
         <UnitName Value="SynEditLazDsgn"/>
         <TopLine Value="27"/>
         <CursorPos X="34" Y="37"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="8"/>
       </Unit9>
       <Unit10>
         <Filename Value="..\..\..\usr\lib\lazarus\components\lazreport\source\lr_pars.pas"/>
@@ -77,33 +77,168 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="148"/>
         <CursorPos X="34" Y="154"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="7"/>
       </Unit10>
       <Unit11>
         <Filename Value="main.lfm"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6" Y="4"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit11>
       <Unit12>
         <Filename Value="asn1util.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="7"/>
       </Unit12>
       <Unit13>
         <Filename Value="..\Загрузки\HtmlBuilder-master\main.lfm"/>
         <HasResources Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="15" Y="3"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit13>
+      <Unit14>
+        <Filename Value="..\..\..\usr\lib\lazarus\lcl\include\dbcustomnavigator.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="480"/>
+        <CursorPos Y="489"/>
+        <UsageCount Value="9"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="..\..\..\usr\lib64\lazarus\lcl\interfaces\qt5\qtwidgets.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="5646"/>
+        <CursorPos Y="5746"/>
+        <UsageCount Value="8"/>
+      </Unit15>
     </Units>
-    <General>
-      <ActiveWindowIndexAtStart Value="-1"/>
-    </General>
-    <JumpHistory HistoryIndex="-1"/>
+    <Debugger>
+      <Backend Value="{85EE404A-FD31-481F-8D9B-09F666946694}"/>
+    </Debugger>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="main.pas"/>
+        <Caret Line="2457" Column="116" TopLine="2448"/>
+      </Position1>
+      <Position2>
+        <Filename Value="main.pas"/>
+        <Caret Line="2454" Column="60" TopLine="2448"/>
+      </Position2>
+      <Position3>
+        <Filename Value="main.pas"/>
+        <Caret Line="2455" Column="102" TopLine="2450"/>
+      </Position3>
+      <Position4>
+        <Filename Value="main.pas"/>
+        <Caret Line="2428" Column="117" TopLine="2419"/>
+      </Position4>
+      <Position5>
+        <Filename Value="main.pas"/>
+        <Caret Line="2483" Column="53" TopLine="2472"/>
+      </Position5>
+      <Position6>
+        <Filename Value="main.pas"/>
+        <Caret Line="2412" Column="65" TopLine="2403"/>
+      </Position6>
+      <Position7>
+        <Filename Value="main.pas"/>
+        <Caret Line="2414" Column="42" TopLine="2405"/>
+      </Position7>
+      <Position8>
+        <Filename Value="main.pas"/>
+        <Caret Line="2420" Column="72" TopLine="2406"/>
+      </Position8>
+      <Position9>
+        <Filename Value="main.pas"/>
+        <Caret Line="2434" Column="72" TopLine="2497"/>
+      </Position9>
+      <Position10>
+        <Filename Value="main.pas"/>
+        <Caret Line="2528" Column="49" TopLine="2502"/>
+      </Position10>
+      <Position11>
+        <Filename Value="main.pas"/>
+        <Caret Line="369" Column="19" TopLine="362"/>
+      </Position11>
+      <Position12>
+        <Filename Value="main.pas"/>
+        <Caret Line="1129" Column="22" TopLine="1128"/>
+      </Position12>
+      <Position13>
+        <Filename Value="main.pas"/>
+        <Caret Line="1133" Column="29" TopLine="1152"/>
+      </Position13>
+      <Position14>
+        <Filename Value="main.pas"/>
+        <Caret Line="358" Column="24" TopLine="351"/>
+      </Position14>
+      <Position15>
+        <Filename Value="main.pas"/>
+        <Caret Line="2503" Column="35" TopLine="2497"/>
+      </Position15>
+      <Position16>
+        <Filename Value="main.pas"/>
+        <Caret Line="358" Column="24" TopLine="357"/>
+      </Position16>
+      <Position17>
+        <Filename Value="main.pas"/>
+        <Caret Line="2448" Column="63" TopLine="2484"/>
+      </Position17>
+      <Position18>
+        <Filename Value="main.pas"/>
+        <Caret Line="618" Column="8" TopLine="610"/>
+      </Position18>
+      <Position19>
+        <Filename Value="main.pas"/>
+        <Caret Line="2313" Column="4" TopLine="2300"/>
+      </Position19>
+      <Position20>
+        <Filename Value="main.pas"/>
+        <Caret Line="2345" Column="23" TopLine="2338"/>
+      </Position20>
+      <Position21>
+        <Filename Value="main.pas"/>
+        <Caret Line="2335" Column="72" TopLine="2344"/>
+      </Position21>
+      <Position22>
+        <Filename Value="main.pas"/>
+        <Caret Line="2340" Column="48" TopLine="2340"/>
+      </Position22>
+      <Position23>
+        <Filename Value="main.pas"/>
+        <Caret Line="2344" Column="35" TopLine="2344"/>
+      </Position23>
+      <Position24>
+        <Filename Value="main.pas"/>
+        <Caret Line="2311" Column="21" TopLine="2365"/>
+      </Position24>
+      <Position25>
+        <Filename Value="main.pas"/>
+        <Caret Line="2370" Column="74" TopLine="2361"/>
+      </Position25>
+      <Position26>
+        <Filename Value="main.pas"/>
+        <Caret Line="2372" Column="90" TopLine="2351"/>
+      </Position26>
+      <Position27>
+        <Filename Value="main.pas"/>
+        <Caret Line="2363" Column="38" TopLine="2371"/>
+      </Position27>
+      <Position28>
+        <Filename Value="main.pas"/>
+        <Caret Line="2368" Column="94" TopLine="2339"/>
+      </Position28>
+      <Position29>
+        <Filename Value="main.pas"/>
+        <Caret Line="2386" Column="89" TopLine="2367"/>
+      </Position29>
+      <Position30>
+        <Filename Value="main.pas"/>
+        <Caret Line="2390" Column="70" TopLine="2376"/>
+      </Position30>
+    </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode="default"/>
