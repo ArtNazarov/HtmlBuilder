@@ -73,6 +73,8 @@ type
             bodytpl : String;
             sectiontpl : String;
             dir : String;
+            user_field_names : array[0..7] of String;
+            user_field_values  : array[0..7] of String;
   end;
 
 
@@ -132,7 +134,7 @@ type
     dbeUserField5: TDBEdit;
     dbePreset: TDBEdit;
     dbeUserField6: TDBEdit;
-    DBEdit21: TDBEdit;
+    dbeUserField7: TDBEdit;
     dbeSiteName: TDBEdit;
     dbeSiteDirectory: TDBEdit;
     dbeSectionId: TDBEdit;
@@ -214,7 +216,7 @@ type
     Panel11: TPanel;
     Panel13: TPanel;
     Panel14: TPanel;
-    dbeUserField7: TPanel;
+    panUserFields: TPanel;
     Panel15: TPanel;
     Panel18: TPanel;
     Panel19: TPanel;
@@ -366,7 +368,7 @@ type
     procedure StartOwnServer();
     procedure StopOwnServer();
     function OutputHTMLFile(uri: string): string;
-    function buildOwnFields(html: string): string;
+    function buildOwnFields(html: string; p : page_params): string;
     function prefExtension(lin: string): string;
     procedure localeRUS();
     procedure localeENG();
@@ -1170,7 +1172,7 @@ begin
                               Buffer.Lines.Add(
                               useOwnTags(useModules(useBlocks(buildHead(title, headTemplate)))));
                               Buffer.Lines.Add('</head><body>');
-                              Buffer.Lines.Add(buildOwnFields(useOwnTags(useModules(insSections(insLinks(useBlocks(buildBody(title, body, bodyTemplate))))))));
+                              Buffer.Lines.Add( useOwnTags(useModules(insSections(insLinks(useBlocks(buildBody(title, body, bodyTemplate)))))));
                               Buffer.Lines.Add('</body></html>');
 
 
@@ -1563,20 +1565,22 @@ begin
   result:=r;
 end;
 
-function TForm1.buildOwnFields(html: string): string;
+function TForm1.buildOwnFields(html: string; p : page_params): string;
 var
   r: string;
   i: byte;
-  t: string;
+
 begin
   r := html;
   for i := 1 to 7 do
   begin
-    t := IntToStr(i);
-    r := StringReplace(r, '{f' + t + '}', sqlPresets.FieldByName('ufn' + t).AsString,
+    r := StringReplace(r, '{f' + IntToStr( i )  + '}',
+                          p.user_field_names[i],
       [rfReplaceAll]);
-    r := StringReplace(r, '{v' + t + '}', sqlContent.FieldByName('uf' + t).AsString,
+   r := StringReplace(r, '{v' + IntToStr( i )  + '}',
+                          p.user_field_values[i],
       [rfReplaceAll]);
+
   end;
 
 
@@ -2179,6 +2183,7 @@ var
         page : page_params;   filenam  : String;
         fbuffer : TStringList;
         headT, bodyT : String;
+        page_param_num : byte;
 begin
 
    (* Загружаем шаблоны из файлов, если сделан такой выбор *)
@@ -2210,6 +2215,16 @@ begin
             page.sitename := sqlJoin.FieldByName('sitename').AsString;
             page.dirpath := sqlJoin.FieldByName('dirpath').AsString;
 
+            for page_param_num:=1 to 7 do
+              begin
+                page.user_field_names[ page_param_num ]:=
+                                       sqlJoin.FieldByName('ufn'+IntToStr(page_param_num)).AsString;
+                page.user_field_values[ page_param_num ]:=
+                                       sqlJoin.FieldByName('uf'+IntToStr(page_param_num)).AsString;
+
+              end;
+
+
                          if chkGetBlocksFromFile.Checked then
                              page.headtpl := headT
                          else
@@ -2218,6 +2233,7 @@ begin
                              page.bodytpl := bodyT
                          else
                            page.bodytpl := sqlJoin.FieldByName('bodytpl').AsString;
+
 
             page.sectiontpl := sqlJoin.FieldByName('itemtpl').AsString;
             page.dir:=sqlJoin.FieldByName('dirpath').AsString;
@@ -2270,10 +2286,12 @@ begin
 
                               // постобработка
                               Buffer.Lines.Text :=
-                                        useBlocks(
-                                                  insertSectionsAndLinks(
-                                                         buffer.Lines.Text)
-                                                         );
+                                    buildOwnFields(
+                                           useBlocks(
+                                                   insertSectionsAndLinks(
+                                                             buffer.Lines.Text)
+                                                    ),
+                                        page);
 
 
                               // id of pages

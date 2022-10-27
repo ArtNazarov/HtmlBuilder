@@ -18,9 +18,9 @@ object Form1: TForm1
     Height = 770
     Top = 0
     Width = 1594
-    ActivePage = tabJoin
+    ActivePage = tabPages
     Align = alClient
-    TabIndex = 7
+    TabIndex = 0
     TabOrder = 0
     OnChange = AppPagesChange
     object tabPages: TTabSheet
@@ -107,9 +107,9 @@ object Form1: TForm1
             Height = 559
             Top = 101
             Width = 1219
-            ActivePage = TabSheet11
+            ActivePage = TabSheet12
             Align = alClient
-            TabIndex = 0
+            TabIndex = 1
             TabOrder = 2
             object TabSheet11: TTabSheet
               Caption = 'Основной текст'
@@ -279,6 +279,7 @@ object Form1: TForm1
                     Width = 1211
                     Align = alTop
                     DataField = 'ufn1'
+                    DataSource = ds_Presets
                     ParentColor = False
                   end
                   object dbePageField1: TDBEdit
@@ -287,6 +288,7 @@ object Form1: TForm1
                     Top = 23
                     Width = 1211
                     DataField = 'uf1'
+                    DataSource = ds_Content
                     Align = alTop
                     MaxLength = 0
                     TabOrder = 0
@@ -298,6 +300,7 @@ object Form1: TForm1
                     Width = 1211
                     Align = alTop
                     DataField = 'ufn2'
+                    DataSource = ds_Presets
                     ParentColor = False
                   end
                   object dbePageField2: TDBEdit
@@ -306,6 +309,7 @@ object Form1: TForm1
                     Top = 73
                     Width = 1211
                     DataField = 'uf2'
+                    DataSource = ds_Content
                     Align = alTop
                     MaxLength = 0
                     TabOrder = 1
@@ -317,6 +321,7 @@ object Form1: TForm1
                     Width = 1211
                     Align = alTop
                     DataField = 'ufn3'
+                    DataSource = ds_Presets
                     ParentColor = False
                   end
                   object dbePageField3: TDBEdit
@@ -325,6 +330,7 @@ object Form1: TForm1
                     Top = 123
                     Width = 1211
                     DataField = 'uf3'
+                    DataSource = ds_Content
                     Align = alTop
                     MaxLength = 0
                     TabOrder = 2
@@ -336,6 +342,7 @@ object Form1: TForm1
                     Width = 1211
                     Align = alTop
                     DataField = 'ufn4'
+                    DataSource = ds_Presets
                     ParentColor = False
                   end
                   object dbePageField4: TDBEdit
@@ -344,6 +351,7 @@ object Form1: TForm1
                     Top = 331
                     Width = 1211
                     DataField = 'uf4'
+                    DataSource = ds_Content
                     Align = alTop
                     MaxLength = 0
                     TabOrder = 3
@@ -355,6 +363,7 @@ object Form1: TForm1
                     Width = 1211
                     Align = alTop
                     DataField = 'ufn5'
+                    DataSource = ds_Presets
                     ParentColor = False
                   end
                   object dbePageField5: TDBEdit
@@ -363,6 +372,7 @@ object Form1: TForm1
                     Top = 281
                     Width = 1211
                     DataField = 'uf5'
+                    DataSource = ds_Content
                     Align = alTop
                     MaxLength = 0
                     TabOrder = 4
@@ -374,6 +384,7 @@ object Form1: TForm1
                     Width = 1211
                     Align = alTop
                     DataField = 'ufn6'
+                    DataSource = ds_Presets
                     ParentColor = False
                   end
                   object dbePageField6: TDBEdit
@@ -382,6 +393,7 @@ object Form1: TForm1
                     Top = 231
                     Width = 1211
                     DataField = 'uf6'
+                    DataSource = ds_Content
                     Align = alTop
                     MaxLength = 0
                     TabOrder = 5
@@ -393,6 +405,7 @@ object Form1: TForm1
                     Width = 1211
                     Align = alTop
                     DataField = 'ufn7'
+                    DataSource = ds_Presets
                     ParentColor = False
                   end
                   object dbePageField7: TDBMemo
@@ -401,7 +414,8 @@ object Form1: TForm1
                     Top = 173
                     Width = 1211
                     Align = alTop
-                    DataField = 'uf6'
+                    DataField = 'uf7'
+                    DataSource = ds_Content
                     TabOrder = 6
                   end
                 end
@@ -819,9 +833,9 @@ object Form1: TForm1
             Height = 559
             Top = 151
             Width = 1227
-            ActivePage = TabSheet6
+            ActivePage = TabSheet13
             Align = alClient
-            TabIndex = 0
+            TabIndex = 4
             TabOrder = 3
             object TabSheet6: TTabSheet
               Caption = 'Заголовок'
@@ -969,7 +983,7 @@ object Form1: TForm1
               Caption = 'Пользовательские поля'
               ClientHeight = 527
               ClientWidth = 1223
-              object dbeUserField7: TPanel
+              object panUserFields: TPanel
                 Left = 0
                 Height = 527
                 Top = 0
@@ -985,6 +999,7 @@ object Form1: TForm1
                   Top = 9
                   Width = 680
                   DataField = 'ufn1'
+                  DataSource = ds_Presets
                   MaxLength = 0
                   TabOrder = 0
                 end
@@ -994,6 +1009,7 @@ object Form1: TForm1
                   Top = 41
                   Width = 680
                   DataField = 'ufn2'
+                  DataSource = ds_Presets
                   MaxLength = 0
                   TabOrder = 1
                 end
@@ -1003,6 +1019,7 @@ object Form1: TForm1
                   Top = 73
                   Width = 680
                   DataField = 'ufn3'
+                  DataSource = ds_Presets
                   MaxLength = 0
                   TabOrder = 2
                 end
@@ -1012,6 +1029,7 @@ object Form1: TForm1
                   Top = 105
                   Width = 680
                   DataField = 'ufn4'
+                  DataSource = ds_Presets
                   MaxLength = 0
                   TabOrder = 3
                 end
@@ -1021,6 +1039,7 @@ object Form1: TForm1
                   Top = 137
                   Width = 680
                   DataField = 'ufn5'
+                  DataSource = ds_Presets
                   MaxLength = 0
                   TabOrder = 4
                 end
@@ -1030,15 +1049,17 @@ object Form1: TForm1
                   Top = 169
                   Width = 680
                   DataField = 'ufn6'
+                  DataSource = ds_Presets
                   MaxLength = 0
                   TabOrder = 5
                 end
-                object DBEdit21: TDBEdit
+                object dbeUserField7: TDBEdit
                   Left = 35
                   Height = 28
                   Top = 201
                   Width = 680
                   DataField = 'ufn7'
+                  DataSource = ds_Presets
                   MaxLength = 0
                   TabOrder = 6
                 end
@@ -1922,13 +1943,26 @@ object Form1: TForm1
       'preset.headtpl,'
       'preset.bodytpl,'
       'preset.sectiontpl,'
-      'preset.itemtpl'
+      'preset.itemtpl,'
+      'preset.ufn1,'
+      'content.uf1,'
+      'preset.ufn2,'
+      'content.uf2,'
+      'preset.ufn3,'
+      'content.uf3,'
+      'preset.ufn4,'
+      'content.uf4,'
+      'preset.ufn5,'
+      'content.uf5,'
+      'preset.ufn6,'
+      'content.uf6,'
+      'preset.ufn7,'
+      'content.uf7'
       ' from content'
       'LEFT JOIN section'
       'ON content.section = section.id'
       'LEFT JOIN preset'
       'ON section.preset = preset.id'
-      ''
     )
     Params = <>
     Macros = <>
