@@ -333,6 +333,8 @@ type
     SiteSectionUrls, SiteSectionTitles: TMemo;
     ListenerSocket, ConnectionSocket: TTCPBlockSocket;
 
+    Blocks : TStringList; // блоки
+
     Cache : tStringList;    {{ for webserver }}
     PostsEditorState : String;
 
@@ -438,6 +440,7 @@ type
      procedure doSections();
      procedure doSitemap();
      function insertSectionsAndLinks(str : string) : string;
+     procedure scanBlocks();
 
 
 
@@ -477,7 +480,7 @@ begin
 
   SiteSectionUrls := TMemo.Create(Self); // URL разделов
   SiteSectionTitles := TMemo.Create(Self); // Заголовки разделов
-
+  blocks:=TStringList.Create();
 
 
   edPathToBuild.Text:=GetEnvironmentVariable('HOME')+'/mysite';
@@ -613,6 +616,7 @@ begin
 
   form1.scanLinks(); // сканер ссылок нужен для автозамены
   form1.scanSections(); // сканер секций нужен для автозамены
+  form1.scanBlocks(); // сканируем блоки
 
   doJoinPages(); // страницы
   doSections();  // разделы
@@ -981,22 +985,29 @@ end;
 function TForm1.useBlocks(part: string): string;
 var r : String; i, j : Integer; h, t : String;  fbuffer : TStringList;  blockFiles : TStringList;
    log : TStringList;
-
+   key, value : String;
+   block_index : integer;
 begin
   r := part;
   log := TStringList.Create;
   if not chkGetBlocksFromFile.Checked then // use database
   begin
-  if logger_info then  mmRubrics.Lines.Add('USE BLOCKS FROM BASE');
-  sqlBlocks.First;
-  while not sqlBlocks.EOF do begin
-        h := '{'+sqlBlocks.FieldByName('id').AsString+'}';
-        t :=  sqlBlocks.FieldByName('markup').AsString;
+  if logger_info then  mmRubrics.Lines.Add('USE BLOCKS FROM ram');
+  if logger_info then  mmRubrics.Lines.Add('Глобальных блоков '+IntToStr(blocks.Count));
+  for block_index:=0 to blocks.Count - 1 do
+                     begin
+
+                       key:=Blocks.Names[block_index];
+                       value:=Blocks.ValueFromIndex[block_index];
+                       //showMessage('key '+key);
+                       //showMessage('value = '+value);
+
+        h := '{'+key+'}';
+        t :=  value;
         r:=StringReplace(r, h, t, [rfReplaceAll]);
         if logger_info then  mmRubrics.Lines.Add('replace '+h+' ==>> to '+t);
-        sqlBlocks.Next;
-  end;
-  sqlBlocks.First;
+ end;
+
   end
   else begin
     if logger_info then  mmRubrics.Lines.Add('USE BLOCKS FROM FILES');
@@ -2323,9 +2334,11 @@ var
 
 
 begin
+// некоторые данные нужно считать 1 раз
+// так как они будут нужны многократно
+  scanLinks();  // ссылки
+  scanSections(); // секции
 
-  scanLinks();
-  scanSections();
 
 
   itemsPerPage := 3;
@@ -2468,6 +2481,24 @@ end;
 function TForm1.insertSectionsAndLinks(str: string): string;
 begin
   Result:= insSections(insLinks(str));
+end;
+
+procedure TForm1.scanBlocks;
+var k : byte;
+begin
+    k:=0;
+             Blocks.Clear;
+
+   sqlBlocks.First();
+   while not sqlBlocks.EOF do
+         begin
+           Blocks.AddPair( sqlBlocks.FieldByName('id').AsString, sqlBlocks.FieldByName('markup').AsString  );
+           sqlBlocks.Next();
+           inc(k);
+         end;
+   sqlBlocks.First();
+   SilentMessage('ГЛОБАЛЬНЫХ БЛОКОВ '+IntToStr(k));
+
 end;
 
 
