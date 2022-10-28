@@ -1116,6 +1116,7 @@ begin
   //  <<section_url>> will be replaced to <a href="section_url">section_title</a>
   r := body;
   i := 0;
+  //showMessage(IntToStr(SiteSectionUrls.Lines.Count));
   while i < SiteSectionUrls.Lines.Count do
   begin
     r :=
@@ -2000,8 +2001,8 @@ begin
                                useModules(
                                 useOwnTags(
                                     buildOwnFields(
-                                           useBlocks(
-                                                   insertSectionsAndLinks(
+                                           insertSectionsAndLinks(
+                                                  useBlocks(
                                                              buffer.Lines.Text)
                                                     ),
                                         page)));
