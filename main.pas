@@ -10,7 +10,7 @@ uses
   Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
   DBCtrls, dbf, SQLite3Conn, SQLDB, process, FileUtil, SynHighlighterHTML,
   SynEdit, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids, blcksock, sockets,
-  Synautil, synaip, synsock, ftpsend; {Use Synaptic}
+  Synautil, synaip, synsock, ftpsend, db_helpers, db_insertdemo, db_create_tables; {Use Synaptic}
 
 const
 
@@ -379,21 +379,18 @@ type
     procedure initTransactionSQL(); // Иниц. транзакция Sqlite
 
 
-    procedure createPagesSQL(); // версия sqlite
 
 
 
 
 
-    procedure createSectionsSQL(); // версия sqlite
 
 
 
 
-    procedure createBlocksSQL(); // версия sqlite
 
 
-    procedure createPresetsSQL(); // версия sqlite
+
 
     function applyVar(str, variable, value : string) : string;
     { Просмотр базы }
@@ -416,21 +413,13 @@ type
      procedure changeDataSourcesPresets();
 
      (* Заполнение демо данными *)
-     procedure insertDemoDataContent();
-     procedure insertDemoDataSections();
-     procedure insertDemoDataBlocks();
-     procedure insertDemoDataPresets();
-     procedure insertDemoData();
+
      procedure makeCreationTables();
      procedure changeDataSources();
 
-     procedure checkConnect(msg : String);
 
-     {Хелперы}
-     procedure addIntoBlock( id, markup, remark : String);
-     procedure addIntoSection( id, section, preset, note : String);
-     procedure addIntoContent( id, cap, content, section : String);
-     procedure addIntoPreset(id, sitename, dirpath, headtpl, bodytpl, sectiontpl, itemtpl : String);
+
+
 
      procedure SilentMessage(msg : String);
 
@@ -443,6 +432,10 @@ type
      procedure doSitemap();
      function insertSectionsAndLinks(str : string) : string;
      procedure scanBlocks();
+
+
+
+
 
 
 
@@ -1640,34 +1633,7 @@ end;
 
 
 
-procedure TForm1.createPagesSQL;
-begin
 
-
-        // Здесь мы настраиваем таблицу с именем "content" в новой базе данных.
-        conn.ExecuteDirect('CREATE TABLE "content"('+
-                    ' "id" Char(128) NOT NULL PRIMARY KEY,'+
-                    ' "caption" Char(128),'+
-                    ' "content" TEXT,'+
-                    ' "section" Chat(128),'+
-                    ' "uf1" Char(60),'+
-                    ' "uf2" Char(60),'+
-                    ' "uf3" Char(60),'+
-                    ' "uf4" Char(60),'+
-                    ' "uf5" Char(60),'+
-                    ' "uf6" Char(60),'+
-                    ' "uf7" Char(60)'
-                    +');');
-
-        // Создание индекса на основе идентификатора в таблице "DATA"
-        conn.ExecuteDirect('CREATE UNIQUE INDEX "content_id_idx" ON "content"( "id" );');
-
-        trans.Commit;
-        SilentMessage('начальная настройка страниц, транзакция...');
-
-
-
- end;
 
 procedure TForm1.initTransactionSQL;
 
@@ -1690,7 +1656,7 @@ begin
 
          // делать ничего не нужно, обработается при выходе, сообщаем
          SilentMessage('Файл найден!');
-         checkConnect('initTransactionSQL');
+         checkConnect(conn, trans, 'initTransactionSQL');
 
 
     end
@@ -1705,7 +1671,7 @@ begin
 
         // запросы в рамках транзакции
 
-       checkConnect('initTransactionSQL');
+       checkConnect(conn, trans,'initTransactionSQL');
          try
         form1.makeCreationTables(); // запросы на создание таблиц
 
@@ -1713,7 +1679,7 @@ begin
 
         // пытаемся выполнить вставку данных
 
-        form1.insertDemoData();
+        insertDemoData(temp_sql, conn, trans);
 
 
 
@@ -1733,76 +1699,15 @@ end;
 
 
 
-procedure TForm1.createSectionsSQL;
-
-
-begin
-       CheckConnect('нет соединения <createSectionsSQL>!');
-
-        // Здесь мы настраиваем таблицу с именем "section" в новой базе данных.
-        conn.ExecuteDirect('CREATE TABLE "section"('+
-                    ' "id" Char(60) NOT NULL PRIMARY KEY,'+
-                    ' "section" Char(60),'+
-                    ' "preset" Char(60),'+
-                    ' "note" TEXT)');
-
-        // Создание индекса на основе идентификатора в таблице "section"
-        conn.ExecuteDirect('CREATE UNIQUE INDEX "section_id_idx" ON "section"( "id" );');
-
-        trans.Commit;
-       SilentMessage('начальная настройка секций, транзакция...');
- end;
 
 
 
-procedure TForm1.createBlocksSQL;
-begin
-  CheckConnect('нет соединения <createBlocksSQL>!');
-          // Здесь мы настраиваем таблицу с именем "block" в новой базе данных.
-        conn.ExecuteDirect('CREATE TABLE "block"('+
-                    ' "id" Char(60) NOT NULL PRIMARY KEY,'+
-                    ' "markup" TEXT,'+
-                    ' "remark" TEXT)');
-
-        // Создание индекса на основе идентификатора в таблице "block"
-        conn.ExecuteDirect('CREATE UNIQUE INDEX "block_id_idx" ON "block"( "id" );');
-
-        trans.Commit;
-        SilentMessage('начальная настройка блоков, транзакция...');
-end;
 
 
 
-procedure TForm1.createPresetsSQL;  // начальная настройка пресетов
-begin
 
-        CheckConnect('нет соединения <createPresetsSQL>!');
 
-        // Здесь мы настраиваем таблицу с именем "presets" в новой базе данных.
-        conn.ExecuteDirect('CREATE TABLE "preset"('+
-                    ' "id" Char(60) NOT NULL PRIMARY KEY,'+
-                    ' "sitename" Char(60),'+  // Название сайта
-                    ' "dirpath" Char(60),'+      // Путь к папке в результатами
-                    ' "headtpl" TEXT,'+         // Заголовочная часть шаблона
-                    ' "bodytpl" TEXT,'+     // Основная часть шаблона
-                    ' "sectiontpl" TEXT,'+  // Раздела обрамление
-                    ' "itemtpl" TEXT,'+      // Оформление списка
-                    ' "ufn1" Char(60),'+     // Название доп. поля 1, 2...
-                    ' "ufn2" Char(60),'+
-                    ' "ufn3" Char(60),'+
-                    ' "ufn4" Char(60),'+
-                    ' "ufn5" Char(60),'+
-                    ' "ufn6" Char(60),'+
-                    ' "ufn7" Char(60))'
 
-                    );
-
-        // Создание индекса на основе идентификатора в таблице "block"
-        conn.ExecuteDirect('CREATE UNIQUE INDEX "preset_id_idx" ON "preset"( "id" );');
-
-        trans.Commit;
-        SilentMessage('начальная настройка пресетов, транзакция...');
-end;
 
 function TForm1.applyVar(str, variable, value: string): string;
 begin
@@ -1812,7 +1717,7 @@ end;
 procedure TForm1.makeSqlActive;
 begin
 
-  checkConnect('makeSqlActive');
+  checkConnect(conn, trans,'makeSqlActive');
   // к моменту вызова этого запроса таблицы должны существовать
   if (sqlContent.SQL.Text = '') then
           SilentMessage('Запрос не задан sqlPages')
@@ -1850,41 +1755,34 @@ end;
 
 procedure TForm1.viewPagesSQL;
 begin
-
-sqlContent.SQL.Text := 'select * from content';
-sqlContent.Open;
+open_sql(    'select * from content', sqlContent);
 ds_Content.AutoEdit:=True;
 SilentMessage('выполнена загрузка страниц!');
 end;
 
 procedure TForm1.viewSectionsSQL;
   begin
-
-  sqlSections.SQL.Text := 'select * from section';
-  sqlSections.Open;
+  open_sql(  'select * from section', sqlSections);
   SilentMessage('выполнена загрузка разделов!');
   end;
 
 procedure TForm1.viewBlocksSQL;
 begin
 
-  sqlBlocks.SQL.Text := 'select * from block';
-  sqlBlocks.Open;
+  open_sql(  'select * from block', sqlBlocks);
+
   SilentMessage('выполнена загрузка блоков!');
 end;
 
 procedure TForm1.viewPresetsSQL;
 begin
-
-  sqlPresets.SQL.Text := 'select * from preset';
-  sqlPresets.Open;
-
+  open_sql ( 'select * from preset' , sqlPresets);
   SilentMessage('выполнена загрузка настроек!');
 end;
 
 procedure TForm1.viewTablesSQL;
 begin
-  checkConnect('viewTablesSQL');
+ checkConnect(conn, trans,'viewTablesSQL');
   form1.makeSqlActive(); // активируем запросы
   form1.viewPagesSQL();
   form1.viewBlocksSQL();
@@ -1956,117 +1854,31 @@ begin
   dbNav_Presets.DataSource:=form1.ds_Presets; // листалка
 end;
 
-procedure TForm1.insertDemoDataContent;   // демо страниц
-
-begin
-  checkConnect('нет соединения <insertDemoDataContent>!');
-
-  form1.addIntoContent('index', 'Hello!',
-    'This is my first static page. Here link <<blog>> to section', 'blog');
-  form1.addIntoContent('about', 'Other page',
-    'This is my second static page. See <<photos>>. Here link <<blog>> to section', 'blog');
-   form1.addIntoContent('photos1', 'Demo image 1',
-    '<img width="640" src="https://iso.500px.com/wp-content/uploads/2015/01/50shades_17.jpg">. Here link <<blog>> to section', 'photos');
-  form1.addIntoContent('photos2', 'Demo image2',
-    '<img width="640" src="https://images.squarespace-cdn.com/content/v1/5b0cc6d2e2ccd12e7e8c03c6/1542800092550-16CBUJK7FOSVUC5SC46D/levitating_woman_hat_01.jpg?format=1000w"/>. See <<photos>>. Here link <<blog>> to section', 'photos');
-  // параметризированный запрос
-
-  //or possibly CommitRetaining, depending on how your application is set up
-  SilentMessage('Демо данные установлены, страницы');
-
-
-
-end;
-
-procedure TForm1.insertDemoDataSections;   // демо данные для разделов
-begin
-  checkConnect('нет соединения <inserDemoDataSections>!');
-
-  addIntoSection( 'blog', 'Блог'  , 'basis'  , 'Мой блог');
-  addIntoSection( 'photos', 'Фото'  , 'basis'  , 'Фотографии');
-
-
-  SilentMessage('Демо данные установлены, разделы');
-end;
-
-procedure TForm1.insertDemoDataBlocks; // демо данные блоки
-begin
-  checkConnect('нет соединения <inserDemoDataBlocks>!');
-
-
-  addIntoBlock( 'mainmenu',
-   'Ссылка на раздел <<blog>> , Ссылка на раздел <<photos>>', 'Nav template');
-
-  addIntoBlock('bootstrap',
-  '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">'+
-  '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>',
-  'bootstrap 5');
 
 
 
 
-  SilentMessage('Демо данные установлены, блоки');
-end;
-
-procedure TForm1.insertDemoDataPresets;
-begin
-  checkConnect('нет соединения <inserDemoDataPresets>!');
-
-  addIntoPreset( 'basis', 'My Site' , GetEnvironmentVariable('HOME')+'/mysite',
-  '{bootstrap}<meta charset="utf-8"><title>{sitename}-{title}</title>',
-  '{mainmenu}<h1>{title}</h1><p>{content}</p>',
-  '{mainmenu}<h1>Тема: {sectionTitle}</h1> Материалы :<ul>{items}</ul>',
-   '<li><a href="{itemUrl}.{ext}">{itemTitle}</a></li>');
 
 
 
-     SilentMessage('Демо данные установлены, настройки');
-end;
 
-procedure TForm1.insertDemoData;
-begin
-  checkConnect('нет соединения <insertDemoData>!');
-   // инициализация демо данными
-          try
-             form1.insertDemoDataContent();
-          except
-             SilentMessage('Не удалось настроить контент');
-          end;
 
-          try
-              form1.insertDemoDataSections();
-          except
-             SilentMessage('Не удалось настроить разделы');
-          end;
-
-          try
-              form1.insertDemoDataBlocks();
-          except
-             SilentMessage('Не удалось настроить блоки');
-          end;
-
-          try
-              form1.insertDemoDataPresets();
-          except
-             SilentMessage('Не удалось настроить пресеты');
-          end;
-end;
 
 procedure TForm1.makeCreationTables;
 begin
 
-            checkConnect('makeCreationTables');
+          checkConnect(conn, trans, 'makeCreationTables');
 
 
             try
-            form1.createPagesSQL();
+            createPagesSQL(conn, trans);
 
             except
                  SilentMessage('Проблема с таблицей content');
             end;
-            form1.createSectionsSQL();
-            form1.createBlocksSQL();
-            form1.createPresetsSQL();
+            createSectionsSQL(conn, trans);
+            createBlocksSQL(conn, trans);
+            createPresetsSQL(conn, trans);
 end;
 
 procedure TForm1.changeDataSources;
@@ -2077,87 +1889,15 @@ begin
   Form1.changeDataSourcesPresets();
 end;
 
-procedure TForm1.checkConnect(msg: String);
-begin
-   if not conn.Connected then
-          begin
-           SilentMessage('нет соединения, переподключаюсь! <'+msg+'>');
-           conn.Open;
-           trans.Active:=true;
-          end
-  else
-    SilentMessage('требование выполнено <'+msg+'>');
-end;
-
-procedure TForm1.addIntoBlock(id, markup, remark: String);
-begin
- temp_sql.ReadOnly:=False;
- temp_sql.sql.text := 'insert into block (id, markup, remark) values (:ID,:MARKUP,:REMARK)';
- temp_sql.prepare;
- temp_sql.Params.ParamByName('ID').AsString := id;
- temp_sql.Params.ParamByName('MARKUP').AsString := markup;
- temp_sql.Params.ParamByName('REMARK').AsString := remark;
-
- temp_sql.ExecSQL; // подготовим запрос
-   // выполним транзакцию
-  trans.CommitRetaining;  //or possibly CommitRetainin
-end;
-
-procedure TForm1.addIntoSection(id, section, preset, note: String);
-begin
-  temp_sql.ReadOnly:=False;
-   temp_sql.sql.text := 'insert into section (id, section, preset, note) values (:ID,:SECTION,:PRESET, :NOTE)';
-   temp_sql.prepare;
-
-  temp_sql.Params.ParamByName('ID').AsString := id;
-  temp_sql.Params.ParamByName('SECTION').AsString := section;
- temp_sql.Params.ParamByName('PRESET').AsString := preset;
- temp_sql.Params.ParamByName('NOTE').AsString := note;
- temp_sql.ExecSQL; // подготовим запрос
- // выполним транзакцию
-  trans.CommitRetaining;
-end;
-
-procedure TForm1.addIntoContent(id, cap, content, section: String);
-begin
-  temp_sql.ReadOnly:=False;
-    temp_sql.sql.text := 'insert into content (id, caption, content, section) values (:ID,:CAPTION,:CONTENT, :SECTION)';
-  temp_sql.prepare;
-  // заполним параметры
-
-  temp_sql.Params.ParamByName('ID').AsString := id;
-
-  temp_sql.Params.ParamByName('CAPTION').AsString := cap;
-
-  temp_sql.Params.ParamByName('CONTENT').AsString := content;
 
 
-  temp_sql.Params.ParamByName('SECTION').AsString := section;
 
-  temp_sql.ExecSQL; // подготовим запрос
- // выполним транзакцию
- trans.CommitRetaining;
-end;
 
-procedure TForm1.addIntoPreset(id, sitename, dirpath, headtpl, bodytpl,
-  sectiontpl, itemtpl: String);
-begin
- temp_sql.ReadOnly:=False;
-   temp_sql.sql.text := 'insert into preset (id, sitename,dirpath,headtpl,bodytpl,sectiontpl,itemtpl) values '+
-  '(:ID,:SITENAME,:DIRPATH,:HEADTPL,:BODYTPL,:SECTIONTPL,:ITEMTPL)';
-  temp_sql.prepare;
-  temp_sql.Params.ParamByName('ID').AsString := id;
-   temp_sql.Params.ParamByName('SITENAME').AsString := sitename;
-   temp_sql.Params.ParamByName('DIRPATH').AsString := dirpath;
-  temp_sql.Params.ParamByName('HEADTPL').AsString := headtpl;
-  temp_sql.Params.ParamByName('BODYTPL').AsString :=  bodytpl;
-  temp_sql.Params.ParamByName('SECTIONTPL').AsString :=  sectiontpl;
-  temp_sql.Params.ParamByName('ITEMTPL').AsString := itemtpl;
 
-   temp_sql.ExecSQL; // подготовим запрос
-   // выполним транзакцию
-  trans.CommitRetaining;  //or possibly CommitRetainin
-end;
+
+
+
+
 
 procedure TForm1.SilentMessage(msg: String);
 begin
@@ -2378,13 +2118,18 @@ begin
 
                 for page := 1 to pagesInRubrics do
                     begin
+
                        sqlRubrication.Close;
-                       sqlRubrication.Prepare;
+                       prepared_transaction_start( sqlRubrication.SQL.Text, sqlRubrication, trans);
+
                        sectionId := sqlCounter.FieldByName('section').AsString;
                        sqlRubrication.ParamByName('section_id').AsString:=sectionId;
                        sqlRubrication.ParamByName('pageoffset').AsInteger:=(page-1)*itemsPerPage;
                        sqlRubrication.ParamByName('pagelimit').AsInteger := itemsPerPage;
+
+                       prepared_transaction_end(sqlRubrication, trans);
                        sqlRubrication.Open;
+
                        itemHtml := '';
                        sqlRubrication.First;
                        while not sqlRubrication.EOF do
@@ -2518,6 +2263,8 @@ begin
    SilentMessage('ГЛОБАЛЬНЫХ БЛОКОВ '+IntToStr(k));
 
 end;
+
+
 
 
 
