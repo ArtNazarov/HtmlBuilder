@@ -349,8 +349,7 @@ type
     function insLinks(body: string): string;
     function insSections(body: string): string;
 
-    procedure makePage(title: string; body: string; headTemplate: string;
-      bodyTemplate: string; filenam: string);
+
     procedure paired(t: string);
     procedure tagHref();
     procedure tagImg();
@@ -504,14 +503,14 @@ end;
 
 procedure TForm1.sqlSectionsAfterInsert(DataSet: TDataSet);
 begin
-   ShowMessage('вставка!');
+
 
 end;
 
 procedure TForm1.sqlSectionsAfterPost(DataSet: TDataSet);
 begin
 
-   ShowMessage('пост!');
+
 
 end;
 
@@ -1151,39 +1150,9 @@ end;
 
 
 
-{{ ================== сборка файла  ====================== }}
-
-procedure TForm1.makePage(title: string; body: string; headTemplate: string;
-  bodyTemplate: string; filenam: string);
-var
-  id : String;
-begin
-    if FileExists(filenam) then DeleteFile(filenam);
-    Buffer.Clear;
-    Buffer.Lines.Add('<!DOCTYPE html>');
-    Buffer.Lines.Add('<html><head>');
-                              Buffer.Lines.Add(
-                              useOwnTags(useModules(useBlocks(buildHead(title, headTemplate)))));
-                              Buffer.Lines.Add('</head><body>');
-                              Buffer.Lines.Add( useOwnTags(useModules(insSections(insLinks(useBlocks(buildBody(title, body, bodyTemplate)))))));
-                              Buffer.Lines.Add('</body></html>');
 
 
-                              // id of pages
-                              id := ExtractFileName(filenam);
-                              id := Copy(id, 1, Pos('.', id)-1);
-                              Buffer.Text:=StringReplace(Buffer.Text, '{id}',
-                              id , [rfReplaceAll]);
-                              try
 
-
-                               if logger_info then mmRubrics.Lines.Add('ФАЙЛ НА ЗАПИСЬ!');
-                               if logger_info then mmRubrics.Lines.Add(Buffer.Lines.Text);
-
-                              Buffer.Lines.SaveToFile(filenam);
-                              except
-                              end;
-end;
 
 procedure TForm1.paired(t: string);
 begin
@@ -1320,6 +1289,7 @@ var
   remstr: string;
   z: integer;
 begin
+  //showMessage('USE OWN TAGS CALL');
   r := app;
   c := 0;
   Start := -1;
@@ -1343,7 +1313,7 @@ begin
 
 
         if logger_info then mmRubrics.Lines.Add('ОБНАРУЖЕНИЕ ИСПОЛНЯЕМОГО ТЕГА');
-
+        //ShowMessage('Нашел тег '+ containter);
 
         replacement := owntagexec(containter, pattern);
         //Stub := InputBox('replacement', 'result=', replacement);
@@ -2026,12 +1996,13 @@ begin
 
                               // постобработка
                               Buffer.Lines.Text :=
+                                useOwnTags(
                                     buildOwnFields(
                                            useBlocks(
                                                    insertSectionsAndLinks(
                                                              buffer.Lines.Text)
                                                     ),
-                                        page);
+                                        page));
 
 
                               // id of pages
@@ -2221,6 +2192,7 @@ begin
 
 procedure TForm1.doSitemap;
 var fbuffer : TMemo;
+  sitemap_param : page_params;
 begin
   fbuffer := TMemo.Create(self);
   // карта категорий
@@ -2235,9 +2207,14 @@ begin
              sqlSections.Next;
         end;
   fbuffer.Lines.Add('</ul>');
-  makePage('Карта сайта', fbuffer.Text, sqlPresets.FieldByName('headtpl').AsString,
-  sqlPresets.FieldByName('bodytpl').AsString
-  , sqlPresets.FieldByName('dirpath').AsString+DELIM +'sitemap.'+form1.PrefferedExtension.Text);
+
+
+  sitemap_param.headtpl:=sqlPresets.FieldByName('headtpl').AsString;
+  sitemap_param.title:='Карта сайта';
+  sitemap_param.body:=fbuffer.Text;
+  sitemap_param.bodytpl:=sqlPresets.FieldByName('bodytpl').AsString;
+  makePageJoin( sitemap_param,
+  sqlPresets.FieldByName('dirpath').AsString+DELIM +'sitemap.'+form1.PrefferedExtension.Text);
   fbuffer.Free;
 end;
 
