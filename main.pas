@@ -23,7 +23,7 @@ const
 
     DELIM : Char = '/';
 
-    DLM_MODULE = '`';
+    DLM_MODULE = '%';
 
 type
 
@@ -1187,6 +1187,7 @@ var
   M: TMemo;
   filenam: string;
 begin
+  //showMessage('Запущен модуль '+cmd);
   P := TProcess.Create(Self);
   M := TMemo.Create(Self);
   P.CommandLine := cmd;
@@ -1996,13 +1997,14 @@ begin
 
                               // постобработка
                               Buffer.Lines.Text :=
+                               useModules(
                                 useOwnTags(
                                     buildOwnFields(
                                            useBlocks(
                                                    insertSectionsAndLinks(
                                                              buffer.Lines.Text)
                                                     ),
-                                        page));
+                                        page)));
 
 
                               // id of pages
