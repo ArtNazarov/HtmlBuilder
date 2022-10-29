@@ -19,13 +19,9 @@ Will be useful for creating websites hosted at P2P networks
 
 What's new
 ================
-Added import from text file or directly generation to preview another template.
+1. Added import from text file or directly generation to preview another template.
+2. Engine now use sqlite.
 
-Other generators
-==================
-
-https://staticsitegenerators.net/
-https://www.staticgen.com/
 
 TODO
 =================
