@@ -14,7 +14,7 @@ type
 
   TfrmEditor = class(TForm)
     btnCloseEditor: TButton;
-    btnPar: TButton;
+    btnFormatter: TButton;
     btnUnorderedList: TButton;
     btnItalic: TButton;
     btnBold: TButton;
@@ -24,16 +24,22 @@ type
     btnHref: TButton;
     btnPicture: TButton;
     btnOrderedList: TButton;
+    btnAnchor: TButton;
+    btnFontStyle: TButton;
+    cboFormatting: TComboBox;
+    cboFontFamily: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
     Panel1: TPanel;
     SynHTMLSyn1: TSynHTMLSyn;
+    procedure btnAnchorClick(Sender: TObject);
     procedure btnBoldClick(Sender: TObject);
     procedure btnCloseEditorClick(Sender: TObject);
+    procedure btnFontStyleClick(Sender: TObject);
     procedure btnHrefClick(Sender: TObject);
     procedure btnItalicClick(Sender: TObject);
     procedure btnOrderedListClick(Sender: TObject);
-    procedure btnParClick(Sender: TObject);
+    procedure btnFormatterClick(Sender: TObject);
     procedure btnPictureClick(Sender: TObject);
     procedure btnSubClick(Sender: TObject);
     procedure btnSupClick(Sender: TObject);
@@ -47,10 +53,13 @@ type
     procedure pair(t: string);
     procedure tagHref();
     procedure tagImg();
+    procedure tagAnchor();
     procedure tagList(t: string);
 
     procedure setMarkup(html : String);
     function getMarkup() : String;
+    procedure tagC(tg, params : String);
+    procedure tagX(tg, params : String);
   end;
 
 var
@@ -68,6 +77,12 @@ begin
   Close();
 end;
 
+procedure TfrmEditor.btnFontStyleClick(Sender: TObject);
+begin
+  if cboFontFamily.ItemIndex>=0 then
+  tagC('span', 'style="font-family:'+cboFontFamily.Items[cboFontFamily.ItemIndex]+'"');
+end;
+
 procedure TfrmEditor.btnHrefClick(Sender: TObject);
 begin
   tagHref();
@@ -76,6 +91,11 @@ end;
 procedure TfrmEditor.btnBoldClick(Sender: TObject);
 begin
   pair('b');
+end;
+
+procedure TfrmEditor.btnAnchorClick(Sender: TObject);
+begin
+  tagAnchor();
 end;
 
 procedure TfrmEditor.btnItalicClick(Sender: TObject);
@@ -88,9 +108,21 @@ begin
   taglist('ol');
 end;
 
-procedure TfrmEditor.btnParClick(Sender: TObject);
+procedure TfrmEditor.btnFormatterClick(Sender: TObject);
 begin
-  pair('p');
+  if cboFormatting.ItemIndex <=6 then
+     begin
+       pair('h'+IntToStr(cboFormatting.ItemIndex+1));
+     end
+  else
+   begin
+      case cboFormatting.ItemIndex of
+      7 : begin pair('p'); end;
+      8 : begin pair('code'); end;
+      9 : begin pair('pre');  end;
+      end;
+   end;
+
 end;
 
 procedure TfrmEditor.btnPictureClick(Sender: TObject);
@@ -135,12 +167,17 @@ end;
 
 procedure TfrmEditor.tagHref;
 begin
-  editor.Lines.Add('<a href=""></a>');
+  tagC('a','href=""');
 end;
 
 procedure TfrmEditor.tagImg;
 begin
-  editor.Lines.Add('<img src="" />');
+  tagX('img', 'src="" alt="" ');
+end;
+
+procedure TfrmEditor.tagAnchor;
+begin
+  tagC('a', 'href="#name"');
 end;
 
 procedure TfrmEditor.tagList(t: string);
@@ -161,6 +198,23 @@ function TfrmEditor.getMarkup: String;
 begin
   result:=markup;
 end;
+
+procedure TfrmEditor.tagC(tg, params: String);
+ begin
+  if (editor.SelText <> '') then
+  editor.SelText:='<'+tg+' '+params+'>'+editor.SelText+'</'+tg+'>'
+  else
+    editor.Lines.Add('<'+tg+' '+params+'>'+'</'+tg+'>');
+end;
+
+procedure TfrmEditor.tagX(tg, params: String);
+begin
+     if (editor.SelText <> '') then
+  editor.SelText:='<'+tg+' '+params+' />'+editor.SelText
+  else
+    editor.Lines.Add('<'+tg+' '+params+' />');
+end;
+
 
 end.
 

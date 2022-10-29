@@ -1,17 +1,17 @@
 object frmEditor: TfrmEditor
-  Left = 158
-  Height = 472
-  Top = 160
-  Width = 1254
+  Left = -23
+  Height = 767
+  Top = 131
+  Width = 1598
   Caption = 'frmEditor'
-  ClientHeight = 472
-  ClientWidth = 1254
+  ClientHeight = 767
+  ClientWidth = 1598
   LCLVersion = '2.2.4.0'
   inline editor: TSynEdit
     Left = 0
-    Height = 375
+    Height = 670
     Top = 72
-    Width = 1254
+    Width = 1598
     Align = alClient
     Font.Height = -13
     Font.Name = 'Courier New'
@@ -511,8 +511,8 @@ object frmEditor: TfrmEditor
   object btnCloseEditor: TButton
     Left = 0
     Height = 25
-    Top = 447
-    Width = 1254
+    Top = 742
+    Width = 1598
     Align = alBottom
     Caption = 'ОК'
     OnClick = btnCloseEditorClick
@@ -522,7 +522,7 @@ object frmEditor: TfrmEditor
     Left = 0
     Height = 22
     Top = 50
-    Width = 1254
+    Width = 1598
     Align = alTop
     Caption = 'Разметка'
     ParentColor = False
@@ -531,24 +531,24 @@ object frmEditor: TfrmEditor
     Left = 0
     Height = 50
     Top = 0
-    Width = 1254
+    Width = 1598
     Align = alTop
     Caption = 'Panel1'
     ClientHeight = 50
-    ClientWidth = 1254
+    ClientWidth = 1598
     TabOrder = 2
-    object btnPar: TButton
-      Left = 1
+    object btnFormatter: TButton
+      Left = 173
       Height = 48
       Top = 1
-      Width = 75
+      Width = 155
       Align = alLeft
-      Caption = 'Пар.'
-      OnClick = btnParClick
+      Caption = 'Применить тег'
+      OnClick = btnFormatterClick
       TabOrder = 0
     end
     object btnItalic: TButton
-      Left = 76
+      Left = 555
       Height = 48
       Top = 1
       Width = 75
@@ -558,7 +558,7 @@ object frmEditor: TfrmEditor
       TabOrder = 1
     end
     object btnBold: TButton
-      Left = 151
+      Left = 630
       Height = 48
       Top = 1
       Width = 75
@@ -568,7 +568,7 @@ object frmEditor: TfrmEditor
       TabOrder = 2
     end
     object btnUnderline: TButton
-      Left = 226
+      Left = 705
       Height = 48
       Top = 1
       Width = 75
@@ -578,7 +578,7 @@ object frmEditor: TfrmEditor
       TabOrder = 3
     end
     object btnSup: TButton
-      Left = 301
+      Left = 780
       Height = 48
       Top = 1
       Width = 75
@@ -588,7 +588,7 @@ object frmEditor: TfrmEditor
       TabOrder = 4
     end
     object btnSub: TButton
-      Left = 376
+      Left = 855
       Height = 48
       Top = 1
       Width = 75
@@ -598,7 +598,7 @@ object frmEditor: TfrmEditor
       TabOrder = 5
     end
     object btnHref: TButton
-      Left = 451
+      Left = 930
       Height = 48
       Top = 1
       Width = 75
@@ -608,7 +608,7 @@ object frmEditor: TfrmEditor
       TabOrder = 6
     end
     object btnPicture: TButton
-      Left = 526
+      Left = 1230
       Height = 48
       Top = 1
       Width = 75
@@ -618,7 +618,7 @@ object frmEditor: TfrmEditor
       TabOrder = 7
     end
     object btnOrderedList: TButton
-      Left = 601
+      Left = 1080
       Height = 48
       Top = 1
       Width = 75
@@ -628,7 +628,7 @@ object frmEditor: TfrmEditor
       TabOrder = 8
     end
     object btnUnorderedList: TButton
-      Left = 676
+      Left = 1155
       Height = 48
       Top = 1
       Width = 75
@@ -636,6 +636,63 @@ object frmEditor: TfrmEditor
       Caption = 'Обыч.сп.'
       OnClick = btnUnorderedListClick
       TabOrder = 9
+    end
+    object cboFormatting: TComboBox
+      Left = 1
+      Height = 48
+      Top = 1
+      Width = 172
+      Align = alLeft
+      ItemHeight = 22
+      Items.Strings = (
+        'Заголовок H1'
+        'Заголовок H2'
+        'Заголовок H3'
+        'Заголовок H4'
+        'Заголовок H5'
+        'Заголовок H6'
+        'Заголовок H7'
+        'Параграф'
+        'Код'
+        'Преформат.'
+      )
+      TabOrder = 10
+    end
+    object btnAnchor: TButton
+      Left = 1005
+      Height = 48
+      Top = 1
+      Width = 75
+      Align = alLeft
+      Caption = 'Якорь'
+      OnClick = btnAnchorClick
+      TabOrder = 11
+    end
+    object cboFontFamily: TComboBox
+      Left = 328
+      Height = 48
+      Top = 1
+      Width = 152
+      Align = alLeft
+      ItemHeight = 22
+      Items.Strings = (
+        'Arial'
+        'Arial Black'
+        'Courier New'
+        'Times New Roman'
+        'Tahoma'
+      )
+      TabOrder = 12
+    end
+    object btnFontStyle: TButton
+      Left = 480
+      Height = 48
+      Top = 1
+      Width = 75
+      Align = alLeft
+      Caption = 'Шрифт'
+      OnClick = btnFontStyleClick
+      TabOrder = 13
     end
   end
   object SynHTMLSyn1: TSynHTMLSyn
