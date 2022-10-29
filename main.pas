@@ -10,7 +10,8 @@ uses
   Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
   DBCtrls, dbf, SQLite3Conn, SQLDB, process, FileUtil, SynHighlighterHTML,
   SynEdit, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids, blcksock, sockets,
-  Synautil, synaip, synsock, ftpsend, db_helpers, db_insertdemo, db_create_tables; {Use Synaptic}
+  Synautil, synaip, synsock, ftpsend, db_helpers, db_insertdemo, db_create_tables,
+  replacers; {Use Synaptic}
 
 const
 
@@ -111,10 +112,13 @@ type
     ds_Counter: TDataSource;
     ds_Join: TDataSource;
     dbJoin: TDBGrid;
+    lvPresets: TListView;
+    lvBlocks: TListView;
+    lvContent: TListView;
+    lvSections: TListView;
     mmRubrics: TMemo;
     panJoin: TPanel;
     selSection: TDBLookupComboBox;
-    dbPresetsLook: TDBLookupListBox;
     ds_Content: TDataSource;
     ds_Presets: TDataSource;
     ds_Blocks: TDataSource;
@@ -250,9 +254,6 @@ type
     TabSheet7: TTabSheet;
     TabSheet8: TTabSheet;
     TabSheet9: TTabSheet;
-    dbContentLook: TDBLookupListBox;
-    dbSectionsLook: TDBLookupListBox;
-    dbBlocksLook: TDBLookupListBox;
     MainMenu1: TMainMenu;
     Panel16: TPanel;
     Panel17: TPanel;
@@ -301,29 +302,32 @@ type
       Button: TDBNavButtonType);
     procedure dbNav_SectionsBeforeAction(Sender: TObject;
       Button: TDBNavButtonType);
-    procedure Panel25Click(Sender: TObject);
+    procedure lvBlocksClick(Sender: TObject);
+    procedure lvContentClick(Sender: TObject);
+    procedure lvPresetsClick(Sender: TObject);
+    procedure lvSectionsClick(Sender: TObject);
 
-    procedure sqlBlocksAfterInsert(DataSet: TDataSet);
-    procedure sqlBlocksAfterPost(DataSet: TDataSet);
-    procedure sqlContentBeforeEdit(DataSet: TDataSet);
-    procedure sqlPagesAfterOpen(DataSet: TDataSet);
-    procedure sqlPagesBeforeOpen(DataSet: TDataSet);
-    procedure sqlPagesBeforePost(DataSet: TDataSet);
-    procedure dbContentLookClick(Sender: TObject);
-    procedure dbSectionsLookClick(Sender: TObject);
-    procedure dbBlocksLookClick(Sender: TObject);
-    procedure dbPresetsLookClick(Sender: TObject);
-    procedure dsPagesDataChange(Sender: TObject; Field: TField);
+
+
+
+
+
+
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
 
     procedure FormCreate(Sender: TObject);
 
     procedure btImgClick(Sender: TObject);
-    procedure sqlPagesBeforeScroll(DataSet: TDataSet);
-    procedure sqlPresetsAfterInsert(DataSet: TDataSet);
+    procedure sqlBlocksAfterDelete(DataSet: TDataSet);
+    procedure sqlBlocksAfterPost(DataSet: TDataSet);
+    procedure sqlContentAfterDelete(DataSet: TDataSet);
+
+    procedure sqlContentAfterPost(DataSet: TDataSet);
+    procedure sqlPresetsAfterDelete(DataSet: TDataSet);
     procedure sqlPresetsAfterPost(DataSet: TDataSet);
-    procedure sqlSectionsAfterInsert(DataSet: TDataSet);
+    procedure sqlSectionsAfterDelete(DataSet: TDataSet);
     procedure sqlSectionsAfterPost(DataSet: TDataSet);
+
 
 
 
@@ -333,6 +337,7 @@ type
     { public declarations }
     Titles, Urls, Sections: TMemo;
     SiteSectionUrls, SiteSectionTitles: TMemo;
+    SitePresets : TMemo;
     ListenerSocket, ConnectionSocket: TTCPBlockSocket;
 
     Blocks : TStringList; // блоки
@@ -391,7 +396,7 @@ type
 
 
 
-    function applyVar(str, variable, value : string) : string;
+
     { Просмотр базы }
     procedure makeSqlActive();
     procedure makeSqlInactive();
@@ -431,6 +436,8 @@ type
      procedure doSitemap();
      function insertSectionsAndLinks(str : string) : string;
      procedure scanBlocks();
+     procedure scanPresets();
+     procedure doScan();
 
 
 
@@ -472,11 +479,13 @@ begin
   Urls := TMemo.Create(Self); // URL страниц
   Sections := TMemo.Create(Self); // Разделы страниц
 
+
   SiteSectionUrls := TMemo.Create(Self); // URL разделов
   SiteSectionTitles := TMemo.Create(Self); // Заголовки разделов
   blocks:=TStringList.Create();
+  sitePresets:=TMemo.Create(Self);
 
-
+  doScan();
   edPathToBuild.Text:=GetEnvironmentVariable('HOME')+'/mysite';
 end;
 
@@ -486,33 +495,51 @@ begin
   tagImg();
 end;
 
-procedure TForm1.sqlPagesBeforeScroll(DataSet: TDataSet);
+procedure TForm1.sqlBlocksAfterDelete(DataSet: TDataSet);
 begin
-
+  doScan();
 end;
 
-procedure TForm1.sqlPresetsAfterInsert(DataSet: TDataSet);
+procedure TForm1.sqlBlocksAfterPost(DataSet: TDataSet);
 begin
+  doScan();
+end;
 
+procedure TForm1.sqlContentAfterDelete(DataSet: TDataSet);
+begin
+  doScan();
+end;
+
+
+
+
+
+procedure TForm1.sqlContentAfterPost(DataSet: TDataSet);
+begin
+  doScan();
+end;
+
+procedure TForm1.sqlPresetsAfterDelete(DataSet: TDataSet);
+begin
+  doScan();
 end;
 
 procedure TForm1.sqlPresetsAfterPost(DataSet: TDataSet);
 begin
-
+  doScan();
 end;
 
-procedure TForm1.sqlSectionsAfterInsert(DataSet: TDataSet);
+procedure TForm1.sqlSectionsAfterDelete(DataSet: TDataSet);
 begin
-
-
+  doScan();
 end;
 
 procedure TForm1.sqlSectionsAfterPost(DataSet: TDataSet);
 begin
-
-
-
+  doScan();
 end;
+
+
 
 
 
@@ -846,72 +873,53 @@ begin
   end;
 end;
 
-procedure TForm1.Panel25Click(Sender: TObject);
+procedure TForm1.lvBlocksClick(Sender: TObject);
+var block_id : String;
 begin
+  block_id := lvBlocks.Selected.Caption;
+  sqlBlocks.Locate('id', block_id, []);
+end;
 
+procedure TForm1.lvContentClick(Sender: TObject);
+var content_id : String;
+begin
+  content_id := lvContent.Selected.Caption;
+  sqlContent.Locate('id', content_id, []);
+end;
+
+procedure TForm1.lvPresetsClick(Sender: TObject);
+var preset_id : String;
+begin
+  preset_id := lvPresets.Selected.Caption;
+  sqlPresets.Locate('id', preset_id, []);
+end;
+
+procedure TForm1.lvSectionsClick(Sender: TObject);
+var section_id : String;
+begin
+  section_id := lvSections.Selected.Caption;
+  sqlSections.Locate('id', section_id, []);
 end;
 
 
 
 
 
-procedure TForm1.sqlBlocksAfterInsert(DataSet: TDataSet);
-begin
-
-end;
-
-procedure TForm1.sqlBlocksAfterPost(DataSet: TDataSet);
-begin
-
-end;
-
-procedure TForm1.sqlContentBeforeEdit(DataSet: TDataSet);
-begin
-
-end;
-
-procedure TForm1.sqlPagesAfterOpen(DataSet: TDataSet);
-begin
-
-end;
-
-procedure TForm1.sqlPagesBeforeOpen(DataSet: TDataSet);
-begin
-
-end;
-
-procedure TForm1.sqlPagesBeforePost(DataSet: TDataSet);
-begin
-
-end;
-
-procedure TForm1.dbContentLookClick(Sender: TObject);
-begin
-
-     dbContentLook.ListSource.DataSet.Locate(dbContentLook.KeyField, dbContentLook.KeyValue, []);
 
 
-end;
 
-procedure TForm1.dbSectionsLookClick(Sender: TObject);
-begin
-//dbSectionsLook.ListSource.DataSet.Locate(dbSectionsLook.KeyField, dbSectionsLook.KeyValue, []);
-end;
 
-procedure TForm1.dbBlocksLookClick(Sender: TObject);
-begin
- //.BlocksLook.ListSource.DataSet.Locate(dbBlocksLook.KeyField,dbBlocksLook.KeyValue, []);
-end;
 
-procedure TForm1.dbPresetsLookClick(Sender: TObject);
-begin
 
-end;
 
-procedure TForm1.dsPagesDataChange(Sender: TObject; Field: TField);
-begin
 
-end;
+
+
+
+
+
+
+
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
@@ -957,7 +965,7 @@ begin
  r:=applyVar(r, 'title', title);
  r:=applyVar(r, 'content', body);
  s:=sqlContent.FieldByName('section').AsString;
- r:=applyVar(r, '{section}', s);
+ r:=applyVar(r, 'section', s);
  sqlSections.First;
  while not sqlSections.EOF do
        begin
@@ -1049,6 +1057,7 @@ begin
 end;
 
 procedure TForm1.scanLinks;
+var i : integer;
 begin
 
   Titles.Clear;      // Titles is a list of pages captions
@@ -1065,9 +1074,19 @@ begin
     sqlContent.Next;  // see next page
   end;
   sqlContent.First;  // set cursor to first
+
+  lvContent.clear;
+  for i:=0 to Urls.Lines.Count-1 do
+      begin
+        lvContent.AddItem( Urls.Lines.Strings[i] , nil);
+      end;
+
+
+
 end;
 
 procedure TForm1.scanSections;
+var i : integer;
 begin
   // identically as scanLinks
   SiteSectionUrls.Clear;
@@ -1080,6 +1099,14 @@ begin
     sqlSections.Next;
   end;
   sqlSections.First;
+
+
+  lvSections.clear;
+  for i:=0 to SiteSectionUrls.Lines.Count-1 do
+      begin
+        lvSections.AddItem( SiteSectionUrls.Lines.Strings[i] , nil);
+      end;
+
   if logger_info then mmRubrics.Lines.Add('Заголовков страниц<scanSections>:'+IntToStr(SiteSectionTitles.Lines.Count));
   if logger_info then mmRubrics.Lines.Add('URL страниц<scanSections>:'+IntToStr(SiteSectionUrls.Lines.Count));
 end;
@@ -1681,10 +1708,7 @@ end;
 
 
 
-function TForm1.applyVar(str, variable, value: string): string;
-begin
-   Result:=StringReplace(str, '{'+variable+'}', value, [rfReplaceAll]);
-end;
+
 
 procedure TForm1.makeSqlActive;
 begin
@@ -1772,7 +1796,7 @@ begin
   // fContent is editor
   fContent.DataSource:=form1.ds_Content; // поле контент
 
-  dbContentLook.DataSource:=form1.ds_Content; // список страниц
+  //dbContentLook.DataSource:=form1.ds_Content; // список страниц
   // TODO ТУТ ДОЛЖНЫ БЫТЬ ДОП. ПОЛЯ!
 
   ds_Content.AutoEdit:=True;
@@ -1790,7 +1814,7 @@ begin
   dbmSectionTemplate.DataSource:=form1.ds_Sections; // поле шаблон раздела
 
 
-  dbSectionsLook.DataSource:=form1.ds_Sections; // список секций
+  //dbSectionsLook.DataSource:=form1.ds_Sections; // список секций
   // TODO ТУТ ДОЛЖНЫ БЫТЬ ДОП. ПОЛЯ!
   dbNav_Sections.DataSource:=form1.ds_Sections; // листалка
 end;
@@ -1803,7 +1827,7 @@ begin
   dbeBlockId.DataSource:=form1.ds_Blocks;  // поле идент. раздела
   dbeBlockNote.DataSource:=form1.ds_Blocks; // поле название раздела
   dbeBlockHtml.DataSource:=form1.ds_Blocks; // поле шаблон раздела
-  dbBlocksLook.DataSource:=form1.ds_Blocks; // список блоков
+  //dbBlocksLook.DataSource:=form1.ds_Blocks; // список блоков
   // TODO ТУТ ДОЛЖНЫ БЫТЬ ДОП. ПОЛЯ!
   dbNav_Blocks.DataSource:=form1.ds_Blocks; // листалка
 end;
@@ -1822,7 +1846,7 @@ begin
   dbmTemplateOfItem.DataSource:=form1.ds_Presets; // шаблон списка
   // TODO ТУТ ДОЛЖНЫ БЫТЬ ДОП. ПОЛЯ!
 
-  dbPresetsLook.DataSource:=form1.ds_Presets;
+  //dbPresetsLook.DataSource:=form1.ds_Presets;
   dbNav_Presets.DataSource:=form1.ds_Presets; // листалка
 end;
 
@@ -2137,15 +2161,21 @@ begin
 
 
 
-                            headHtml:=buildHead( sqlRubrication.FieldByName('section').AsString,
-                                                sqlRubrication.FieldByName('headtpl').AsString);
+                            headHtml:= buildHead( sqlRubrication.FieldByName('section').AsString,
+                            sqlRubrication.FieldByName('headtpl').AsString);
 
                             document:='<html><head>{header}</head><body>{body}</body>';
 
                             document:=ApplyVar(document, 'header', headHtml);
                             document:=ApplyVar(document, 'body', sectionHtml);
                             // постобработка
-                            document:=useBlocks( insertSectionsAndLinks( document ) );
+
+                            document:=
+                                  useModules(
+                                    useOwnTags(
+                                       insertSectionsAndLinks(
+                                      useBlocks(
+                                                document ))));
 
 
                             mmRubrics.Lines.Add(document);
@@ -2227,7 +2257,7 @@ begin
 end;
 
 procedure TForm1.scanBlocks;
-var k : byte;
+var k : byte;   i : integer;
 begin
     k:=0;
              Blocks.Clear;
@@ -2242,6 +2272,41 @@ begin
    sqlBlocks.First();
    SilentMessage('ГЛОБАЛЬНЫХ БЛОКОВ '+IntToStr(k));
 
+   lvBlocks.Clear;
+   for i:=0 to Blocks.Count-1 do
+     begin
+        lvBlocks.AddItem(  Blocks.Names[i] , nil);
+     end;
+
+end;
+
+procedure TForm1.scanPresets;
+  var k : byte;   i : integer;
+begin
+    k:=0;
+    SitePresets.Clear;
+   sqlPresets.First();
+   while not sqlPresets.EOF do
+         begin
+           SitePresets.lines.add( sqlPresets.FieldByName('id').AsString);
+           sqlPresets.Next();
+           inc(k);
+         end;
+   sqlPresets.First();
+
+   lvPresets.Clear;
+   for i:=0 to sitePresets.Lines.Count-1 do
+     begin
+        lvPresets.AddItem( sitePresets.lines[i], nil);
+     end;
+end;
+
+procedure TForm1.doScan;
+begin
+  scanLinks();
+  scanSections();
+  scanBlocks();
+  scanPresets();
 end;
 
 

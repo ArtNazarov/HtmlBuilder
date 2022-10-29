@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, dbflaz, main, db_helpers, db_insertdemo, db_create_tables
+  Forms, dbflaz, main, db_helpers, db_insertdemo, db_create_tables, replacers
   { you can add units after this };
 
 {$R *.res}
