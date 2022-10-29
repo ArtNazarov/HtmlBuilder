@@ -9,9 +9,9 @@ interface
 uses
   Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
   DBCtrls, dbf, SQLite3Conn, SQLDB, process, FileUtil, SynHighlighterHTML,
-  SynEdit, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids, blcksock, sockets,
-  Synautil, synaip, synsock, ftpsend, db_helpers, db_insertdemo, db_create_tables,
-  replacers, editor_in_window; {Use Synaptic}
+  SynEdit, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids, ActnList, Buttons,
+  blcksock, sockets, Synautil, synaip, synsock, ftpsend, db_helpers,
+  db_insertdemo, db_create_tables, replacers, editor_in_window; {Use Synaptic}
 
 const
 
@@ -93,6 +93,14 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    acEditorForSectionNote: TAction;
+    acEditorForSectionFullText: TAction;
+    acEditorForBlockMarkup: TAction;
+    acEditorForHeadTemplate: TAction;
+    acEditorForBodyTemplate: TAction;
+    acEditorForRubricSectionTemplate: TAction;
+    acEditorForRubricItemTemplate: TAction;
+    actsEditors: TActionList;
     btFtpUpdate: TButton;
     btStartServer: TButton;
     btStopServer: TButton;
@@ -101,6 +109,13 @@ type
     btnLoad: TButton;
     btnJoin: TButton;
     btnEditorContent: TButton;
+    btnEditorForSectionNote: TButton;
+    btnEditorForSectionFullText: TButton;
+    btnEditorForBlockMarkup: TButton;
+    btnEditorHeadTemplate: TButton;
+    btnEditorBodyPagesTemplate: TButton;
+    BtnEditorBodySectionsTemplate: TButton;
+    btnEditorTemplateOfItem: TButton;
     cboLocale: TComboBox;
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
@@ -278,6 +293,13 @@ type
     ZipArchiverCommand: TEdit;
 
 
+    procedure acEditorForBlockMarkupExecute(Sender: TObject);
+    procedure acEditorForBodyTemplateExecute(Sender: TObject);
+    procedure acEditorForHeadTemplateExecute(Sender: TObject);
+    procedure acEditorForRubricItemTemplateExecute(Sender: TObject);
+    procedure acEditorForRubricSectionTemplateExecute(Sender: TObject);
+    procedure acEditorForSectionFullTextExecute(Sender: TObject);
+    procedure acEditorForSectionNoteExecute(Sender: TObject);
     procedure btBuildSiteClick(Sender: TObject);
     procedure btFtpUpdateClick(Sender: TObject);
 
@@ -438,7 +460,7 @@ type
      procedure scanPresets();
      procedure doScan();
 
-
+     procedure editor_win_show(sql : TSQLQuery; field : String );
 
 
 
@@ -740,6 +762,42 @@ end;
 procedure TForm1.btBuildSiteClick(Sender: TObject);
 begin
 
+end;
+
+procedure TForm1.acEditorForSectionNoteExecute(Sender: TObject);
+
+begin
+     editor_win_show( sqlSections, 'note');
+end;
+
+procedure TForm1.acEditorForSectionFullTextExecute(Sender: TObject);
+begin
+    editor_win_show( sqlSections, 'full_text');
+end;
+
+procedure TForm1.acEditorForBlockMarkupExecute(Sender: TObject);
+begin
+     editor_win_show( sqlBlocks, 'markup');
+end;
+
+procedure TForm1.acEditorForBodyTemplateExecute(Sender: TObject);
+begin
+       editor_win_show(sqlPresets, 'bodytpl');
+end;
+
+procedure TForm1.acEditorForHeadTemplateExecute(Sender: TObject);
+begin
+   editor_win_show(sqlPresets, 'headtpl');
+end;
+
+procedure TForm1.acEditorForRubricItemTemplateExecute(Sender: TObject);
+begin
+  editor_win_show(sqlPresets, 'itemtpl');
+end;
+
+procedure TForm1.acEditorForRubricSectionTemplateExecute(Sender: TObject);
+begin
+   editor_win_show(sqlPresets, 'sectiontpl');
 end;
 
 
@@ -2281,6 +2339,22 @@ begin
   scanSections();
   scanBlocks();
   scanPresets();
+end;
+
+procedure TForm1.editor_win_show(sql: TSQLQuery; field: String);
+
+  var fE : TfrmEditor;
+begin
+  fE:=TfrmEditor.Create(Self);
+  fE.setMarkup( sql.FieldByName(field).AsString);
+  fE.ShowModal();
+
+  sql.Edit;
+  sql.FieldByName(field).AsString:=fE.getMarkup();
+
+  fE.Close();
+  fE.Free;
+
 end;
 
 
