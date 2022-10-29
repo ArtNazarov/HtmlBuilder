@@ -26,6 +26,7 @@ type
     btnOrderedList: TButton;
     btnAnchor: TButton;
     btnFontStyle: TButton;
+    btnTable: TButton;
     cboFormatting: TComboBox;
     cboFontFamily: TComboBox;
     Label1: TLabel;
@@ -43,6 +44,7 @@ type
     procedure btnPictureClick(Sender: TObject);
     procedure btnSubClick(Sender: TObject);
     procedure btnSupClick(Sender: TObject);
+    procedure btnTableClick(Sender: TObject);
     procedure btnUnderlineClick(Sender: TObject);
     procedure btnUnorderedListClick(Sender: TObject);
     procedure editorChange(Sender: TObject);
@@ -138,6 +140,35 @@ end;
 procedure TfrmEditor.btnSupClick(Sender: TObject);
 begin
   pair('sup');
+end;
+
+procedure TfrmEditor.btnTableClick(Sender: TObject);
+var
+  table_view : String;
+  row_view   : String;
+  row_count : Integer;
+  col_count : Integer;
+  row, col  : Integer;
+begin
+  row_count:=2;
+  col_count:=2;
+
+  table_view:='<table>';
+  for row:=1 to row_count do begin
+      row_view:='<tr>';
+  for col:=1 to col_count do
+      begin
+         row_view:=row_view+'<td></td>';
+      end;
+      row_view:=row_view+'</tr>';
+      table_view := table_view + row_view;
+  end;
+  table_view := table_view + '</table>';
+
+  editor.Lines.Add(table_view);
+
+
+
 end;
 
 procedure TfrmEditor.btnUnderlineClick(Sender: TObject);

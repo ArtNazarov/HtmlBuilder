@@ -90,9 +90,9 @@ object Form1: TForm1
             Height = 546
             Top = 105
             Width = 1228
-            ActivePage = TabSheet12
+            ActivePage = TabSheet11
             Align = alClient
-            TabIndex = 1
+            TabIndex = 0
             TabOrder = 2
             object TabSheet11: TTabSheet
               Caption = 'Основной текст'

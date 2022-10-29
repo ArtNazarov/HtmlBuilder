@@ -694,6 +694,16 @@ object frmEditor: TfrmEditor
       OnClick = btnFontStyleClick
       TabOrder = 13
     end
+    object btnTable: TButton
+      Left = 1305
+      Height = 48
+      Top = 1
+      Width = 75
+      Align = alLeft
+      Caption = 'Таблица'
+      OnClick = btnTableClick
+      TabOrder = 14
+    end
   end
   object SynHTMLSyn1: TSynHTMLSyn
     DefaultFilter = 'Документ HTML (*.htm,*.html)|*.htm;*.html'
