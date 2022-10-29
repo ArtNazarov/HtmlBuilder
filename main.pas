@@ -11,7 +11,7 @@ uses
   DBCtrls, dbf, SQLite3Conn, SQLDB, process, FileUtil, SynHighlighterHTML,
   SynEdit, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids, blcksock, sockets,
   Synautil, synaip, synsock, ftpsend, db_helpers, db_insertdemo, db_create_tables,
-  replacers; {Use Synaptic}
+  replacers, editor_in_window; {Use Synaptic}
 
 const
 
@@ -93,23 +93,14 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
-    btBold: TButton;
     btFtpUpdate: TButton;
-    btHref: TButton;
-    btImg: TButton;
-    btItalic: TButton;
-    btOrderedList: TButton;
-    btParagraph: TButton;
     btStartServer: TButton;
     btStopServer: TButton;
-    btSub: TButton;
-    btSup: TButton;
-    btUnderline: TButton;
-    btUnorderedList: TButton;
     Buffer: TMemo;
     btnMakeArchive: TButton;
     btnLoad: TButton;
     btnJoin: TButton;
+    btnEditorContent: TButton;
     cboLocale: TComboBox;
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
@@ -285,23 +276,21 @@ type
     tabSections: TTabSheet;
     WebServerLog: TMemo;
     ZipArchiverCommand: TEdit;
-    procedure AppPagesChange(Sender: TObject);
-    procedure btBoldClick(Sender: TObject);
+
+
     procedure btBuildSiteClick(Sender: TObject);
     procedure btFtpUpdateClick(Sender: TObject);
-    procedure btItalicClick(Sender: TObject);
+
     procedure btnJoinClick(Sender: TObject);
     procedure btnLoadClick(Sender: TObject);
-    procedure btOrderedListClick(Sender: TObject);
-    procedure btParagraphClick(Sender: TObject);
+
+
     procedure btStartServerClick(Sender: TObject);
     procedure btStopServerClick(Sender: TObject);
-    procedure btSubClick(Sender: TObject);
-    procedure btSupClick(Sender: TObject);
-    procedure btUnderlineClick(Sender: TObject);
-    procedure btUnorderedListClick(Sender: TObject);
+
     procedure btnMakeArchiveClick(Sender: TObject);
-    procedure btHrefClick(Sender: TObject);
+
+    procedure btnEditorContentClick(Sender: TObject);
 
     procedure cboLocaleChange(Sender: TObject);
     procedure dbNav_ContentBeforeAction(Sender: TObject; Button: TDBNavButtonType);
@@ -326,7 +315,7 @@ type
 
     procedure FormCreate(Sender: TObject);
 
-    procedure btImgClick(Sender: TObject);
+
     procedure sqlBlocksAfterDelete(DataSet: TDataSet);
     procedure sqlBlocksAfterPost(DataSet: TDataSet);
     procedure sqlContentAfterDelete(DataSet: TDataSet);
@@ -364,10 +353,8 @@ type
     function insSections(body: string): string;
 
 
-    procedure paired(t: string);
-    procedure tagHref();
-    procedure tagImg();
-    procedure tagList(t: string);
+
+
     function moduleexec(cmd: string): string;
     function useModules(app: string): string;
     function owntagexec(containter, cmd: string): string;
@@ -502,10 +489,7 @@ begin
 end;
 
 
-procedure TForm1.btImgClick(Sender: TObject);
-begin
-  tagImg();
-end;
+
 
 procedure TForm1.sqlBlocksAfterDelete(DataSet: TDataSet);
 begin
@@ -638,10 +622,7 @@ begin
 
 end;
 
-procedure TForm1.btItalicClick(Sender: TObject);
-begin
-  paired('i');
-end;
+
 
 { Тестовый код }
 procedure TForm1.btnJoinClick(Sender: TObject);
@@ -754,30 +735,14 @@ begin
   installedIds.Free;
 end;
 
-procedure TForm1.btOrderedListClick(Sender: TObject);
-begin
-  tagList('ol');
-end;
 
-procedure TForm1.btBoldClick(Sender: TObject);
-begin
-  paired('b');
-end;
 
 procedure TForm1.btBuildSiteClick(Sender: TObject);
 begin
 
 end;
 
-procedure TForm1.AppPagesChange(Sender: TObject);
-begin
 
-end;
-
-procedure TForm1.btParagraphClick(Sender: TObject);
-begin
-  paired('p');
-end;
 
 procedure TForm1.btStartServerClick(Sender: TObject);
 begin
@@ -795,25 +760,7 @@ begin
   btStopServer.Enabled := False;
 end;
 
-procedure TForm1.btSubClick(Sender: TObject);
-begin
-  paired('sub');
-end;
 
-procedure TForm1.btSupClick(Sender: TObject);
-begin
-  paired('sup');
-end;
-
-procedure TForm1.btUnderlineClick(Sender: TObject);
-begin
-  paired('u');
-end;
-
-procedure TForm1.btUnorderedListClick(Sender: TObject);
-begin
-  tagList('ul');
-end;
 
 procedure TForm1.btnMakeArchiveClick(Sender: TObject);
 var
@@ -833,9 +780,20 @@ begin
 
 end;
 
-procedure TForm1.btHrefClick(Sender: TObject);
+
+
+procedure TForm1.btnEditorContentClick(Sender: TObject);
+var fE : TfrmEditor;
 begin
-  tagHref();
+  fE:=TfrmEditor.Create(Self);
+  fE.setMarkup( sqlContent.FieldByName('content').AsString);
+  fE.ShowModal();
+
+  sqlContent.Edit;
+  sqlContent.FieldByName('content').AsString:=fE.getMarkup();
+
+  fE.Close();
+  fE.Free;
 end;
 
 
@@ -1196,31 +1154,9 @@ end;
 
 
 
-procedure TForm1.paired(t: string);
-begin
-  if (fContent.SelText <> '') then
-  fContent.SelText:='<'+t+'>'+  fContent.SelText+'</'+t+'>'
-  else
-    fContent.Lines.Add('<'+t+'></'+t+'>');
-end;
 
-procedure TForm1.tagHref;
-begin
-  fContent.Lines.Add('<a href=""></a>');
-end;
 
-procedure TForm1.tagImg;
-begin
-  fContent.Lines.Add('<img src="" />');
-end;
 
-procedure TForm1.tagList(t: string);
-begin
-  fContent.Lines.Add('<' + t + '>');
-  fContent.Lines.Add('<li>Элемент списка 1</li>');
-  fContent.Lines.Add('<li>Элемент списка 2</li>');
-  fContent.Lines.Add('</' + t + '>');
-end;
 
 function TForm1.moduleexec(cmd: string): string;
 var
