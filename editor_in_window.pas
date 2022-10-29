@@ -150,8 +150,10 @@ var
   col_count : Integer;
   row, col  : Integer;
 begin
-  row_count:=2;
-  col_count:=2;
+  row_count:=StrToInt(InputBox('Таблица', 'Введи число строк', '2')) ;
+  col_count:=StrToInt(InputBox('Таблица', 'Введи число колонок', '2')) ;
+
+
 
   table_view:='<table>';
   for row:=1 to row_count do begin

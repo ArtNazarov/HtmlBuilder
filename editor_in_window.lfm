@@ -1,7 +1,7 @@
 object frmEditor: TfrmEditor
-  Left = -23
+  Left = 0
   Height = 767
-  Top = 131
+  Top = 93
   Width = 1598
   Caption = 'frmEditor'
   ClientHeight = 767
