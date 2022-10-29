@@ -1614,6 +1614,7 @@ begin
   tabUpdateByFTP.Caption := 'Обновление по FTP';
   tabWebServer.Caption := 'Веб-сервер';
   tabHelp.Caption := 'О программе';
+  mmAbout.lines.LoadFromFile('russian_help.txt');
 end;
 
 procedure TForm1.localeENG;
@@ -1628,6 +1629,7 @@ begin
   tabUpdateByFTP.Caption := 'Update By FTP';
   tabWebServer.Caption := 'Web Server';
   tabHelp.Caption := 'About app';
+  mmAbout.lines.LoadFromFile('english_help.txt');
 end;
 
 
