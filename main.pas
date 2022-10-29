@@ -28,6 +28,11 @@ const
 
 type
 
+  user_records = array[0..7] of record
+              name : string;
+              value : string;
+            end;
+
   rubric_pages = record
             pages_total   : array[0..255] of byte; // число страниц
             section_index : array[0..255] of byte;
@@ -363,7 +368,7 @@ type
     function useModules(app: string): string;
     function owntagexec(containter, cmd: string): string;
     function useOwnTags(app: string): string;
-    function buildItem(itemtpl: string; itemUrl: string; itemTitle: string): string;
+    function buildItem(itemtpl: string; itemUrl: string; itemTitle: string; ur : user_records): string;
     function buildSection(sectiontpl: string; sectionUrl: string;
       sectionTitle: string; items: string): string;
     function buildPagination(url: string; currentPage: byte;
@@ -2045,13 +2050,21 @@ begin
                               end;
 end;
 
-function TForm1.buildItem(itemtpl: string; itemUrl: string; itemTitle: string): string;
+function TForm1.buildItem(itemtpl: string; itemUrl: string; itemTitle: string; ur : user_records): string;
 var
   r: string;
+  fi : byte;
 begin
   r := itemTpl;
   r := applyVar(r, 'itemUrl', itemUrl);
   r := applyVar(r, 'itemTitle', itemTitle);
+
+  // применяем пользовательские поля, если есть
+  for fi:=1 to 7 do begin
+      r:=applyVar(r, 'f'+IntToStr(fi), ur[fi].name);
+      r:=applyVar(r, 'v'+IntToStr(fi), ur[fi].value);
+  end;
+
   r := insSections(insLinks(r));
   r := prefExtension(r);
   Result := R;
@@ -2089,8 +2102,8 @@ var
   sectionHtml : String;
   document : String;
   path : String;
-
-
+  ur : user_records;
+  fi : byte;
 begin
 // некоторые данные нужно считать 1 раз
 // так как они будут нужны многократно
@@ -2134,11 +2147,18 @@ begin
                        sqlRubrication.First;
                        while not sqlRubrication.EOF do
                              begin
+
+                                  for fi:=1 to 7 do
+                                      begin
+                                         ur[fi].name:=sqlRubrication.FieldByName('ufn'+IntToStr(fi)).AsString;
+                                         ur[fi].value:=sqlRubrication.FieldByName('uf'+IntToStr(fi)).AsString;
+                                      end;
+
                                    itemHTML := itemHtml +
 
                                    buildItem( sqlRubrication.FieldByName('itemtpl').AsString,
                                      sqlRubrication.FieldByName('content_id').AsString,
-                                     sqlRubrication.FieldByName('caption').AsString );
+                                     sqlRubrication.FieldByName('caption').AsString, ur );
                                    sqlRubrication.Next;
                              end;
 
