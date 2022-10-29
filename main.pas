@@ -51,6 +51,8 @@ type
   section_params = record
             id : string;
             section : string;
+            note    : string;
+            full_text : string;
             content_id : string;
             caption : string;
             sectiontpl :  string;
@@ -112,11 +114,13 @@ type
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    dbmSectionFullText: TDBMemo;
     ds_Rubrication: TDataSource;
     dgCounter: TDBGrid;
     ds_Counter: TDataSource;
     ds_Join: TDataSource;
     dbJoin: TDBGrid;
+    lbSpecification: TLabel;
     lvPresets: TListView;
     lvBlocks: TListView;
     lvContent: TListView;
@@ -152,7 +156,7 @@ type
     dbeBlockHtml: TDBMemo;
     dbmHeadTemplate: TDBMemo;
     dbmBodyPagesTemplate: TDBMemo;
-    dbmSectionTemplate: TDBMemo;
+    dbmSectionNote: TDBMemo;
     dbmBodySectionsTemplate: TDBMemo;
     dbmTemplateOfItem: TDBMemo;
     dbNav_Content: TDBNavigator;
@@ -370,7 +374,10 @@ type
     function useOwnTags(app: string): string;
     function buildItem(itemtpl: string; itemUrl: string; itemTitle: string; ur : user_records): string;
     function buildSection(sectiontpl: string; sectionUrl: string;
-      sectionTitle: string; items: string): string;
+      sectionTitle: string;
+      sectionNote: string;
+      sectionFullText : string;
+      items: string): string;
     function buildPagination(url: string; currentPage: byte;
       pagesTotal: integer): string;
     procedure AttendConnection(ASocket: TTCPBlockSocket);
@@ -674,7 +681,9 @@ begin
   fbuffer.LoadFromFile( GetCurrentDir() + DELIM+'parts' + DELIM+ 'body.tpl' );
   Form1.dbmBodyPagesTemplate.Text :=fbuffer.text;
   fbuffer.LoadFromFile( GetCurrentDir() + DELIM+'parts'+DELIM+'section.tpl' );
-  Form1.dbmSectionTemplate.Text:=fbuffer.text;
+  Form1.dbmSectionNote.Text:=fbuffer.text;
+  fbuffer.LoadFromFile( GetCurrentDir() + DELIM+'parts'+DELIM+'full_text.tpl' );
+  Form1.dbmSectionFullText.Text:=fbuffer.text;
   fbuffer.LoadFromFile( GetCurrentDir() + DELIM+'parts'+DELIM+'item.tpl' );
   Form1.dbmTemplateOfItem.Text:=fbuffer.text;
   sqlPresets.Post; // Применяем изменения
@@ -1372,7 +1381,8 @@ end;
 
 
 function TForm1.buildSection(sectiontpl: string; sectionUrl: string;
-  sectionTitle: string; items: string): string;
+  sectionTitle: string; sectionNote : string; sectionFullText : string;
+  items: string): string;
 var
   r: string;
 begin
@@ -1380,6 +1390,8 @@ begin
   r := sectionTpl;
   r := applyVar(r, 'sectionUrl', sectionUrl );
   r := applyVar(r, 'sectionTitle', sectionTitle );
+  r := applyVar(r, 'sectionNote', sectionNote );
+  r := applyVar(r, 'sectionFullText', sectionFullText );
   r := applyVar(r, 'items', items );
   r := insSections(insLinks(r));
 
@@ -1818,7 +1830,7 @@ procedure TForm1.changeDataSourcesSections;
 begin
   dbeSectionId.DataSource:=form1.ds_Sections;  // поле идент. раздела
   dbeSectionCaption.DataSource:=form1.ds_Sections; // поле название раздела
-  dbmSectionTemplate.DataSource:=form1.ds_Sections; // поле шаблон раздела
+  dbmSectionNote.DataSource:=form1.ds_Sections; // поле шаблон раздела
 
 
   //dbSectionsLook.DataSource:=form1.ds_Sections; // список секций
@@ -2136,6 +2148,7 @@ begin
                        prepared_transaction_start( sqlRubrication.SQL.Text, sqlRubrication, trans);
 
                        sectionId := sqlCounter.FieldByName('section').AsString;
+
                        sqlRubrication.ParamByName('section_id').AsString:=sectionId;
                        sqlRubrication.ParamByName('pageoffset').AsInteger:=(page-1)*itemsPerPage;
                        sqlRubrication.ParamByName('pagelimit').AsInteger := itemsPerPage;
@@ -2175,7 +2188,10 @@ begin
 
                             buildSection( sqlRubrication.FieldByName('sectiontpl').AsString,
                                               sqlRubrication.FieldByName('id').asString,
-                                              sqlRubrication.FieldByName('section').AsString, itemHtml ),
+                                              sqlRubrication.FieldByName('section').AsString,
+                                              sqlRubrication.FieldByName('note').AsString,
+                                              sqlRubrication.FieldByName('full_text').AsString,
+                                              itemHtml ),
                             'pager',
                                     buildPagination(sqlRubrication.FieldByName('id').AsString, page, pagesInRubrics)
                                     );

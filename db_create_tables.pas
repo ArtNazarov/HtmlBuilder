@@ -28,6 +28,7 @@ begin
                     ' "section" Char(60),'+
                     ' "preset" Char(60),'+
                     ' "note" TEXT, '+
+                    ' "full_text" TEXT, '+
                     ' FOREIGN KEY(preset) REFERENCES preset(id) ON UPDATE CASCADE'+
                     ')', konnect, tranzact);
 

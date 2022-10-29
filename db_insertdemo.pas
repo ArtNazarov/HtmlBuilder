@@ -18,7 +18,7 @@ uses
 
      {Хелперы}
      procedure addIntoBlock( id, markup, remark : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
-     procedure addIntoSection( id, section, preset, note : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+     procedure addIntoSection( id, section, preset, note, full_text : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoContent( id, cap, content, section : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoPreset(id, sitename, dirpath, headtpl, bodytpl, sectiontpl, itemtpl : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 
@@ -52,8 +52,8 @@ end;
 begin
   checkConnect( konnect, tranzact, 'нет соединения <inserDemoDataSections>!');
 
-  addIntoSection( 'blog', 'Блог'  , 'basis'  , 'Мой блог', sq, konnect, tranzact);
-  addIntoSection( 'photos', 'Фото'  , 'basis'  , 'Фотографии', sq, konnect, tranzact);
+  addIntoSection( 'blog', 'Блог'  , 'basis'  , 'Мой блог', 'Полное описание блога', sq, konnect, tranzact);
+  addIntoSection( 'photos', 'Фото'  , 'basis'  , 'Фотографии', 'Полное описание фотоальбома', sq, konnect, tranzact);
 
 
   //SilentMessage('Демо данные установлены, разделы');
@@ -154,20 +154,20 @@ end;
 
 end;
 
- procedure addIntoSection(id, section, preset, note: String;
+ procedure addIntoSection(id, section, preset, note, full_text: String;
  var sq : TSQLQuery;  var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
  begin
 
 
 
-   prepared_transaction_start( 'insert into section (id, section, preset, note) values (:ID,:SECTION,:PRESET, :NOTE)',
+   prepared_transaction_start( 'insert into section (id, section, preset, note, full_text) values (:ID,:SECTION,:PRESET, :NOTE, :FULL_TEXT)',
      sq, tranzact);
 
   sq.Params.ParamByName('ID').AsString := id;
   sq.Params.ParamByName('SECTION').AsString := section;
   sq.Params.ParamByName('PRESET').AsString := preset;
   sq.Params.ParamByName('NOTE').AsString := note;
-
+  sq.Params.ParamByName('FULL_TEXT').AsString := full_text;
   prepared_transaction_end( sq, tranzact);
 end;
 

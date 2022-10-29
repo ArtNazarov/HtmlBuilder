@@ -21,6 +21,7 @@ What's new
 ================
 1. Added import from text file or directly generation to preview another template.
 2. Engine now use sqlite.
+3. Can use annotations and full descriptions at sections
 
 
 TODO

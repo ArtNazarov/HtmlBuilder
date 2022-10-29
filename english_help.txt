@@ -22,7 +22,10 @@ Release 1
 
 {sectionUrl} - part of the address of the link to the category
 {sectionTitle} - section title
+{sectionNote} - annotation of section
+{sectionFullText} - full description of section
 {items} - list of category elements
+{pager} - pagination
 
 - Category List Item Template
 
