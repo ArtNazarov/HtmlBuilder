@@ -16,6 +16,8 @@ type
     acEditor: TActionList;
     acSearch: TAction;
     acReplace: TAction;
+    acRedo: TAction;
+    acUndo: TAction;
     btnCloseEditor: TButton;
     btnFormatter: TButton;
     btnUnorderedList: TButton;
@@ -48,6 +50,9 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuRedo: TMenuItem;
+    mnuActions: TMenuItem;
+    mnuUndo: TMenuItem;
     mnuReplace: TMenuItem;
     mnuSearch: TMenuItem;
     mmMenuEditor: TMainMenu;
@@ -56,8 +61,10 @@ type
     Panel2: TPanel;
     panHtml5: TPanel;
     SynHTMLSyn1: TSynHTMLSyn;
+    procedure acRedoExecute(Sender: TObject);
     procedure acReplaceExecute(Sender: TObject);
     procedure acSearchExecute(Sender: TObject);
+    procedure acUndoExecute(Sender: TObject);
     procedure btnAnchorClick(Sender: TObject);
     procedure btnArticleClick(Sender: TObject);
     procedure btnASideClick(Sender: TObject);
@@ -178,6 +185,11 @@ begin
   editor.SearchReplace(str, '', [ssoMatchCase,ssoEntireScope]);
 end;
 
+procedure TfrmEditor.acUndoExecute(Sender: TObject);
+begin
+  editor.Undo;
+end;
+
 procedure TfrmEditor.acReplaceExecute(Sender: TObject);
 var str, rep : String;
 begin
@@ -185,6 +197,11 @@ begin
   rep:=InputBox('Замена', 'На что меняем', '');
   if (str<>'') and (rep<>'') then
   editor.SearchReplace(str, rep,[ssoReplaceAll, ssoMatchCase,ssoEntireScope]);
+end;
+
+procedure TfrmEditor.acRedoExecute(Sender: TObject);
+begin
+  editor.Redo;
 end;
 
 procedure TfrmEditor.btnArticleClick(Sender: TObject);

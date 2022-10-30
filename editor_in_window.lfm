@@ -894,6 +894,15 @@ object frmEditor: TfrmEditor
         Action = acReplace
       end
     end
+    object mnuActions: TMenuItem
+      Caption = 'Действия'
+      object mnuUndo: TMenuItem
+        Action = acUndo
+      end
+      object mnuRedo: TMenuItem
+        Action = acRedo
+      end
+    end
   end
   object acEditor: TActionList
     Left = 724
@@ -905,6 +914,14 @@ object frmEditor: TfrmEditor
     object acReplace: TAction
       Caption = 'Замена'
       OnExecute = acReplaceExecute
+    end
+    object acUndo: TAction
+      Caption = 'Отменить действие'
+      OnExecute = acUndoExecute
+    end
+    object acRedo: TAction
+      Caption = 'Повторить'
+      OnExecute = acRedoExecute
     end
   end
 end
