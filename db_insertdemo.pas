@@ -15,6 +15,7 @@ uses
     procedure insertDemoDataPresets(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoData(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoDataCss(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+    procedure insertDemoDataJs(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 
      {Хелперы}
      procedure addIntoBlock( id, markup, remark : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
@@ -22,6 +23,9 @@ uses
      procedure addIntoContent( id, cap, content, section : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoPreset(id, sitename, dirpath, headtpl, bodytpl, sectiontpl, itemtpl : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoCss( css_id, css_style, css_path: String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+     procedure addIntoJs(js_id, js_path, js_file: String;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+
 implementation
 
 
@@ -137,6 +141,13 @@ begin
              // SilentMessage('Не удалось настроить контент');
           end;
 
+              // инициализация css
+          try
+              insertDemoDataJs(sq, konnect, tranzact);
+          except
+             // SilentMessage('Не удалось настроить контент');
+          end;
+
 
 end;
 
@@ -145,6 +156,14 @@ end;
  begin
    addIntoCss('styles', '.example {text-decoration:italic}','/home/artem/mysite/style.css', sq, konnect, tranzact);
    addIntoCss('other_styles', '#some_id {text-decoration:italic}','/home/artem/mysite/other.css', sq, konnect, tranzact);
+ end;
+
+ procedure insertDemoDataJs(var sq: TSQLQuery; var konnect: TSQLite3Connection;
+   var tranzact: TSQLTransaction);
+ begin
+
+   addIntoJs('hello', '/home/artem/mysite/hello.js', 'alert("Hello!")', sq, konnect, tranzact);
+   addIntoJs('console','/home/artem/mysite/console.js', 'console.log(1)', sq, konnect, tranzact);
  end;
 
  procedure addIntoBlock(id, markup, remark: String; var sq : TSQLQuery;
@@ -238,6 +257,21 @@ end;
   sq.Params.ParamByName('CSS_ID').AsString := css_id;
   sq.Params.ParamByName('CSS_STYLE').AsString := css_style;
   sq.Params.ParamByName('CSS_PATH').AsString := css_path;
+
+ prepared_transaction_end( sq, tranzact);
+ end;
+
+ procedure addIntoJs(js_id, js_path, js_file: String; var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+    prepared_transaction_start(
+   'insert into js (js_id, js_path, js_file) values '+
+  '(:JS_ID,:JS_PATH,:JS_FILE)',
+  sq, tranzact);
+
+  sq.Params.ParamByName('JS_ID').AsString := js_id;
+  sq.Params.ParamByName('JS_PATH').AsString := js_path;
+  sq.Params.ParamByName('JS_FILE').AsString := js_file;
 
  prepared_transaction_end( sq, tranzact);
  end;

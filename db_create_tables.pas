@@ -14,6 +14,7 @@ procedure  createBlocksSQL(var konnect : TSQLite3Connection; var tranzact : TSQL
 procedure  createPresetsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);  // начальная настройка пресетов
 procedure  createPagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 procedure createCssSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+procedure createJsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 
 
 
@@ -141,6 +142,21 @@ begin
 
 
 
+end;
+
+procedure createJsSQL(var konnect: TSQLite3Connection;
+  var tranzact: TSQLTransaction);
+begin
+   sql_execute_direct( 'PRAGMA foreign_keys = ON;', konnect, tranzact);
+       // Здесь мы настраиваем таблицу с именем "content" в новой базе данных.
+     sql_execute_direct('CREATE TABLE "js"('+
+                    ' "js_id" Char(128) NOT NULL PRIMARY KEY,'+
+                    ' "js_path" Char(255),'+
+                    ' "js_file" TEXT '+
+                    ');', konnect, tranzact);
+
+        // Создание индекса на основе идентификатора в таблице "DATA"
+       sql_execute_direct('CREATE UNIQUE INDEX "js_id_idx" ON "js"( "js_id" );',konnect, tranzact);
 end;
 
 end.

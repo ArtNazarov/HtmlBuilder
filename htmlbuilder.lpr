@@ -8,7 +8,7 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, dbflaz, main, db_helpers, db_insertdemo, db_create_tables, replacers,
-  editor_in_window, editor_css;
+  editor_in_window, editor_css, editor_js;
 
 {$R *.res}
 
@@ -18,6 +18,7 @@ begin
   Application.CreateForm(TForm1, Form1);
   Application.CreateForm(TfrmEditor, frmEditor);
   Application.CreateForm(TfrmEditorCss, frmEditorCss);
+  Application.CreateForm(TfrmEditorJs, frmEditorJs);
   Application.Run;
 end.
 

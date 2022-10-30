@@ -11,7 +11,8 @@ uses
   DBCtrls, dbf, SQLite3Conn, SQLDB, process, FileUtil, SynHighlighterHTML,
   SynEdit, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids, ActnList, Buttons,
   blcksock, sockets, Synautil, synaip, synsock, ftpsend, db_helpers,
-  db_insertdemo, db_create_tables, replacers, editor_in_window, editor_css; {Use Synaptic}
+  db_insertdemo, db_create_tables, replacers, editor_in_window, editor_css,
+  editor_js; {Use Synaptic}
 
 const
 
@@ -120,10 +121,16 @@ type
     BtnEditorBodySectionsTemplate: TButton;
     btnEditorTemplateOfItem: TButton;
     btnEditorCssOpen: TButton;
+    btnEditorJs: TButton;
     cboLocale: TComboBox;
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    ds_JsScripts: TDataSource;
+    dbeJsScriptId: TDBEdit;
+    dbeScriptPath: TDBEdit;
+    dbmJsScriptFile: TDBMemo;
+    dbNav_JsScripts: TDBNavigator;
     ds_CssStyles: TDataSource;
     dbeCssPath: TDBEdit;
     dbeCssId: TDBEdit;
@@ -135,11 +142,15 @@ type
     ds_Counter: TDataSource;
     ds_Join: TDataSource;
     dbJoin: TDBGrid;
+    lbJsScriptId: TLabel;
+    lbJsScriptPath: TLabel;
+    lbScriptFile: TLabel;
     lbCssPath: TLabel;
     lbCSS_id: TLabel;
     lbCssStyle: TLabel;
     lbCSS: TLabel;
     lbSpecification: TLabel;
+    lvJsScripts: TListBox;
     lvCSS: TListBox;
     lvPresets: TListView;
     lvBlocks: TListView;
@@ -148,6 +159,8 @@ type
     mmRubrics: TMemo;
     panCSSList: TPanel;
     panCSSElements: TPanel;
+    panJsProps: TPanel;
+    panJs: TPanel;
     panJoin: TPanel;
     selSection: TDBLookupComboBox;
     ds_Content: TDataSource;
@@ -272,9 +285,11 @@ type
     sqlJoin: TSQLQuery;
     sqlCounter: TSQLQuery;
     sqlCssStyles: TSQLQuery;
+    sqlJsScripts: TSQLQuery;
     sqlRubrication: TSQLQuery;
     tabJoin: TTabSheet;
     tabCSS: TTabSheet;
+    tabJs: TTabSheet;
     temp_sql: TSQLQuery;
     trans: TSQLTransaction;
     sqlSections: TSQLQuery;
@@ -318,9 +333,11 @@ type
     procedure acEditorForRubricSectionTemplateExecute(Sender: TObject);
     procedure acEditorForSectionFullTextExecute(Sender: TObject);
     procedure acEditorForSectionNoteExecute(Sender: TObject);
+    procedure AppPagesChange(Sender: TObject);
     procedure btBuildSiteClick(Sender: TObject);
     procedure btFtpUpdateClick(Sender: TObject);
     procedure btnEditorCssOpenClick(Sender: TObject);
+    procedure btnEditorJsClick(Sender: TObject);
 
     procedure btnJoinClick(Sender: TObject);
     procedure btnLoadClick(Sender: TObject);
@@ -347,6 +364,7 @@ type
     procedure lvBlocksClick(Sender: TObject);
     procedure lvContentClick(Sender: TObject);
     procedure lvCSSClick(Sender: TObject);
+    procedure lvJsScriptsClick(Sender: TObject);
     procedure lvPresetsClick(Sender: TObject);
     procedure lvSectionsClick(Sender: TObject);
 
@@ -359,6 +377,7 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
 
     procedure FormCreate(Sender: TObject);
+    procedure panJsClick(Sender: TObject);
 
 
     procedure sqlBlocksAfterDelete(DataSet: TDataSet);
@@ -371,6 +390,8 @@ type
     procedure sqlCssStylesAfterDelete(DataSet: TDataSet);
     procedure sqlCssStylesAfterEdit(DataSet: TDataSet);
     procedure sqlCssStylesAfterPost(DataSet: TDataSet);
+    procedure sqlJsScriptsAfterDelete(DataSet: TDataSet);
+    procedure sqlJsScriptsAfterPost(DataSet: TDataSet);
     procedure sqlPresetsAfterDelete(DataSet: TDataSet);
     procedure sqlPresetsAfterPost(DataSet: TDataSet);
     procedure sqlSectionsAfterDelete(DataSet: TDataSet);
@@ -386,6 +407,7 @@ type
     Titles, Urls, Sections: TMemo;
     SiteSectionUrls, SiteSectionTitles: TMemo;
     CssTitles   : TStringList;
+    JsTitles    : TStringList;
     SitePresets : TMemo;
     sqls : sqls_list;
     ListenerSocket, ConnectionSocket: TTCPBlockSocket;
@@ -457,6 +479,7 @@ type
     procedure viewBlocksSQL();  // раздел глобальные блоки сайта
     procedure viewPresetsSQL();  // раздел пресеты (настройки сайта)
     procedure viewCssSQL(); // просмотр таблиц CSS
+    procedure viewJsSQL();
     procedure viewTablesSQL(); // выполняем запросы на просмотр таблиц
 
 
@@ -498,6 +521,9 @@ type
      procedure editor_win_show(var sql : TSQLQuery; field : String );
 
      procedure doCssTables();
+     procedure scanJs();
+     procedure doJs();
+     procedure changeDataSourcesJs();
 
 
 
@@ -541,6 +567,7 @@ begin
   Urls := TMemo.Create(Self); // URL страниц
   Sections := TMemo.Create(Self); // Разделы страниц
   CssTitles:=TStringList.Create;
+  JsTitles:=TStringList.Create;
 
 
   SiteSectionUrls := TMemo.Create(Self); // URL разделов
@@ -550,6 +577,11 @@ begin
 
   doScan();
   edPathToBuild.Text:=GetEnvironmentVariable('HOME')+'/mysite';
+end;
+
+procedure TForm1.panJsClick(Sender: TObject);
+begin
+
 end;
 
 
@@ -604,6 +636,16 @@ begin
   doScan();
 end;
 
+procedure TForm1.sqlJsScriptsAfterDelete(DataSet: TDataSet);
+begin
+  doScan();
+end;
+
+procedure TForm1.sqlJsScriptsAfterPost(DataSet: TDataSet);
+begin
+  doScan();
+end;
+
 procedure TForm1.sqlPresetsAfterDelete(DataSet: TDataSet);
 begin
   doScan();
@@ -635,7 +677,7 @@ procedure TForm1.btFtpUpdateClick(Sender: TObject);
 var
   IP, Port, FileName, LocalFile, Path, User, Pass: string;
   F: TSearchRec;
-  b: boolean;
+  is_file_put : boolean;
   ServerEnabled: boolean;
   FTPClient: TFtpSend;
 begin
@@ -694,8 +736,8 @@ begin
 
         // put new file
 
-        b := FtpPutFile(IP, Port, FileName, LocalFile, User, Pass);
-        if b then
+       is_file_put := FtpPutFile(IP, Port, FileName, LocalFile, User, Pass);
+        if is_file_put then
           mmFtpLog.Lines.Add('[+] Файл ' + FileName +
             ' выгружен на сервер из ' + LocalFile)
         else
@@ -728,6 +770,21 @@ begin
   ed.free();
 end;
 
+procedure TForm1.btnEditorJsClick(Sender: TObject);
+var jE : TfrmEditorJs;
+begin
+   jE:=TfrmEditorJs.Create(Self);
+   jE.editor.text:=sqlJsScripts.FieldByName('js_file').AsString;
+   jE.ShowModal;
+
+
+   sqlJsScripts.ApplyUpdates;
+   sqlJsScripts.Edit;
+   sqlJsScripts.FieldByName('js_file').AsString:=jE.editor.text;
+   sqlJsScripts.Post;
+
+end;
+
 
 
 { Тестовый код }
@@ -742,6 +799,7 @@ begin
   doSections();  // разделы
   doSitemap(); // карта сайта
   doCssTables(); // css таблицы
+  doJs(); // скрипты
 end;
 
 {{ ===============     ЗАГРУЗКА ИЗ ТЕКСТОВЫХ ФАЙЛОВ ============= }}
@@ -855,6 +913,11 @@ procedure TForm1.acEditorForSectionNoteExecute(Sender: TObject);
 
 begin
      editor_win_show( sqlSections, 'note');
+end;
+
+procedure TForm1.AppPagesChange(Sender: TObject);
+begin
+
 end;
 
 procedure TForm1.acEditorForSectionFullTextExecute(Sender: TObject);
@@ -1023,6 +1086,17 @@ begin
      begin
           css_id := lvCSS.Items[ lvCSS.ItemIndex ];
           sqlCssStyles.Locate('css_id', css_id, []);
+
+     end;
+end;
+
+procedure TForm1.lvJsScriptsClick(Sender: TObject);
+var js_id : String;
+begin
+  if lvJsScripts.ItemIndex >= 0 then
+     begin
+          js_id := lvJsScripts.Items[ lvJsScripts.ItemIndex ];
+          sqlJsScripts.Locate('js_id', js_id, []);
 
      end;
 end;
@@ -1896,6 +1970,7 @@ begin
     sqlSections.Active:=true;
     sqlContent.Active:=true;
     sqlCssStyles.Active:=true;
+    sqlJsScripts.Active:=true;
 end;
 
 procedure TForm1.makeSqlInactive;
@@ -1911,6 +1986,7 @@ begin
   sqlCssStyles.Active:=false;
   sqlSections.Active:=false;
   sqlBlocks.Active:=false;
+  sqlJsScripts.Active:=false;
 
   conn.Close;
 end;
@@ -1945,10 +2021,16 @@ end;
 procedure TForm1.viewCssSQL;
 begin
 
-  //open_sql( 'select * from css', sqlCss);
+  open_sql( 'select * from css', sqlCssStyles);
 
   //ds_Css.AutoEdit:=true;
   SilentMessage('выполнена загрузка таблиц стилей');
+end;
+
+procedure TForm1.viewJsSQL;
+begin
+    open_sql( 'select * from js', sqlJsScripts);
+
 end;
 
 procedure TForm1.viewTablesSQL;
@@ -1960,6 +2042,7 @@ begin
   form1.viewPresetsSQL();
   form1.viewSectionsSQL();
   form1.viewCssSQL();
+  form1.viewJsSQL();
 end;
 
 (*
@@ -2055,6 +2138,7 @@ begin
             createBlocksSQL(conn, trans);
             createPresetsSQL(conn, trans);
             createCssSQL(conn, trans);
+            createJsSQL(conn, trans);
 
 
 end;
@@ -2066,6 +2150,7 @@ begin
   Form1.changeDataSourcesBlocks();
   Form1.changeDataSourcesPresets();
   Form1.changeDataSourcesCss();
+  Form1.changeDataSourcesJs();
 end;
 
 
@@ -2534,11 +2619,15 @@ begin
   if sqlCssStyles.Active then
   sqlCssStyles.ApplyUpdates();
 
+  if sqlJsScripts.Active then
+  sqlJsScripts.ApplyUpdates;
+
   sqlContent.Refresh;
   sqlSections.Refresh;
   sqlPresets.Refresh;
   sqlBlocks.Refresh;
   sqlCssStyles.Refresh;
+  sqlJsScripts.Refresh;
 
 
   scanLinks();
@@ -2546,6 +2635,7 @@ begin
   scanBlocks();
   scanPresets();
   scanCss();
+  scanJs();
 end;
 
 
@@ -2584,6 +2674,49 @@ begin
      Application.ProcessMessages;
    end;
   sqlCssStyles.First;
+end;
+
+procedure TForm1.scanJs;
+var k : integer;
+begin
+   jsTitles.clear;
+   sqlJsScripts.First;
+  while not sqlJsScripts.Eof do
+   begin
+     JsTitles.AddPair( sqlJsScripts.FieldByName('js_id').AsString, '');
+     sqlJsScripts.Next;
+     Application.ProcessMessages;
+   end;
+  sqlJsScripts.First;
+
+  lvJsScripts.clear;
+  for k:=0 to JsTitles.Count-1 do
+    begin
+       lvJsScripts.Items.Add(jsTitles.Names[k]);
+       Application.ProcessMessages;
+    end;
+
+end;
+
+procedure TForm1.doJs;
+begin
+  sqlJsScripts.First;
+  while not sqlJsScripts.Eof do
+   begin
+     writeDocument( sqlJsScripts.FieldByName('js_file').AsString,
+            sqlJsScripts.FieldByName('js_path').AsString );
+     sqlJsScripts.Next;
+     Application.ProcessMessages;
+   end;
+  sqlJsScripts.First;
+end;
+
+procedure TForm1.changeDataSourcesJs;
+begin
+
+  dbeJsScriptId.DataSource:=ds_JsScripts;
+  dbeScriptPath.DataSource:=ds_JsScripts;
+  dbmJsScriptFile.DataSource:=ds_JsScripts;
 end;
 
 
