@@ -14,14 +14,14 @@ uses
     procedure insertDemoDataBlocks(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoDataPresets(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoData(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
-
+    procedure insertDemoDataCss(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 
      {Хелперы}
      procedure addIntoBlock( id, markup, remark : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoSection( id, section, preset, note, full_text : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoContent( id, cap, content, section : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoPreset(id, sitename, dirpath, headtpl, bodytpl, sectiontpl, itemtpl : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
-
+     procedure addIntoCss( css_id, css_style, css_path: String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 implementation
 
 
@@ -130,8 +130,22 @@ begin
              // SilentMessage('Не удалось настроить контент');
           end;
 
+           // инициализация css
+          try
+              insertDemoDataCSS(sq, konnect, tranzact);
+          except
+             // SilentMessage('Не удалось настроить контент');
+          end;
+
 
 end;
+
+ procedure insertDemoDataCss(var sq: TSQLQuery; var konnect: TSQLite3Connection;
+   var tranzact: TSQLTransaction);
+ begin
+   addIntoCss('styles', '.example {text-decoration:italic}','/home/artem/mysite/style.css', sq, konnect, tranzact);
+   addIntoCss('other_styles', '#some_id {text-decoration:italic}','/home/artem/mysite/other.css', sq, konnect, tranzact);
+ end;
 
  procedure addIntoBlock(id, markup, remark: String; var sq : TSQLQuery;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
@@ -212,6 +226,21 @@ end;
 
  prepared_transaction_end( sq, tranzact);
 end;
+
+ procedure addIntoCss(css_id, css_style, css_path: String;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+    prepared_transaction_start(
+   'insert into css (css_id, css_style, css_path) values '+
+  '(:CSS_ID,:CSS_STYLE,:CSS_PATH)',
+  sq, tranzact);
+
+  sq.Params.ParamByName('CSS_ID').AsString := css_id;
+  sq.Params.ParamByName('CSS_STYLE').AsString := css_style;
+  sq.Params.ParamByName('CSS_PATH').AsString := css_path;
+
+ prepared_transaction_end( sq, tranzact);
+ end;
 
 end.
 

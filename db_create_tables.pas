@@ -13,6 +13,10 @@ procedure  createSectionsSQL(var konnect : TSQLite3Connection; var tranzact : TS
 procedure  createBlocksSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 procedure  createPresetsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);  // начальная настройка пресетов
 procedure  createPagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+procedure createCssSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+
+
 implementation
 
 procedure  createSectionsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
@@ -119,6 +123,25 @@ begin
 
 
  end;
+
+procedure createCssSQL(var konnect: TSQLite3Connection;
+  var tranzact: TSQLTransaction);
+begin
+   sql_execute_direct( 'PRAGMA foreign_keys = ON;', konnect, tranzact);
+       // Здесь мы настраиваем таблицу с именем "content" в новой базе данных.
+     sql_execute_direct('CREATE TABLE "css"('+
+                    ' "css_id" Char(128) NOT NULL PRIMARY KEY,'+
+                    ' "css_path" Char(255),'+
+                    ' "css_style" TEXT '+
+                    ');', konnect, tranzact);
+
+        // Создание индекса на основе идентификатора в таблице "DATA"
+       sql_execute_direct('CREATE UNIQUE INDEX "css_id_idx" ON "css"( "css_id" );',konnect, tranzact);
+
+
+
+
+end;
 
 end.
 

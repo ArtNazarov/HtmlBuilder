@@ -15,6 +15,7 @@ uses
 
 const
 
+   num_tables : byte = 5;
    SilentMode : boolean = True;
    logger_info : boolean = True;
    sqlite_filename : String = 'sqlite.db';
@@ -27,6 +28,8 @@ const
     DLM_MODULE = '%';
 
 type
+
+  sqls_list = array[byte] of TSQLquery;
 
   user_records = array[0..7] of record
               name : string;
@@ -120,18 +123,30 @@ type
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    ds_CssStyles: TDataSource;
+    dbeCssPath: TDBEdit;
+    dbeCssId: TDBEdit;
+    dbmCssStyle: TDBMemo;
     dbmSectionFullText: TDBMemo;
+    dbNav_Css: TDBNavigator;
     ds_Rubrication: TDataSource;
     dgCounter: TDBGrid;
     ds_Counter: TDataSource;
     ds_Join: TDataSource;
     dbJoin: TDBGrid;
+    lbCssPath: TLabel;
+    lbCSS_id: TLabel;
+    lbCssStyle: TLabel;
+    lbCSS: TLabel;
     lbSpecification: TLabel;
+    lvCSS: TListBox;
     lvPresets: TListView;
     lvBlocks: TListView;
     lvContent: TListView;
     lvSections: TListView;
     mmRubrics: TMemo;
+    panCSSList: TPanel;
+    panCSSElements: TPanel;
     panJoin: TPanel;
     selSection: TDBLookupComboBox;
     ds_Content: TDataSource;
@@ -255,8 +270,10 @@ type
     sqlContent: TSQLQuery;
     sqlJoin: TSQLQuery;
     sqlCounter: TSQLQuery;
+    sqlCssStyles: TSQLQuery;
     sqlRubrication: TSQLQuery;
     tabJoin: TTabSheet;
+    tabCSS: TTabSheet;
     temp_sql: TSQLQuery;
     trans: TSQLTransaction;
     sqlSections: TSQLQuery;
@@ -315,15 +332,19 @@ type
     procedure btnEditorContentClick(Sender: TObject);
 
     procedure cboLocaleChange(Sender: TObject);
+
     procedure dbNav_ContentBeforeAction(Sender: TObject; Button: TDBNavButtonType);
     procedure dbNav_BlocksBeforeAction(Sender: TObject; Button: TDBNavButtonType
       );
+    procedure dbNav_CssBeforeAction(Sender: TObject; Button: TDBNavButtonType);
     procedure dbNav_PresetsBeforeAction(Sender: TObject;
       Button: TDBNavButtonType);
     procedure dbNav_SectionsBeforeAction(Sender: TObject;
       Button: TDBNavButtonType);
+
     procedure lvBlocksClick(Sender: TObject);
     procedure lvContentClick(Sender: TObject);
+    procedure lvCSSClick(Sender: TObject);
     procedure lvPresetsClick(Sender: TObject);
     procedure lvSectionsClick(Sender: TObject);
 
@@ -343,6 +364,11 @@ type
     procedure sqlContentAfterDelete(DataSet: TDataSet);
 
     procedure sqlContentAfterPost(DataSet: TDataSet);
+    procedure sqlCssAfterDelete(DataSet: TDataSet);
+    procedure sqlCssAfterPost(DataSet: TDataSet);
+    procedure sqlCssStylesAfterDelete(DataSet: TDataSet);
+    procedure sqlCssStylesAfterEdit(DataSet: TDataSet);
+    procedure sqlCssStylesAfterPost(DataSet: TDataSet);
     procedure sqlPresetsAfterDelete(DataSet: TDataSet);
     procedure sqlPresetsAfterPost(DataSet: TDataSet);
     procedure sqlSectionsAfterDelete(DataSet: TDataSet);
@@ -357,7 +383,9 @@ type
     { public declarations }
     Titles, Urls, Sections: TMemo;
     SiteSectionUrls, SiteSectionTitles: TMemo;
+    CssTitles   : TStringList;
     SitePresets : TMemo;
+    sqls : sqls_list;
     ListenerSocket, ConnectionSocket: TTCPBlockSocket;
 
     Blocks : TStringList; // блоки
@@ -371,6 +399,7 @@ type
     function useBlocks(part: string): string;
     procedure scanLinks();
     procedure scanSections();
+    procedure scanCss();
     function insLinks(body: string): string;
     function insSections(body: string): string;
 
@@ -425,7 +454,9 @@ type
     procedure viewSectionsSQL();  // раздел секции сайта
     procedure viewBlocksSQL();  // раздел глобальные блоки сайта
     procedure viewPresetsSQL();  // раздел пресеты (настройки сайта)
+    procedure viewCssSQL(); // просмотр таблиц CSS
     procedure viewTablesSQL(); // выполняем запросы на просмотр таблиц
+
 
 
     { Переназначение datasource для таблицы content - страницы }
@@ -436,6 +467,7 @@ type
      procedure changeDataSourcesBlocks();
      { Переназначение datasource для таблицы preset - нач. настройки сайта}
      procedure changeDataSourcesPresets();
+     procedure changeDataSourcesCss();
 
      (* Заполнение демо данными *)
 
@@ -460,7 +492,10 @@ type
      procedure scanPresets();
      procedure doScan();
 
+
      procedure editor_win_show(sql : TSQLQuery; field : String );
+
+     procedure doCssTables();
 
 
 
@@ -489,6 +524,7 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+
   form1.initdbSQL();
 
   Cache:=TStringList.Create;
@@ -496,9 +532,13 @@ begin
   dbNav_Content.DataSource.AutoEdit := True;
   dbNav_Content.Enabled := True;
 
+ // dbNav_Css.DataSource.AutoEdit := True;
+ // dbNav_Css.Enabled := True;
+
   Titles := TMemo.Create(Self); // Заголовки
   Urls := TMemo.Create(Self); // URL страниц
   Sections := TMemo.Create(Self); // Разделы страниц
+  CssTitles:=TStringList.Create;
 
 
   SiteSectionUrls := TMemo.Create(Self); // URL разделов
@@ -533,6 +573,31 @@ end;
 
 
 procedure TForm1.sqlContentAfterPost(DataSet: TDataSet);
+begin
+  doScan();
+end;
+
+procedure TForm1.sqlCssAfterDelete(DataSet: TDataSet);
+begin
+  doScan();
+end;
+
+procedure TForm1.sqlCssAfterPost(DataSet: TDataSet);
+begin
+  doScan();
+end;
+
+procedure TForm1.sqlCssStylesAfterDelete(DataSet: TDataSet);
+begin
+  doScan();
+end;
+
+procedure TForm1.sqlCssStylesAfterEdit(DataSet: TDataSet);
+begin
+
+end;
+
+procedure TForm1.sqlCssStylesAfterPost(DataSet: TDataSet);
 begin
   doScan();
 end;
@@ -657,6 +722,7 @@ begin
   doJoinPages(); // страницы
   doSections();  // разделы
   doSitemap(); // карта сайта
+  doCssTables(); // css таблицы
 end;
 
 {{ ===============     ЗАГРУЗКА ИЗ ТЕКСТОВЫХ ФАЙЛОВ ============= }}
@@ -866,6 +932,8 @@ begin
     LocaleENG();
 end;
 
+
+
 procedure TForm1.dbNav_ContentBeforeAction(Sender: TObject; Button: TDBNavButtonType);
 begin
     if (Button = nbRefresh) or (Button=nbDelete) then
@@ -881,6 +949,16 @@ begin
    if (Button = nbRefresh) or (Button=nbDelete) then
   begin
    sqlBlocks.ApplyUpdates();
+   trans.CommitRetaining;
+  end;
+end;
+
+procedure TForm1.dbNav_CssBeforeAction(Sender: TObject; Button: TDBNavButtonType
+  );
+begin
+   if (Button = nbRefresh) or (Button=nbDelete) then
+  begin
+   sqlCssStyles.ApplyUpdates();
    trans.CommitRetaining;
   end;
 end;
@@ -908,29 +986,56 @@ end;
 procedure TForm1.lvBlocksClick(Sender: TObject);
 var block_id : String;
 begin
-  block_id := lvBlocks.Selected.Caption;
+  if lvBlocks.ItemIndex >=0 then
+     begin
+   block_id := lvBlocks.Items.Item[lvBlocks.ItemIndex].Caption;
   sqlBlocks.Locate('id', block_id, []);
+     end;
+
 end;
 
 procedure TForm1.lvContentClick(Sender: TObject);
 var content_id : String;
 begin
-  content_id := lvContent.Selected.Caption;
-  sqlContent.Locate('id', content_id, []);
+  if lvContent.ItemIndex >= 0 then
+    begin
+      content_id := lvContent.Items[ lvContent.ItemIndex ].Caption;
+      sqlContent.Locate('id', content_id, []);
+    end;
+
+end;
+
+procedure TForm1.lvCSSClick(Sender: TObject);
+var css_id : String;
+begin
+  if lvCSS.ItemIndex >= 0 then
+     begin
+          css_id := lvCSS.Items[ lvCSS.ItemIndex ];
+          sqlCssStyles.Locate('css_id', css_id, []);
+
+     end;
 end;
 
 procedure TForm1.lvPresetsClick(Sender: TObject);
 var preset_id : String;
 begin
-  preset_id := lvPresets.Selected.Caption;
-  sqlPresets.Locate('id', preset_id, []);
+  if lvPresets.ItemIndex >= 0  then
+    begin
+        preset_id := lvPresets.Items.Item[ lvPresets.ItemIndex ].Caption;
+        sqlPresets.Locate('id', preset_id, []);
+    end;
+
 end;
 
 procedure TForm1.lvSectionsClick(Sender: TObject);
 var section_id : String;
 begin
-  section_id := lvSections.Selected.Caption;
+  if lvSections.ItemIndex >= 0 then
+    begin
+  section_id := lvSections.Items.Item[ lvSections.ItemIndex ].Caption;
   sqlSections.Locate('id', section_id, []);
+
+    end;
 end;
 
 
@@ -955,9 +1060,17 @@ end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  try
   form1.makeSqlInactive();
+  except
+   //showMessage('Проблема при сохранении');
+  end;
+
   if ListenerSocket <> nil then ListenerSocket.Free;
   if ConnectionSocket <> nil then  ConnectionSocket.Free;
+
+
+
 end;
 
 
@@ -1141,10 +1254,39 @@ begin
   for i:=0 to SiteSectionUrls.Lines.Count-1 do
       begin
         lvSections.AddItem( SiteSectionUrls.Lines.Strings[i] , nil);
+        application.ProcessMessages;
       end;
 
   if logger_info then mmRubrics.Lines.Add('Заголовков страниц<scanSections>:'+IntToStr(SiteSectionTitles.Lines.Count));
   if logger_info then mmRubrics.Lines.Add('URL страниц<scanSections>:'+IntToStr(SiteSectionUrls.Lines.Count));
+end;
+
+procedure TForm1.scanCss;
+var i : integer;
+begin
+  // identically as scanLinks
+  CssTitles.clear;
+
+  sqlCssStyles.First;
+  while not  sqlCssStyles.EOF do
+  begin
+    CssTitles.AddPair(sqlCssStyles.FieldByName('css_id').AsString, '');
+
+      sqlCssStyles.Next;
+    Application.ProcessMessages;
+  end;
+   sqlCssStyles.First;
+
+
+  lvCss.clear;
+  for i:=0 to CssTitles.Count-1 do
+      begin
+        lvCss.AddItem( CssTitles.Names[i] , nil);
+        application.ProcessMessages;
+      end;
+
+
+  if logger_info then mmRubrics.Lines.Add('URL страниц CSS<scanCss>:'+IntToStr(CssTitles.Count));
 end;
 
 function TForm1.insLinks(body: string): string;
@@ -1663,8 +1805,9 @@ var
   isOK : Boolean;
 begin
 
-  conn.Close; // Убедитесь, что соединение закрыто при запуске
-  conn.DatabaseName := sqlite_filename; // назначаем имя файла
+
+  conn.DatabaseName := getCurrentDir() + DELIM + sqlite_filename; // назначаем имя файла
+  //showMessage( conn.DatabaseName );
   try
   //Поскольку мы делаем эту базу данных впервые,
   // проверяем, существует ли уже файл
@@ -1675,7 +1818,7 @@ begin
 
 
 
-
+         conn.Open;
          // делать ничего не нужно, обработается при выходе, сообщаем
          SilentMessage('Файл найден!');
          checkConnect(conn, trans, 'initTransactionSQL');
@@ -1734,41 +1877,29 @@ end;
 
 
 procedure TForm1.makeSqlActive;
+
 begin
-
-  checkConnect(conn, trans,'makeSqlActive');
-  // к моменту вызова этого запроса таблицы должны существовать
-  if (sqlContent.SQL.Text = '') then
-          SilentMessage('Запрос не задан sqlPages')
-    else
-          sqlContent.Active:=True; // запрос в активном режиме, SQL должен быть определен!
-    if (sqlSections.SQL.Text = '') then
-          SilentMessage('Запрос не задан sqlSections')
-    else
-        sqlSections.Active:=True; // запрос в активном режиме
-
-
-   if (sqlBlocks.Sql.text = '') then
-      SilentMessage('Запрос не задан SqlBlocks')
-   else
-  sqlBlocks.Active:=True; // запрос в активном режиме
-
-  if (sqlPresets.Sql.Text = '') then
-     SilentMessage('Запрос не задан sqlPresets') else
-  sqlPresets.Active:=True; // запрос в активном режиме
+    sqlPresets.Active:=true;
+    sqlBlocks.Active:=true;
+    sqlSections.Active:=true;
+    sqlContent.Active:=true;
+    sqlCssStyles.Active:=true;
 end;
 
 procedure TForm1.makeSqlInactive;
+
 begin
 
+  showMessage('Сохраняем базу');
   AutoSaveDb();
+  showMessage('База сохранена');
 
-  SilentMessage('Закрываем транзакцию и соединение');
-  sqlContent.Active:=False; // запрос в активном режиме
-  sqlSections.Active:=False; // запрос в активном режиме
-  sqlBlocks.Active:=False; // запрос в активном режиме
-  sqlPresets.Active:=False; // запрос в активном режиме
-  trans.Active:=false;
+  sqlPresets.Active:=false;
+  sqlContent.Active:=false;
+  sqlCssStyles.Active:=false;
+  sqlSections.Active:=false;
+  sqlBlocks.Active:=false;
+
   conn.Close;
 end;
 
@@ -1799,6 +1930,15 @@ begin
   SilentMessage('выполнена загрузка настроек!');
 end;
 
+procedure TForm1.viewCssSQL;
+begin
+
+  //open_sql( 'select * from css', sqlCss);
+
+  //ds_Css.AutoEdit:=true;
+  SilentMessage('выполнена загрузка таблиц стилей');
+end;
+
 procedure TForm1.viewTablesSQL;
 begin
  checkConnect(conn, trans,'viewTablesSQL');
@@ -1807,6 +1947,7 @@ begin
   form1.viewBlocksSQL();
   form1.viewPresetsSQL();
   form1.viewSectionsSQL();
+  form1.viewCssSQL();
 end;
 
 (*
@@ -1873,6 +2014,13 @@ begin
   dbNav_Presets.DataSource:=form1.ds_Presets; // листалка
 end;
 
+procedure TForm1.changeDataSourcesCss;
+begin
+ // dbeCssId.DataSource:=form1.ds_Css;
+ // dbmCssStyle.DataSource:=form1.ds_Css;
+ // dbNav_Css.DataSource:=form1.ds_Css;
+end;
+
 
 
 
@@ -1889,15 +2037,14 @@ begin
           checkConnect(conn, trans, 'makeCreationTables');
 
 
-            try
-            createPagesSQL(conn, trans);
 
-            except
-                 SilentMessage('Проблема с таблицей content');
-            end;
+            createPagesSQL(conn, trans);
             createSectionsSQL(conn, trans);
             createBlocksSQL(conn, trans);
             createPresetsSQL(conn, trans);
+            createCssSQL(conn, trans);
+
+
 end;
 
 procedure TForm1.changeDataSources;
@@ -1906,6 +2053,7 @@ begin
   Form1.changeDataSourcesSections();
   Form1.changeDataSourcesBlocks();
   Form1.changeDataSourcesPresets();
+  Form1.changeDataSourcesCss();
 end;
 
 
@@ -1924,15 +2072,22 @@ begin
 end;
 
 procedure TForm1.AutoSaveDb; // автосохранение, исп. в FormClose
+
+
 begin
-   sqlContent.ApplyUpdates();
-   trans.CommitRetaining();
-   sqlSections.ApplyUpdates();
-   trans.CommitRetaining();
-   sqlBlocks.ApplyUpdates();
-   trans.CommitRetaining();
+
+
    sqlPresets.ApplyUpdates();
-   trans.CommitRetaining();
+   trans.Commit;
+   sqlContent.ApplyUpdates();
+   trans.Commit;
+   sqlPresets.ApplyUpdates();
+   trans.Commit;
+   sqlSections.ApplyUpdates();
+   trans.Commit();
+   sqlCssStyles.ApplyUpdates();
+   trans.Commit();
+
 end;
 
 (* ========================== новая сборка страниц ====================== *)
@@ -2355,7 +2510,10 @@ begin
   scanSections();
   scanBlocks();
   scanPresets();
+  scanCss();
 end;
+
+
 
 procedure TForm1.editor_win_show(sql: TSQLQuery; field: String);
 
@@ -2371,6 +2529,20 @@ begin
   fE.Close();
   fE.Free;
 
+end;
+
+procedure TForm1.doCssTables;
+begin
+
+  sqlCssStyles.First;
+  while not sqlCssStyles.Eof do
+   begin
+     writeDocument( sqlCssStyles.FieldByName('css_style').AsString,
+            sqlCssStyles.FieldByName('css_path').AsString );
+     sqlCssStyles.Next;
+     Application.ProcessMessages;
+   end;
+  sqlCssStyles.First;
 end;
 
 

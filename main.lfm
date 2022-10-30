@@ -18,9 +18,9 @@ object Form1: TForm1
     Height = 770
     Top = 0
     Width = 1598
-    ActivePage = tabJoin
+    ActivePage = tabCSS
     Align = alClient
-    TabIndex = 7
+    TabIndex = 3
     TabOrder = 0
     object tabPages: TTabSheet
       Caption = 'Страницы'
@@ -690,6 +690,129 @@ object Form1: TForm1
         end
       end
     end
+    object tabCSS: TTabSheet
+      Caption = 'Таблицы CSS'
+      ClientHeight = 738
+      ClientWidth = 1594
+      object panCSSList: TPanel
+        Left = 0
+        Height = 738
+        Top = 0
+        Width = 368
+        Align = alLeft
+        ClientHeight = 738
+        ClientWidth = 368
+        TabOrder = 0
+        object lvCSS: TListBox
+          Left = 1
+          Height = 714
+          Top = 23
+          Width = 366
+          Align = alClient
+          ItemHeight = 0
+          OnClick = lvCSSClick
+          TabOrder = 0
+        end
+        object lbCSS: TLabel
+          Left = 1
+          Height = 22
+          Top = 1
+          Width = 366
+          Align = alTop
+          Caption = 'Таблицы стилей'
+          ParentColor = False
+        end
+      end
+      object panCSSElements: TPanel
+        Left = 368
+        Height = 738
+        Top = 0
+        Width = 1226
+        Align = alClient
+        ClientHeight = 738
+        ClientWidth = 1226
+        TabOrder = 1
+        object lbCSS_id: TLabel
+          Left = 1
+          Height = 22
+          Top = 1
+          Width = 1224
+          Align = alTop
+          Caption = 'CSS таблица'
+          ParentColor = False
+        end
+        object dbeCssId: TDBEdit
+          Left = 1
+          Height = 28
+          Top = 23
+          Width = 1224
+          DataField = 'css_id'
+          DataSource = ds_CssStyles
+          Align = alTop
+          MaxLength = 0
+          TabOrder = 0
+        end
+        object lbCssStyle: TLabel
+          Left = 1
+          Height = 22
+          Top = 101
+          Width = 1224
+          Align = alTop
+          Caption = 'Таблица стилей'
+          ParentColor = False
+        end
+        object dbNav_Css: TDBNavigator
+          Left = 1
+          Height = 25
+          Top = 712
+          Width = 1224
+          Align = alBottom
+          BeforeAction = dbNav_CssBeforeAction
+          BevelOuter = bvNone
+          ChildSizing.EnlargeHorizontal = crsScaleChilds
+          ChildSizing.EnlargeVertical = crsScaleChilds
+          ChildSizing.ShrinkHorizontal = crsScaleChilds
+          ChildSizing.ShrinkVertical = crsScaleChilds
+          ChildSizing.Layout = cclLeftToRightThenTopToBottom
+          ChildSizing.ControlsPerLine = 100
+          ClientHeight = 25
+          ClientWidth = 1224
+          DataSource = ds_CssStyles
+          Options = []
+          TabOrder = 1
+        end
+        object dbmCssStyle: TDBMemo
+          Left = 1
+          Height = 589
+          Top = 123
+          Width = 1224
+          Align = alClient
+          DataField = 'css_style'
+          DataSource = ds_CssStyles
+          TabOrder = 2
+        end
+        object lbCssPath: TLabel
+          Left = 1
+          Height = 22
+          Top = 51
+          Width = 1224
+          Align = alTop
+          Caption = 'lbCssPath'
+          ParentColor = False
+        end
+        object dbeCssPath: TDBEdit
+          Left = 1
+          Height = 28
+          Top = 73
+          Width = 1224
+          DataField = 'css_path'
+          DataSource = ds_CssStyles
+          Align = alTop
+          MaxLength = 0
+          TabOrder = 3
+        end
+      end
+    end
     object tabCommonSettings: TTabSheet
       Caption = 'Общие настройки'
       ClientHeight = 738
@@ -776,9 +899,9 @@ object Form1: TForm1
             Height = 559
             Top = 151
             Width = 1223
-            ActivePage = TabSheet6
+            ActivePage = TabSheet13
             Align = alClient
-            TabIndex = 0
+            TabIndex = 4
             TabOrder = 3
             object TabSheet6: TTabSheet
               Caption = 'Заголовок'
@@ -1842,6 +1965,9 @@ object Form1: TForm1
     AfterPost = sqlSectionsAfterPost
     Database = conn
     Transaction = trans
+    SQL.Strings = (
+      'select * from section'
+    )
     Params = <>
     Macros = <>
     Left = 1104
@@ -1858,6 +1984,9 @@ object Form1: TForm1
     AfterPost = sqlBlocksAfterPost
     Database = conn
     Transaction = trans
+    SQL.Strings = (
+      'select * from block'
+    )
     Params = <>
     Macros = <>
     Left = 600
@@ -1874,6 +2003,9 @@ object Form1: TForm1
     AfterPost = sqlPresetsAfterPost
     Database = conn
     Transaction = trans
+    SQL.Strings = (
+      'select * from preset'
+    )
     Params = <>
     Macros = <>
     Left = 1168
@@ -1899,6 +2031,9 @@ object Form1: TForm1
     AfterPost = sqlContentAfterPost
     Database = conn
     Transaction = trans
+    SQL.Strings = (
+      'select * from content'
+    )
     Params = <>
     Macros = <>
     Left = 504
@@ -2069,5 +2204,24 @@ object Form1: TForm1
       Caption = 'acEditorForRubricItemTemplate'
       OnExecute = acEditorForRubricItemTemplateExecute
     end
+  end
+  object sqlCssStyles: TSQLQuery
+    FieldDefs = <>
+    AfterDelete = sqlCssStylesAfterDelete
+    AfterPost = sqlCssStylesAfterPost
+    Database = conn
+    Transaction = trans
+    SQL.Strings = (
+      'select * from css'
+    )
+    Params = <>
+    Macros = <>
+    Left = 1382
+    Top = 538
+  end
+  object ds_CssStyles: TDataSource
+    DataSet = sqlCssStyles
+    Left = 1390
+    Top = 635
   end
 end

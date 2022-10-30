@@ -27,17 +27,18 @@ begin
    if not konnect.Connected then
           begin
           // SilentMessage('нет соединения, переподключаюсь! <'+msg+'>');
+
            konnect.Open;
            tranzact.Active:=true;
-          end; (*
-  else
-    SilentMessage('требование выполнено <'+msg+'>');
-    *)
+          end;
+
+
 end;
 
 procedure  sql_execute(request: string; var konnect: TSQLite3Connection;
   var tranzact: TSQLTransaction; var sQ: TSQLQuery);
 begin
+  //if not konnect.Connected then konnect.Open;
   if not tranzact.Active then tranzact.StartTransaction;
   try
     sQ.SQL.Text:=request;
