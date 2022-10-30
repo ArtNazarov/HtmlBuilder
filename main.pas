@@ -11,7 +11,7 @@ uses
   DBCtrls, dbf, SQLite3Conn, SQLDB, process, FileUtil, SynHighlighterHTML,
   SynEdit, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids, ActnList, Buttons,
   blcksock, sockets, Synautil, synaip, synsock, ftpsend, db_helpers,
-  db_insertdemo, db_create_tables, replacers, editor_in_window; {Use Synaptic}
+  db_insertdemo, db_create_tables, replacers, editor_in_window, editor_css; {Use Synaptic}
 
 const
 
@@ -119,6 +119,7 @@ type
     btnEditorBodyPagesTemplate: TButton;
     BtnEditorBodySectionsTemplate: TButton;
     btnEditorTemplateOfItem: TButton;
+    btnEditorCssOpen: TButton;
     cboLocale: TComboBox;
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
@@ -319,6 +320,7 @@ type
     procedure acEditorForSectionNoteExecute(Sender: TObject);
     procedure btBuildSiteClick(Sender: TObject);
     procedure btFtpUpdateClick(Sender: TObject);
+    procedure btnEditorCssOpenClick(Sender: TObject);
 
     procedure btnJoinClick(Sender: TObject);
     procedure btnLoadClick(Sender: TObject);
@@ -493,7 +495,7 @@ type
      procedure doScan();
 
 
-     procedure editor_win_show(sql : TSQLQuery; field : String );
+     procedure editor_win_show(var sql : TSQLQuery; field : String );
 
      procedure doCssTables();
 
@@ -709,6 +711,23 @@ begin
 
 end;
 
+procedure TForm1.btnEditorCssOpenClick(Sender: TObject);
+var ed : TfrmEditorCss;
+begin
+  ed:=TfrmEditorCss.Create(self);
+  ed.editor.Text:=  sqlCssStyles.FieldByName('css_style').AsString;
+  ed.ShowModal();
+
+
+
+        sqlCssStyles.ApplyUpdates();
+        sqlCssStyles.Edit;
+        sqlCssStyles.FieldByName('css_style').AsString:=ed.editor.Text;
+
+  ed.close();
+  ed.free();
+end;
+
 
 
 { Тестовый код }
@@ -909,17 +928,9 @@ end;
 
 
 procedure TForm1.btnEditorContentClick(Sender: TObject);
-var fE : TfrmEditor;
+
 begin
-  fE:=TfrmEditor.Create(Self);
-  fE.setMarkup( sqlContent.FieldByName('content').AsString);
-  fE.ShowModal();
-
-  sqlContent.Edit;
-  sqlContent.FieldByName('content').AsString:=fE.getMarkup();
-
-  fE.Close();
-  fE.Free;
+  form1.editor_win_show(sqlContent, 'content');
 end;
 
 
@@ -1819,6 +1830,7 @@ begin
 
 
          conn.Open;
+         trans.Active:=True;
          // делать ничего не нужно, обработается при выходе, сообщаем
          SilentMessage('Файл найден!');
          checkConnect(conn, trans, 'initTransactionSQL');
@@ -1890,9 +1902,9 @@ procedure TForm1.makeSqlInactive;
 
 begin
 
-  showMessage('Сохраняем базу');
+ // showMessage('Сохраняем базу');
   AutoSaveDb();
-  showMessage('База сохранена');
+ // showMessage('База сохранена');
 
   sqlPresets.Active:=false;
   sqlContent.Active:=false;
@@ -2077,15 +2089,15 @@ procedure TForm1.AutoSaveDb; // автосохранение, исп. в FormClo
 begin
 
 
-   sqlPresets.ApplyUpdates();
-   trans.Commit;
-   sqlContent.ApplyUpdates();
-   trans.Commit;
-   sqlPresets.ApplyUpdates();
-   trans.Commit;
-   sqlSections.ApplyUpdates();
-   trans.Commit();
-   sqlCssStyles.ApplyUpdates();
+   if sqlPresets.Active then sqlPresets.ApplyUpdates();
+
+   if sqlContent.Active then sqlContent.ApplyUpdates();
+
+   if sqlBlocks.Active then sqlBlocks.ApplyUpdates();
+
+   if sqlSections.Active then sqlSections.ApplyUpdates();
+
+   if sqlCssStyles.Active then sqlCssStyles.ApplyUpdates();
    trans.Commit();
 
 end;
@@ -2506,6 +2518,29 @@ end;
 
 procedure TForm1.doScan;
 begin
+  if sqlPresets.Active then
+  sqlPresets.ApplyUpdates();
+
+  if sqlContent.Active then
+  sqlContent.ApplyUpdates();
+
+
+  if sqlSections.Active then
+  sqlSections.ApplyUpdates();
+
+  if sqlBlocks.Active then
+  sqlBlocks.ApplyUpdates();
+
+  if sqlCssStyles.Active then
+  sqlCssStyles.ApplyUpdates();
+
+  sqlContent.Refresh;
+  sqlSections.Refresh;
+  sqlPresets.Refresh;
+  sqlBlocks.Refresh;
+  sqlCssStyles.Refresh;
+
+
   scanLinks();
   scanSections();
   scanBlocks();
@@ -2515,13 +2550,19 @@ end;
 
 
 
-procedure TForm1.editor_win_show(sql: TSQLQuery; field: String);
+procedure TForm1.editor_win_show(var sql: TSQLQuery; field: String);
 
   var fE : TfrmEditor;
 begin
+
+  if sql.Active then sql.ApplyUpdates();
+
+
   fE:=TfrmEditor.Create(Self);
   fE.setMarkup( sql.FieldByName(field).AsString);
   fE.ShowModal();
+  conn.Open;
+  trans.Active:=true;
 
   sql.Edit;
   sql.FieldByName(field).AsString:=fE.getMarkup();
