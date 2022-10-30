@@ -27,21 +27,31 @@ type
     btnAnchor: TButton;
     btnFontStyle: TButton;
     btnTable: TButton;
+    btnHr: TButton;
+    btnStrike: TButton;
+    btnMargin: TButton;
+    btnJustify: TButton;
     cboFormatting: TComboBox;
     cboFontFamily: TComboBox;
+    cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
     Panel1: TPanel;
+    Panel2: TPanel;
     SynHTMLSyn1: TSynHTMLSyn;
     procedure btnAnchorClick(Sender: TObject);
     procedure btnBoldClick(Sender: TObject);
     procedure btnCloseEditorClick(Sender: TObject);
     procedure btnFontStyleClick(Sender: TObject);
+    procedure btnHrClick(Sender: TObject);
     procedure btnHrefClick(Sender: TObject);
     procedure btnItalicClick(Sender: TObject);
+    procedure btnJustifyClick(Sender: TObject);
+    procedure btnMarginClick(Sender: TObject);
     procedure btnOrderedListClick(Sender: TObject);
     procedure btnFormatterClick(Sender: TObject);
     procedure btnPictureClick(Sender: TObject);
+    procedure btnStrikeClick(Sender: TObject);
     procedure btnSubClick(Sender: TObject);
     procedure btnSupClick(Sender: TObject);
     procedure btnTableClick(Sender: TObject);
@@ -85,6 +95,11 @@ begin
   tagC('span', 'style="font-family:'+cboFontFamily.Items[cboFontFamily.ItemIndex]+'"');
 end;
 
+procedure TfrmEditor.btnHrClick(Sender: TObject);
+begin
+  tagX('hr','');
+end;
+
 procedure TfrmEditor.btnHrefClick(Sender: TObject);
 begin
   tagHref();
@@ -105,6 +120,25 @@ begin
   pair('i');
 end;
 
+procedure TfrmEditor.btnJustifyClick(Sender: TObject);
+begin
+  if cboJustify.ItemIndex > 0 then
+  case cboJustify.ItemIndex of
+  0 : begin tagC('span', 'style="text-align:left"'); end;
+  1 : begin tagC('span', 'style="text-align:right"'); end;
+  2 : begin tagC('span', 'style="text-align:center"'); end;
+  3 : begin tagC('span', 'style="text-align:justify"'); end;
+  end;
+end;
+
+procedure TfrmEditor.btnMarginClick(Sender: TObject);
+var k, m : byte;
+begin
+ m:=StrToInt(inputBox('Шаг отступа', 'В пикселях', '10'));
+ k:=StrToInt(inputBox('Сдвиг', 'Множитель', '1'));
+ tagC('div', 'style="margin-left:'+IntToStr(m*k)+'px;"');
+end;
+
 procedure TfrmEditor.btnOrderedListClick(Sender: TObject);
 begin
   taglist('ol');
@@ -122,6 +156,7 @@ begin
       7 : begin pair('p'); end;
       8 : begin pair('code'); end;
       9 : begin pair('pre');  end;
+      10 : begin pair('blockquote'); end;
       end;
    end;
 
@@ -130,6 +165,11 @@ end;
 procedure TfrmEditor.btnPictureClick(Sender: TObject);
 begin
   tagImg();
+end;
+
+procedure TfrmEditor.btnStrikeClick(Sender: TObject);
+begin
+  pair('strike');
 end;
 
 procedure TfrmEditor.btnSubClick(Sender: TObject);

@@ -694,7 +694,9 @@ begin
   sqlBlocks.First;
   while not sqlBlocks.EOF do begin
       idOfBlocksInBase.Add( sqlBlocks.FieldByName('id').AsString);
+
       sqlBlocks.Next;
+      Application.ProcessMessages;
   end;
 
     blockFiles := FindAllFiles(GetCurrentDir()+DELIM+'blocks', '*.blk', false); // получили список блоков
@@ -734,7 +736,7 @@ begin
                              inc(k) else break;
 
                              sqlBlocks.Next;
-
+                             application.ProcessMessages;
                          end;
                    sqlBlocks.Edit;
                    sqlBlocks.FieldByName('id').AsString := installedIds[i];
@@ -1006,6 +1008,7 @@ begin
                  break;
                end;
                sqlSections.Next;
+               Application.ProcessMessages;
        end;
  r:=applyVar(r, 'sitename', sqlPresets.FieldByName('sitename').AsString);
  r:=applyVar(r, 'ext', PrefferedExtension.Text);
@@ -1102,6 +1105,7 @@ begin
     Urls.Lines.Add(sqlContent.FieldByName('id').AsString);
     Sections.Lines.Add(sqlContent.FieldByName('section').AsString);
     sqlContent.Next;  // see next page
+    Application.ProcessMessages;
   end;
   sqlContent.First;  // set cursor to first
 
@@ -1127,6 +1131,7 @@ begin
     SiteSectionTitles.Lines.Add(sqlSections.FieldByName('section').AsString);
     SiteSectionUrls.Lines.Add(sqlSections.FieldByName('id').AsString);
     sqlSections.Next;
+    Application.ProcessMessages;
   end;
   sqlSections.First;
 
@@ -1994,6 +1999,7 @@ begin
 
 
          sqlJoin.Next;
+         Application.ProcessMessages;
          end;
    sqlJoin.First;
 
@@ -2167,6 +2173,7 @@ begin
                                      sqlRubrication.FieldByName('content_id').AsString,
                                      sqlRubrication.FieldByName('caption').AsString, ur );
                                    sqlRubrication.Next;
+                                   Application.ProcessMessages;
                              end;
 
 
@@ -2232,6 +2239,7 @@ begin
 
                     end;
          sqlCounter.Next;
+         Application.ProcessMessages;
         end;
 
 
@@ -2270,6 +2278,7 @@ begin
              '<li><a href="./section_' + sqlSections.FieldByName('id').AsString + '.{ext}">'+
              sqlSections.FieldByName('section').AsString+'</a></li>');
              sqlSections.Next;
+             Application.ProcessMessages;
         end;
   fbuffer.Lines.Add('</ul>');
 
@@ -2300,6 +2309,7 @@ begin
            Blocks.AddPair( sqlBlocks.FieldByName('id').AsString, sqlBlocks.FieldByName('markup').AsString  );
            sqlBlocks.Next();
            inc(k);
+           Application.ProcessMessages();
          end;
    sqlBlocks.First();
    SilentMessage('ГЛОБАЛЬНЫХ БЛОКОВ '+IntToStr(k));
@@ -2323,6 +2333,7 @@ begin
            SitePresets.lines.add( sqlPresets.FieldByName('id').AsString);
            sqlPresets.Next();
            inc(k);
+           Application.ProcessMessages;
          end;
    sqlPresets.First();
 
