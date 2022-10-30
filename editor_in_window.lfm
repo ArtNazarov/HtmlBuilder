@@ -9,8 +9,8 @@ object frmEditor: TfrmEditor
   LCLVersion = '2.2.4.0'
   inline editor: TSynEdit
     Left = 0
-    Height = 620
-    Top = 122
+    Height = 570
+    Top = 172
     Width = 1598
     Align = alClient
     Font.Height = -16
@@ -521,7 +521,7 @@ object frmEditor: TfrmEditor
   object Label1: TLabel
     Left = 0
     Height = 22
-    Top = 100
+    Top = 150
     Width = 1598
     Align = alTop
     Caption = 'Разметка'
@@ -530,7 +530,7 @@ object frmEditor: TfrmEditor
   object Panel1: TPanel
     Left = 0
     Height = 50
-    Top = 0
+    Top = 50
     Width = 1598
     Align = alTop
     Caption = 'Panel1'
@@ -723,7 +723,7 @@ object frmEditor: TfrmEditor
   object Panel2: TPanel
     Left = 0
     Height = 50
-    Top = 50
+    Top = 100
     Width = 1598
     Align = alTop
     ClientHeight = 50
@@ -773,6 +773,86 @@ object frmEditor: TfrmEditor
       Caption = 'Выравнивание'
       OnClick = btnJustifyClick
       TabOrder = 3
+    end
+    object btnBr: TButton
+      Left = 362
+      Height = 48
+      Top = 1
+      Width = 75
+      Align = alLeft
+      Caption = 'Каретка'
+      OnClick = btnBrClick
+      TabOrder = 4
+    end
+  end
+  object panHtml5: TPanel
+    Left = 0
+    Height = 50
+    Top = 0
+    Width = 1598
+    Align = alTop
+    ClientHeight = 50
+    ClientWidth = 1598
+    TabOrder = 4
+    object btnSection: TButton
+      Left = 1
+      Height = 48
+      Top = 1
+      Width = 75
+      Align = alLeft
+      Caption = 'Секция'
+      OnClick = btnSectionClick
+      TabOrder = 0
+    end
+    object btnArticle: TButton
+      Left = 76
+      Height = 48
+      Top = 1
+      Width = 75
+      Align = alLeft
+      Caption = 'Статья'
+      OnClick = btnArticleClick
+      TabOrder = 1
+    end
+    object btnASide: TButton
+      Left = 151
+      Height = 48
+      Top = 1
+      Width = 75
+      Align = alLeft
+      Caption = 'Сайд'
+      OnClick = btnASideClick
+      TabOrder = 2
+    end
+    object btnHeader: TButton
+      Left = 226
+      Height = 48
+      Top = 1
+      Width = 75
+      Align = alLeft
+      Caption = 'Шапка'
+      OnClick = btnHeaderClick
+      TabOrder = 3
+    end
+    object btnFooter: TButton
+      Left = 301
+      Height = 48
+      Top = 1
+      Width = 75
+      Align = alLeft
+      Caption = 'Подвал'
+      OnClick = btnFooterClick
+      TabOrder = 4
+    end
+    object btnNav: TButton
+      Left = 376
+      Height = 48
+      Top = 1
+      Width = 75
+      Align = alLeft
+      Caption = 'Меню'
+      OnClick = btnNavClick
+      TabOrder = 5
     end
   end
   object SynHTMLSyn1: TSynHTMLSyn

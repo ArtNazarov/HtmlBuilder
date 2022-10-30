@@ -31,6 +31,13 @@ type
     btnStrike: TButton;
     btnMargin: TButton;
     btnJustify: TButton;
+    btnBr: TButton;
+    btnSection: TButton;
+    btnArticle: TButton;
+    btnASide: TButton;
+    btnHeader: TButton;
+    btnFooter: TButton;
+    btnNav: TButton;
     cboFormatting: TComboBox;
     cboFontFamily: TComboBox;
     cboJustify: TComboBox;
@@ -38,19 +45,27 @@ type
     editor: TSynEdit;
     Panel1: TPanel;
     Panel2: TPanel;
+    panHtml5: TPanel;
     SynHTMLSyn1: TSynHTMLSyn;
     procedure btnAnchorClick(Sender: TObject);
+    procedure btnArticleClick(Sender: TObject);
+    procedure btnASideClick(Sender: TObject);
     procedure btnBoldClick(Sender: TObject);
+    procedure btnBrClick(Sender: TObject);
     procedure btnCloseEditorClick(Sender: TObject);
     procedure btnFontStyleClick(Sender: TObject);
+    procedure btnFooterClick(Sender: TObject);
+    procedure btnHeaderClick(Sender: TObject);
     procedure btnHrClick(Sender: TObject);
     procedure btnHrefClick(Sender: TObject);
     procedure btnItalicClick(Sender: TObject);
     procedure btnJustifyClick(Sender: TObject);
     procedure btnMarginClick(Sender: TObject);
+    procedure btnNavClick(Sender: TObject);
     procedure btnOrderedListClick(Sender: TObject);
     procedure btnFormatterClick(Sender: TObject);
     procedure btnPictureClick(Sender: TObject);
+    procedure btnSectionClick(Sender: TObject);
     procedure btnStrikeClick(Sender: TObject);
     procedure btnSubClick(Sender: TObject);
     procedure btnSupClick(Sender: TObject);
@@ -95,6 +110,16 @@ begin
   tagC('span', 'style="font-family:'+cboFontFamily.Items[cboFontFamily.ItemIndex]+'"');
 end;
 
+procedure TfrmEditor.btnFooterClick(Sender: TObject);
+begin
+  pair('footer');
+end;
+
+procedure TfrmEditor.btnHeaderClick(Sender: TObject);
+begin
+  pair('header');
+end;
+
 procedure TfrmEditor.btnHrClick(Sender: TObject);
 begin
   tagX('hr','');
@@ -110,9 +135,24 @@ begin
   pair('b');
 end;
 
+procedure TfrmEditor.btnBrClick(Sender: TObject);
+begin
+  tagX('br', '');
+end;
+
 procedure TfrmEditor.btnAnchorClick(Sender: TObject);
 begin
   tagAnchor();
+end;
+
+procedure TfrmEditor.btnArticleClick(Sender: TObject);
+begin
+  pair('article');
+end;
+
+procedure TfrmEditor.btnASideClick(Sender: TObject);
+begin
+  pair('aside');
 end;
 
 procedure TfrmEditor.btnItalicClick(Sender: TObject);
@@ -137,6 +177,11 @@ begin
  m:=StrToInt(inputBox('Шаг отступа', 'В пикселях', '10'));
  k:=StrToInt(inputBox('Сдвиг', 'Множитель', '1'));
  tagC('div', 'style="margin-left:'+IntToStr(m*k)+'px;"');
+end;
+
+procedure TfrmEditor.btnNavClick(Sender: TObject);
+begin
+  pair('nav');
 end;
 
 procedure TfrmEditor.btnOrderedListClick(Sender: TObject);
@@ -165,6 +210,11 @@ end;
 procedure TfrmEditor.btnPictureClick(Sender: TObject);
 begin
   tagImg();
+end;
+
+procedure TfrmEditor.btnSectionClick(Sender: TObject);
+begin
+  pair('section');
 end;
 
 procedure TfrmEditor.btnStrikeClick(Sender: TObject);
@@ -254,10 +304,14 @@ begin
 end;
 
 procedure TfrmEditor.tagList(t: string);
+var i, k :  byte;
 begin
+  k:=StrToInt( InputBox('Список', 'Число элементов в списке', '3'));
    editor.Lines.Add('<' + t + '>');
-   editor.Lines.Add('<li>Элемент списка 1</li>');
-  editor.Lines.Add('<li>Элемент списка 2</li>');
+   for i:=1 to k do
+        begin
+           editor.Lines.Add('<li>Элемент списка '+IntToStr(i)+'</li>');
+        end;
    editor.Lines.Add('</' + t + '>');
 end;
 
