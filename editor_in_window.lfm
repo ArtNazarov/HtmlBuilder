@@ -4,12 +4,13 @@ object frmEditor: TfrmEditor
   Top = 93
   Width = 1598
   Caption = 'Редактор разметки'
-  ClientHeight = 767
+  ClientHeight = 740
   ClientWidth = 1598
+  Menu = mmMenuEditor
   LCLVersion = '2.2.4.0'
   inline editor: TSynEdit
     Left = 0
-    Height = 570
+    Height = 543
     Top = 172
     Width = 1598
     Align = alClient
@@ -511,7 +512,7 @@ object frmEditor: TfrmEditor
   object btnCloseEditor: TButton
     Left = 0
     Height = 25
-    Top = 742
+    Top = 715
     Width = 1598
     Align = alBottom
     Caption = 'ОК'
@@ -880,5 +881,30 @@ object frmEditor: TfrmEditor
     Enabled = False
     Left = 166
     Top = 112
+  end
+  object mmMenuEditor: TMainMenu
+    Left = 575
+    Top = 19
+    object mnuFinder: TMenuItem
+      Caption = 'Поиск/замена'
+      object mnuSearch: TMenuItem
+        Action = acSearch
+      end
+      object mnuReplace: TMenuItem
+        Action = acReplace
+      end
+    end
+  end
+  object acEditor: TActionList
+    Left = 724
+    Top = 13
+    object acSearch: TAction
+      Caption = 'Поиск'
+      OnExecute = acSearchExecute
+    end
+    object acReplace: TAction
+      Caption = 'Замена'
+      OnExecute = acReplaceExecute
+    end
   end
 end

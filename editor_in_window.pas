@@ -6,13 +6,16 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  SynEdit, SynHighlighterHTML;
+  Menus, ActnList, SynEdit, SynHighlighterHTML, SynEditSearch, SynEditTypes;
 
 type
 
   { TfrmEditor }
 
   TfrmEditor = class(TForm)
+    acEditor: TActionList;
+    acSearch: TAction;
+    acReplace: TAction;
     btnCloseEditor: TButton;
     btnFormatter: TButton;
     btnUnorderedList: TButton;
@@ -45,10 +48,16 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuReplace: TMenuItem;
+    mnuSearch: TMenuItem;
+    mmMenuEditor: TMainMenu;
+    mnuFinder: TMenuItem;
     Panel1: TPanel;
     Panel2: TPanel;
     panHtml5: TPanel;
     SynHTMLSyn1: TSynHTMLSyn;
+    procedure acReplaceExecute(Sender: TObject);
+    procedure acSearchExecute(Sender: TObject);
     procedure btnAnchorClick(Sender: TObject);
     procedure btnArticleClick(Sender: TObject);
     procedure btnASideClick(Sender: TObject);
@@ -157,6 +166,25 @@ end;
 procedure TfrmEditor.btnAnchorClick(Sender: TObject);
 begin
   tagAnchor();
+end;
+
+procedure TfrmEditor.acSearchExecute(Sender: TObject);
+var str : String;
+
+begin
+  str:=InputBox('Поиск', 'Ищем', '');
+
+  if str<>'' then
+  editor.SearchReplace(str, '', [ssoMatchCase,ssoEntireScope]);
+end;
+
+procedure TfrmEditor.acReplaceExecute(Sender: TObject);
+var str, rep : String;
+begin
+  str:=InputBox('Поиск', 'Ищем', '');
+  rep:=InputBox('Замена', 'На что меняем', '');
+  if (str<>'') and (rep<>'') then
+  editor.SearchReplace(str, rep,[ssoReplaceAll, ssoMatchCase,ssoEntireScope]);
 end;
 
 procedure TfrmEditor.btnArticleClick(Sender: TObject);
