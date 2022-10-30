@@ -1041,6 +1041,7 @@ begin
         t :=  value;
         r:=StringReplace(r, h, t, [rfReplaceAll]);
         if logger_info then  mmRubrics.Lines.Add('replace '+h+' ==>> to '+t);
+        Application.ProcessMessages;
  end;
 
   end
@@ -1069,7 +1070,7 @@ begin
           log.Add(r);
           log.Add('======/Result======');
 
-
+           Application.ProcessMessages;
         end;
     fbuffer.Free;
     log.SaveToFile('log.txt');
@@ -1162,6 +1163,7 @@ begin
       '<a href="' + Urls.Lines[i] + '.' +
       PrefferedExtension.Text + '">' + Titles.Lines[i] + '</a>', [rfReplaceAll]);
     Inc(i);
+    Application.ProcessMessages;
   end;
   if logger_info then mmRubrics.Lines.Add('ПРОСТАВЛЯЕМ ССЫЛКИ');
   if logger_info then mmRubrics.Lines.Add('Вызвана<insLinks> до '+body);
@@ -1186,6 +1188,7 @@ begin
       '<a href="section_' + SiteSectionUrls.Lines[i] +
       '.' + PrefferedExtension.Text + '">' + SiteSectionTitles.Lines[i] + '</a>', [rfReplaceAll]);
     Inc(i);
+    Application.ProcessMessages;
   end;
   if logger_info then mmRubrics.Lines.Add('ПРОСТАВЛЯЕМ СЕКЦИИ');
   if logger_info then mmRubrics.Lines.Add('Вызвана<insSections> до ' +body);
@@ -1279,6 +1282,7 @@ begin
                                   end;
                               end;
                            C:=C+1;
+                           Application.ProcessMessages;
                            end;
  end; // else will be not processed
  Result:=R;
@@ -1373,6 +1377,7 @@ begin
       end;
     end;
     c := c + 1;
+    Application.ProcessMessages;
   end;
   Result := R;
 end;
