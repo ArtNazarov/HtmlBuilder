@@ -38,6 +38,8 @@ type
     btnHeader: TButton;
     btnFooter: TButton;
     btnNav: TButton;
+    btnFontSizeLarger: TButton;
+    btnFontSizeSmaller: TButton;
     cboFormatting: TComboBox;
     cboFontFamily: TComboBox;
     cboJustify: TComboBox;
@@ -53,6 +55,8 @@ type
     procedure btnBoldClick(Sender: TObject);
     procedure btnBrClick(Sender: TObject);
     procedure btnCloseEditorClick(Sender: TObject);
+    procedure btnFontSizeLargerClick(Sender: TObject);
+    procedure btnFontSizeSmallerClick(Sender: TObject);
     procedure btnFontStyleClick(Sender: TObject);
     procedure btnFooterClick(Sender: TObject);
     procedure btnHeaderClick(Sender: TObject);
@@ -102,6 +106,16 @@ procedure TfrmEditor.btnCloseEditorClick(Sender: TObject);
 begin
   ModalResult:=mrOK;
   Close();
+end;
+
+procedure TfrmEditor.btnFontSizeLargerClick(Sender: TObject);
+begin
+  tagC('span', 'style="font-size:larger"');
+end;
+
+procedure TfrmEditor.btnFontSizeSmallerClick(Sender: TObject);
+begin
+  tagC('span', 'style="font-size:smaller"');
 end;
 
 procedure TfrmEditor.btnFontStyleClick(Sender: TObject);

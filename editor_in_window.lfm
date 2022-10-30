@@ -730,7 +730,7 @@ object frmEditor: TfrmEditor
     ClientWidth = 1598
     TabOrder = 3
     object btnHr: TButton
-      Left = 224
+      Left = 443
       Height = 48
       Top = 1
       Width = 63
@@ -740,7 +740,7 @@ object frmEditor: TfrmEditor
       TabOrder = 0
     end
     object btnMargin: TButton
-      Left = 287
+      Left = 506
       Height = 48
       Top = 1
       Width = 75
@@ -750,7 +750,7 @@ object frmEditor: TfrmEditor
       TabOrder = 1
     end
     object cboJustify: TComboBox
-      Left = 1
+      Left = 220
       Height = 48
       Top = 1
       Width = 100
@@ -765,7 +765,7 @@ object frmEditor: TfrmEditor
       TabOrder = 2
     end
     object btnJustify: TButton
-      Left = 101
+      Left = 320
       Height = 48
       Top = 1
       Width = 123
@@ -775,7 +775,7 @@ object frmEditor: TfrmEditor
       TabOrder = 3
     end
     object btnBr: TButton
-      Left = 362
+      Left = 581
       Height = 48
       Top = 1
       Width = 75
@@ -783,6 +783,26 @@ object frmEditor: TfrmEditor
       Caption = 'Каретка'
       OnClick = btnBrClick
       TabOrder = 4
+    end
+    object btnFontSizeLarger: TButton
+      Left = 1
+      Height = 48
+      Top = 1
+      Width = 107
+      Align = alLeft
+      Caption = '+ размер'
+      OnClick = btnFontSizeLargerClick
+      TabOrder = 5
+    end
+    object btnFontSizeSmaller: TButton
+      Left = 108
+      Height = 48
+      Top = 1
+      Width = 112
+      Align = alLeft
+      Caption = '- размер'
+      OnClick = btnFontSizeSmallerClick
+      TabOrder = 6
     end
   end
   object panHtml5: TPanel
