@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  Menus, ActnList, SynEdit, SynHighlighterHTML, SynEditSearch, SynEditTypes;
+  Menus, ActnList, SynEdit, SynHighlighterHTML, SynEditSearch, SynEditTypes,
+  SynCompletion;
 
 type
 
@@ -60,6 +61,7 @@ type
     Panel1: TPanel;
     Panel2: TPanel;
     panHtml5: TPanel;
+    SynCompletion1: TSynCompletion;
     SynHTMLSyn1: TSynHTMLSyn;
     procedure acRedoExecute(Sender: TObject);
     procedure acReplaceExecute(Sender: TObject);

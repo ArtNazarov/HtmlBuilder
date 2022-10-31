@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  SynEdit, SynHighlighterCss;
+  SynEdit, SynHighlighterCss, SynCompletion;
 
 type
 
@@ -18,6 +18,7 @@ type
     btnAddId: TButton;
     lbCss: TLabel;
     panCss: TPanel;
+    SynCompletion1: TSynCompletion;
     SynCssSyn1: TSynCssSyn;
     editor: TSynEdit;
     procedure btnAddClassClick(Sender: TObject);
