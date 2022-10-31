@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  SynEdit, SynHighlighterJScript;
+  SynEdit, SynHighlighterJScript, SynCompletion;
 
 type
 
@@ -18,6 +18,7 @@ type
     lbScriptName: TLabel;
     editor: TSynEdit;
     panJs: TPanel;
+    SynCompletion1: TSynCompletion;
     SynJScriptSyn1: TSynJScriptSyn;
     procedure btnAddFunctionClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);

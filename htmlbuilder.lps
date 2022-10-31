@@ -61,7 +61,6 @@
         <ComponentName Value="frmEditor"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
         <TopLine Value="110"/>
         <CursorPos X="30" Y="123"/>
@@ -88,10 +87,13 @@
         <ComponentName Value="frmEditorJs"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="42"/>
-        <CursorPos X="41" Y="57"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="43"/>
+        <CursorPos X="41" Y="58"/>
         <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="E:\02 ЛИЧНОЕ\01 Документы\05 АРТЕМ [1GB]\02 ИСХОДНИКИ\Nav\modelfromdb.pas"/>
@@ -199,7 +201,7 @@
     <Debugger>
       <Backend Value="{85EE404A-FD31-481F-8D9B-09F666946694}"/>
     </Debugger>
-    <JumpHistory Count="11" HistoryIndex="10">
+    <JumpHistory Count="12" HistoryIndex="11">
       <Position1>
         <Filename Value="editor_css.pas"/>
         <Caret Line="81" Column="5" TopLine="71"/>
@@ -244,6 +246,10 @@
         <Filename Value="editor_in_window.pas"/>
         <Caret Line="122" Column="30" TopLine="109"/>
       </Position11>
+      <Position12>
+        <Filename Value="editor_js.pas"/>
+        <Caret Line="57" Column="41" TopLine="42"/>
+      </Position12>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

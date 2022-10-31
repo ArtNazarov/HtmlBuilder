@@ -552,4 +552,85 @@ object frmEditorJs: TfrmEditorJs
     Left = 124
     Top = 287
   end
+  object SynCompletion1: TSynCompletion
+    ItemList.Strings = (
+      'abstract'
+      'arguments'
+      'await'
+      'boolean'
+      'break'#9
+      'byte'
+      'case'#9
+      'catch'
+      'char'
+      'class'
+      'const'
+      'continue'
+      'debugger'#9
+      'default'#9
+      'delete'#9
+      'do'
+      'double'
+      'else'
+      'enum'
+      'eval'
+      'export'
+      'extends'
+      'false'
+      'final'
+      'finally'
+      'float'
+      'for'
+      'function'
+      'goto'
+      'if'
+      'implements'
+      'import'
+      'in'
+      'instanceof'
+      'int'
+      'interface'
+      'let'
+      'long'
+      'native'
+      'new'
+      'null'
+      'package'
+      'private'
+      'protected'
+      'public'
+      'return'
+      'short'
+      'static'
+      'super'
+      'switch'
+      'synchronized'
+      'this'
+      'throw'
+      'throws'
+      'transient'
+      'true'
+      'try'
+      'typeof'
+      'var'
+      'void'
+      'volatile'
+      'while'
+      'with'
+      'yield'
+    )
+    Position = 0
+    LinesInWindow = 6
+    SelectedColor = clHighlight
+    CaseSensitive = False
+    Width = 262
+    AutoUseSingleIdent = True
+    ShortCut = 16416
+    EndOfTokenChr = '()[]'
+    ExecCommandID = ecSynCompletionExecute
+    Editor = editor
+    ToggleReplaceWhole = False
+    Left = 148
+    Top = 32
+  end
 end
