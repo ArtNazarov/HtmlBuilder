@@ -1,7 +1,7 @@
 object frmEditorJs: TfrmEditorJs
-  Left = 347
+  Left = 381
   Height = 458
-  Top = 210
+  Top = 278
   Width = 851
   Caption = 'Редактор JS'
   ClientHeight = 458
@@ -9,8 +9,8 @@ object frmEditorJs: TfrmEditorJs
   LCLVersion = '2.2.4.0'
   inline editor: TSynEdit
     Left = 0
-    Height = 411
-    Top = 22
+    Height = 361
+    Top = 72
     Width = 851
     Align = alClient
     Font.Height = -20
@@ -525,6 +525,27 @@ object frmEditorJs: TfrmEditorJs
     Align = alTop
     Caption = 'Текст сценария'
     ParentColor = False
+  end
+  object panJs: TPanel
+    Left = 0
+    Height = 50
+    Top = 22
+    Width = 851
+    Align = alTop
+    ClientHeight = 50
+    ClientWidth = 851
+    TabOrder = 2
+    OnClick = panJsClick
+    object btnAddFunction: TButton
+      Left = 1
+      Height = 48
+      Top = 1
+      Width = 115
+      Align = alLeft
+      Caption = 'Функция'
+      OnClick = btnAddFunctionClick
+      TabOrder = 0
+    end
   end
   object SynJScriptSyn1: TSynJScriptSyn
     Enabled = False

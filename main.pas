@@ -142,6 +142,7 @@ type
     ds_Counter: TDataSource;
     ds_Join: TDataSource;
     dbJoin: TDBGrid;
+    lbProgress: TLabel;
     lbJsScriptId: TLabel;
     lbJsScriptPath: TLabel;
     lbScriptFile: TLabel;
@@ -159,9 +160,11 @@ type
     mmRubrics: TMemo;
     panCSSList: TPanel;
     panCSSElements: TPanel;
+    panProgress: TPanel;
     panJsProps: TPanel;
     panJs: TPanel;
     panJoin: TPanel;
+    pBar: TProgressBar;
     selSection: TDBLookupComboBox;
     ds_Content: TDataSource;
     ds_Presets: TDataSource;
@@ -396,6 +399,7 @@ type
     procedure sqlPresetsAfterPost(DataSet: TDataSet);
     procedure sqlSectionsAfterDelete(DataSet: TDataSet);
     procedure sqlSectionsAfterPost(DataSet: TDataSet);
+    procedure sqlSectionsBeforeDelete(DataSet: TDataSet);
 
 
 
@@ -664,6 +668,11 @@ end;
 procedure TForm1.sqlSectionsAfterPost(DataSet: TDataSet);
 begin
   doScan();
+end;
+
+procedure TForm1.sqlSectionsBeforeDelete(DataSet: TDataSet);
+begin
+  lvSections.ItemIndex:=-1;
 end;
 
 
@@ -1295,7 +1304,9 @@ begin
   Titles.Clear;      // Titles is a list of pages captions
   Urls.Clear;        // Urls is a list of urls for pages
   Sections.Clear;
+  lvContent.clear;
 
+  if not  sqlContent.Eof then  begin
   sqlContent.First;  // lookup from first record
   while not sqlContent.EOF do
   begin
@@ -1308,13 +1319,13 @@ begin
   end;
   sqlContent.First;  // set cursor to first
 
-  lvContent.clear;
+
   for i:=0 to Urls.Lines.Count-1 do
       begin
         lvContent.AddItem( Urls.Lines.Strings[i] , nil);
       end;
 
-
+  end;
 
 end;
 
@@ -1324,6 +1335,10 @@ begin
   // identically as scanLinks
   SiteSectionUrls.Clear;
   SiteSectionTitles.Clear;
+  lvSections.clear;
+
+  if not sqlSections.EOF then begin
+
   sqlSections.First;
   while not sqlSections.EOF do
   begin
@@ -1335,7 +1350,7 @@ begin
   sqlSections.First;
 
 
-  lvSections.clear;
+
   for i:=0 to SiteSectionUrls.Lines.Count-1 do
       begin
         lvSections.AddItem( SiteSectionUrls.Lines.Strings[i] , nil);
@@ -1344,6 +1359,7 @@ begin
 
   if logger_info then mmRubrics.Lines.Add('Заголовков страниц<scanSections>:'+IntToStr(SiteSectionTitles.Lines.Count));
   if logger_info then mmRubrics.Lines.Add('URL страниц<scanSections>:'+IntToStr(SiteSectionUrls.Lines.Count));
+  end;
 end;
 
 procedure TForm1.scanCss;
@@ -1351,6 +1367,9 @@ var i : integer;
 begin
   // identically as scanLinks
   CssTitles.clear;
+  lvCss.clear;
+  if not sqlCssStyles.eof then
+    begin
 
   sqlCssStyles.First;
   while not  sqlCssStyles.EOF do
@@ -1363,7 +1382,7 @@ begin
    sqlCssStyles.First;
 
 
-  lvCss.clear;
+
   for i:=0 to CssTitles.Count-1 do
       begin
         lvCss.AddItem( CssTitles.Names[i] , nil);
@@ -1372,6 +1391,7 @@ begin
 
 
   if logger_info then mmRubrics.Lines.Add('URL страниц CSS<scanCss>:'+IntToStr(CssTitles.Count));
+    end;
 end;
 
 function TForm1.insLinks(body: string): string;
@@ -2195,6 +2215,7 @@ var
         fbuffer : TStringList;
         headT, bodyT : String;
         page_param_num : byte;
+        cnt, k : byte;
 begin
 
    (* Загружаем шаблоны из файлов, если сделан такой выбор *)
@@ -2211,6 +2232,12 @@ begin
  fbuffer.Free;
 
 
+   cnt:=form1.Titles.Lines.Count;
+   pBar.Max:=cnt;
+   pBar.Step:=1;
+   pBar.Min:=1;
+   pBar.Position:=1;
+   k:=0;
 
    (* Сборка страниц *)
    sqlJoin.Open;
@@ -2218,6 +2245,9 @@ begin
 
    while not sqlJoin.EOF do
          begin
+
+            lbProgress.Caption:='Сборка страницы '+IntToStr(k+1)+' / '+IntToStr(cnt);
+
             page.id := sqlJoin.FieldByName('id').AsString;
             page.title := sqlJoin.FieldByName('caption').AsString;
             page.body := sqlJoin.FieldByName('content').AsString;
@@ -2257,6 +2287,10 @@ begin
 
          sqlJoin.Next;
          Application.ProcessMessages;
+
+         inc(k);
+         pBar.Position:=k;
+         //Sleep(10000);
          end;
    sqlJoin.First;
 
@@ -2365,7 +2399,7 @@ var
   sectionId  : String;
   PagesinRubrics : Integer;
   itemsPerPage : Integer;
-  page : Integer;
+  page : byte;
   headHtml : String;
   itemHtml : String;
   sectionHtml : String;
@@ -2373,6 +2407,7 @@ var
   path : String;
   ur : user_records;
   fi : byte;
+  cnt, k : byte;
 begin
 // некоторые данные нужно считать 1 раз
 // так как они будут нужны многократно
@@ -2398,9 +2433,19 @@ begin
 
 
 
+                application.processmessages();
+
+
+
+                 pBar.Max:=pagesInRubrics;
+                 pBar.Step:=1;
+                 pBar.Min:=1;
+                 pBar.Position:=1;
+
+
                 for page := 1 to pagesInRubrics do
                     begin
-
+                       lbProgress.Caption:='Генерация рубрики '+sqlCounter.FieldByName('section').AsString+'  :  '+IntToStr(page)+' / '+IntToStr(pagesInRubrics);
                        sqlRubrication.Close;
                        prepared_transaction_start( sqlRubrication.SQL.Text, sqlRubrication, trans);
 
@@ -2493,6 +2538,7 @@ begin
 
 
 
+                     pBar.Position:=page;
 
                     end;
          sqlCounter.Next;
@@ -2523,19 +2569,32 @@ begin
 procedure TForm1.doSitemap;
 var fbuffer : TMemo;
   sitemap_param : page_params;
+  k, cnt : byte;
 begin
+
   fbuffer := TMemo.Create(self);
   // карта категорий
+  cnt:=form1.SiteSectionTitles.Lines.Count;
+  pBar.Max:=cnt;
+  pBar.Step:=1;
+  pBar.Min:=1;
+  pBar.Position:=1;
+  k:=0;
+
   fbuffer.Clear;
   fbuffer.Lines.Add('<ul>');
   sqlSections.First;
   while not sqlSections.EOF do
         begin
+         lbProgress.Caption:='Сборка карты сайта '+IntToStr(k+1) + ' / '+IntToStr(cnt);
+
              fbuffer.Lines.Add(
              '<li><a href="./section_' + sqlSections.FieldByName('id').AsString + '.{ext}">'+
              sqlSections.FieldByName('section').AsString+'</a></li>');
              sqlSections.Next;
              Application.ProcessMessages;
+             inc(k);
+             pBar.Position:=k;
         end;
   fbuffer.Lines.Add('</ul>');
 
@@ -2663,24 +2722,47 @@ begin
 end;
 
 procedure TForm1.doCssTables;
+var
+  cnt, k : byte;
 begin
+  ;
+
+  cnt:=CssTitles.Count;
+  pBar.Max:=cnt;
+  pBar.Step:=1;
+  pBar.Min:=1;
+  pBar.Position:=1;
+  k:=0;
 
   sqlCssStyles.First;
   while not sqlCssStyles.Eof do
    begin
+     lbProgress.Caption:='Сборка CSS '+IntToStr(k+1)+' / '+IntToStr(cnt);
+
      writeDocument( sqlCssStyles.FieldByName('css_style').AsString,
             sqlCssStyles.FieldByName('css_path').AsString );
      sqlCssStyles.Next;
      Application.ProcessMessages;
+     inc(k);
+     pBar.Position:=k;
    end;
   sqlCssStyles.First;
 end;
 
 procedure TForm1.scanJs;
 var k : integer;
+
 begin
    jsTitles.clear;
-   sqlJsScripts.First;
+   lvJsScripts.clear;
+
+   if not sqlJsScripts.Eof then
+         begin
+
+
+
+
+  sqlJsScripts.First;
   while not sqlJsScripts.Eof do
    begin
      JsTitles.AddPair( sqlJsScripts.FieldByName('js_id').AsString, '');
@@ -2689,24 +2771,37 @@ begin
    end;
   sqlJsScripts.First;
 
-  lvJsScripts.clear;
+
   for k:=0 to JsTitles.Count-1 do
     begin
        lvJsScripts.Items.Add(jsTitles.Names[k]);
        Application.ProcessMessages;
     end;
-
+          end;
 end;
 
 procedure TForm1.doJs;
+var cnt, i : Byte;
 begin
+
+  cnt:=JsTitles.Count;
+  pBar.Max:=cnt;
+  pBar.Step:=1;
+  pBar.Min:=1;
+  pBar.Position:=1;
+
   sqlJsScripts.First;
+  i:=0;
   while not sqlJsScripts.Eof do
    begin
+     lbProgress.Caption:='Генерация скриптов '+IntToStr(i+1)+' / '+IntToStr(cnt);
      writeDocument( sqlJsScripts.FieldByName('js_file').AsString,
             sqlJsScripts.FieldByName('js_path').AsString );
      sqlJsScripts.Next;
      Application.ProcessMessages;
+     inc(i);
+     pBar.Position:=i;
+
    end;
   sqlJsScripts.First;
 end;
