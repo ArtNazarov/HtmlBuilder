@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="31" Y="11"/>
-        <UsageCount Value="172"/>
+        <UsageCount Value="173"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -20,9 +20,9 @@
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="2456"/>
-        <CursorPos X="57" Y="2469"/>
-        <UsageCount Value="172"/>
+        <TopLine Value="4"/>
+        <CursorPos X="23" Y="15"/>
+        <UsageCount Value="173"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -32,13 +32,13 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos X="10" Y="52"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="65"/>
       </Unit2>
       <Unit3>
         <Filename Value="db_insertdemo.pas"/>
         <IsPartOfProject Value="True"/>
         <CursorPos Y="251"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="65"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
@@ -47,14 +47,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="130"/>
         <CursorPos X="18" Y="136"/>
-        <UsageCount Value="62"/>
+        <UsageCount Value="63"/>
       </Unit4>
       <Unit5>
         <Filename Value="replacers.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="11" Y="13"/>
-        <UsageCount Value="59"/>
+        <UsageCount Value="60"/>
       </Unit5>
       <Unit6>
         <Filename Value="editor_in_window.pas"/>
@@ -65,7 +65,7 @@
         <EditorIndex Value="3"/>
         <TopLine Value="345"/>
         <CursorPos X="74" Y="348"/>
-        <UsageCount Value="53"/>
+        <UsageCount Value="54"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit6>
@@ -78,7 +78,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="72"/>
         <CursorPos X="5" Y="82"/>
-        <UsageCount Value="33"/>
+        <UsageCount Value="34"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit7>
@@ -91,7 +91,7 @@
         <EditorIndex Value="4"/>
         <TopLine Value="38"/>
         <CursorPos X="41" Y="58"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit8>
@@ -201,7 +201,7 @@
     <Debugger>
       <Backend Value="{85EE404A-FD31-481F-8D9B-09F666946694}"/>
     </Debugger>
-    <JumpHistory Count="18" HistoryIndex="17">
+    <JumpHistory Count="21" HistoryIndex="20">
       <Position1>
         <Filename Value="editor_css.pas"/>
         <Caret Line="81" Column="5" TopLine="71"/>
@@ -274,6 +274,18 @@
         <Filename Value="main.pas"/>
         <Caret Line="2468" Column="137" TopLine="2457"/>
       </Position18>
+      <Position19>
+        <Filename Value="main.pas"/>
+        <Caret Line="2469" Column="57" TopLine="2459"/>
+      </Position19>
+      <Position20>
+        <Filename Value="main.pas"/>
+        <Caret Line="818" Column="82" TopLine="799"/>
+      </Position20>
+      <Position21>
+        <Filename Value="main.pas"/>
+        <Caret Line="819" Column="26" TopLine="809"/>
+      </Position21>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

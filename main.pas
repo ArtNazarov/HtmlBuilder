@@ -12,7 +12,7 @@ uses
   SynEdit, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids, ActnList, Buttons,
   blcksock, sockets, Synautil, synaip, synsock, ftpsend, db_helpers,
   db_insertdemo, db_create_tables, replacers, editor_in_window, editor_css,
-  editor_js; {Use Synaptic}
+  editor_js, DateUtils; {Use Synaptic}
 
 const
 
@@ -798,7 +798,10 @@ end;
 
 { Тестовый код }
 procedure TForm1.btnJoinClick(Sender: TObject);
+var start, stop: TDateTime;
 begin
+
+  start:=Now();
 
   form1.scanLinks(); // сканер ссылок нужен для автозамены
   form1.scanSections(); // сканер секций нужен для автозамены
@@ -809,6 +812,13 @@ begin
   doSitemap(); // карта сайта
   doCssTables(); // css таблицы
   doJs(); // скрипты
+
+  stop:=Now();
+
+  mmRubrics.Lines.Add('НА СБОРКУ ПОТРЕБОВАЛОСЬ СЕКУНД:');
+  mmRubrics.Lines.Add(   SecondsBetween(start, stop).ToString);
+
+
 end;
 
 {{ ===============     ЗАГРУЗКА ИЗ ТЕКСТОВЫХ ФАЙЛОВ ============= }}
