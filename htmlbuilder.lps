@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="31" Y="11"/>
-        <UsageCount Value="171"/>
+        <UsageCount Value="172"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -18,10 +18,11 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="2283"/>
-        <CursorPos X="12" Y="2293"/>
-        <UsageCount Value="171"/>
+        <TopLine Value="2456"/>
+        <CursorPos X="57" Y="2469"/>
+        <UsageCount Value="172"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -31,13 +32,13 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos X="10" Y="52"/>
-        <UsageCount Value="63"/>
+        <UsageCount Value="64"/>
       </Unit2>
       <Unit3>
         <Filename Value="db_insertdemo.pas"/>
         <IsPartOfProject Value="True"/>
         <CursorPos Y="251"/>
-        <UsageCount Value="63"/>
+        <UsageCount Value="64"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
@@ -46,14 +47,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="130"/>
         <CursorPos X="18" Y="136"/>
-        <UsageCount Value="61"/>
+        <UsageCount Value="62"/>
       </Unit4>
       <Unit5>
         <Filename Value="replacers.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="11" Y="13"/>
-        <UsageCount Value="58"/>
+        <UsageCount Value="59"/>
       </Unit5>
       <Unit6>
         <Filename Value="editor_in_window.pas"/>
@@ -62,9 +63,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="110"/>
-        <CursorPos X="30" Y="123"/>
-        <UsageCount Value="52"/>
+        <TopLine Value="345"/>
+        <CursorPos X="74" Y="348"/>
+        <UsageCount Value="53"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit6>
@@ -77,7 +78,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="72"/>
         <CursorPos X="5" Y="82"/>
-        <UsageCount Value="32"/>
+        <UsageCount Value="33"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit7>
@@ -87,11 +88,10 @@
         <ComponentName Value="frmEditorJs"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="43"/>
+        <TopLine Value="38"/>
         <CursorPos X="41" Y="58"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="29"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit8>
@@ -201,7 +201,7 @@
     <Debugger>
       <Backend Value="{85EE404A-FD31-481F-8D9B-09F666946694}"/>
     </Debugger>
-    <JumpHistory Count="12" HistoryIndex="11">
+    <JumpHistory Count="18" HistoryIndex="17">
       <Position1>
         <Filename Value="editor_css.pas"/>
         <Caret Line="81" Column="5" TopLine="71"/>
@@ -250,6 +250,30 @@
         <Filename Value="editor_js.pas"/>
         <Caret Line="57" Column="41" TopLine="42"/>
       </Position12>
+      <Position13>
+        <Filename Value="editor_in_window.pas"/>
+        <Caret Line="126" Column="30" TopLine="113"/>
+      </Position13>
+      <Position14>
+        <Filename Value="editor_in_window.pas"/>
+        <Caret Line="354" Column="24" TopLine="345"/>
+      </Position14>
+      <Position15>
+        <Filename Value="editor_in_window.pas"/>
+        <Caret Line="353" Column="42" TopLine="341"/>
+      </Position15>
+      <Position16>
+        <Filename Value="editor_in_window.pas"/>
+        <Caret Line="357" Column="2" TopLine="345"/>
+      </Position16>
+      <Position17>
+        <Filename Value="editor_in_window.pas"/>
+        <Caret Line="350" Column="37" TopLine="345"/>
+      </Position17>
+      <Position18>
+        <Filename Value="main.pas"/>
+        <Caret Line="2468" Column="137" TopLine="2457"/>
+      </Position18>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

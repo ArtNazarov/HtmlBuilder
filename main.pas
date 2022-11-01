@@ -2408,6 +2408,7 @@ var
   ur : user_records;
   fi : byte;
   cnt, k : byte;
+  itemK : byte;
 begin
 // некоторые данные нужно считать 1 раз
 // так как они будут нужны многократно
@@ -2459,10 +2460,16 @@ begin
                        sqlRubrication.Open;
 
                        itemHtml := '';
+                       itemK:=0;
                        sqlRubrication.First;
+
+
                        while not sqlRubrication.EOF do
                              begin
-
+                                 pBar.Max:=itemsPerPage;
+                                 inc(itemK);
+                                 pBar.Position:=itemK;
+                                 lbProgress.Caption:='Сборка элемента '+IntToStr(itemK)+' / '+IntToStr(itemsPerPage) + ' '+ sqlRubrication.FieldByName('content_id').AsString;
                                   for fi:=1 to 7 do
                                       begin
                                          ur[fi].name:=sqlRubrication.FieldByName('ufn'+IntToStr(fi)).AsString;
@@ -2537,7 +2544,7 @@ begin
                                            );
 
 
-
+                     pBar.Max:=pagesInRubrics;
                      pBar.Position:=page;
 
                     end;

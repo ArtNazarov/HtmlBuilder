@@ -1039,6 +1039,7 @@ object frmEditor: TfrmEditor
     AutoUseSingleIdent = True
     ShortCut = 16416
     EndOfTokenChr = '()[]'
+    OnCodeCompletion = SynCompletion1CodeCompletion
     ExecCommandID = ecSynCompletionExecute
     Editor = editor
     ToggleReplaceWhole = False
