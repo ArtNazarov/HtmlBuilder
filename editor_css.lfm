@@ -559,6 +559,7 @@ object frmEditorCss: TfrmEditorCss
   end
   object SynCssSyn1: TSynCssSyn
     DefaultFilter = 'Каскадированные таблицы стилей (*.css)|*.css'
+    Enabled = False
     Left = 424
     Top = 8
   end
@@ -844,6 +845,7 @@ object frmEditorCss: TfrmEditorCss
     AutoUseSingleIdent = True
     ShortCut = 16416
     EndOfTokenChr = '()[] '
+    OnCodeCompletion = SynCompletion1CodeCompletion
     ExecCommandID = ecSynCompletionExecute
     Editor = editor
     ToggleReplaceWhole = False

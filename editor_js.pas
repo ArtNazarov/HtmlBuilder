@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  SynEdit, SynHighlighterJScript, SynCompletion;
+  SynEdit, SynHighlighterJScript, SynCompletion, Types, LCLType;
 
 type
 
@@ -23,6 +23,9 @@ type
     procedure btnAddFunctionClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure panJsClick(Sender: TObject);
+    procedure SynCompletion1CodeCompletion(var Value: string;
+      SourceValue: string; var SourceStart, SourceEnd: TPoint;
+      KeyChar: TUTF8Char; Shift: TShiftState);
 
   private
 
@@ -60,6 +63,13 @@ begin
 end;
 
 procedure TfrmEditorJs.panJsClick(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmEditorJs.SynCompletion1CodeCompletion(var Value: string;
+  SourceValue: string; var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char;
+  Shift: TShiftState);
 begin
 
 end;

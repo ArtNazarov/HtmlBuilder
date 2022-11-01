@@ -1,0 +1,38 @@
+object frmCssProps: TfrmCssProps
+  Left = 667
+  Height = 240
+  Top = 346
+  Width = 320
+  Caption = 'Выбрать значение'
+  ClientHeight = 240
+  ClientWidth = 320
+  LCLVersion = '2.2.4.0'
+  object css_props: TListBox
+    Left = 0
+    Height = 193
+    Top = 22
+    Width = 320
+    Align = alClient
+    ItemHeight = 0
+    TabOrder = 0
+  end
+  object lbCssProps: TLabel
+    Left = 0
+    Height = 22
+    Top = 0
+    Width = 320
+    Align = alTop
+    Caption = 'Возможные значения CSS'
+    ParentColor = False
+  end
+  object btnClose: TButton
+    Left = 0
+    Height = 25
+    Top = 215
+    Width = 320
+    Align = alBottom
+    Caption = 'Закрыть'
+    ModalResult = 1
+    TabOrder = 1
+  end
+end

@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  SynEdit, SynHighlighterCss, SynCompletion;
+  SynEdit, SynHighlighterCss, SynCompletion, Types, LCLType, StrUtils,
+  css_props_dlg;
 
 type
 
@@ -24,6 +25,9 @@ type
     procedure btnAddClassClick(Sender: TObject);
     procedure btnAddIdClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
+    procedure SynCompletion1CodeCompletion(var Value: string;
+      SourceValue: string; var SourceStart, SourceEnd: TPoint;
+      KeyChar: TUTF8Char; Shift: TShiftState);
 
 
 
@@ -47,6 +51,50 @@ procedure TfrmEditorCss.btnCloseClick(Sender: TObject);
 begin
    ModalResult:=mrOK;
    Close;
+end;
+
+procedure TfrmEditorCss.SynCompletion1CodeCompletion(var Value: string;
+  SourceValue: string; var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char;
+  Shift: TShiftState);
+var i, j : Integer; S : TStringList; M : TMemo; A, B : TStringArray;
+  dlg : TfrmCssProps;
+begin
+S:=TStringList.Create();
+M:=TMemo.Create(Self);
+
+M.Lines.LoadFromFile('css3-props-all.txt');
+for i:=0 to M.Lines.Count-1 do
+ begin
+       if M.Lines[i] <>'' then
+                   begin
+                     SetLength(A, 0);
+                     A:=StrUtils.SplitString(M.Lines[i],':');
+                     S.AddPair(A[0], A[1]);
+
+                     if Pos( value, A[0])>=0 then
+                        begin
+                             SetLength(B, 0);
+                             B:=StrUtils.SplitString(A[1], '|');
+                             dlg:=TfrmCssProps.Create(Self);
+                             dlg.css_props.Clear;
+                             for j:=0 to length(B)-1 do
+                              begin
+                                    dlg.css_props.AddItem( Trim( B[j] ), nil);
+                              end;
+                             dlg.ShowModal();
+                             if dlg.css_props.ItemIndex >=0 then
+                                 Value:=A[0]+':'+dlg.css_props.Items[ dlg.css_props.ItemIndex];
+
+
+                             Break;
+                       end;
+
+                   end;
+
+ end;
+s.Free;
+m.Free;
+
 end;
 
 procedure TfrmEditorCss.addCssInstruction(selector : String; var rules: TStringList);
