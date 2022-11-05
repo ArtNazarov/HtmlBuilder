@@ -18,7 +18,7 @@ const
 
    num_tables : byte = 5;
    SilentMode : boolean = True;
-   logger_info : boolean = True;
+   logger_info : boolean = False;
    sqlite_filename : String = 'sqlite.db';
    msgBaseSuccess : String = 'База данных успешно создана.';
    msgErrorCreating : String = 'Невозможно создать новую базу данных';
@@ -801,11 +801,16 @@ procedure TForm1.btnJoinClick(Sender: TObject);
 var start, stop: TDateTime;
 begin
 
+
+
   start:=Now();
 
   form1.scanLinks(); // сканер ссылок нужен для автозамены
   form1.scanSections(); // сканер секций нужен для автозамены
   form1.scanBlocks(); // сканируем блоки
+
+
+
 
   doJoinPages(); // страницы
   doSections();  // разделы
@@ -813,10 +818,13 @@ begin
   doCssTables(); // css таблицы
   doJs(); // скрипты
 
+
+
   stop:=Now();
 
+
   mmRubrics.Lines.Add('НА СБОРКУ ПОТРЕБОВАЛОСЬ СЕКУНД:');
-  mmRubrics.Lines.Add(   SecondsBetween(start, stop).ToString);
+  mmRubrics.Lines.Add(FloatToStr(MilliSecondsBetween(start, stop)/1000));
 
 
 end;
@@ -1921,6 +1929,8 @@ var
 begin
 
 
+
+
   conn.DatabaseName := getCurrentDir() + DELIM + sqlite_filename; // назначаем имя файла
   //showMessage( conn.DatabaseName );
   try
@@ -1934,7 +1944,18 @@ begin
 
 
          conn.Open;
+
          trans.Active:=True;
+
+         conn.ExecuteDirect('End transaction');
+         conn.ExecuteDirect('pragma synchronous = 0');
+         conn.ExecuteDirect('pragma foreign_keys = off');
+         conn.ExecuteDirect('pragma journal_mode = off');
+
+          trans.Active:=True;
+         conn.ExecuteDirect('Begin transaction');
+
+
          // делать ничего не нужно, обработается при выходе, сообщаем
          SilentMessage('Файл найден!');
          checkConnect(conn, trans, 'initTransactionSQL');
@@ -1951,6 +1972,16 @@ begin
 
 
         // запросы в рамках транзакции
+
+
+       trans.Active:=True;
+
+         conn.ExecuteDirect('End transaction');
+         conn.ExecuteDirect('pragma synchronous = 0');
+         conn.ExecuteDirect('pragma foreign_keys = off');
+         conn.ExecuteDirect('pragma journal_mode = off');
+          trans.Active:=True;
+         conn.ExecuteDirect('Begin transaction');
 
        checkConnect(conn, trans,'initTransactionSQL');
          try
@@ -2535,7 +2566,7 @@ begin
                                       useBlocks(
                                                 document ))));
 
-
+                            if (logger_info)   then
                             mmRubrics.Lines.Add(document);
 
 
