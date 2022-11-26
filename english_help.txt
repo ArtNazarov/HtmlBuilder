@@ -11,7 +11,7 @@ Release 1
 
 {title} - page title
 {body} - html content markup
-
+{dt} - date of material
 - Global markup blocks
 
 {id of the global block} is replaced by the markup of this block
@@ -31,6 +31,7 @@ Release 1
 
 {itemUrl} - part of the address of the link to the page
 {itemTitle} - page title
+{itemDt} - date of material
 {ext} - preferred file extension
  
 - Quick links
