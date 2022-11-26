@@ -530,6 +530,9 @@ type
      procedure changeDataSourcesJs();
 
 
+     function insParamsToHead(head: String; page : page_params): String;
+
+
 
 
 
@@ -2379,7 +2382,9 @@ begin
     Buffer.Lines.Add('<html><head>');
                               Buffer.Lines.Add(
 
-                                               buildHead(page.title, page.headtpl)
+                                           insparamstohead(
+                                                                  buildHead(page.title, page.headtpl),
+                                                           page)
 
                                );
 
@@ -2882,6 +2887,24 @@ begin
   dbeJsScriptId.DataSource:=ds_JsScripts;
   dbeScriptPath.DataSource:=ds_JsScripts;
   dbmJsScriptFile.DataSource:=ds_JsScripts;
+end;
+
+function TForm1.insParamsToHead(head: String; page : page_params): String;
+var
+  r : String;
+  i : Integer;
+begin
+  r:=head;
+
+  r:=applyvar(r, 'sectionTitle', page.section_title);
+
+  for i:=0 to 7 do
+    begin
+         r:=applyvar(r, 'f'+IntToStr(i), page.user_field_names[i]);
+         r:=applyvar(r, 'v'+IntToStr(i), page.user_field_values[i]);
+    end;
+
+  result:=r;
 end;
 
 
