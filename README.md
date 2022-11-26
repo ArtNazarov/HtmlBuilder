@@ -9,6 +9,10 @@ UI
 Built-in webserver
 ![With own webserver](https://www.dropbox.com/s/m9d4ccf2gynwvaq/web_server.png?raw=1)
 
+Update content
+
+![Using ftp](https://www.dropbox.com/s/8a23veig21gqcei/ftp_updater.png?raw=1)
+
 More screens https://htmlbuilder.artnazarov.ru/
 Some articles http://nazarow.ru/category/htmlbuilder/
 
@@ -34,6 +38,5 @@ What's new
 TODO
 =================
 1. Add integration with github pages.
-2. Add repost content to Joomla or Wordpress CMS engine
-3. Add RSS spider
-4. Make Linux packages
+2. Add RSS spider
+3. Make Linux packages
