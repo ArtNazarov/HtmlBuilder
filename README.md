@@ -2,8 +2,12 @@ HtmlBuilder
 ===========
 Written in FreePascal/Lazarus generator of static html websites
 
+UI
 
 ![Screen pages editor](https://htmlbuilder.artnazarov.ru/laz1.png)
+
+Built-in webserver
+![With own webserver](https://www.dropbox.com/s/m9d4ccf2gynwvaq/web_server.png?raw=1)
 
 More screens https://htmlbuilder.artnazarov.ru/
 Some articles http://nazarow.ru/category/htmlbuilder/
