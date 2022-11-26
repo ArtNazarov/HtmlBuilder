@@ -728,6 +728,7 @@ begin
         Application.ProcessMessages;
         if (F.Name = '.') or (F.Name = '..') then continue;
         LocalFile := Path + DELIM + F.Name;
+        mmFtpLog.Lines.Add('Local file name ' + LocalFile);
         FileName := F.Name;
 
         // remove file on remote site (only from build)
