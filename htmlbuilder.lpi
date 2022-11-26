@@ -21,7 +21,7 @@
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="3"/>
       <RevisionNr Value="5"/>
-      <BuildNr Value="15"/>
+      <BuildNr Value="23"/>
       <Language Value="0419"/>
       <Attributes pvaPreRelease="True"/>
       <StringTable CompanyName="artnazarov.ru" LegalCopyright="Artyom Nazarov (artnazarov.ru)" ProductName="HtmlBuilder"/>
@@ -52,7 +52,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="10">
+    <Units Count="11">
       <Unit0>
         <Filename Value="htmlbuilder.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -108,6 +108,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit9>
+      <Unit10>
+        <Filename Value="sitemap_thread.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit10>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -144,6 +148,10 @@
         <ShoLineNum Value="True"/>
         <ShowDebugInfo Value="True"/>
       </Verbosity>
+      <CustomOptions Value="-dUseCThreads"/>
+      <OtherDefines Count="1">
+        <Define0 Value="UseCThreads"/>
+      </OtherDefines>
     </Other>
   </CompilerOptions>
   <Debugging>

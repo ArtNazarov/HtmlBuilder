@@ -1,17 +1,17 @@
 object frmEditorCss: TfrmEditorCss
-  Left = 294
-  Height = 502
-  Top = 249
-  Width = 997
+  Left = 0
+  Height = 853
+  Top = 0
+  Width = 1600
   Caption = 'frmEditorCss'
-  ClientHeight = 502
-  ClientWidth = 997
-  LCLVersion = '2.2.4.0'
+  ClientHeight = 853
+  ClientWidth = 1600
+  LCLVersion = '2.2.0.4'
   object btnClose: TButton
     Left = 0
     Height = 25
-    Top = 477
-    Width = 997
+    Top = 828
+    Width = 1600
     Align = alBottom
     Caption = 'ОК'
     ModalResult = 1
@@ -22,16 +22,15 @@ object frmEditorCss: TfrmEditorCss
     Left = 0
     Height = 22
     Top = 50
-    Width = 997
+    Width = 1600
     Align = alTop
     Caption = 'Редактор'
-    ParentColor = False
   end
   inline editor: TSynEdit
     Left = 0
-    Height = 405
+    Height = 756
     Top = 72
-    Width = 997
+    Width = 1600
     Align = alClient
     Font.Height = -20
     Font.Name = 'JetBrains Mono'
@@ -531,10 +530,10 @@ object frmEditorCss: TfrmEditorCss
     Left = 0
     Height = 50
     Top = 0
-    Width = 997
+    Width = 1600
     Align = alTop
     ClientHeight = 50
-    ClientWidth = 997
+    ClientWidth = 1600
     TabOrder = 2
     object btnAddClass: TButton
       Left = 1

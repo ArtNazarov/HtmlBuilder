@@ -799,6 +799,9 @@ end;
 { Тестовый код }
 procedure TForm1.btnJoinClick(Sender: TObject);
 var start, stop: TDateTime;
+
+
+
 begin
 
 
@@ -825,6 +828,8 @@ begin
 
   mmRubrics.Lines.Add('НА СБОРКУ ПОТРЕБОВАЛОСЬ СЕКУНД:');
   mmRubrics.Lines.Add(FloatToStr(MilliSecondsBetween(start, stop)/1000));
+
+
 
 
 end;
@@ -1739,6 +1744,7 @@ var
   OutputDataString: string;
   ResultCode: integer;
   content_type: string;
+  test_flag : boolean;
 begin
   timeout := 120000;
   Application.ProcessMessages;
@@ -1763,10 +1769,26 @@ begin
 
   content_type := 'Text/Html';
   if (pos('.css', uri) > 0) then content_type := 'text/css';
-  if (pos('.jpg', uri) > 0) then content_type := 'image/jpeg';
 
-  if ((pos('.jpg', uri) > 0) or (pos('.css', uri) > 0) or
-    (pos('.htm', uri) > 0) or (uri = '/')) then
+  if (pos('.jpg', uri) > 0) then content_type := 'image/jpeg';
+  if (pos('.png', uri) > 0) then content_type := 'image/png';
+  if (pos('.gif', uri) > 0) then content_type := 'image/gif';
+
+  if (pos('.js', uri) > 0) then content_type := 'application/javascript';
+
+  test_flag := false;
+  test_flag := test_flag or (pos('.jpg', uri) > 0);
+  test_flag := test_flag or (pos('.gif', uri) > 0);
+  test_flag := test_flag or (pos('.png', uri) > 0);
+
+  test_flag := test_flag or (pos('.htm', uri) > 0);
+  test_flag := test_flag or (pos('.html', uri) > 0);
+  test_flag := test_flag or (pos('.css', uri) > 0);
+  test_flag := test_flag or (pos('.js', uri) > 0);
+
+  test_flag := test_flag or ( uri = '/');
+
+  if ( test_flag ) then
   begin
     // Write the output document to the stream
     OutputDataString := OutputHTMLFile(uri) + CRLF;
@@ -2388,10 +2410,9 @@ begin
                               id := Copy(id, 1, Pos('.', id)-1);
                               Buffer.Text:=StringReplace(Buffer.Text, '{id}',
                               id , [rfReplaceAll]);
-                              try
-                              Buffer.Lines.SaveToFile(filenam);
-                              except
-                              end;
+                              WriteDocument(Buffer.Lines.Text, filenam);
+
+
 end;
 
 function TForm1.buildItem(itemtpl: string; itemUrl: string; itemTitle: string; ur : user_records): string;
