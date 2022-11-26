@@ -9,6 +9,11 @@ uses
   DBCtrls,   SQLite3Conn, SQLDB, process, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids,
   db_helpers;
 
+type
+TPage_Record = record
+    id, cap, content, section : String;
+    dt : TDateTime;
+end;
     procedure insertDemoDataContent(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoDataSections(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoDataBlocks(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
@@ -20,7 +25,7 @@ uses
      {Хелперы}
      procedure addIntoBlock( id, markup, remark : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoSection( id, section, preset, note, full_text : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
-     procedure addIntoContent( id, cap, content, section : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+     procedure addIntoContent( var p : TPage_Record; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoPreset(id, sitename, dirpath, headtpl, bodytpl, sectiontpl, itemtpl : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoCss( css_id, css_style, css_path: String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoJs(js_id, js_path, js_file: String;  var sq: TSQLQuery;
@@ -30,19 +35,40 @@ implementation
 
 
  procedure insertDemoDataContent(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
-begin
+ var p : tpage_record;
+     FS: TFormatSettings;
+ begin
   checkConnect(konnect, tranzact, 'нет соединения <insertDemoDataContent>!');
 
-  addIntoContent('index', 'Hello!',
-    'This is my first static page. Here link <<blog>> to section', 'blog', sq, konnect, tranzact);
-  addIntoContent('about', 'Other page',
-    'This is my second static page. See <<photos>>. Here link <<blog>> to section', 'blog', sq, konnect, tranzact);
-   addIntoContent('photos1', 'Demo image 1',
-    '<img width="640" src="https://iso.500px.com/wp-content/uploads/2015/01/50shades_17.jpg">. Here link <<blog>> to section', 'photos', sq, konnect, tranzact);
-  addIntoContent('photos2', 'Demo image2',
-    '<img width="640" src="https://images.squarespace-cdn.com/content/v1/5b0cc6d2e2ccd12e7e8c03c6/1542800092550-16CBUJK7FOSVUC5SC46D/levitating_woman_hat_01.jpg?format=1000w"/>. See <<photos>>. Here link <<blog>> to section',
-    'photos',
-    sq, konnect, tranzact);
+  p.id:='index';
+  p.cap:='Hello!';
+  p.content:= 'This is my first static page. Here link <<blog>> to section';
+  p.section:='blog';
+  FS.DateSeparator:='.';
+  FS.ShortDateFormat := 'dd.mm.yyyy';
+  FS.ShortTimeFormat := 'hh:mm:ss';
+  p.dt:=StrToDateTime('26.11.2022');
+  addIntoContent(p, sq, konnect, tranzact);
+
+  p.id:='about';
+  p.cap:='Other page';
+  p.content:= 'This is my second static page. See <<photos>>. Here link <<blog>> to section';
+  p.section:='blog';
+  addIntoContent(p, sq, konnect, tranzact);
+
+
+  p.id:='photos1';
+  p.cap:='Demo image 1';
+  p.content:='<img width="640" src="https://iso.500px.com/wp-content/uploads/2015/01/50shades_17.jpg">. Here link <<blog>> to section';
+  p.section:='photos';
+  addIntoContent(p, sq, konnect, tranzact);
+
+  p.id:='photos2';
+  p.cap:='Demo image2';
+  p.content:='<img width="640" src="https://images.squarespace-cdn.com/content/v1/5b0cc6d2e2ccd12e7e8c03c6/1542800092550-16CBUJK7FOSVUC5SC46D/levitating_woman_hat_01.jpg?format=1000w"/>. See <<photos>>. Here link <<blog>> to section';
+  p.section:='photos';
+
+  addIntoContent(p, sq, konnect, tranzact);
   // параметризированный запрос
 
   //or possibly CommitRetaining, depending on how your application is set up
@@ -205,21 +231,24 @@ end;
 end;
 
 
-  procedure addIntoContent( id, cap, content, section : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+  procedure addIntoContent( var p : TPage_Record; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
   begin
    prepared_transaction_start(
-    'insert into content (id, caption, content, section) values (:ID,:CAPTION,:CONTENT, :SECTION)',
+    'insert into content (id, caption, content, section, dt) values (:ID,:CAPTION,:CONTENT, :SECTION, :DT)',
     sq, tranzact);
     // заполним параметры
 
-    sq.Params.ParamByName('ID').AsString := id;
+    sq.Params.ParamByName('ID').AsString := p.id;
 
-    sq.Params.ParamByName('CAPTION').AsString := cap;
+    sq.Params.ParamByName('CAPTION').AsString := p.cap;
 
-    sq.Params.ParamByName('CONTENT').AsString := content;
+    sq.Params.ParamByName('CONTENT').AsString := p.content;
 
 
-    sq.Params.ParamByName('SECTION').AsString := section;
+    sq.Params.ParamByName('SECTION').AsString := p.section;
+
+    sq.Params.ParamByName('DT').AsDateTime := p.dt;
+
    prepared_transaction_end( sq, tranzact);
   end;
 

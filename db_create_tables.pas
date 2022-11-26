@@ -104,6 +104,7 @@ begin
                     ' "caption" Char(128),'+
                     ' "content" TEXT,'+
                     ' "section" Chat(128),'+
+                    ' "dt" DATETIME, '+
                     ' "uf1" Char(60),'+
                     ' "uf2" Char(60),'+
                     ' "uf3" Char(60),'+

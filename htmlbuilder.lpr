@@ -7,8 +7,9 @@ uses
   cthreads, // диспетчер памяти C в некоторых системах намного быстрее для многопоточности
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, dbflaz, main, db_helpers, db_insertdemo, db_create_tables, replacers,
-  editor_in_window, editor_css, editor_js, css_props_dlg;
+  Forms, dbflaz, datetimectrls, main, db_helpers, db_insertdemo,
+  db_create_tables, replacers, editor_in_window, editor_css, editor_js,
+  css_props_dlg;
 
 {$R *.res}
 

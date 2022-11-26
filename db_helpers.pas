@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
-  DBCtrls,   SQLite3Conn, SQLDB, process, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids ;
+  DBCtrls,   SQLite3Conn, SQLDB, process,  ExtCtrls, ComCtrls, Menus, DBGrids ;
 
 
 procedure checkConnect(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction; msg: String);

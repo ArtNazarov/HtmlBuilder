@@ -9,10 +9,10 @@ interface
 uses
   Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
   DBCtrls, dbf, SQLite3Conn, SQLDB, process, FileUtil, SynHighlighterHTML,
-  SynEdit, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids, ActnList, Buttons,
-  blcksock, sockets, Synautil, synaip, synsock, ftpsend, db_helpers,
-  db_insertdemo, db_create_tables, replacers, editor_in_window, editor_css,
-  editor_js, DateUtils; {Use Synaptic}
+  SynEdit, DBDateTimePicker, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids,
+  ActnList, Buttons, blcksock, sockets, Synautil, synaip, synsock, ftpsend,
+  db_helpers, db_insertdemo, db_create_tables, replacers, editor_in_window,
+  editor_css, editor_js, DateUtils; {Use Synaptic}
 
 const
 
@@ -77,6 +77,7 @@ type
             id        : String;
             title     : String;
             body      : String;
+            dt        : TDateTime;
             section_id : String;
             section_title : String;
             sitename : String;
@@ -126,6 +127,7 @@ type
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    DBDateTimePicker1: TDBDateTimePicker;
     ds_JsScripts: TDataSource;
     dbeJsScriptId: TDBEdit;
     dbeScriptPath: TDBEdit;
@@ -142,6 +144,7 @@ type
     ds_Counter: TDataSource;
     ds_Join: TDataSource;
     dbJoin: TDBGrid;
+    lbDt: TLabel;
     lbProgress: TLabel;
     lbJsScriptId: TLabel;
     lbJsScriptPath: TLabel;
@@ -438,7 +441,7 @@ type
     function useModules(app: string): string;
     function owntagexec(containter, cmd: string): string;
     function useOwnTags(app: string): string;
-    function buildItem(itemtpl: string; itemUrl: string; itemTitle: string; ur : user_records): string;
+    function buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records): string;
     function buildSection(sectiontpl: string; sectionUrl: string;
       sectionTitle: string;
       sectionNote: string;
@@ -531,6 +534,7 @@ type
 
 
      function insParamsToHead(head: String; page : page_params): String;
+     function insParamsToBody(body: String; page : page_params): String;
 
 
 
@@ -1223,8 +1227,7 @@ begin
 end;
 
 {{ ============================== ОПОРНЫЕ ЧАСТИ ДВИЖКА - СБОРКА ТЕЛА СТРАНИЦЫ =============================== }}
-function TForm1.buildBody(title: string; body: string; bodyTemplate: string
-  ): string;
+function TForm1.buildBody(title: string; body: string; bodyTemplate: string): string;
 var r : String; s, s2 : string;
 begin
  r:=bodyTemplate;
@@ -2143,7 +2146,7 @@ begin
   fContent.DataSource:=form1.ds_Content; // поле контент
 
   //dbContentLook.DataSource:=form1.ds_Content; // список страниц
-  // TODO ТУТ ДОЛЖНЫ БЫТЬ ДОП. ПОЛЯ!
+
 
   ds_Content.AutoEdit:=True;
   dbNav_Content.DataSource:=form1.ds_Content; // листалка
@@ -2161,7 +2164,7 @@ begin
 
 
   //dbSectionsLook.DataSource:=form1.ds_Sections; // список секций
-  // TODO ТУТ ДОЛЖНЫ БЫТЬ ДОП. ПОЛЯ!
+
   dbNav_Sections.DataSource:=form1.ds_Sections; // листалка
 end;
 
@@ -2174,7 +2177,7 @@ begin
   dbeBlockNote.DataSource:=form1.ds_Blocks; // поле название раздела
   dbeBlockHtml.DataSource:=form1.ds_Blocks; // поле шаблон раздела
   //dbBlocksLook.DataSource:=form1.ds_Blocks; // список блоков
-  // TODO ТУТ ДОЛЖНЫ БЫТЬ ДОП. ПОЛЯ!
+
   dbNav_Blocks.DataSource:=form1.ds_Blocks; // листалка
 end;
 
@@ -2190,7 +2193,7 @@ begin
   dbmBodyPagesTemplate.DataSource:=form1.ds_Presets; // шаблон страниц
   dbmBodySectionsTemplate.DataSource:=form1.ds_Presets;// шаблон секции
   dbmTemplateOfItem.DataSource:=form1.ds_Presets; // шаблон списка
-  // TODO ТУТ ДОЛЖНЫ БЫТЬ ДОП. ПОЛЯ!
+
 
   //dbPresetsLook.DataSource:=form1.ds_Presets;
   dbNav_Presets.DataSource:=form1.ds_Presets; // листалка
@@ -2322,6 +2325,7 @@ begin
             page.section_title := sqlJoin.FieldByName('section').AsString;
             page.sitename := sqlJoin.FieldByName('sitename').AsString;
             page.dirpath := sqlJoin.FieldByName('dirpath').AsString;
+            page.dt:=sqlJoin.FieldByName('dt').AsDateTime;
 
             for page_param_num:=1 to 7 do
               begin
@@ -2393,8 +2397,9 @@ begin
 
                               Buffer.Lines.Add('</head><body>');
                               Buffer.Lines.Add(
-
-                                              buildBody(page.title, page.body, t)
+                                               insParamsToBody(
+                                                               buildBody(page.title, page.body, t),
+                                               page)
 
                               );
                               Buffer.Lines.Add('</body></html>');
@@ -2421,7 +2426,7 @@ begin
 
 end;
 
-function TForm1.buildItem(itemtpl: string; itemUrl: string; itemTitle: string; ur : user_records): string;
+function TForm1.buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records): string;
 var
   r: string;
   fi : byte;
@@ -2429,6 +2434,7 @@ begin
   r := itemTpl;
   r := applyVar(r, 'itemUrl', itemUrl);
   r := applyVar(r, 'itemTitle', itemTitle);
+  r := applyVar(r, 'itemDt', DateTimeToStr(itemDt));
 
   // применяем пользовательские поля, если есть
   for fi:=1 to 7 do begin
@@ -2546,9 +2552,12 @@ begin
 
                                    itemHTML := itemHtml +
 
-                                   buildItem( sqlRubrication.FieldByName('itemtpl').AsString,
+                                   buildItem(
+                                     sqlRubrication.FieldByName('itemtpl').AsString,
                                      sqlRubrication.FieldByName('content_id').AsString,
-                                     sqlRubrication.FieldByName('caption').AsString, ur );
+                                     sqlRubrication.FieldByName('caption').AsString,
+                                     sqlRubrication.FieldByName('dt').AsDateTime,
+                                     ur );
                                    sqlRubrication.Next;
                                    Application.ProcessMessages;
                              end;
@@ -2904,6 +2913,18 @@ begin
          r:=applyvar(r, 'v'+IntToStr(i), page.user_field_values[i]);
     end;
 
+  result:=r;
+end;
+
+function TForm1.insParamsToBody(body: String; page : page_params): String;
+var
+  r : String;
+  i : Integer;
+begin
+  r:=body;
+
+  r:=applyvar(r, 'dt', DateToStr(page.dt));
+  // TODO Сюда дополнительные параметры страницы
   result:=r;
 end;
 
