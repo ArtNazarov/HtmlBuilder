@@ -26,7 +26,7 @@ end;
      procedure addIntoBlock( id, markup, remark : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoSection( id, section, preset, note, full_text : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoContent( var p : TPage_Record; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
-     procedure addIntoPreset(id, sitename, dirpath, headtpl, bodytpl, sectiontpl, itemtpl : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+     procedure addIntoPreset(id, sitename, dirpath, headtpl, bodytpl, sectiontpl, itemtpl, orf, ors : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoCss( css_id, css_style, css_path: String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoJs(js_id, js_path, js_file: String;  var sq: TSQLQuery;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
@@ -119,7 +119,9 @@ end;
      '{bootstrap}<meta charset="utf-8"><title>{sitename}-{title}</title>',
      '{mainmenu}<h1>{title}</h1><p>{content}</p>',
      '{mainmenu}<h1>Тема: {sectionTitle}</h1> Материалы :<ul>{items}</ul>',
-      '<li><a href="{itemUrl}.{ext}">{itemTitle}</a></li>', sq, konnect, tranzact);
+      '<li><a href="{itemUrl}.{ext}">{itemTitle}</a></li>',
+      'dt', 'asc',
+      sq, konnect, tranzact);
 
 
 
@@ -253,15 +255,15 @@ end;
   end;
 
  procedure addIntoPreset(id, sitename, dirpath, headtpl, bodytpl, sectiontpl,
-   itemtpl: String; var sq : TSQLQuery; var konnect: TSQLite3Connection;
+   itemtpl, orf, ors: String; var sq : TSQLQuery; var konnect: TSQLite3Connection;
    var tranzact: TSQLTransaction);
  begin
 
 
 
    prepared_transaction_start(
-   'insert into preset (id, sitename,dirpath,headtpl,bodytpl,sectiontpl,itemtpl) values '+
-  '(:ID,:SITENAME,:DIRPATH,:HEADTPL,:BODYTPL,:SECTIONTPL,:ITEMTPL)',
+   'insert into preset (id, sitename,dirpath,headtpl,bodytpl,sectiontpl,itemtpl, ors, orf) values '+
+  '(:ID,:SITENAME,:DIRPATH,:HEADTPL,:BODYTPL,:SECTIONTPL,:ITEMTPL, :ORS, :ORF)',
   sq, tranzact);
 
   sq.Params.ParamByName('ID').AsString := id;
@@ -271,7 +273,8 @@ end;
   sq.Params.ParamByName('BODYTPL').AsString :=  bodytpl;
   sq.Params.ParamByName('SECTIONTPL').AsString :=  sectiontpl;
   sq.Params.ParamByName('ITEMTPL').AsString := itemtpl;
-
+  sq.Params.ParamByName('ORF').AsString := orf;
+  sq.Params.ParamByName('ORS').AsString := ors;
  prepared_transaction_end( sq, tranzact);
 end;
 

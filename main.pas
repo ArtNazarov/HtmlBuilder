@@ -127,6 +127,8 @@ type
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    dbOrder_Field_Set: TDBComboBox;
+    dbOrder_Field: TDBComboBox;
     DBDateTimePicker1: TDBDateTimePicker;
     ds_JsScripts: TDataSource;
     dbeJsScriptId: TDBEdit;
@@ -144,6 +146,8 @@ type
     ds_Counter: TDataSource;
     ds_Join: TDataSource;
     dbJoin: TDBGrid;
+    lbOrderSet: TLabel;
+    lbOrderField: TLabel;
     lbDt: TLabel;
     lbProgress: TLabel;
     lbJsScriptId: TLabel;
@@ -2483,7 +2487,11 @@ var
   fi : byte;
   cnt, k : byte;
   itemK : byte;
+  rubrication_start : String;
+  rubrication_query : String;
 begin
+  rubrication_start:=sqlRubrication.SQL.Text;
+
 // некоторые данные нужно считать 1 раз
 // так как они будут нужны многократно
   scanLinks();  // ссылки
@@ -2522,7 +2530,15 @@ begin
                     begin
                        lbProgress.Caption:='Генерация рубрики '+sqlCounter.FieldByName('section').AsString+'  :  '+IntToStr(page)+' / '+IntToStr(pagesInRubrics);
                        sqlRubrication.Close;
-                       prepared_transaction_start( sqlRubrication.SQL.Text, sqlRubrication, trans);
+
+
+                       rubrication_query := rubrication_start;
+                       rubrication_query:=applyvar(rubrication_query, 'ors', sqlPresets.FieldByName('ors').AsString);
+                       rubrication_query:=applyvar(rubrication_query, 'orf', sqlPresets.FieldByName('orf').AsString);
+
+
+
+                       prepared_transaction_start( rubrication_query , sqlRubrication, trans);
 
                        sectionId := sqlCounter.FieldByName('section').AsString;
 

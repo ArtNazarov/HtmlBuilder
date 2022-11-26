@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="7"/>
         <CursorPos X="16" Y="12"/>
-        <UsageCount Value="192"/>
+        <UsageCount Value="194"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -20,10 +20,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="2910"/>
-        <CursorPos X="49" Y="2927"/>
-        <ComponentState Value="2"/>
-        <UsageCount Value="192"/>
+        <TopLine Value="2917"/>
+        <CursorPos Y="2927"/>
+        <UsageCount Value="194"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -33,25 +32,25 @@
         <EditorIndex Value="4"/>
         <TopLine Value="5"/>
         <CursorPos X="61" Y="12"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="86"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="db_insertdemo.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="45"/>
-        <CursorPos X="19" Y="67"/>
-        <UsageCount Value="84"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="2"/>
+        <CursorPos X="78" Y="266"/>
+        <UsageCount Value="86"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="db_create_tables.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="112"/>
-        <CursorPos X="10" Y="103"/>
-        <UsageCount Value="82"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="66"/>
+        <CursorPos X="66" Y="77"/>
+        <UsageCount Value="84"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
@@ -59,7 +58,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="11" Y="13"/>
-        <UsageCount Value="79"/>
+        <UsageCount Value="81"/>
       </Unit5>
       <Unit6>
         <Filename Value="editor_in_window.pas"/>
@@ -70,7 +69,7 @@
         <EditorIndex Value="6"/>
         <TopLine Value="138"/>
         <CursorPos X="3" Y="128"/>
-        <UsageCount Value="73"/>
+        <UsageCount Value="75"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
@@ -83,7 +82,7 @@
         <TopLine Value="77"/>
         <CursorPos X="4" Y="52"/>
         <ComponentState Value="2"/>
-        <UsageCount Value="53"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit7>
@@ -96,7 +95,7 @@
         <EditorIndex Value="8"/>
         <TopLine Value="50"/>
         <CursorPos X="3" Y="74"/>
-        <UsageCount Value="49"/>
+        <UsageCount Value="51"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
@@ -107,7 +106,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="9"/>
         <CursorPos X="3" Y="6"/>
-        <UsageCount Value="38"/>
+        <UsageCount Value="40"/>
         <Loaded Value="True"/>
       </Unit9>
       <Unit10>
@@ -116,7 +115,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos X="18" Y="36"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="33"/>
       </Unit10>
       <Unit11>
         <Filename Value="E:\02 ЛИЧНОЕ\01 Документы\05 АРТЕМ [1GB]\02 ИСХОДНИКИ\Nav\modelfromdb.pas"/>
@@ -260,7 +259,7 @@
         <EditorIndex Value="3"/>
         <TopLine Value="2229"/>
         <CursorPos Y="2240"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit32>
     </Units>
@@ -272,124 +271,124 @@
     </OtherDefines>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="main.pas"/>
-        <Caret Line="2299" Column="7" TopLine="2287"/>
+        <Filename Value="db_insertdemo.pas"/>
+        <Caret Line="49" Column="25" TopLine="39"/>
       </Position1>
       <Position2>
         <Filename Value="main.pas"/>
-        <Caret Line="2298" Column="65" TopLine="2287"/>
+        <Caret Line="2912" Column="25" TopLine="2882"/>
       </Position2>
       <Position3>
         <Filename Value="main.pas"/>
-        <Caret Line="2286" Column="16" TopLine="2273"/>
+        <Caret Line="444" Column="98" TopLine="433"/>
       </Position3>
       <Position4>
         <Filename Value="main.pas"/>
-        <Caret Line="2194" Column="6" TopLine="2181"/>
+        <Caret Line="2437" Column="51" TopLine="136"/>
       </Position4>
       <Position5>
         <Filename Value="main.pas"/>
-        <Caret Line="2193" Column="6" TopLine="2181"/>
+        <Caret Line="2560" Column="41" TopLine="2393"/>
       </Position5>
       <Position6>
         <Filename Value="main.pas"/>
-        <Caret Line="1235" Column="25" TopLine="1222"/>
+        <Caret Line="2927" Column="84" TopLine="2910"/>
       </Position6>
       <Position7>
         <Filename Value="main.pas"/>
-        <Caret Line="2401" Column="95" TopLine="2388"/>
+        <Caret Line="2928" Column="84" TopLine="2911"/>
       </Position7>
       <Position8>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="246" Column="51" TopLine="271"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2914" Column="17" TopLine="2913"/>
       </Position8>
       <Position9>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="46" Column="49" TopLine="37"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2915" Column="17" TopLine="2914"/>
       </Position9>
       <Position10>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="47" Column="6" TopLine="37"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2916" Column="17" TopLine="2915"/>
       </Position10>
       <Position11>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="46" Column="32" TopLine="34"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2915" Column="17" TopLine="2914"/>
       </Position11>
       <Position12>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="41" Column="6" TopLine="34"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2916" Column="17" TopLine="2915"/>
       </Position12>
       <Position13>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="47" TopLine="34"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2915" Column="17" TopLine="2914"/>
       </Position13>
       <Position14>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="53" Column="50" TopLine="31"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2916" Column="17" TopLine="2915"/>
       </Position14>
       <Position15>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="54" TopLine="42"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2915" Column="17" TopLine="2914"/>
       </Position15>
       <Position16>
-        <Filename Value="db_helpers.pas"/>
-        <Caret Line="9" Column="43"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2914" Column="17" TopLine="2913"/>
       </Position16>
       <Position17>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="54" TopLine="42"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2915" Column="17" TopLine="2914"/>
       </Position17>
       <Position18>
-        <Filename Value="db_helpers.pas"/>
-        <Caret Line="18" Column="77" TopLine="5"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2914" Column="17" TopLine="2913"/>
       </Position18>
       <Position19>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="48" Column="3" TopLine="35"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2915" Column="17" TopLine="2914"/>
       </Position19>
       <Position20>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="51" TopLine="39"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2914" Column="17" TopLine="2913"/>
       </Position20>
       <Position21>
-        <Filename Value="db_helpers.pas"/>
-        <Caret Line="12" Column="61" TopLine="5"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2915" Column="17" TopLine="2914"/>
       </Position21>
       <Position22>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="50" Column="3" TopLine="39"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2914" Column="17" TopLine="2913"/>
       </Position22>
       <Position23>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="49" Column="24" TopLine="39"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2915" Column="17" TopLine="2914"/>
       </Position23>
       <Position24>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="47" Column="46" TopLine="39"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="2916" Column="17" TopLine="2844"/>
       </Position24>
       <Position25>
-        <Filename Value="db_insertdemo.pas"/>
-        <Caret Line="49" Column="25" TopLine="39"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="299" Column="19" TopLine="287"/>
       </Position25>
       <Position26>
         <Filename Value="main.pas"/>
-        <Caret Line="2912" Column="25" TopLine="2882"/>
+        <Caret Line="2534" Column="63" TopLine="2523"/>
       </Position26>
       <Position27>
         <Filename Value="main.pas"/>
-        <Caret Line="444" Column="98" TopLine="433"/>
+        <Caret Line="2538" Column="69" TopLine="2525"/>
       </Position27>
       <Position28>
         <Filename Value="main.pas"/>
-        <Caret Line="2437" Column="51" TopLine="136"/>
+        <Caret Line="2515" Column="33" TopLine="2526"/>
       </Position28>
       <Position29>
         <Filename Value="main.pas"/>
-        <Caret Line="444" Column="83" TopLine="470"/>
+        <Caret Line="2927" TopLine="2919"/>
       </Position29>
       <Position30>
         <Filename Value="main.pas"/>
-        <Caret Line="2560" Column="41" TopLine="2393"/>
+        <Caret Line="2539" Column="25" TopLine="2530"/>
       </Position30>
     </JumpHistory>
     <RunParams>

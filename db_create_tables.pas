@@ -73,6 +73,8 @@ begin
        sql_execute_direct('CREATE TABLE "preset"('+
                     ' "id" Char(60) NOT NULL PRIMARY KEY,'+
                     ' "sitename" Char(60),'+  // Название сайта
+                    ' "orf" Char(60),'+      // По какому полю сортировка
+                    ' "ors" Char(4),'+      // Порядок сортировки
                     ' "dirpath" Char(60),'+      // Путь к папке в результатами
                     ' "headtpl" TEXT,'+         // Заголовочная часть шаблона
                     ' "bodytpl" TEXT,'+     // Основная часть шаблона
