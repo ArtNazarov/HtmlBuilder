@@ -5,6 +5,9 @@ Written in FreePascal/Lazarus generator of static html websites
 
 ![Screen pages editor](https://htmlbuilder.artnazarov.ru/laz1.png)
 
+More screens https://htmlbuilder.artnazarov.ru/
+Some articles http://nazarow.ru/category/htmlbuilder/
+
 Project
 ================
 Website in Russian: 
