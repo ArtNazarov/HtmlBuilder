@@ -166,8 +166,8 @@ type
     lbCssStyle: TLabel;
     lbCSS: TLabel;
     lbSpecification: TLabel;
-    lvJsScripts: TListBox;
-    lvCSS: TListBox;
+    lvJsScripts: TListView;
+    lvCSS: TListView;
     lvPresets: TListView;
     lvBlocks: TListView;
     lvContent: TListView;
@@ -372,6 +372,7 @@ type
     procedure btnEditorContentClick(Sender: TObject);
 
     procedure cboLocaleChange(Sender: TObject);
+    procedure dbmSectionFullTextChange(Sender: TObject);
 
     procedure dbNav_ContentBeforeAction(Sender: TObject; Button: TDBNavButtonType);
     procedure dbNav_BlocksBeforeAction(Sender: TObject; Button: TDBNavButtonType
@@ -401,22 +402,26 @@ type
     procedure panJsClick(Sender: TObject);
 
 
-    procedure sqlBlocksAfterDelete(DataSet: TDataSet);
+
     procedure sqlBlocksAfterPost(DataSet: TDataSet);
-    procedure sqlContentAfterDelete(DataSet: TDataSet);
+    procedure sqlBlocksBeforeDelete(DataSet: TDataSet);
+
 
     procedure sqlContentAfterPost(DataSet: TDataSet);
     procedure sqlContentBeforeDelete(DataSet: TDataSet);
-    procedure sqlCssAfterDelete(DataSet: TDataSet);
+
     procedure sqlCssAfterPost(DataSet: TDataSet);
-    procedure sqlCssStylesAfterDelete(DataSet: TDataSet);
+
     procedure sqlCssStylesAfterEdit(DataSet: TDataSet);
     procedure sqlCssStylesAfterPost(DataSet: TDataSet);
-    procedure sqlJsScriptsAfterDelete(DataSet: TDataSet);
+    procedure sqlCssStylesBeforeDelete(DataSet: TDataSet);
+
     procedure sqlJsScriptsAfterPost(DataSet: TDataSet);
-    procedure sqlPresetsAfterDelete(DataSet: TDataSet);
+    procedure sqlJsScriptsBeforeDelete(DataSet: TDataSet);
+
     procedure sqlPresetsAfterPost(DataSet: TDataSet);
-    procedure sqlSectionsAfterDelete(DataSet: TDataSet);
+    procedure sqlPresetsBeforeDelete(DataSet: TDataSet);
+
     procedure sqlSectionsAfterPost(DataSet: TDataSet);
     procedure sqlSectionsBeforeDelete(DataSet: TDataSet);
 
@@ -571,7 +576,8 @@ type
        rubrication_query: String; selected_orf : String; selected_ors : String; useo : boolean);
 
 
-
+    procedure AfterPostHelper(var lv : TListView; var sql : TSQLQuery; field : String);
+    procedure BeforeDeleteHelper(var lv : TListView; var sql : TSQLQuery; field : String);
 
 
 
@@ -637,20 +643,19 @@ end;
 
 
 
-procedure TForm1.sqlBlocksAfterDelete(DataSet: TDataSet);
-begin
-  doScan();
-end;
+
 
 procedure TForm1.sqlBlocksAfterPost(DataSet: TDataSet);
 begin
-  doScan();
+  AfterPostHelper(lvBlocks, sqlBlocks, 'id');
 end;
 
-procedure TForm1.sqlContentAfterDelete(DataSet: TDataSet);
+procedure TForm1.sqlBlocksBeforeDelete(DataSet: TDataSet);
 begin
-
+  beforedeletehelper(lvBlocks, sqlblocks, 'id');
 end;
+
+
 
 
 
@@ -659,45 +664,18 @@ end;
 procedure TForm1.sqlContentAfterPost(DataSet: TDataSet);
 var content_id : String; i : Integer; flag : boolean;
 begin
-  content_id:=sqlContent.FieldByName('id').AsString;
-  flag := true;
-   for i:=0 to lvContent.Items.Count-1 do
-       if lvContent.Items[i].Caption = content_id then
-              begin
-                   flag:=false;
-                   break;
-              end;
-   if flag then
-          lvContent.AddItem(content_id, nil);
-
+ AfterPostHelper(lvContent, sqlContent, 'id');
 end;
 
 procedure TForm1.sqlContentBeforeDelete(DataSet: TDataSet);
-var i : Integer; delete_content : String;
-begin
-  delete_content:=sqlContent.FieldByName('id').AsString;
-  lvContent.ItemIndex:=-1;
-  for i:=0 to lvContent.Items.Count-1 do
-      if lvContent.Items[i]<>nil  then
-         if lvContent.Items[i].Caption = delete_content then
-            begin
-                 lvContent.Items.Delete(i);
-            end;
-end;
 
-procedure TForm1.sqlCssAfterDelete(DataSet: TDataSet);
 begin
-  doScan();
+  BeforeDeleteHelper(lvContent, sqlContent, 'id');
 end;
 
 procedure TForm1.sqlCssAfterPost(DataSet: TDataSet);
 begin
-  doScan();
-end;
 
-procedure TForm1.sqlCssStylesAfterDelete(DataSet: TDataSet);
-begin
-  doScan();
 end;
 
 procedure TForm1.sqlCssStylesAfterEdit(DataSet: TDataSet);
@@ -707,42 +685,64 @@ end;
 
 procedure TForm1.sqlCssStylesAfterPost(DataSet: TDataSet);
 begin
-  doScan();
+  AfterPostHelper(lvCSS,  sqlCssStyles, 'css_id');
 end;
 
-procedure TForm1.sqlJsScriptsAfterDelete(DataSet: TDataSet);
+procedure TForm1.sqlCssStylesBeforeDelete(DataSet: TDataSet);
 begin
-  doScan();
+  BeforeDeleteHelper(lvCSS, sqlCssStyles, 'css_id');
 end;
 
 procedure TForm1.sqlJsScriptsAfterPost(DataSet: TDataSet);
 begin
-  doScan();
+  AfterPostHelper(lvJsScripts, sqlJsScripts, 'js_id');
 end;
 
-procedure TForm1.sqlPresetsAfterDelete(DataSet: TDataSet);
+procedure TForm1.sqlJsScriptsBeforeDelete(DataSet: TDataSet);
 begin
-  doScan();
+  BeforeDeleteHelper(lvJsScripts, sqlJsScripts, 'js_id');
 end;
 
 procedure TForm1.sqlPresetsAfterPost(DataSet: TDataSet);
 begin
-  doScan();
+   AfterPostHelper(lvPresets, sqlPresets, 'id');
 end;
 
-procedure TForm1.sqlSectionsAfterDelete(DataSet: TDataSet);
+procedure TForm1.sqlPresetsBeforeDelete(DataSet: TDataSet);
 begin
-  doScan();
+  BeforeDeleteHelper(lvPresets, sqlPresets, 'id');
 end;
 
 procedure TForm1.sqlSectionsAfterPost(DataSet: TDataSet);
 begin
-  doScan();
+  afterPostHelper(lvSections, sqlSections, 'id');
 end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 procedure TForm1.sqlSectionsBeforeDelete(DataSet: TDataSet);
 begin
-  lvSections.ItemIndex:=-1;
+  BeforeDeleteHelper(lvSections, sqlSections, 'id');
 end;
 
 
@@ -1127,6 +1127,11 @@ begin
     LocaleENG();
 end;
 
+procedure TForm1.dbmSectionFullTextChange(Sender: TObject);
+begin
+
+end;
+
 
 
 procedure TForm1.dbNav_ContentBeforeAction(Sender: TObject; Button: TDBNavButtonType);
@@ -1205,7 +1210,7 @@ var css_id : String;
 begin
   if lvCSS.ItemIndex >= 0 then
      begin
-          css_id := lvCSS.Items[ lvCSS.ItemIndex ];
+          css_id := lvCSS.Items[ lvCSS.ItemIndex ].Caption;
           sqlCssStyles.Locate('css_id', css_id, []);
 
      end;
@@ -1216,7 +1221,7 @@ var js_id : String;
 begin
   if lvJsScripts.ItemIndex >= 0 then
      begin
-          js_id := lvJsScripts.Items[ lvJsScripts.ItemIndex ];
+          js_id := lvJsScripts.Items[ lvJsScripts.ItemIndex ].Caption;
           sqlJsScripts.Locate('js_id', js_id, []);
 
      end;
@@ -2917,7 +2922,7 @@ begin
 
   for k:=0 to JsTitles.Count-1 do
     begin
-       lvJsScripts.Items.Add(jsTitles.Names[k]);
+       lvJsScripts.AddItem( jsTitles.Names[k], nil );
        Application.ProcessMessages;
     end;
           end;
@@ -3169,6 +3174,35 @@ begin
 
                      pBar.Max:=pagesInRubrics;
                      pBar.Position:=page;
+end;
+
+procedure TForm1.AfterPostHelper(var lv : TListView; var sql : TSQLQuery; field : String);
+var field_id : String;  i : Integer;  flag : boolean;
+begin
+  field_id:=sql.FieldByName(field).AsString;
+  flag := true;
+   for i:=0 to lv.Items.Count-1 do
+       if lv.Items[i].Caption = field_id then
+              begin
+                   flag:=false;
+                   break;
+              end;
+   if flag then
+          lv.AddItem(field_id, nil);
+end;
+
+procedure TForm1.BeforeDeleteHelper(var lv: TListView; var sql: TSQLQuery;
+  field: String);
+var delete_id : String; i : Integer;
+begin
+  delete_id:=sql.FieldByName(field).AsString;
+  lv.ItemIndex:=-1;
+  for i:=0 to lv.Items.Count-1 do
+      if lv.Items[i]<>nil  then
+         if lv.Items[i].Caption = delete_id then
+            begin
+                 lv.Items.Delete(i);
+            end;
 end;
 
 

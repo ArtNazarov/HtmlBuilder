@@ -1,16 +1,16 @@
 object frmEditorCss: TfrmEditorCss
   Left = 0
-  Height = 853
+  Height = 839
   Top = 0
   Width = 1600
   Caption = 'frmEditorCss'
-  ClientHeight = 853
+  ClientHeight = 839
   ClientWidth = 1600
-  LCLVersion = '2.2.0.4'
+  LCLVersion = '2.2.4.0'
   object btnClose: TButton
     Left = 0
     Height = 25
-    Top = 828
+    Top = 814
     Width = 1600
     Align = alBottom
     Caption = 'ОК'
@@ -25,10 +25,11 @@ object frmEditorCss: TfrmEditorCss
     Width = 1600
     Align = alTop
     Caption = 'Редактор'
+    ParentColor = False
   end
   inline editor: TSynEdit
     Left = 0
-    Height = 756
+    Height = 742
     Top = 72
     Width = 1600
     Align = alClient
