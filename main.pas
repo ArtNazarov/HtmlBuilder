@@ -401,6 +401,7 @@ type
     procedure sqlContentAfterDelete(DataSet: TDataSet);
 
     procedure sqlContentAfterPost(DataSet: TDataSet);
+    procedure sqlContentBeforeDelete(DataSet: TDataSet);
     procedure sqlCssAfterDelete(DataSet: TDataSet);
     procedure sqlCssAfterPost(DataSet: TDataSet);
     procedure sqlCssStylesAfterDelete(DataSet: TDataSet);
@@ -643,7 +644,7 @@ end;
 
 procedure TForm1.sqlContentAfterDelete(DataSet: TDataSet);
 begin
-  doScan();
+
 end;
 
 
@@ -651,8 +652,32 @@ end;
 
 
 procedure TForm1.sqlContentAfterPost(DataSet: TDataSet);
+var content_id : String; i : Integer; flag : boolean;
 begin
-  doScan();
+  content_id:=sqlContent.FieldByName('id').AsString;
+  flag := true;
+   for i:=0 to lvContent.Items.Count-1 do
+       if lvContent.Items[i].Caption = content_id then
+              begin
+                   flag:=false;
+                   break;
+              end;
+   if flag then
+          lvContent.AddItem(content_id, nil);
+
+end;
+
+procedure TForm1.sqlContentBeforeDelete(DataSet: TDataSet);
+var i : Integer; delete_content : String;
+begin
+  delete_content:=sqlContent.FieldByName('id').AsString;
+  lvContent.ItemIndex:=-1;
+  for i:=0 to lvContent.Items.Count-1 do
+      if lvContent.Items[i]<>nil  then
+         if lvContent.Items[i].Caption = delete_content then
+            begin
+                 lvContent.Items.Delete(i);
+            end;
 end;
 
 procedure TForm1.sqlCssAfterDelete(DataSet: TDataSet);
@@ -1363,6 +1388,7 @@ end;
 procedure TForm1.scanLinks;
 var i : integer;
 begin
+  form1.dbNav_Content.Enabled:=false;
 
   Titles.Clear;      // Titles is a list of pages captions
   Urls.Clear;        // Urls is a list of urls for pages
@@ -1389,7 +1415,7 @@ begin
       end;
 
   end;
-
+  form1.dbNav_Content.Enabled:=true;
 end;
 
 procedure TForm1.scanSections;
@@ -2753,6 +2779,8 @@ end;
 
 procedure TForm1.doScan;
 begin
+  Form1.Enabled:=False;
+
   if sqlPresets.Active then
   sqlPresets.ApplyUpdates();
 
@@ -2786,6 +2814,7 @@ begin
   scanPresets();
   scanCss();
   scanJs();
+  Form1.Enabled:=True;
 end;
 
 
