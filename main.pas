@@ -1746,14 +1746,14 @@ begin
 
 
   paginator := '<div class="paginator">';
-
-  for page := 1 to pagesTotal do
-
-    sorted_folder := '';
+  sorted_folder := '';
     if useO then
       begin
            sorted_folder := '/o/'+orf+'-'+ors+'/';
       end;
+  for page := 1 to pagesTotal do   begin
+
+
 
 
     if currentPage <> page then
@@ -1768,6 +1768,7 @@ begin
     end
     else
       paginator := paginator + ' ' + IntToStr(currentPage) + ' ';
+  end;
 
 
   {/for}
