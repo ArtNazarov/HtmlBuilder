@@ -107,6 +107,16 @@ SITE PAGE GENERATION ORDER
 5. %module% handlers are executed
 6. Run handlers ~module~ .... ~/module~
 
+For sections:
+Pages are sorted by
+- default order (set in general settings)
+- by caption of page (ascending, descending)
+- by date of publication (ascending, descending).
+For default sorted order sections will be placed to
+/section_SECTIONID.html
+For non-default sort order will be created navigation folders:
+/o/FIELD-[ASC-DESC]/section_SECTIONID.html
+
 USAGE EXAMPLE
 
 1. Create directory C:\MySite
