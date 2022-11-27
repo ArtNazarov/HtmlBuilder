@@ -2951,8 +2951,8 @@ begin
   s:='<a href="/section_'+section+'.html">#</a>';
 
   for i:=0 to orfs.Count - 1 do
-        s:=s+' &nbsp;|&nbsp; <a href="/o/'+orfs.Keys[i]+'-ASC/section_'+section+'.html">v</a>&nbsp;' + orfs.Data[i] +
-             '&nbsp;<a href="/o/'+orfs.Keys[i]+'-DESC/section_'+section+'.html">^</a>&nbsp;|&nbsp;';
+        s:=s+' &nbsp;|&nbsp; <a href="/o/'+orfs.Keys[i]+'-DESC/section_'+section+'.html">&#x25BC;</a>&nbsp;' + orfs.Data[i] +
+             '&nbsp;<a href="/o/'+orfs.Keys[i]+'-ASC/section_'+section+'.html">&#x25B2;</a>&nbsp;|&nbsp;';
   result := s;
 
 end;
