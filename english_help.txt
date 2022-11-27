@@ -25,6 +25,7 @@ Release 1
 {sectionNote} - annotation of section
 {sectionFullText} - full description of section
 {items} - list of category elements
+{sort_order} - navigation links for changing sort order
 {pager} - pagination
 
 - Category List Item Template
