@@ -2937,22 +2937,22 @@ end;
 function TForm1.getSortSelector(section : String): String;
 var
   s : String;
-  orfs : TStringList;
+  orfs : sdict;
   i : Integer;
 begin
 
 
-  orfs := TStringList.Create();
+  orfs := sdict.Create();
   orfs.Clear;
-  orfs.Add('caption');
-  orfs.Add('dt');
+  orfs.Add('caption', 'По заголовку');
+  orfs.Add('dt', 'По дате');
 
 
   s:='<a href="/section_'+section+'.html">#</a>';
 
   for i:=0 to orfs.Count - 1 do
-        s:=s+' &nbsp;|&nbsp; <a href="/o/'+orfs.Strings[i]+'-ASC/section_'+section+'.html">v</a>&nbsp;' + orfs.Strings[i] +
-             '&nbsp;<a href="/o/'+orfs.Strings[i]+'-DESC/section_'+section+'.html">^</a>&nbsp;|&nbsp;';
+        s:=s+' &nbsp;|&nbsp; <a href="/o/'+orfs.Keys[i]+'-ASC/section_'+section+'.html">v</a>&nbsp;' + orfs.Data[i] +
+             '&nbsp;<a href="/o/'+orfs.Keys[i]+'-DESC/section_'+section+'.html">^</a>&nbsp;|&nbsp;';
   result := s;
 
 end;
