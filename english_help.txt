@@ -34,7 +34,7 @@ Release 1
 {itemTitle} - page title
 {itemDt} - date of material
 {ext} - preferred file extension
- 
+
 - Quick links
 
 In order to quickly link to a page with a known id,

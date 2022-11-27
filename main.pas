@@ -3050,8 +3050,20 @@ begin
                             sectionHtml:=applyVar(sectionHtml, 'sort_order', selector_order);
 
 
+                            sectionHtml:=applyVar(sectionHtml, 'sectionTitle', sqlRubrication.FieldByName('section').AsString);
+                            sectionHtml:=applyVar(sectionHtml, 'sectionNote', sqlRubrication.FieldByName('note').AsString);
+                            sectionHtml:=applyVar(sectionHtml, 'sectionFullText', sqlRubrication.FieldByName('full_text').AsString);
+
+
+
+
                             headHtml:= buildHead( sqlRubrication.FieldByName('section').AsString,
-                            sqlRubrication.FieldByName('headtpl').AsString);
+                                                  sqlRubrication.FieldByName('headtpl').AsString);
+
+                            headHtml:= applyVar(headHtml, 'sectionTitle',  sqlRubrication.FieldByName('section').AsString);
+
+
+
 
                             document:='<html><head>{header}</head><body>{body}</body>';
 

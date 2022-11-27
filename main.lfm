@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 0
+  Left = 18
   Height = 678
-  Top = 157
+  Top = 77
   Width = 1531
   Caption = 'Генератор статических HTML сайтов'
   ClientHeight = 678
@@ -17,10 +17,10 @@ object Form1: TForm1
     Height = 618
     Top = 0
     Width = 1531
-    ActivePage = tabSpecial
+    ActivePage = tabPages
     Align = alClient
     AutoSize = True
-    TabIndex = 6
+    TabIndex = 0
     TabOrder = 0
     OnChange = AppPagesChange
     object tabPages: TTabSheet
@@ -97,22 +97,22 @@ object Form1: TForm1
             TabOrder = 2
             object TabSheet11: TTabSheet
               Caption = 'Основной текст'
-              ClientHeight = 308
+              ClientHeight = 311
               ClientWidth = 1157
               object Panel13: TPanel
                 Left = 0
-                Height = 308
+                Height = 311
                 Top = 0
                 Width = 1157
                 Align = alClient
                 Caption = 'Panel13'
-                ClientHeight = 308
+                ClientHeight = 311
                 ClientWidth = 1157
                 ParentColor = False
                 TabOrder = 0
                 object fContent: TDBMemo
                   Left = 1
-                  Height = 272
+                  Height = 275
                   Top = 35
                   Width = 1155
                   Align = alClient
@@ -144,25 +144,25 @@ object Form1: TForm1
             end
             object TabSheet12: TTabSheet
               Caption = 'Дополнительная информация'
-              ClientHeight = 308
+              ClientHeight = 311
               ClientWidth = 1157
               object Panel14: TPanel
                 Left = 0
-                Height = 308
+                Height = 311
                 Top = 0
                 Width = 1157
                 Align = alClient
-                ClientHeight = 308
+                ClientHeight = 311
                 ClientWidth = 1157
                 ParentColor = False
                 TabOrder = 0
                 object Panel15: TPanel
                   Left = 1
-                  Height = 306
+                  Height = 309
                   Top = 1
                   Width = 1155
                   Align = alClient
-                  ClientHeight = 306
+                  ClientHeight = 309
                   ClientWidth = 1155
                   TabOrder = 0
                   object DBText1: TDBText
@@ -220,7 +220,7 @@ object Form1: TForm1
                   object dbePageField3: TDBEdit
                     Left = 1
                     Height = 30
-                    Top = 305
+                    Top = 308
                     Width = 1153
                     DataField = 'uf3'
                     DataSource = ds_Content
@@ -231,7 +231,7 @@ object Form1: TForm1
                   object DBText4: TDBText
                     Left = 1
                     Height = 22
-                    Top = 305
+                    Top = 308
                     Width = 1153
                     Align = alTop
                     DataField = 'ufn4'
