@@ -26,6 +26,7 @@ E-mail:admin@artnazarov.ru
 {sectionNote} - аннотация рубрики
 {sectionFullText} - полное описание рубрики
 {items} - список элементов категории
+{sort_order} - навигация по сортировке
 {pager} - переключатель страниц в рубрике
 
 
