@@ -12,7 +12,10 @@ uses
   SynEdit, DBDateTimePicker, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids,
   ActnList, Buttons, blcksock, sockets, Synautil, synaip, synsock, ftpsend,
   db_helpers, db_insertdemo, db_create_tables, replacers, editor_in_window,
-  editor_css, editor_js, DateUtils; {Use Synaptic}
+  editor_css, editor_js, DateUtils, fgl; {Use Synaptic}
+
+
+
 
 const
 
@@ -29,6 +32,9 @@ const
     DLM_MODULE = '%';
 
 type
+
+
+  sdict = specialize TFPGmap<string, string>;{define type under type}
 
   sqls_list = array[byte] of TSQLquery;
 
@@ -419,6 +425,11 @@ type
     SiteSectionUrls, SiteSectionTitles: TMemo;
     CssTitles   : TStringList;
     JsTitles    : TStringList;
+
+    POrs   : sdict;
+    POrf   : sdict;
+
+
     SitePresets : TMemo;
     sqls : sqls_list;
     ListenerSocket, ConnectionSocket: TTCPBlockSocket;
@@ -428,6 +439,8 @@ type
     Cache : tStringList;    {{ for webserver }}
     PostsEditorState : String;
 
+    rubrication_start : String;
+
     procedure initdbSQL(); // <-- новая инициализация
     function buildHead(title: string; headTemplate: string): string;
     function buildBody(title: string; body: string; bodyTemplate: string): string;
@@ -435,6 +448,9 @@ type
     procedure scanLinks();
     procedure scanSections();
     procedure scanCss();
+
+
+
     function insLinks(body: string): string;
     function insSections(body: string): string;
 
@@ -568,6 +584,8 @@ implementation
 procedure TForm1.FormCreate(Sender: TObject);
 begin
 
+  rubrication_start:=sqlRubrication.SQL.Text;
+
   form1.initdbSQL();
 
   Cache:=TStringList.Create;
@@ -583,6 +601,9 @@ begin
   Sections := TMemo.Create(Self); // Разделы страниц
   CssTitles:=TStringList.Create;
   JsTitles:=TStringList.Create;
+
+  POrf := sdict.create();
+  POrs := sdict.create();
 
 
   SiteSectionUrls := TMemo.Create(Self); // URL разделов
@@ -1427,6 +1448,8 @@ begin
   if logger_info then mmRubrics.Lines.Add('URL страниц CSS<scanCss>:'+IntToStr(CssTitles.Count));
     end;
 end;
+
+
 
 function TForm1.insLinks(body: string): string;
 var
@@ -2487,10 +2510,14 @@ var
   fi : byte;
   cnt, k : byte;
   itemK : byte;
-  rubrication_start : String;
+
   rubrication_query : String;
+  current_preset : String;
+
+  selected_ors : String;
+  selected_orf : String;
 begin
-  rubrication_start:=sqlRubrication.SQL.Text;
+
 
 // некоторые данные нужно считать 1 раз
 // так как они будут нужны многократно
@@ -2504,6 +2531,7 @@ begin
   sqlCounter.First;
   while not sqlCounter.EOF do
         begin
+             Current_Preset := sqlCounter.FieldByName('preset_id').AsString;
 
              PagesTotal:=sqlCounter.FieldByName('cnt').AsInteger;
              if pagesTotal <= itemsPerPage then
@@ -2532,13 +2560,21 @@ begin
                        sqlRubrication.Close;
 
 
+
+                       // --------------------------------
                        rubrication_query := rubrication_start;
-                       rubrication_query:=applyvar(rubrication_query, 'ors', sqlPresets.FieldByName('ors').AsString);
-                       rubrication_query:=applyvar(rubrication_query, 'orf', sqlPresets.FieldByName('orf').AsString);
+
+                       selected_ors := pors[Current_Preset]; // порядок сортировки
+                       selected_orf := porf[Current_Preset]; // поле сортировки
 
 
+                       rubrication_query:=applyvar(rubrication_query, 'ors', selected_ors);
+                       rubrication_query:=applyvar(rubrication_query, 'orf', selected_orf);
 
-                       prepared_transaction_start( rubrication_query , sqlRubrication, trans);
+
+                       sqlRubrication.SQL.Text:=rubrication_query;
+
+                       prepared_transaction_start(sqlRubrication.SQL.Text, sqlRubrication, trans);
 
                        sectionId := sqlCounter.FieldByName('section').AsString;
 
@@ -2640,6 +2676,7 @@ begin
                      pBar.Max:=pagesInRubrics;
                      pBar.Position:=page;
 
+                     // -----------------------
                     end;
          sqlCounter.Next;
          Application.ProcessMessages;
@@ -2743,9 +2780,20 @@ procedure TForm1.scanPresets;
 begin
     k:=0;
     SitePresets.Clear;
+    porf.Clear;
+    pors.Clear;
    sqlPresets.First();
    while not sqlPresets.EOF do
          begin
+           pors.add(
+                    sqlPresets.FieldByName('id').AsString,
+                    sqlPresets.FieldByName('ors').AsString
+           );
+           porf.add(
+                    sqlPresets.FieldByName('id').AsString,
+                    sqlPresets.FieldByName('orf').AsString
+           );
+
            SitePresets.lines.add( sqlPresets.FieldByName('id').AsString);
            sqlPresets.Next();
            inc(k);
