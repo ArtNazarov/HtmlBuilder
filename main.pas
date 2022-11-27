@@ -467,8 +467,12 @@ type
       sectionNote: string;
       sectionFullText : string;
       items: string): string;
-    function buildPagination(url: string; currentPage: byte;
-      pagesTotal: integer): string;
+    function buildPagination(
+      url: string; currentPage: byte;
+      pagesTotal: integer;
+      orf       : String;
+      ors       : String;
+      useO      : Boolean): string;
     procedure AttendConnection(ASocket: TTCPBlockSocket);
     procedure StartOwnServer();
     procedure StopOwnServer();
@@ -555,6 +559,10 @@ type
 
      function insParamsToHead(head: String; page : page_params): String;
      function insParamsToBody(body: String; page : page_params): String;
+     function getSortSelector(section : String) : String;
+     // TODO - declarations
+     procedure makeRubricationUsingSorts(page : Integer; itemsPerPage : Integer; pagesInRubrics : Integer;
+       rubrication_query: String; selected_orf : String; selected_ors : String; useo : boolean);
 
 
 
@@ -1725,10 +1733,12 @@ begin
 end;
 
 function TForm1.buildPagination(url: string; currentPage: byte;
-  pagesTotal: integer): string;
+  pagesTotal: integer; orf: String; ors: String; useO: Boolean): string;
 var
   paginator: string;
   page: byte;
+
+  sorted_folder : string;
 
 begin
 
@@ -1738,22 +1748,32 @@ begin
   paginator := '<div class="paginator">';
 
   for page := 1 to pagesTotal do
+
+    sorted_folder := '';
+    if useO then
+      begin
+           sorted_folder := 'o/'+orf+'-'+ors+'/';
+      end;
+
+
     if currentPage <> page then
     begin
       if page = 1 then
         paginator :=
-          paginator + '<a href="section_' + url + '.' + PrefferedExtension.Text + '">1</a> '
+          paginator + '<a href="{sorted_folder}section_' + url + '.' + PrefferedExtension.Text + '">1</a> '
       else
         paginator :=
-          paginator + '<a href="section_' + url + '_' + IntToStr(page) + '.' + PrefferedExtension.Text +
+          paginator + '<a href="{sorted_folder}section_' + url + '_' + IntToStr(page) + '.' + PrefferedExtension.Text +
           '">' + IntToStr(page) + '</a> ';
     end
     else
       paginator := paginator + ' ' + IntToStr(currentPage) + ' ';
+
+
   {/for}
   paginator := paginator + '</div>';
 
-
+  paginator:=applyvar(paginator, 'sorted_folder', sorted_folder);
 
   if logger_info then mmRubrics.Lines.Add('СБОРКА ПЕРЕКЛЮЧАТЕЛЯ СТРАНИЦ<buildPagination>');
   if logger_info then mmRubrics.Lines.Add('URL раздела');
@@ -2497,26 +2517,31 @@ end;
 procedure TForm1.doSections;
 var
   pagesTotal : Integer;
-  sectionId  : String;
+
   PagesinRubrics : Integer;
   itemsPerPage : Integer;
   page : byte;
-  headHtml : String;
-  itemHtml : String;
-  sectionHtml : String;
-  document : String;
-  path : String;
-  ur : user_records;
-  fi : byte;
-  cnt, k : byte;
-  itemK : byte;
+
+
+
 
   rubrication_query : String;
   current_preset : String;
 
-  selected_ors : String;
-  selected_orf : String;
+  selected_ors : String; // выбранное поле для сортировки
+  selected_orf : String; // выбранный порядок сортировки
+  useo  : boolean; // упорядочение по умолчанию, не добавлять папки
+
+
+  orfs   : TStringList;
+  o : Integer;
 begin
+
+ orfs := TStringList.Create;
+ orfs.Clear;
+ orfs.Add('dt');
+ orfs.Add('caption');
+
 
 
 // некоторые данные нужно считать 1 раз
@@ -2556,6 +2581,7 @@ begin
 
                 for page := 1 to pagesInRubrics do
                     begin
+
                        lbProgress.Caption:='Генерация рубрики '+sqlCounter.FieldByName('section').AsString+'  :  '+IntToStr(page)+' / '+IntToStr(pagesInRubrics);
                        sqlRubrication.Close;
 
@@ -2564,117 +2590,33 @@ begin
                        // --------------------------------
                        rubrication_query := rubrication_start;
 
+
                        selected_ors := pors[Current_Preset]; // порядок сортировки
                        selected_orf := porf[Current_Preset]; // поле сортировки
 
 
-                       rubrication_query:=applyvar(rubrication_query, 'ors', selected_ors);
-                       rubrication_query:=applyvar(rubrication_query, 'orf', selected_orf);
-
-
-                       sqlRubrication.SQL.Text:=rubrication_query;
-
-                       prepared_transaction_start(sqlRubrication.SQL.Text, sqlRubrication, trans);
-
-                       sectionId := sqlCounter.FieldByName('section').AsString;
-
-                       sqlRubrication.ParamByName('section_id').AsString:=sectionId;
-                       sqlRubrication.ParamByName('pageoffset').AsInteger:=(page-1)*itemsPerPage;
-                       sqlRubrication.ParamByName('pagelimit').AsInteger := itemsPerPage;
-
-                       prepared_transaction_end(sqlRubrication, trans);
-                       sqlRubrication.Open;
-
-                       itemHtml := '';
-                       itemK:=0;
-                       sqlRubrication.First;
-
-
-                       while not sqlRubrication.EOF do
-                             begin
-                                 pBar.Max:=itemsPerPage;
-                                 inc(itemK);
-                                 pBar.Position:=itemK;
-                                 lbProgress.Caption:='Сборка элемента '+IntToStr(itemK)+' / '+IntToStr(itemsPerPage) + ' '+ sqlRubrication.FieldByName('content_id').AsString;
-                                  for fi:=1 to 7 do
-                                      begin
-                                         ur[fi].name:=sqlRubrication.FieldByName('ufn'+IntToStr(fi)).AsString;
-                                         ur[fi].value:=sqlRubrication.FieldByName('uf'+IntToStr(fi)).AsString;
-                                      end;
-
-                                   itemHTML := itemHtml +
-
-                                   buildItem(
-                                     sqlRubrication.FieldByName('itemtpl').AsString,
-                                     sqlRubrication.FieldByName('content_id').AsString,
-                                     sqlRubrication.FieldByName('caption').AsString,
-                                     sqlRubrication.FieldByName('dt').AsDateTime,
-                                     ur );
-                                   sqlRubrication.Next;
-                                   Application.ProcessMessages;
-                             end;
 
 
 
-                            sectionHtml :=
+                       makeRubricationUsingSorts(page, itemsPerPage, pagesInRubrics, rubrication_query, selected_orf, selected_ors, false);
+
+                       for o:=0 to orfs.Count-1 do
+                         begin
 
 
 
+                              selected_orf := orfs.Strings[o];
+                              selected_ors := 'ASC';
+                              sqlRubrication.Close;
+                              makeRubricationUsingSorts(page, itemsPerPage, pagesInRubrics, rubrication_query, selected_orf, selected_ors, true);
 
-                            applyVar(
+                              selected_ors := 'DESC';
+                              sqlRubrication.Close;
+                              makeRubricationUsingSorts(page, itemsPerPage, pagesInRubrics, rubrication_query, selected_orf, selected_ors, true);
 
-
-
-                            buildSection( sqlRubrication.FieldByName('sectiontpl').AsString,
-                                              sqlRubrication.FieldByName('id').asString,
-                                              sqlRubrication.FieldByName('section').AsString,
-                                              sqlRubrication.FieldByName('note').AsString,
-                                              sqlRubrication.FieldByName('full_text').AsString,
-                                              itemHtml ),
-                            'pager',
-                                    buildPagination(sqlRubrication.FieldByName('id').AsString, page, pagesInRubrics)
-                                    );
+                         end;
 
 
-
-
-                            headHtml:= buildHead( sqlRubrication.FieldByName('section').AsString,
-                            sqlRubrication.FieldByName('headtpl').AsString);
-
-                            document:='<html><head>{header}</head><body>{body}</body>';
-
-                            document:=ApplyVar(document, 'header', headHtml);
-                            document:=ApplyVar(document, 'body', sectionHtml);
-                            // постобработка
-
-                            document:=
-                                  useModules(
-                                    useOwnTags(
-                                       insertSectionsAndLinks(
-                                      useBlocks(
-                                                document ))));
-
-                            if (logger_info)   then
-                            mmRubrics.Lines.Add(document);
-
-
-                            if page > 1 then
-
-                            path:=
-                            sqlRubrication.FieldByName('dirpath').AsString+DELIM+'section_'+
-                            sqlRubrication.FieldByName('id').AsString+'_'+IntToStr(page)+'.html'
-                            else
-                            path:=sqlRubrication.FieldByName('dirpath').AsString+DELIM+'section_'+
-                            sqlRubrication.FieldByName('id').AsString+'.html';
-
-
-                            writeDocument( document,
-                            path
-                                           );
-
-
-                     pBar.Max:=pagesInRubrics;
-                     pBar.Position:=page;
 
                      // -----------------------
                     end;
@@ -2990,6 +2932,178 @@ begin
   r:=applyvar(r, 'dt', DateToStr(page.dt));
   // TODO Сюда дополнительные параметры страницы
   result:=r;
+end;
+
+function TForm1.getSortSelector(section : String): String;
+var
+  s : String;
+  orfs : TStringList;
+  i : Integer;
+begin
+
+
+  orfs := TStringList.Create();
+  orfs.Clear;
+  orfs.Add('caption');
+  orfs.Add('dt');
+
+
+  s:='<a href="/section_'+section+'.html">#</a>';
+
+  for i:=0 to orfs.Count - 1 do
+        s:=s+' &nbsp;|&nbsp; <a href="/o/'+orfs.Strings[i]+'-ASC/section_'+section+'.html">v</a>&nbsp;' + orfs.Strings[i] +
+             '&nbsp;<a href="/o/'+orfs.Strings[i]+'-DESC/section_'+section+'.html">^</a>&nbsp;|&nbsp;';
+  result := s;
+
+end;
+
+// TODO refactor this sorts
+procedure TForm1.makeRubricationUsingSorts(
+page : Integer; itemsPerPage : Integer; pagesInRubrics : Integer; rubrication_query: String;
+selected_orf : String; selected_ors : String; useo : boolean);
+var
+  headHtml : String;
+  itemHtml : String;
+  sectionId  : String;
+  itemK : byte;
+  selector_order : String;
+  sectionHtml : String;
+  document : String;
+  path : String;
+  ur : user_records;
+  fi : byte;
+  cnt, k : byte;
+  bpager : String;
+  so : string;
+
+begin
+
+
+
+  rubrication_query:=applyvar(rubrication_query, 'ors', selected_ors);
+                       rubrication_query:=applyvar(rubrication_query, 'orf', selected_orf);
+
+
+
+
+                       sqlRubrication.SQL.Text:=rubrication_query;
+
+                       prepared_transaction_start(sqlRubrication.SQL.Text, sqlRubrication, trans);
+
+                       sectionId := sqlCounter.FieldByName('section').AsString;
+
+                       sqlRubrication.ParamByName('section_id').AsString:=sectionId;
+                       sqlRubrication.ParamByName('pageoffset').AsInteger:=(page-1)*itemsPerPage;
+                       sqlRubrication.ParamByName('pagelimit').AsInteger := itemsPerPage;
+
+                       prepared_transaction_end(sqlRubrication, trans);
+                       sqlRubrication.Open;
+
+                       itemHtml := '';
+                       itemK:=0;
+                       sqlRubrication.First;
+
+
+                       while not sqlRubrication.EOF do
+                             begin
+                                 pBar.Max:=itemsPerPage;
+                                 inc(itemK);
+                                 pBar.Position:=itemK;
+                                 lbProgress.Caption:='Сборка элемента '+IntToStr(itemK)+' / '+IntToStr(itemsPerPage) + ' '+ sqlRubrication.FieldByName('content_id').AsString;
+                                  for fi:=1 to 7 do
+                                      begin
+                                         ur[fi].name:=sqlRubrication.FieldByName('ufn'+IntToStr(fi)).AsString;
+                                         ur[fi].value:=sqlRubrication.FieldByName('uf'+IntToStr(fi)).AsString;
+                                      end;
+
+                                   itemHTML := itemHtml +
+
+                                   buildItem(
+                                     sqlRubrication.FieldByName('itemtpl').AsString,
+                                     sqlRubrication.FieldByName('content_id').AsString,
+                                     sqlRubrication.FieldByName('caption').AsString,
+                                     sqlRubrication.FieldByName('dt').AsDateTime,
+                                     ur );
+                                   sqlRubrication.Next;
+                                   Application.ProcessMessages;
+                             end;
+
+
+
+                            sectionHtml := buildSection( sqlRubrication.FieldByName('sectiontpl').AsString,
+                                              sqlRubrication.FieldByName('id').asString,
+                                              sqlRubrication.FieldByName('section').AsString,
+                                              sqlRubrication.FieldByName('note').AsString,
+                                              sqlRubrication.FieldByName('full_text').AsString,
+                                              itemHtml );
+
+
+                            bpager:=buildPagination( sqlRubrication.FieldByName('id').AsString,
+                                                    page,
+                                                    pagesInRubrics,
+                                                    selected_orf,
+                                                    selected_ors,
+                                                    useO);
+
+                            sectionHtml:=applyVar(sectionHtml, 'pager', bpager);
+                            selector_order := form1.getSortSelector(sectionId);
+                            sectionHtml:=applyVar(sectionHtml, 'sort_order', selector_order);
+
+
+                            headHtml:= buildHead( sqlRubrication.FieldByName('section').AsString,
+                            sqlRubrication.FieldByName('headtpl').AsString);
+
+                            document:='<html><head>{header}</head><body>{body}</body>';
+
+                            document:=ApplyVar(document, 'header', headHtml);
+                            document:=ApplyVar(document, 'body', sectionHtml);
+                            // постобработка
+
+                            document:=
+                                  useModules(
+                                    useOwnTags(
+                                       insertSectionsAndLinks(
+                                      useBlocks(
+                                                document ))));
+
+                            if (logger_info)   then
+                            mmRubrics.Lines.Add(document);
+
+                            so:='';
+                            if useO then so:='o/'+selected_orf+'-'+selected_ors+'/';
+
+
+                            if not DirectoryExists(sqlRubrication.FieldByName('dirpath').AsString+DELIM+'o') then
+                               CreateDir( sqlRubrication.FieldByName('dirpath').AsString+DELIM+'o' );
+
+                            // for different_sorts need different folrders
+                            If Not DirectoryExists(  sqlRubrication.FieldByName('dirpath').AsString+DELIM+so ) then
+                              begin
+
+                                CreateDir( sqlRubrication.FieldByName('dirpath').AsString+DELIM+so );
+                              end;
+
+
+                            if page > 1 then
+
+                            path:=
+                            sqlRubrication.FieldByName('dirpath').AsString+DELIM+'{so}section_'+
+                            sqlRubrication.FieldByName('id').AsString+'_'+IntToStr(page)+'.html'
+                            else
+                            path:=sqlRubrication.FieldByName('dirpath').AsString+DELIM+'{so}section_'+
+                            sqlRubrication.FieldByName('id').AsString+'.html';
+
+                            path:=applyvar(path, 'so', so);
+
+
+
+                            writeDocument( document,
+                            path
+                                           );
+
+
+                     pBar.Max:=pagesInRubrics;
+                     pBar.Position:=page;
 end;
 
 

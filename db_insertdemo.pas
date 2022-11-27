@@ -118,7 +118,7 @@ end;
      addIntoPreset( 'basis', 'My Site' , GetEnvironmentVariable('HOME')+'/mysite',
      '{bootstrap}<meta charset="utf-8"><title>{sitename}-{title}</title>',
      '{mainmenu}<h1>{title}</h1><p>{content}</p>',
-     '{mainmenu}<h1>Тема: {sectionTitle}</h1> Материалы :<ul>{items}</ul>',
+     '{mainmenu}<h1>Тема: {sectionTitle}</h1> {sort_order} Материалы :<ul>{items}</ul>{pager}',
       '<li><a href="{itemUrl}.{ext}">{itemTitle}</a></li>',
       'dt', 'asc',
       sq, konnect, tranzact);
