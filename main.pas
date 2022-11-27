@@ -1752,7 +1752,7 @@ begin
     sorted_folder := '';
     if useO then
       begin
-           sorted_folder := 'o/'+orf+'-'+ors+'/';
+           sorted_folder := '/o/'+orf+'-'+ors+'/';
       end;
 
 
@@ -2551,7 +2551,7 @@ begin
 
 
 
-  itemsPerPage := 3;
+  itemsPerPage := StrToInt(edItemsPerPage.Text);
   sqlCounter.Open; // Число страниц в каждом разделе
   sqlCounter.First;
   while not sqlCounter.EOF do
