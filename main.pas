@@ -111,6 +111,8 @@ type
     acEditorForBodyTemplate: TAction;
     acEditorForRubricSectionTemplate: TAction;
     acEditorForRubricItemTemplate: TAction;
+    acActionsForMenu: TActionList;
+    acFindContentByCaption: TAction;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
     btStartServer: TButton;
@@ -170,6 +172,8 @@ type
     lvBlocks: TListView;
     lvContent: TListView;
     lvSections: TListView;
+    mnuFinder: TMenuItem;
+    mnuFind: TMenuItem;
     mmRubrics: TMemo;
     panCSSList: TPanel;
     panCSSElements: TPanel;
@@ -318,7 +322,7 @@ type
     TabSheet7: TTabSheet;
     TabSheet8: TTabSheet;
     TabSheet9: TTabSheet;
-    MainMenu1: TMainMenu;
+    mnuMainMenu: TMainMenu;
     Panel16: TPanel;
     Panel17: TPanel;
     tabUpdateByFTP: TTabSheet;
@@ -349,6 +353,7 @@ type
     procedure acEditorForRubricSectionTemplateExecute(Sender: TObject);
     procedure acEditorForSectionFullTextExecute(Sender: TObject);
     procedure acEditorForSectionNoteExecute(Sender: TObject);
+    procedure acFindContentByCaptionExecute(Sender: TObject);
     procedure AppPagesChange(Sender: TObject);
     procedure btBuildSiteClick(Sender: TObject);
     procedure btFtpUpdateClick(Sender: TObject);
@@ -1011,6 +1016,24 @@ procedure TForm1.acEditorForSectionNoteExecute(Sender: TObject);
 
 begin
      editor_win_show( sqlSections, 'note');
+end;
+
+procedure TForm1.acFindContentByCaptionExecute(Sender: TObject);
+var q : String;
+   i : Integer;
+begin
+  // TODO Поиск по заголовку
+  q:=InputBox('Поиск', 'Ищем ', '');
+  sqlContent.Locate('caption', q, [loPartialKey]);
+  for i:=0 to lvContent.Items.Count-1 do begin
+    if lvContent.Items[i]<>NIL then
+      if lvContent.Items[i].Caption = sqlContent.FieldByName('id').AsString then
+        begin
+             lvContent.ItemIndex:=i;
+             break;
+        end;
+  end;
+
 end;
 
 procedure TForm1.AppPagesChange(Sender: TObject);
