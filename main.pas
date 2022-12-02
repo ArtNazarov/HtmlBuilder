@@ -1747,7 +1747,7 @@ begin
                  (* НАЙДЕМ ВСЕ, ОБРАМЛЕННОЕ ТЕГОМ *)
                  Matcher := TRegExpr.Create(
                         DLM_OWN_TAG+tag_name+DLM_OWN_TAG+
-                         '([\w\r\n]+)'+
+                         '([\d\D\r\n]+)'+
                          DLM_OWN_TAG+'/'+tag_name+DLM_OWN_TAG);
 
                 (* ДЛЯ ВСЕХ СОВПАДЕНИЙ ЗАПУСТИМ ОБРАБОТЧИК ТЕГОВ *)
@@ -1777,6 +1777,7 @@ begin
    (* ВЫПОЛНИМ ВСЕ НАЙДЕННЫЕ ПОДСТАНОВКИ *)
   for i:=0 to ReplaceTo.Count - 1 do
       begin
+            //ShowMessage(ReplaceFrom[i] + ' меняется на '+ReplaceTo[i]);
             R:=StringReplace(R, ReplaceFrom[i], ReplaceTo[i], [rfReplaceAll, rfIgnoreCase]);
 
 
