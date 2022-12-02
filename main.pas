@@ -12,7 +12,7 @@ uses
   SynEdit, DBDateTimePicker, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids,
   ActnList, Buttons, blcksock, sockets, Synautil, synaip, synsock, ftpsend,
   db_helpers, db_insertdemo, db_create_tables, replacers, editor_in_window,
-  editor_css, editor_js, DateUtils, fgl; {Use Synaptic}
+  editor_css, editor_js, DateUtils, fgl, regexpr; {Use Synaptic}
 
 
 
@@ -30,6 +30,7 @@ const
     DELIM : Char = '/';
 
     DLM_MODULE = '%';
+    DLM_OWN_TAG = '~';
 
 type
 
@@ -470,7 +471,7 @@ type
 
     function moduleexec(cmd: string): string;
     function useModules(app: string): string;
-    function owntagexec(containter, cmd: string): string;
+    function owntagexec(container, cmd: string): string;
     function useOwnTags(app: string): string;
     function buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records): string;
     function buildSection(sectiontpl: string; sectionUrl: string;
@@ -1021,10 +1022,13 @@ end;
 procedure TForm1.acFindContentByCaptionExecute(Sender: TObject);
 var q : String;
    i : Integer;
+   is_find : boolean;
 begin
   // TODO Поиск по заголовку
   q:=InputBox('Поиск', 'Ищем ', '');
-  sqlContent.Locate('caption', q, [loPartialKey]);
+  is_find:=sqlContent.Locate('caption', q, [loCaseInsensitive, loPartialKey]);
+  if is_find then
+    begin
   for i:=0 to lvContent.Items.Count-1 do begin
     if lvContent.Items[i]<>NIL then
       if lvContent.Items[i].Caption = sqlContent.FieldByName('id').AsString then
@@ -1033,7 +1037,7 @@ begin
              break;
         end;
   end;
-
+    end;
 end;
 
 procedure TForm1.AppPagesChange(Sender: TObject);
@@ -1597,7 +1601,7 @@ var
   M: TMemo;
   filenam: string;
 begin
-  //showMessage('Запущен модуль '+cmd);
+  showMessage('Запущен модуль '+cmd);
   P := TProcess.Create(Self);
   M := TMemo.Create(Self);
   P.CommandLine := cmd;
@@ -1622,6 +1626,7 @@ function TForm1.useModules(app: string): string;
 var C, Start, En_d : integer;
   replacement : String;
   R : String;
+  container: String;
 begin
 
  R:=app;
@@ -1639,7 +1644,9 @@ begin
                                    En_d :=C;
 
                                    if logger_info then mmRubrics.Lines.Add('ОБНАРУЖЕНИЕ МОДУЛЯ...');
-                                   replacement:=moduleexec(Copy(r, Start+1, En_d-Start-1));
+                                   container:=Copy(r, Start+1, En_d-Start-1);
+                                   ShowMessage(container);
+                                   replacement:=moduleexec(container);
                                    r:=StringReplace(r, Copy(r, Start, En_d-Start+1),
                                    replacement, [rfReplaceAll]);
                                    c:=Start+Length(replacement)-1;
@@ -1654,15 +1661,16 @@ begin
  Result:=R;
 end;
 
-function TForm1.owntagexec(containter, cmd: string): string;
+function TForm1.owntagexec(container, cmd: string): string;
 var
   M: TMemo;
   P: TProcess;
   R: string;
 begin
+  //ShowMessage('Запущен '+cmd+' для '+container);
   M := TMemo.Create(Self);
   M.Clear;
-  M.Text := containter;
+  M.Text := container;
   M.Lines.SaveToFile(cmd + '.inp');
   P := TProcess.Create(Self);
   P.CommandLine := cmd;
@@ -1681,70 +1689,106 @@ begin
 
   if logger_info then mmRubrics.Lines.Add('ВЫЗОВ ИСПОЛНЯЕМОГО ТЕГА<owntagexec>');
   if logger_info then mmRubrics.Lines.Add('КОНТЕЙНЕР');
-  if logger_info then mmRubrics.Lines.Add(containter);
+  if logger_info then mmRubrics.Lines.Add(container);
   if logger_info then mmRubrics.Lines.Add('ОБРАБОТЧИК');
   if logger_info then mmRubrics.Lines.Add(cmd);
   if logger_info then mmRubrics.Lines.Add('РЕЗУЛЬТАТ');
   if logger_info then mmRubrics.Lines.Add(r);
+  //showMessage('Результат обработки '+R);
   Result := R;
 end;
 
 function TForm1.useOwnTags(app: string): string;
 var
-  C, Start, En_d, Q: integer;
   R: string;
-  pattern: string;
-  containter: string;
+
+  container: string;
   replacement: string;
-  stub: string;
-  epattern: string;
-  remstr: string;
-  z: integer;
+
+
+  tags_list : TStringList;
+  tag_name : String;
+  t : Integer;
+  RE : TRegExpr;
+  Matcher : TRegExpr;
+  ReplaceFrom : TStringList;
+  ReplaceTo   : TStringList;
+  i : integer;
 begin
-  //showMessage('USE OWN TAGS CALL');
-  r := app;
-  c := 0;
-  Start := -1;
-  En_d := -1;
-  Q := -1;
-  while (C < Length(r)) do
-  begin
-    if Copy(r, c, 1) = '~' then
-    begin
-      if Start < 0 then
-        Start := C
-      else
-      begin
-        En_d := C;
-        pattern := Copy(r, start + 1, en_d - start - 1);
-        // Stub := InputBox('Debug', 'pattern=', pattern);
-        epattern := '~/' + pattern + '~';
-        Q := Pos(epattern, r);
-        containter := Copy(r, en_d + 1, q - en_d - 1);
-        // Stub := InputBox('Parameter', 'containter=', containter);
+  (* ПЕРЕПИСАНО НА РЕГУЛЯРКИ *)
+  R:=app;
+  (* 1. НАЙДЕМ ВСЕ ПОЛЬЗОВАТЕЛЬСКИЕ ТЕГИ *)
+  re := TRegExpr.Create(DLM_OWN_TAG+'([\w]+)'+DLM_OWN_TAG);
+  tags_list:=TStringList.Create;
 
-
-        if logger_info then mmRubrics.Lines.Add('ОБНАРУЖЕНИЕ ИСПОЛНЯЕМОГО ТЕГА');
-        //ShowMessage('Нашел тег '+ containter);
-
-        replacement := owntagexec(containter, pattern);
-        //Stub := InputBox('replacement', 'result=', replacement);
-        z := q + Length(epattern) - 1;
-        remstr := Copy(r, Start, Z - Start + 1);
-        //  Stub := InputBox('RemStr', 'RemStr=', remstr);
-        r :=
-          StringReplace(r, remstr, replacement, [rfReplaceAll]);
-        // Stub := InputBox('Out', 'Out=', r);
-        //Stub := InputBox('C', 'C=', String(C));
-        C := Start + Length(replacement) - 1;
-        Start := -1;
-        En_d := -1;
-        Q := -1;
+  if re.Exec(R) then begin
+       tag_name:=re.Match[1];
+       tags_list.Add(tag_name);
+       while re.ExecNext do begin
+         tag_name := re.Match[1];
+         tags_list.Add( tag_name );
+         Application.ProcessMessages;
       end;
-    end;
-    c := c + 1;
-    Application.ProcessMessages;
   end;
+
+
+
+
+
+
+
+        (* 3 СОЗДАДИМ СПИСОК ЧТО НА ЧТО МЕНЯТЬ *)
+        ReplaceFrom := TStringList.Create;
+        ReplaceTo := TStringList.Create;
+
+        for t:=0 to tags_list.count-1 do begin
+                 tag_name:=tags_list[t];
+
+                 (* НАЙДЕМ ВСЕ, ОБРАМЛЕННОЕ ТЕГОМ *)
+                 Matcher := TRegExpr.Create(
+                        DLM_OWN_TAG+tag_name+DLM_OWN_TAG+
+                         '([\w\r\n]+)'+
+                         DLM_OWN_TAG+'/'+tag_name+DLM_OWN_TAG);
+
+                (* ДЛЯ ВСЕХ СОВПАДЕНИЙ ЗАПУСТИМ ОБРАБОТЧИК ТЕГОВ *)
+                if Matcher.Exec(R) then begin
+                   container:=Matcher.Match[1];
+                   replacement:=owntagexec(container, tag_name);
+                   (* ДОБАВИМ В СПИСКИ ЗАМЕН *)
+                   ReplaceFrom.Add(container);
+                   ReplaceTo.Add(replacement);
+
+
+
+
+                      while Matcher.ExecNext do begin
+                            container := Matcher.Match[1];
+                            replacement:=owntagexec(container, tag_name);
+
+                            ReplaceFrom.Add(container);
+                            ReplaceTo.Add(replacement);
+
+                            Application.ProcessMessages;
+                   end;
+               end;
+
+        end;
+
+   (* ВЫПОЛНИМ ВСЕ НАЙДЕННЫЕ ПОДСТАНОВКИ *)
+  for i:=0 to ReplaceTo.Count - 1 do
+      begin
+            R:=StringReplace(R, ReplaceFrom[i], ReplaceTo[i], [rfReplaceAll, rfIgnoreCase]);
+
+
+      end;
+
+   (* УДАЛЯЕМ ТЕГИ *)
+  for i:=0 to tags_list.Count - 1 do
+      begin
+            R:=StringReplace(R, DLM_OWN_TAG+tags_list[i]+DLM_OWN_TAG, '', [rfReplaceAll, rfIgnoreCase]);
+            R:=StringReplace(R, DLM_OWN_TAG+'/'+tags_list[i]+DLM_OWN_TAG, '', [rfReplaceAll, rfIgnoreCase]);
+      end;
+
   Result := R;
 end;
 
@@ -2872,8 +2916,11 @@ end;
 procedure TForm1.doCssTables;
 var
   cnt, k : byte;
+  isModuleUsed : boolean;
+  doc : String;
+  doc_path : String;
 begin
-  ;
+  isModuleUsed:=form1.chkUseModules.Checked;
 
   cnt:=CssTitles.Count;
   pBar.Max:=cnt;
@@ -2883,12 +2930,19 @@ begin
   k:=0;
 
   sqlCssStyles.First;
+
   while not sqlCssStyles.Eof do
    begin
      lbProgress.Caption:='Сборка CSS '+IntToStr(k+1)+' / '+IntToStr(cnt);
+     doc:=sqlCssStyles.FieldByName('css_style').AsString;
+     doc_path:=sqlCssStyles.FieldByName('css_path').AsString;
+     if isModuleUsed then
+        begin
+             doc:=useModules(doc);
+             doc:=useOwnTags(doc);
+        end;
+     writeDocument( doc , doc_path );
 
-     writeDocument( sqlCssStyles.FieldByName('css_style').AsString,
-            sqlCssStyles.FieldByName('css_path').AsString );
      sqlCssStyles.Next;
      Application.ProcessMessages;
      inc(k);
