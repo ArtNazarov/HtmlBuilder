@@ -116,6 +116,7 @@ type
     acFindContentByCaption: TAction;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
+    btnLoadFromWysiwyg: TButton;
     btStartServer: TButton;
     btStopServer: TButton;
     Buffer: TMemo;
@@ -132,6 +133,7 @@ type
     btnEditorTemplateOfItem: TButton;
     btnEditorCssOpen: TButton;
     btnEditorJs: TButton;
+    btnOpenWithWysiwyg: TButton;
     cboLocale: TComboBox;
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
@@ -155,6 +157,8 @@ type
     ds_Counter: TDataSource;
     ds_Join: TDataSource;
     dbJoin: TDBGrid;
+    edLocalWysigygServer: TEdit;
+    Label12: TLabel;
     lbOrderSet: TLabel;
     lbOrderField: TLabel;
     lbDt: TLabel;
@@ -363,6 +367,8 @@ type
 
     procedure btnJoinClick(Sender: TObject);
     procedure btnLoadClick(Sender: TObject);
+    procedure btnLoadFromWysiwygClick(Sender: TObject);
+    procedure btnOpenWithWysiwygClick(Sender: TObject);
 
 
     procedure btStartServerClick(Sender: TObject);
@@ -1004,6 +1010,53 @@ begin
   idOfBlocksInBase.Free;
   installedMarkups.Free;
   installedIds.Free;
+end;
+
+procedure TForm1.btnLoadFromWysiwygClick(Sender: TObject);
+var
+   fileContent : TMemo;
+   path : String;
+begin
+
+  path := form1.edLocalWysigygServer.Text;
+
+  fileContent := TMemo.Create(Self);
+  fileContent.Lines.LoadFromFile(path+'/public/content.txt');
+  sqlContent.Edit;
+  sqlContent.FieldByName('content').AsString:=fileContent.Text;
+
+  fileContent.Free;
+
+
+  Process1.CommandLine:='pkill node';
+  Process1.Execute;
+
+end;
+
+procedure TForm1.btnOpenWithWysiwygClick(Sender: TObject);
+var
+   fileContent : TMemo;
+   path : String;
+   Process2 : TProcess;
+   output : String;
+begin
+
+  path := form1.edLocalWysigygServer.Text;
+
+  fileContent := TMemo.Create(Self);
+  fileContent.Text:=sqlContent.FieldByName('content').AsString;
+  fileContent.Lines.SaveToFile(path+'/public/content.txt');
+  fileContent.Free;
+
+  Process1.CommandLine:='node '+path+'/index.js';
+  Process1.Execute;
+
+  Process2:=TProcess.Create(Self);
+  Process2.CommandLine := 'firefox http://127.0.0.1:3000';
+  Process2.Execute;
+
+
+
 end;
 
 
