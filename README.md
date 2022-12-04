@@ -16,6 +16,12 @@ Update content
 More screens https://htmlbuilder.artnazarov.ru/
 Some articles http://nazarow.ru/category/htmlbuilder/
 
+Can load/save content to wysiwyg editor using express localserver
+![Using in-browser editor](https://www.dropbox.com/s/htfl8wpa3g5rg6g/localwysiwyg.png?raw=1)
+
+Server can be downloaded from 
+https://github.com/artnazarov/wysiwyg-express
+
 Project
 ================
 Website in Russian: 
