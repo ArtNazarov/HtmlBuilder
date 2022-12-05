@@ -116,13 +116,13 @@ type
     acFindContentByCaption: TAction;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
+    btnJoin: TButton;
     btnLoadFromWysiwyg: TButton;
     btStartServer: TButton;
     btStopServer: TButton;
     Buffer: TMemo;
     btnMakeArchive: TButton;
     btnLoad: TButton;
-    btnJoin: TButton;
     btnEditorContent: TButton;
     btnEditorForSectionNote: TButton;
     btnEditorForSectionFullText: TButton;
@@ -134,6 +134,7 @@ type
     btnEditorCssOpen: TButton;
     btnEditorJs: TButton;
     btnOpenWithWysiwyg: TButton;
+    btnPublishToGithubPages: TButton;
     cboLocale: TComboBox;
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
@@ -157,8 +158,10 @@ type
     ds_Counter: TDataSource;
     ds_Join: TDataSource;
     dbJoin: TDBGrid;
+    edGithubPagesPath: TEdit;
     edLocalWysigygServer: TEdit;
     Label12: TLabel;
+    lbGithubPagesPath: TLabel;
     lbOrderSet: TLabel;
     lbOrderField: TLabel;
     lbDt: TLabel;
@@ -182,6 +185,7 @@ type
     mmRubrics: TMemo;
     panCSSList: TPanel;
     panCSSElements: TPanel;
+    panJoinAction: TPanel;
     panProgress: TPanel;
     panJsProps: TPanel;
     panJs: TPanel;
@@ -360,7 +364,7 @@ type
     procedure acEditorForSectionNoteExecute(Sender: TObject);
     procedure acFindContentByCaptionExecute(Sender: TObject);
     procedure AppPagesChange(Sender: TObject);
-    procedure btBuildSiteClick(Sender: TObject);
+
     procedure btFtpUpdateClick(Sender: TObject);
     procedure btnEditorCssOpenClick(Sender: TObject);
     procedure btnEditorJsClick(Sender: TObject);
@@ -369,6 +373,7 @@ type
     procedure btnLoadClick(Sender: TObject);
     procedure btnLoadFromWysiwygClick(Sender: TObject);
     procedure btnOpenWithWysiwygClick(Sender: TObject);
+    procedure btnPublishToGithubPagesClick(Sender: TObject);
 
 
     procedure btStartServerClick(Sender: TObject);
@@ -1059,12 +1064,35 @@ begin
 
 end;
 
-
-
-procedure TForm1.btBuildSiteClick(Sender: TObject);
+procedure TForm1.btnPublishToGithubPagesClick(Sender: TObject);
+var ProcessCopy : TProcess;
 begin
+   ProcessCopy:=TProcess.Create(Self);
+   ProcessCopy.CommandLine:='/usr/bin/bash -c "cp -r  '+form1.edPathToBuild.Text+'/* '+form1.edGithubPagesPath.Text+'" ';
+   ProcessCopy.Execute;
+   ProcessCopy.WaitOnExit; // ждем завершения копирования
+   ProcessCopy.Free;
+
+   ProcessCopy:=TProcess.Create(Self);
+   ProcessCopy.CommandLine:='/usr/bin/bash -c "cd '+form1.edGithubPagesPath.Text+' && git add * " ';
+   ProcessCopy.Execute;
+   ProcessCopy.WaitOnExit; // добавляем файл в коммит
+   ProcessCopy.Free;
+
+   ProcessCopy:=TProcess.Create(Self);
+   ProcessCopy.CommandLine:='/usr/bin/bash -c " cd '+form1.edGithubPagesPath.Text+' &&  git commit -m /"next commit/"  " ';
+   ProcessCopy.Execute;
+   ProcessCopy.WaitOnExit; // делаем коммит
+   ProcessCopy.Free;
+
+
+
+
+
+
 
 end;
+
 
 procedure TForm1.acEditorForSectionNoteExecute(Sender: TObject);
 
