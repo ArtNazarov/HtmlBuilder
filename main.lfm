@@ -33,7 +33,6 @@ object Form1: TForm1
         Top = 0
         Width = 1544
         Align = alClient
-        Caption = 'Panel1'
         ClientHeight = 658
         ClientWidth = 1544
         ParentColor = False
@@ -44,7 +43,6 @@ object Form1: TForm1
           Top = 1
           Width = 1180
           Align = alClient
-          Caption = 'Panel18'
           ClientHeight = 656
           ClientWidth = 1180
           TabOrder = 0
@@ -88,8 +86,8 @@ object Form1: TForm1
           end
           object PageControl3: TPageControl
             Left = 1
-            Height = 301
-            Top = 271
+            Height = 218
+            Top = 354
             Width = 1178
             ActivePage = TabSheet11
             Align = alClient
@@ -97,22 +95,22 @@ object Form1: TForm1
             TabOrder = 2
             object TabSheet11: TTabSheet
               Caption = 'Основной текст'
-              ClientHeight = 264
+              ClientHeight = 181
               ClientWidth = 1170
               object Panel13: TPanel
                 Left = 0
-                Height = 264
+                Height = 181
                 Top = 0
                 Width = 1170
                 Align = alClient
                 Caption = 'Panel13'
-                ClientHeight = 264
+                ClientHeight = 181
                 ClientWidth = 1170
                 ParentColor = False
                 TabOrder = 0
                 object fContent: TDBMemo
                   Left = 1
-                  Height = 228
+                  Height = 145
                   Top = 35
                   Width = 1168
                   Align = alClient
@@ -164,25 +162,25 @@ object Form1: TForm1
             end
             object TabSheet12: TTabSheet
               Caption = 'Дополнительная информация'
-              ClientHeight = 264
+              ClientHeight = 181
               ClientWidth = 1170
               object Panel14: TPanel
                 Left = 0
-                Height = 264
+                Height = 181
                 Top = 0
                 Width = 1170
                 Align = alClient
-                ClientHeight = 264
+                ClientHeight = 181
                 ClientWidth = 1170
                 ParentColor = False
                 TabOrder = 0
                 object Panel15: TPanel
                   Left = 1
-                  Height = 262
+                  Height = 179
                   Top = 1
                   Width = 1168
                   Align = alClient
-                  ClientHeight = 262
+                  ClientHeight = 179
                   ClientWidth = 1168
                   TabOrder = 0
                   object DBText1: TDBText
@@ -198,7 +196,7 @@ object Form1: TForm1
                   object dbePageField1: TDBEdit
                     Left = 1
                     Height = 36
-                    Top = 261
+                    Top = 178
                     Width = 1166
                     DataField = 'uf1'
                     DataSource = ds_Content
@@ -209,7 +207,7 @@ object Form1: TForm1
                   object DBText2: TDBText
                     Left = 1
                     Height = 22
-                    Top = 261
+                    Top = 178
                     Width = 1166
                     Align = alTop
                     DataField = 'ufn2'
@@ -219,7 +217,7 @@ object Form1: TForm1
                   object dbePageField2: TDBEdit
                     Left = 1
                     Height = 36
-                    Top = 261
+                    Top = 178
                     Width = 1166
                     DataField = 'uf2'
                     DataSource = ds_Content
@@ -230,7 +228,7 @@ object Form1: TForm1
                   object DBText3: TDBText
                     Left = 1
                     Height = 22
-                    Top = 261
+                    Top = 178
                     Width = 1166
                     Align = alTop
                     DataField = 'ufn3'
@@ -240,7 +238,7 @@ object Form1: TForm1
                   object dbePageField3: TDBEdit
                     Left = 1
                     Height = 36
-                    Top = 255
+                    Top = 178
                     Width = 1166
                     DataField = 'uf3'
                     DataSource = ds_Content
@@ -251,7 +249,7 @@ object Form1: TForm1
                   object DBText4: TDBText
                     Left = 1
                     Height = 22
-                    Top = 233
+                    Top = 178
                     Width = 1166
                     Align = alTop
                     DataField = 'ufn4'
@@ -261,7 +259,7 @@ object Form1: TForm1
                   object dbePageField4: TDBEdit
                     Left = 1
                     Height = 36
-                    Top = 197
+                    Top = 178
                     Width = 1166
                     DataField = 'uf4'
                     DataSource = ds_Content
@@ -381,7 +379,7 @@ object Form1: TForm1
           object lbDt: TLabel
             Left = 1
             Height = 22
-            Top = 219
+            Top = 302
             Width = 1178
             Align = alTop
             Caption = 'Дата материала'
@@ -390,7 +388,7 @@ object Form1: TForm1
           object DBDateTimePicker1: TDBDateTimePicker
             Left = 1
             Height = 30
-            Top = 241
+            Top = 324
             Width = 1178
             DataField = 'dt'
             DataSource = ds_Content
@@ -428,6 +426,41 @@ object Form1: TForm1
             Align = alTop
             ItemHeight = 0
             TabOrder = 6
+          end
+          object lbAttachTagToPage: TLabel
+            Left = 1
+            Height = 22
+            Top = 219
+            Width = 1178
+            Align = alTop
+            Caption = 'Связать тег со статьей'
+            ParentColor = False
+          end
+          object dbSelectorTag: TDBLookupComboBox
+            Left = 1
+            Height = 36
+            Top = 241
+            Width = 1178
+            Align = alTop
+            DataField = 'tag_id'
+            DataSource = ds_Tags
+            KeyField = 'tag_id'
+            ListField = 'tag_caption'
+            ListFieldIndex = 0
+            ListSource = ds_Tags
+            LookupCache = False
+            Sorted = True
+            TabOrder = 7
+          end
+          object btnAttachTagToMaterial: TButton
+            Left = 1
+            Height = 25
+            Top = 277
+            Width = 1178
+            Align = alTop
+            Caption = 'Добавить тег к статье'
+            OnClick = btnAttachTagToMaterialClick
+            TabOrder = 8
           end
         end
         object lvContent: TListView

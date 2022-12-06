@@ -62,10 +62,12 @@ type
     btnEditorJs: TButton;
     btnOpenWithWysiwyg: TButton;
     btnPublishToGithubPages: TButton;
+    btnAttachTagToMaterial: TButton;
     cboLocale: TComboBox;
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    dbSelectorTag: TDBLookupComboBox;
     ds_TagsOnPage: TDataSource;
     dbmTagsTemplate: TDBMemo;
     dbmItemTagTemplate: TDBMemo;
@@ -100,6 +102,7 @@ type
     edGithubPagesPath: TEdit;
     edLocalWysigygServer: TEdit;
     Label12: TLabel;
+    lbAttachTagToPage: TLabel;
     lbTagsOnPageTab: TLabel;
     lbTagsTemplate: TLabel;
     lbItemTagTempate: TLabel;
@@ -329,6 +332,7 @@ type
     procedure AppPagesChange(Sender: TObject);
 
     procedure btFtpUpdateClick(Sender: TObject);
+    procedure btnAttachTagToMaterialClick(Sender: TObject);
     procedure btnEditorCssOpenClick(Sender: TObject);
     procedure btnEditorJsClick(Sender: TObject);
 
@@ -865,6 +869,24 @@ begin
   FtpClient.Free;
   btFtpUpdate.Enabled := True;
 
+end;
+
+procedure TForm1.btnAttachTagToMaterialClick(Sender: TObject);
+var
+  link_id : String; id_tag : String; id_page : String;
+  add_sql : TSqlQuery;
+begin
+  add_sql:=TSqlQuery.Create(self);
+  add_sql.SQLConnection:=conn;
+  add_sql.Transaction:=trans;
+
+   id_tag:=dbSelectorTag.KeyValue;
+   id_page:=sqlContent.FieldByName('id').AsString;
+   link_id:='linked_'+id_tag+'_with_'+id_page;
+   addIntoTagsPages(link_id,  id_tag, id_page,  add_sql, conn, trans);
+
+add_sql.Free;
+   form1.showTagsOnPage(id_page);
 end;
 
 procedure TForm1.btnEditorCssOpenClick(Sender: TObject);
