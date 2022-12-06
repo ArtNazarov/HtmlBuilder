@@ -13,7 +13,7 @@ uses
 procedure loadTagsForPages(id_page : String; var tm : TagsMap; var sq : TSqlQuery;
   var tranzact : TSqlTransaction);
 
-function tagsInPageHtml(var tags : TagsMap) : String;
+function tagsInPageHtml(var tags : TagsMap; ext : String) : String;
 
 
 procedure loadAllTagsForSitemap(var tm : TagsMap; var sq : TSqlQuery;
@@ -63,14 +63,14 @@ begin
 
 end;
 
-function tagsInPageHtml(var tags: TagsMap): String;
+function tagsInPageHtml(var tags: TagsMap; ext : String): String;
 var i : Integer; t : Tag; r : String;
 begin
    r := '';
   for i:=0 to Tags.count-1 do
      begin
        t:=Tags.Data[i];
-       r:=r+'<a href="/tags/'+t.tag_id+'">'+t.tag_caption+'</a>';
+       r:=r+'&nbsp;<a href="/tags/'+t.tag_id+'.'+ext+'">'+t.tag_caption+'</a>';
      end;
   result:=r;
 end;

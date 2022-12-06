@@ -66,6 +66,7 @@ type
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    ds_TagsOnPage: TDataSource;
     dbmTagsTemplate: TDBMemo;
     dbmItemTagTemplate: TDBMemo;
     ds_Tags_Pages: TDataSource;
@@ -99,6 +100,7 @@ type
     edGithubPagesPath: TEdit;
     edLocalWysigygServer: TEdit;
     Label12: TLabel;
+    lbTagsOnPageTab: TLabel;
     lbTagsTemplate: TLabel;
     lbItemTagTempate: TLabel;
     lbTagsPages_Page_Tag: TLabel;
@@ -121,6 +123,7 @@ type
     lbCssStyle: TLabel;
     lbCSS: TLabel;
     lbSpecification: TLabel;
+    listTags: TListBox;
     lvTagsPages: TListView;
     lvTags: TListView;
     lvJsScripts: TListView;
@@ -207,7 +210,7 @@ type
     Label14: TLabel;
     Label15: TLabel;
     Label16: TLabel;
-    Label17: TLabel;
+    lbCategory: TLabel;
     Label18: TLabel;
     Label19: TLabel;
     Label2: TLabel;
@@ -268,6 +271,7 @@ type
     sqlCounter: TSQLQuery;
     sqlCssStyles: TSQLQuery;
     sqlJsScripts: TSQLQuery;
+    sqlGetTagsForPage: TSQLQuery;
     sqlTagsPages: TSQLQuery;
     sqlTags: TSQLQuery;
     sqlRubrication: TSQLQuery;
@@ -446,6 +450,7 @@ type
 
     function insLinks(body: string): string;
     function insSections(body: string): string;
+    procedure showTagsOnPage(id : string);
 
 
 
@@ -1294,6 +1299,9 @@ end;
 procedure TForm1.lvContentClick(Sender: TObject);
 begin
   listViewClickHelper(lvContent, sqlContent, 'id');
+  showTagsOnPage(sqlContent.FieldByName('id').AsString);
+
+
 end;
 
 procedure TForm1.lvCSSClick(Sender: TObject);
@@ -1657,6 +1665,34 @@ begin
   if logger_info then mmRubrics.Lines.Add('Вызвана<insSections> после '+r);
   if logger_info then if r=body then mmRubrics.Lines.Add('!!! СОВПАДАЮТ' );
   Result := r;
+end;
+
+procedure TForm1.showTagsOnPage(id: string);
+begin
+  sqlGetTagsForPage.Clear;
+  sqlGetTagsForPage.Transaction:=trans;
+  sqlGetTagsForPage.SQLConnection:=conn;
+  sqlGetTagsForPage.SQL.LoadFromFile('sql_tags_for_page.txt');
+
+
+ prepared_transaction_start(sqlGetTagsForPage.SQL.Text,
+  sqlGetTagsForPage, trans);
+
+  sqlGetTagsForPage.ParamByName('ID_PAGE').AsString := id;
+
+  prepared_transaction_end( sqlGetTagsForPage, trans);
+
+  sqlGetTagsForPage.Active:=true;
+
+  listTags.Clear;
+  sqlGetTagsForPage.First;
+  while not sqlGetTagsForPage.EOF do
+    begin
+      listTags.AddItem(sqlGetTagsForPage.FieldByName('tag_caption').AsString, nil);
+      sqlGetTagsForPage.Next;
+    end;
+  sqlGetTagsForPage.First;
+
 end;
 
 
@@ -2633,7 +2669,7 @@ begin
 
             loadTagsForPages(page.id, tagsHere, sql_for_tags, trans);
 
-            tags_html:=tagsInPageHtml(tagsHere);
+            tags_html:=tagsInPageHtml(tagsHere, form1.PrefferedExtension.text);
 
             tagsHere.Free;
 
