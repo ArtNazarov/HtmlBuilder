@@ -12,90 +12,17 @@ uses
   SynEdit, DBDateTimePicker, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids,
   ActnList, Buttons, blcksock, sockets, Synautil, synaip, synsock, ftpsend,
   db_helpers, db_insertdemo, db_create_tables, replacers, editor_in_window,
-  editor_css, editor_js, DateUtils, fgl, regexpr; {Use Synaptic}
+  editor_css, editor_js, DateUtils, fgl, regexpr, types_for_app,
+  selectorTagsPages, const_for_app; {Use Synaptic}
 
 
 
 
-const
 
-   num_tables : byte = 5;
-   SilentMode : boolean = True;
-   logger_info : boolean = False;
-   sqlite_filename : String = 'sqlite.db';
-   msgBaseSuccess : String = 'База данных успешно создана.';
-   msgErrorCreating : String = 'Невозможно создать новую базу данных';
-   msgCantCheckDbFile : String = 'Невозможно проверить, существует ли файл базы данных';
-
-    DELIM : Char = '/';
-
-    DLM_MODULE = '%';
-    DLM_OWN_TAG = '~';
 
 type
 
 
-  sdict = specialize TFPGmap<string, string>;{define type under type}
-
-  sqls_list = array[byte] of TSQLquery;
-
-  user_records = array[0..7] of record
-              name : string;
-              value : string;
-            end;
-
-  rubric_pages = record
-            pages_total   : array[0..255] of byte; // число страниц
-            section_index : array[0..255] of byte;
-            sectionhtml : array[0..255] of String;
-            number_of_page : array[0..255] of byte;
-            rubric_counter : byte;
-
-
-  end;
-
-  page_pairs = record
-            content_id : string;
-            caption    : string;
-  end;
-
-  section_params = record
-            id : string;
-            section : string;
-            note    : string;
-            full_text : string;
-            content_id : string;
-            caption : string;
-            sectiontpl :  string;
-            headtpl : string;
-            itemtpl : string;
-            dirpath : string;
-            pages   : array[0..255] of page_pairs;
-            pages_counter : byte; // счетчик страниц
-
-  end;
-
-  section_list = record
-            sections : array[0..255] of section_params;
-            section_counter : byte; // счетчик разделов
-  end;
-
-  page_params = record
-            id        : String;
-            title     : String;
-            body      : String;
-            dt        : TDateTime;
-            section_id : String;
-            section_title : String;
-            sitename : String;
-            dirpath : String;
-            headtpl : String;
-            bodytpl : String;
-            sectiontpl : String;
-            dir : String;
-            user_field_names : array[0..7] of String;
-            user_field_values  : array[0..7] of String;
-  end;
 
 
   { ServerThread }
@@ -139,6 +66,17 @@ type
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    dbmTagsTemplate: TDBMemo;
+    dbmItemTagTemplate: TDBMemo;
+    ds_Tags_Pages: TDataSource;
+    dbeTagsPages_id_tag_page: TDBEdit;
+    dbeTagsPages_id_tag: TDBEdit;
+    dbeTagsPages_id_page: TDBEdit;
+    dbNav_TagsPages: TDBNavigator;
+    ds_Tags: TDataSource;
+    dbeTagId: TDBEdit;
+    dbeTagCaption: TDBEdit;
+    dbNav_Tags: TDBNavigator;
     dbOrder_Field_Set: TDBComboBox;
     dbOrder_Field: TDBComboBox;
     DBDateTimePicker1: TDBDateTimePicker;
@@ -161,6 +99,15 @@ type
     edGithubPagesPath: TEdit;
     edLocalWysigygServer: TEdit;
     Label12: TLabel;
+    lbTagsTemplate: TLabel;
+    lbItemTagTempate: TLabel;
+    lbTagsPages_Page_Tag: TLabel;
+    lbTagsPages_Tag_Id: TLabel;
+    lbTagsPages: TLabel;
+    lbTagsPages_Id_tag_page: TLabel;
+    lbTagId: TLabel;
+    lbTagCaption: TLabel;
+    lbTags: TLabel;
     lbGithubPagesPath: TLabel;
     lbOrderSet: TLabel;
     lbOrderField: TLabel;
@@ -174,6 +121,8 @@ type
     lbCssStyle: TLabel;
     lbCSS: TLabel;
     lbSpecification: TLabel;
+    lvTagsPages: TListView;
+    lvTags: TListView;
     lvJsScripts: TListView;
     lvCSS: TListView;
     lvPresets: TListView;
@@ -185,6 +134,10 @@ type
     mmRubrics: TMemo;
     panCSSList: TPanel;
     panCSSElements: TPanel;
+    Panel24: TPanel;
+    panLvTagsPages: TPanel;
+    panTagPagesForm: TPanel;
+    panTagsForm: TPanel;
     panJoinAction: TPanel;
     panProgress: TPanel;
     panJsProps: TPanel;
@@ -315,10 +268,16 @@ type
     sqlCounter: TSQLQuery;
     sqlCssStyles: TSQLQuery;
     sqlJsScripts: TSQLQuery;
+    sqlTagsPages: TSQLQuery;
+    sqlTags: TSQLQuery;
     sqlRubrication: TSQLQuery;
     tabJoin: TTabSheet;
     tabCSS: TTabSheet;
     tabJs: TTabSheet;
+    tabTagsTemplate: TTabSheet;
+    tabItemTagTemplate: TTabSheet;
+    tabTagsPages: TTabSheet;
+    tabTags: TTabSheet;
     temp_sql: TSQLQuery;
     trans: TSQLTransaction;
     sqlSections: TSQLQuery;
@@ -411,6 +370,8 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
 
     procedure FormCreate(Sender: TObject);
+    procedure lvTagsClick(Sender: TObject);
+    procedure lvTagsPagesClick(Sender: TObject);
     procedure panJsClick(Sender: TObject);
 
 
@@ -436,6 +397,11 @@ type
 
     procedure sqlSectionsAfterPost(DataSet: TDataSet);
     procedure sqlSectionsBeforeDelete(DataSet: TDataSet);
+    procedure sqlTagsAfterPost(DataSet: TDataSet);
+    procedure sqlTagsBeforeDelete(DataSet: TDataSet);
+    procedure sqlTagsPagesAfterPost(DataSet: TDataSet);
+    procedure sqlTagsPagesBeforeDelete(DataSet: TDataSet);
+    procedure sqlTagsPagesBeforeRefresh(DataSet: TDataSet);
 
 
 
@@ -448,6 +414,9 @@ type
     SiteSectionUrls, SiteSectionTitles: TMemo;
     CssTitles   : TStringList;
     JsTitles    : TStringList;
+
+    Tags        : sdict;
+    mTagsPages  : TagsPagesMap;
 
     POrs   : sdict;
     POrf   : sdict;
@@ -471,6 +440,7 @@ type
     procedure scanLinks();
     procedure scanSections();
     procedure scanCss();
+    procedure scanTagsPages();
 
 
 
@@ -481,6 +451,7 @@ type
 
 
     function moduleexec(cmd: string): string;
+    function usePreset(app : String) : string;
     function useModules(app: string): string;
     function owntagexec(container, cmd: string): string;
     function useOwnTags(app: string): string;
@@ -535,6 +506,8 @@ type
     procedure viewCssSQL(); // просмотр таблиц CSS
     procedure viewJsSQL();
     procedure viewTablesSQL(); // выполняем запросы на просмотр таблиц
+    procedure viewTagsSQL();
+    procedure viewTagsPagesSQL();
 
 
 
@@ -547,6 +520,8 @@ type
      { Переназначение datasource для таблицы preset - нач. настройки сайта}
      procedure changeDataSourcesPresets();
      procedure changeDataSourcesCss();
+     procedure changeDataSourcesTags();
+     procedure changeDataSourcesTagsPages();
 
      (* Заполнение демо данными *)
 
@@ -566,9 +541,11 @@ type
      procedure  writeDocument( document : String; filenam: String);
      procedure doSections();
      procedure doSitemap();
+     procedure doTagsMap();
      function insertSectionsAndLinks(str : string) : string;
      procedure scanBlocks();
      procedure scanPresets();
+     procedure scanTags();
      procedure doScan();
 
 
@@ -590,6 +567,7 @@ type
 
     procedure AfterPostHelper(var lv : TListView; var sql : TSQLQuery; field : String);
     procedure BeforeDeleteHelper(var lv : TListView; var sql : TSQLQuery; field : String);
+    procedure listViewClickHelper(var lv : TListView; var sql : TSQLQuery; field : String);
 
 
 
@@ -634,6 +612,9 @@ begin
   CssTitles:=TStringList.Create;
   JsTitles:=TStringList.Create;
 
+  Tags:=sdict.Create;
+  mTagsPages:=TagsPagesMap.Create;
+
   POrf := sdict.create();
   POrs := sdict.create();
 
@@ -645,6 +626,17 @@ begin
 
   doScan();
   edPathToBuild.Text:=GetEnvironmentVariable('HOME')+'/mysite';
+end;
+
+procedure TForm1.lvTagsClick(Sender: TObject);
+var tag_id : String;
+begin
+  listViewClickHelper(lvTags, sqlTags, 'tag_id');
+end;
+
+procedure TForm1.lvTagsPagesClick(Sender: TObject);
+begin
+  ListViewClickHelper(lvTagsPages, sqlTagsPages, 'id_tag_page');
 end;
 
 procedure TForm1.panJsClick(Sender: TObject);
@@ -755,6 +747,31 @@ end;
 procedure TForm1.sqlSectionsBeforeDelete(DataSet: TDataSet);
 begin
   BeforeDeleteHelper(lvSections, sqlSections, 'id');
+end;
+
+procedure TForm1.sqlTagsAfterPost(DataSet: TDataSet);
+begin
+  afterPostHelper(lvTags, sqlTags, 'tag_id');
+end;
+
+procedure TForm1.sqlTagsBeforeDelete(DataSet: TDataSet);
+begin
+  BeforeDeleteHelper(lvTags, sqlTags, 'tag_id');
+end;
+
+procedure TForm1.sqlTagsPagesAfterPost(DataSet: TDataSet);
+begin
+  afterPostHelper(lvTagsPages, sqlTagsPages, 'id_tag_page');
+end;
+
+procedure TForm1.sqlTagsPagesBeforeDelete(DataSet: TDataSet);
+begin
+  beforedeletehelper(lvTagsPages, sqlTagsPages, 'id_tag_page');
+end;
+
+procedure TForm1.sqlTagsPagesBeforeRefresh(DataSet: TDataSet);
+begin
+  sqlTagsPages.ApplyUpdates;
 end;
 
 
@@ -903,6 +920,7 @@ begin
   doSitemap(); // карта сайта
   doCssTables(); // css таблицы
   doJs(); // скрипты
+  doTagsMap(); // все теги на сайте
 
 
 
@@ -1269,69 +1287,34 @@ begin
 end;
 
 procedure TForm1.lvBlocksClick(Sender: TObject);
-var block_id : String;
 begin
-  if lvBlocks.ItemIndex >=0 then
-     begin
-   block_id := lvBlocks.Items.Item[lvBlocks.ItemIndex].Caption;
-  sqlBlocks.Locate('id', block_id, []);
-     end;
-
+    listViewClickHelper(lvBlocks, sqlBlocks, 'id');
 end;
 
 procedure TForm1.lvContentClick(Sender: TObject);
-var content_id : String;
 begin
-  if lvContent.ItemIndex >= 0 then
-    begin
-      content_id := lvContent.Items[ lvContent.ItemIndex ].Caption;
-      sqlContent.Locate('id', content_id, []);
-    end;
-
+  listViewClickHelper(lvContent, sqlContent, 'id');
 end;
 
 procedure TForm1.lvCSSClick(Sender: TObject);
-var css_id : String;
 begin
-  if lvCSS.ItemIndex >= 0 then
-     begin
-          css_id := lvCSS.Items[ lvCSS.ItemIndex ].Caption;
-          sqlCssStyles.Locate('css_id', css_id, []);
-
-     end;
+  listViewClickHelper(lvCSS, sqlCssStyles, 'css_id');
 end;
 
 procedure TForm1.lvJsScriptsClick(Sender: TObject);
-var js_id : String;
-begin
-  if lvJsScripts.ItemIndex >= 0 then
-     begin
-          js_id := lvJsScripts.Items[ lvJsScripts.ItemIndex ].Caption;
-          sqlJsScripts.Locate('js_id', js_id, []);
 
-     end;
+begin
+  listViewClickHelper(lvJsScripts, sqlJsScripts, 'js_id');
 end;
 
 procedure TForm1.lvPresetsClick(Sender: TObject);
-var preset_id : String;
 begin
-  if lvPresets.ItemIndex >= 0  then
-    begin
-        preset_id := lvPresets.Items.Item[ lvPresets.ItemIndex ].Caption;
-        sqlPresets.Locate('id', preset_id, []);
-    end;
-
+  listViewClickHelper(lvPresets, sqlPresets, 'id');
 end;
 
 procedure TForm1.lvSectionsClick(Sender: TObject);
-var section_id : String;
 begin
-  if lvSections.ItemIndex >= 0 then
-    begin
-  section_id := lvSections.Items.Item[ lvSections.ItemIndex ].Caption;
-  sqlSections.Locate('id', section_id, []);
-
-    end;
+  listViewClickHelper(lvSections, sqlSections, 'id');
 end;
 
 
@@ -1356,6 +1339,9 @@ end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+
+  Tags.Free;
+
   try
   form1.makeSqlInactive();
   except
@@ -1596,6 +1582,31 @@ begin
     end;
 end;
 
+procedure TForm1.scanTagsPages;
+var r : Tag_Page_Link;   i : Integer;
+begin
+  sqlTagsPages.First;
+  while not sqlTagsPages.EOF do
+    begin
+      r.id_tag_page:=sqlTagsPages.FieldByName('id_tag_page').AsString;
+
+      r.id_tag:=sqlTagsPages.FieldByName('id_tag').AsString;
+      r.id_page:=sqlTagsPages.FieldByName('id_page').AsString;
+      mTagsPages.Add(r.id_tag_page, r);
+      sqlTagsPages.Next;
+
+    end;
+  sqlTagsPages.First;
+
+  // to ui
+
+  for i:=0 to mTagsPages.Count-1 do
+      begin
+        lvTagsPages.AddItem( mTagsPages.Keys[i], nil);
+      end;
+
+end;
+
 
 
 function TForm1.insLinks(body: string): string;
@@ -1699,6 +1710,14 @@ begin
   P.Free;
   M.Free;
   Result := R;
+end;
+
+function TForm1.usePreset(app: String): string;
+var R : String;
+begin
+  R:=app;
+  R:=ApplyVar(R, 'sitename', sqlPresets.FieldByName('sitename').AsString);
+  Result:=R;
 end;
 
 {{ ======================== РАСШИРЕНИЕ ВОЗМОЖНОСТЕЙ МОДУЛЯМИ ================ }}
@@ -2289,6 +2308,8 @@ begin
     sqlContent.Active:=true;
     sqlCssStyles.Active:=true;
     sqlJsScripts.Active:=true;
+    sqlTags.Active:=true;
+    sqlTagsPages.Active:=true;
 end;
 
 procedure TForm1.makeSqlInactive;
@@ -2305,7 +2326,8 @@ begin
   sqlSections.Active:=false;
   sqlBlocks.Active:=false;
   sqlJsScripts.Active:=false;
-
+  sqlTags.Active:=false;
+  sqlTagsPages.Active:=false;
   conn.Close;
 end;
 
@@ -2361,6 +2383,20 @@ begin
   form1.viewSectionsSQL();
   form1.viewCssSQL();
   form1.viewJsSQL();
+end;
+
+procedure TForm1.viewTagsSQL;
+begin
+  open_sql(    'select * from tags', sqlTags);
+  ds_Tags.AutoEdit:=True;
+  SilentMessage('выполнена загрузка страниц!');
+end;
+
+procedure TForm1.viewTagsPagesSQL;
+begin
+  open_sql(    'select * from tags_pages', sqlTagsPages);
+  ds_Tags_Pages.AutoEdit:=True;
+  SilentMessage('выполнена загрузка страниц!');
 end;
 
 (*
@@ -2434,6 +2470,23 @@ begin
  // dbNav_Css.DataSource:=form1.ds_Css;
 end;
 
+procedure TForm1.changeDataSourcesTags;
+begin
+  dbeTagId.DataSource:=ds_Tags;
+  dbeTagCaption.DataSource:=ds_Tags;
+  dbNav_Tags.DataSource:=ds_Tags;
+
+end;
+
+procedure TForm1.changeDataSourcesTagsPages;
+begin
+  dbeTagsPages_id_tag_page.DataSource:=ds_Tags_Pages;
+  dbeTagsPages_id_tag.DataSource:=ds_Tags_Pages;
+  dbeTagsPages_id_page.DataSource:=ds_Tags_Pages;
+  dbNav_TagsPages.DataSource:=ds_Tags_Pages;
+end;
+
+
 
 
 
@@ -2457,6 +2510,9 @@ begin
             createPresetsSQL(conn, trans);
             createCssSQL(conn, trans);
             createJsSQL(conn, trans);
+            createTagsSQL(conn, trans);
+            createTagsPagesSQL(conn, trans);
+
 
 
 end;
@@ -2469,6 +2525,8 @@ begin
   Form1.changeDataSourcesPresets();
   Form1.changeDataSourcesCss();
   Form1.changeDataSourcesJs();
+  Form1.changeDataSourcesTags();
+  Form1.changeDataSourcesTagsPages();
 end;
 
 
@@ -2514,7 +2572,13 @@ var
         headT, bodyT : String;
         page_param_num : byte;
         cnt, k : byte;
+
+        tagsHere : TagsMap;
+        sql_for_tags : TSQLQuery;
+        tags_html : String;
 begin
+
+
 
    (* Загружаем шаблоны из файлов, если сделан такой выбор *)
   fBuffer := TStringList.Create();
@@ -2554,6 +2618,30 @@ begin
             page.sitename := sqlJoin.FieldByName('sitename').AsString;
             page.dirpath := sqlJoin.FieldByName('dirpath').AsString;
             page.dt:=sqlJoin.FieldByName('dt').AsDateTime;
+
+            //получить теги страницы
+
+            sql_for_tags:=TSQLQuery.Create(Self);
+
+            sql_for_tags.SQLConnection:=conn;
+
+            sql_for_tags.Transaction:=trans;
+
+            tagsHere:=TagsMap.Create;
+
+            sql_for_tags.Active:=false;
+
+            loadTagsForPages(page.id, tagsHere, sql_for_tags, trans);
+
+            tags_html:=tagsInPageHtml(tagsHere);
+
+            tagsHere.Free;
+
+            sql_for_tags.Free;
+
+            page.tags:=tags_html;
+
+
 
             for page_param_num:=1 to 7 do
               begin
@@ -2868,6 +2956,105 @@ begin
   fbuffer.Free;
 end;
 
+procedure TForm1.doTagsMap;
+var
+  sq : TSqlQuery;
+  tm : TagsMap;
+  tags_html: String;
+  doc : String;
+  doc_path : String;
+  i : Integer;
+  pm : PagesMap;
+  item_tag_tpl : String;
+  headtpl : String;
+  tags_tpl : String;
+  items    : String;
+  head, body : String;
+
+begin
+  sq := TSqlQuery.Create(self);
+  sq.transaction:=form1.trans;
+  sq.SQLConnection:=form1.conn;
+
+  tm:=TagsMap.Create;
+
+  loadAllTagsForSitemap(tm, sq, trans);
+
+  tags_html:=tagsInSitemap(tm);
+
+
+  head:=ApplyVar( sqlPresets.FieldByName('headtpl').AsString, 'title', 'Теги');
+
+  body:=tags_html;
+
+  doc_path:=sqlPresets.FieldByName('dirpath').AsString+DELIM +'all_tags.'+form1.PrefferedExtension.Text;
+
+  doc:='<html><head>'+head+'</head><body>'+body+'</body></hmtl>';
+
+  doc:=usePreset(useModules(
+                         useOwnTags(
+                                    insertSectionsAndLinks(
+                                                           useBlocks(doc)
+                                                    )
+                                       )));
+
+  writedocument( doc, doc_path);
+
+
+  if Not DirectoryExists( sqlPresets.FieldByName('dirpath').AsString+DELIM+'/tags') then
+         CreateDir(sqlPresets.FieldByName('dirpath').AsString+DELIM+'/tags');
+
+
+  for i:=0 to tm.Count-1 do
+    begin
+         sq.Close;
+
+         pm:=PagesMap.Create;
+         loadPagesByTag(tm.Keys[i], pm, sq, trans);
+        // ShowMessage( tm.Keys[i] );
+
+         item_tag_tpl:=sqlPresets.FieldByName('item_tag_tpl').AsString;
+        // showMessage(item_tag_tpl);
+
+         items:=PagesWithTag(pm, item_tag_tpl, form1.PrefferedExtension.text);
+
+        // ShowMessage(items);
+
+
+         headtpl:=sqlPresets.FieldByName('headtpl').AsString;
+
+         tags_tpl:=sqlPresets.FieldByName('tags_tpl').AsString;
+
+         head:= applyVar(headtpl, 'title',  tm.Data[i].tag_caption);
+         head:=useOwnTags(useBlocks(head));
+
+         body:= applyVar(tags_tpl, 'tagCaption', tm.Data[i].tag_caption);
+         body:= applyVar(body, 'items', items);
+         body:=useOwnTags(useBlocks(body));
+
+
+
+         doc:='<html><head>'+head+'</head><body>'+body+'</body></hmtl>';
+         doc:=usePreset(useModules(
+                         useOwnTags(
+                                    insertSectionsAndLinks(
+                                                           useBlocks(doc)
+                                                    )
+                                       )));
+
+         doc_path:=sqlPresets.FieldByName('dirpath').AsString+DELIM +'/tags/'+tm.Keys[i]+'.'+form1.PrefferedExtension.Text;
+         writedocument( doc, doc_path);
+
+         pm.Free;
+    end;
+
+  tm.Free;
+
+
+  
+  sq.Free;
+end;
+
 function TForm1.insertSectionsAndLinks(str: string): string;
 begin
   Result:= insSections(insLinks(str));
@@ -2931,6 +3118,32 @@ begin
      end;
 end;
 
+procedure TForm1.scanTags;
+var i : Integer;
+begin
+   Tags.Clear;
+   sqlTags.First;
+   while not sqlTags.EOF do begin
+     Tags.Add(
+              sqlTags.FieldByName('tag_id').AsString,
+              sqlTags.FieldByName('tag_id').AsString
+              );
+
+   sqlTags.Next;
+   end;
+   sqlTags.First;
+
+    // to interface
+
+
+     for i:=0 to Tags.Count-1 do
+      begin
+        lvTags.AddItem(Tags.Keys[i], nil);
+        application.ProcessMessages;
+      end;
+
+end;
+
 procedure TForm1.doScan;
 begin
   Form1.Enabled:=False;
@@ -2954,12 +3167,21 @@ begin
   if sqlJsScripts.Active then
   sqlJsScripts.ApplyUpdates;
 
+  if sqlTags.Active then
+  sqlTags.ApplyUpdates;
+
+  if sqlTagsPages.Active then
+  sqlTagsPages.ApplyUpdates;
+
+
   sqlContent.Refresh;
   sqlSections.Refresh;
   sqlPresets.Refresh;
   sqlBlocks.Refresh;
   sqlCssStyles.Refresh;
   sqlJsScripts.Refresh;
+  sqlTags.Refresh;
+  sqlTagsPages.Refresh;
 
 
   scanLinks();
@@ -2968,6 +3190,9 @@ begin
   scanPresets();
   scanCss();
   scanJs();
+  scanTags();
+  scanTagsPages();
+
   Form1.Enabled:=True;
 end;
 
@@ -3124,6 +3349,9 @@ begin
   r:=body;
 
   r:=applyvar(r, 'dt', DateToStr(page.dt));
+  r:=applyvar(r, 'tags', page.tags);
+
+
   // TODO Сюда дополнительные параметры страницы
   result:=r;
 end;
@@ -3339,6 +3567,17 @@ begin
             begin
                  lv.Items.Delete(i);
             end;
+end;
+
+procedure TForm1.listViewClickHelper(var lv: TListView; var sql: TSQLQuery;
+  field: String);
+var v : String;
+begin
+  if lv.ItemIndex >= 0 then
+    begin
+  v := lv.Items.Item[ lv.ItemIndex ].Caption;
+  sql.Locate(field, v, []);
+    end;
 end;
 
 

@@ -1,3 +1,0 @@
-def handler():
-	return "Just for fun"
-handler()

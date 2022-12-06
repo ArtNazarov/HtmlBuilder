@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
   DBCtrls,   SQLite3Conn, SQLDB, process, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids,
-  db_helpers;
+  db_helpers, types_for_app;
 
 type
 TPage_Record = record
@@ -21,14 +21,21 @@ end;
     procedure insertDemoData(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoDataCss(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoDataJs(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+    procedure insertDemoDataTags(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+    procedure insertDemoDataTagsPages(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
 
      {Хелперы}
      procedure addIntoBlock( id, markup, remark : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoSection( id, section, preset, note, full_text : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoContent( var p : TPage_Record; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
-     procedure addIntoPreset(id, sitename, dirpath, headtpl, bodytpl, sectiontpl, itemtpl, orf, ors : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+     procedure addIntoPreset(pr : PresetRecord; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoCss( css_id, css_style, css_path: String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoJs(js_id, js_path, js_file: String;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+     procedure addIntoTag(tag_id, tag_caption : String;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+     procedure addIntoTagsPages(id_tag_page, id_tag, id_page : String;  var sq: TSQLQuery;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
 
 implementation
@@ -108,20 +115,28 @@ begin
   //SilentMessage('Демо данные установлены, блоки');
 end;
 
- procedure insertDemoDataPresets(var sq : TSQLQuery; var konnect: TSQLite3Connection;
+ procedure insertDemoDataPresets( var sq : TSQLQuery; var konnect: TSQLite3Connection;
    var tranzact: TSQLTransaction);
+ var
+      pr : PresetRecord;
  begin
 
 
      checkConnect(konnect, tranzact, 'нет соединения <inserDemoDataPresets>!');
 
-     addIntoPreset( 'basis', 'My Site' , GetEnvironmentVariable('HOME')+'/mysite',
-     '{bootstrap}<meta charset="utf-8"><title>{sitename}-{title}</title>',
-     '{mainmenu}<h1>{title}</h1><p>{content}</p>',
-     '{mainmenu}<h1>Тема: {sectionTitle}</h1> {sort_order} Материалы :<ul>{items}</ul>{pager}',
-      '<li><a href="{itemUrl}.{ext}">{itemTitle}</a></li>',
-      'dt', 'asc',
-      sq, konnect, tranzact);
+     pr.id:= 'basis';
+     pr.sitename:='My Site';
+     pr.dirpath:= GetEnvironmentVariable('HOME')+'/mysite';
+     pr.headtpl:='{bootstrap}<meta charset="utf-8"><title>{sitename}-{title}</title>';
+     pr.bodytpl:='{mainmenu}<h1>{title}</h1><p>{content}</p>';
+     pr.sectiontpl:='{mainmenu}<h1>Тема: {sectionTitle}</h1> {sort_order} Материалы :<ul>{items}</ul>{pager}';
+     pr.itemtpl:='<li><a href="{itemUrl}.{ext}">{itemTitle}</a></li>';
+     pr.orf:='dt';
+     pr.ors:='asc';
+     pr.tags_tpl:='{mainmenu}<h1>Тег: {tagCaption}</h1> Список страниц :<ul>{items}</ul>';
+     pr.item_tag_tpl:='<li><a href="{itemUrl}.{ext}">{itemTitle}</a></li>';
+
+     addIntoPreset(pr, sq, konnect, tranzact);
 
 
 
@@ -177,6 +192,20 @@ begin
           end;
 
 
+                // инициализация tags
+          try
+              insertDemoDataTags(sq, konnect, tranzact);
+          except
+             // SilentMessage('Не удалось настроить контент');
+          end;
+
+          try
+              insertDemoDataTagsPages(sq, konnect, tranzact);
+          except
+             // SilentMessage('Не удалось настроить контент');
+          end;
+
+
 end;
 
  procedure insertDemoDataCss(var sq: TSQLQuery; var konnect: TSQLite3Connection;
@@ -192,6 +221,29 @@ end;
 
    addIntoJs('hello', '/home/artem/mysite/hello.js', 'alert("Hello!")', sq, konnect, tranzact);
    addIntoJs('console','/home/artem/mysite/console.js', 'console.log(1)', sq, konnect, tranzact);
+ end;
+
+ procedure insertDemoDataTags(var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+
+   addIntoTag('images', 'Картинки', sq, konnect, tranzact);
+   addIntoTag('gallery', 'Галерея', sq, konnect, tranzact);
+   addIntoTag('information', 'Информация', sq, konnect, tranzact);
+   addIntoTag('etc', 'Прочее', sq, konnect, tranzact);
+
+ end;
+
+ procedure insertDemoDataTagsPages(var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+
+   addIntoTagsPages('id_l1', 'etc', 'index',  sq, konnect, tranzact);
+   addIntoTagsPages('id_l2', 'etc', 'other', sq, konnect, tranzact);
+   addIntoTagsPages('id_l3', 'gallery', 'photos1', sq, konnect, tranzact);
+   addIntoTagsPages('id_l4', 'images', 'photos2', sq, konnect, tranzact);
+
+
  end;
 
  procedure addIntoBlock(id, markup, remark: String; var sq : TSQLQuery;
@@ -254,17 +306,18 @@ end;
    prepared_transaction_end( sq, tranzact);
   end;
 
- procedure addIntoPreset(id, sitename, dirpath, headtpl, bodytpl, sectiontpl,
-   itemtpl, orf, ors: String; var sq : TSQLQuery; var konnect: TSQLite3Connection;
+ procedure addIntoPreset(pr : PresetRecord; var sq : TSQLQuery; var konnect: TSQLite3Connection;
    var tranzact: TSQLTransaction);
  begin
 
 
 
    prepared_transaction_start(
-   'insert into preset (id, sitename,dirpath,headtpl,bodytpl,sectiontpl,itemtpl, ors, orf) values '+
-  '(:ID,:SITENAME,:DIRPATH,:HEADTPL,:BODYTPL,:SECTIONTPL,:ITEMTPL, :ORS, :ORF)',
+   'insert into preset (id, sitename,dirpath,headtpl,bodytpl,sectiontpl,itemtpl, ors, orf,  tags_tpl, item_tag_tpl ) values '+
+  '(:ID,:SITENAME,:DIRPATH,:HEADTPL,:BODYTPL,:SECTIONTPL,:ITEMTPL, :ORS, :ORF, :TAGS_TPL, :ITEM_TAG_TPL)',
   sq, tranzact);
+
+   with pr do begin
 
   sq.Params.ParamByName('ID').AsString := id;
   sq.Params.ParamByName('SITENAME').AsString := sitename;
@@ -275,6 +328,10 @@ end;
   sq.Params.ParamByName('ITEMTPL').AsString := itemtpl;
   sq.Params.ParamByName('ORF').AsString := orf;
   sq.Params.ParamByName('ORS').AsString := ors;
+  sq.Params.ParamByName('TAGS_TPL').AsString := tags_tpl;
+  sq.Params.ParamByName('ITEM_TAG_TPL').AsString := item_tag_tpl;
+          end;
+
  prepared_transaction_end( sq, tranzact);
 end;
 
@@ -304,6 +361,36 @@ end;
   sq.Params.ParamByName('JS_ID').AsString := js_id;
   sq.Params.ParamByName('JS_PATH').AsString := js_path;
   sq.Params.ParamByName('JS_FILE').AsString := js_file;
+
+ prepared_transaction_end( sq, tranzact);
+ end;
+
+ procedure addIntoTag(tag_id, tag_caption: String; var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+      prepared_transaction_start(
+   'insert into tags (tag_id, tag_caption) values '+
+  '(:TAG_ID,:TAG_CAPTION)',
+  sq, tranzact);
+
+  sq.Params.ParamByName('TAG_ID').AsString := tag_id;
+  sq.Params.ParamByName('TAG_CAPTION').AsString := tag_caption;
+
+ prepared_transaction_end( sq, tranzact);
+ end;
+
+ procedure addIntoTagsPages(id_tag_page, id_tag, id_page: String;
+   var sq: TSQLQuery; var konnect: TSQLite3Connection;
+   var tranzact: TSQLTransaction);
+ begin
+      prepared_transaction_start(
+   'insert into tags_pages (id_tag_page, id_tag, id_page) values '+
+  '(:ID_TAG_PAGE, :ID_TAG,:ID_PAGE)',
+  sq, tranzact);
+
+  sq.Params.ParamByName('ID_TAG_PAGE').AsString := id_tag_page;
+  sq.Params.ParamByName('ID_TAG').AsString := id_tag;
+  sq.Params.ParamByName('ID_PAGE').AsString := id_page;
 
  prepared_transaction_end( sq, tranzact);
  end;

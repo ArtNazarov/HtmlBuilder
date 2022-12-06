@@ -15,6 +15,9 @@ procedure  createPresetsSQL(var konnect : TSQLite3Connection; var tranzact : TSQ
 procedure  createPagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 procedure createCssSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 procedure createJsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+procedure createTagsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+procedure createTagsPagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
 
 
 
@@ -80,6 +83,9 @@ begin
                     ' "bodytpl" TEXT,'+     // Основная часть шаблона
                     ' "sectiontpl" TEXT,'+  // Раздела обрамление
                     ' "itemtpl" TEXT,'+      // Оформление списка
+                    ' "tags_tpl" TEXT,'+  // Оформление тега
+                    ' "item_tag_tpl" TEXT,'+      // Оформление элемента в списке тегов
+
                     ' "ufn1" Char(60),'+     // Название доп. поля 1, 2...
                     ' "ufn2" Char(60),'+
                     ' "ufn3" Char(60),'+
@@ -160,6 +166,35 @@ begin
 
         // Создание индекса на основе идентификатора в таблице "DATA"
        sql_execute_direct('CREATE UNIQUE INDEX "js_id_idx" ON "js"( "js_id" );',konnect, tranzact);
+end;
+
+procedure createTagsSQL(var konnect: TSQLite3Connection;
+  var tranzact: TSQLTransaction);
+begin
+   sql_execute_direct( 'PRAGMA foreign_keys = ON;', konnect, tranzact);
+       // Здесь мы настраиваем таблицу с именем "tags" в новой базе данных.
+     sql_execute_direct('CREATE TABLE "tags"('+
+                    ' "tag_id" Char(128) NOT NULL PRIMARY KEY,'+
+                    ' "tag_caption" Char(255)'+
+                    ');', konnect, tranzact);
+
+        // Создание индекса на основе идентификатора в таблице "DATA"
+       sql_execute_direct('CREATE UNIQUE INDEX "tag_id_idx" ON "tags"( "tag_id" );',konnect, tranzact);
+end;
+
+procedure createTagsPagesSQL(var konnect: TSQLite3Connection;
+  var tranzact: TSQLTransaction);
+begin
+  sql_execute_direct( 'PRAGMA foreign_keys = ON;', konnect, tranzact);
+       // Здесь мы настраиваем таблицу с именем "tags" в новой базе данных.
+     sql_execute_direct('CREATE TABLE "tags_pages"('+
+                    ' "id_tag_page" Char(128) NOT NULL PRIMARY KEY,'+
+                    ' "id_tag" Char(255),'+
+                    ' "id_page" Char(255)'+
+                    ');', konnect, tranzact);
+
+        // Создание индекса на основе идентификатора в таблице "DATA"
+       sql_execute_direct('CREATE UNIQUE INDEX "id_tag_page_idx" ON "tags_pages"( "id_tag_page" );',konnect, tranzact);
 end;
 
 end.
