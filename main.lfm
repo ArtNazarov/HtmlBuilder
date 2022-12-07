@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 112
+  Left = 392
   Height = 543
-  Top = 99
+  Top = 218
   Width = 1060
   Caption = 'Генератор статических HTML сайтов'
   ClientHeight = 509

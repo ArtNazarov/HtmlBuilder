@@ -521,7 +521,7 @@ type
     function useModules(app: string): string;
     function owntagexec(container, cmd: string): string;
     function useOwnTags(app: string): string;
-    function buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records): string;
+    function buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records; tree : String): string;
     function buildSection(sectiontpl: string; sectionUrl: string;
       sectionTitle: string;
       sectionNote: string;
@@ -3210,12 +3210,19 @@ begin
 
 end;
 
-function TForm1.buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records): string;
+function TForm1.buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records; tree : String): string;
 var
   r: string;
   fi : byte;
 begin
   r := itemTpl;
+
+  if chkUseTrees.checked then
+     itemUrl := tree+ DELIM+itemUrl;
+
+  // fix relative links
+  if itemUrl[1]<>'/' then itemUrl:='/'+itemUrl;
+
   r := applyVar(r, 'itemUrl', itemUrl);
   r := applyVar(r, 'itemTitle', itemTitle);
   r := applyVar(r, 'itemDt', DateTimeToStr(itemDt));
@@ -3386,6 +3393,7 @@ procedure TForm1.doSitemap;
 var fbuffer : TMemo;
   sitemap_param : page_params;
   k, cnt : byte;
+  listItem, tree : String;
 begin
 
   fbuffer := TMemo.Create(self);
@@ -3404,9 +3412,15 @@ begin
         begin
          lbProgress.Caption:='Сборка карты сайта '+IntToStr(k+1) + ' / '+IntToStr(cnt);
 
-             fbuffer.Lines.Add(
-             '<li><a href="./section_' + sqlSections.FieldByName('id').AsString + '.{ext}">'+
-             sqlSections.FieldByName('section').AsString+'</a></li>');
+             tree:='';
+             if chkUseTrees.Checked then
+               tree:=sqlSections.FieldByName('tree').AsString;
+
+             listItem:='<li><a href="{tree}/section_' + sqlSections.FieldByName('id').AsString + '.{ext}">';
+             listItem:= listItem + sqlSections.FieldByName('section').AsString + '</a></li>';
+             listItem:=applyVar(listItem, 'tree', tree);
+             fbuffer.Lines.Add(listItem);
+
              sqlSections.Next;
              Application.ProcessMessages;
              inc(k);
@@ -3484,7 +3498,7 @@ begin
          item_tag_tpl:=sqlPresets.FieldByName('item_tag_tpl').AsString;
         // showMessage(item_tag_tpl);
 
-         items:=PagesWithTag(pm, item_tag_tpl, form1.PrefferedExtension.text);
+         items:=PagesWithTag(pm, item_tag_tpl, form1.PrefferedExtension.text, chkUseTrees.Checked);
 
         // ShowMessage(items);
 
@@ -3934,7 +3948,7 @@ begin
                                      sqlRubrication.FieldByName('content_id').AsString,
                                      sqlRubrication.FieldByName('caption').AsString,
                                      sqlRubrication.FieldByName('dt').AsDateTime,
-                                     ur );
+                                     ur, sqlRubrication.FieldByName('tree').AsString );
                                    sqlRubrication.Next;
                                    Application.ProcessMessages;
                              end;

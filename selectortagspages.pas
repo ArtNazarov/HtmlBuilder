@@ -25,7 +25,7 @@ function tagsInSitemap(var tags : TagsMap) : String;
 procedure loadPagesByTag(id_tag : String; var pm : PagesMap; var sq : TSqlQuery;
   var tranzact : TSqlTransaction);
 
-function pagesWithTag(var pm : PagesMap; item_tag_tpl : String; ext : String) : String;
+function pagesWithTag(var pm : PagesMap; item_tag_tpl : String; ext : String; useT : boolean) : String;
 
 implementation
 
@@ -140,6 +140,7 @@ begin
     begin
       p.id := sq.FieldByName('id').AsString;
       p.title:=sq.FieldByName('caption').AsString;
+      p.tree:=sq.FieldByName('tree').AsString;
       pm.Add(p.id, p);
       sq.Next;
     end;
@@ -147,15 +148,17 @@ begin
 
 end;
 
-function pagesWithTag(var pm: PagesMap; item_tag_tpl : String; ext : String): String;
-var i : Integer; page : page_params; elem, r : String;
+function pagesWithTag(var pm: PagesMap; item_tag_tpl : String; ext : String; useT : boolean): String;
+var i : Integer; page : page_params; elem, r : String; url : String;
 begin
    r := '';
   for i:=0 to pm.count-1 do
      begin
        page:=pm.Data[i];
-
-       elem:=applyVar(item_tag_tpl, 'itemUrl',  '/'+page.id);
+       url:='/'+page.id;
+       if useT then url:=page.tree+'/'+page.id;
+       if url[1]<>'/' then url:='/'+url;
+       elem:=applyVar(item_tag_tpl, 'itemUrl', url );
        elem:=applyVar(elem, 'itemTitle', page.title);
        elem:=applyVar(elem, 'ext', ext);
        r:=r+elem;
