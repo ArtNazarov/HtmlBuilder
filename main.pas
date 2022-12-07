@@ -3220,6 +3220,8 @@ begin
   if chkUseTrees.checked then
      itemUrl := tree+ DELIM+itemUrl;
 
+ // showMessage(itemUrl);
+
   // fix relative links
   if itemUrl[1]<>'/' then itemUrl:='/'+itemUrl;
 
