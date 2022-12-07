@@ -1912,7 +1912,16 @@ sqlMenu.Refresh;
             itemUrl:=sql_GetMenuItems.FieldByName('menu_item_link_for').AsString;
             itemView:=sqlMenu.FieldByName('menu_item_tpl').AsString;
             itemView:=applyVar(itemView, 'itemTitle', itemTitle);
+
+
+            if sql_GetMenuItems.FieldByName('menu_item_type').AsString='sc' then
+              itemUrl:='section_'+itemUrl;
+
             itemView:=applyVar(itemView, 'itemUrl', itemUrl);
+
+
+
+
             itemView:=applyVar(itemView, 'ext', form1.PrefferedExtension.Text);
             list_html:=list_html+itemView;
             sql_GetMenuItems.Next;

@@ -18,10 +18,10 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="1911"/>
-        <CursorPos X="78" Y="1922"/>
-        <ComponentState Value="1"/>
+        <TopLine Value="1909"/>
+        <CursorPos X="23" Y="1917"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -37,7 +37,6 @@
       <Unit3>
         <Filename Value="db_insertdemo.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="271"/>
         <CursorPos X="51" Y="279"/>
         <UsageCount Value="132"/>
@@ -79,7 +78,6 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="76"/>
         <CursorPos X="4" Y="52"/>
-        <ComponentState Value="1"/>
         <UsageCount Value="101"/>
       </Unit7>
       <Unit8>
@@ -310,7 +308,7 @@
     <OtherDefines Count="1">
       <Define0 Value="UseCThreads"/>
     </OtherDefines>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="main.pas"/>
         <Caret Line="403" Column="23" TopLine="392"/>
@@ -413,24 +411,20 @@
       </Position25>
       <Position26>
         <Filename Value="main.pas"/>
-        <Caret Line="1882" Column="18" TopLine="1886"/>
+        <Caret Line="1897" Column="8" TopLine="1891"/>
       </Position26>
       <Position27>
         <Filename Value="main.pas"/>
-        <Caret Line="1897" Column="8" TopLine="1891"/>
+        <Caret Line="534" Column="14" TopLine="527"/>
       </Position27>
       <Position28>
         <Filename Value="main.pas"/>
-        <Caret Line="534" Column="14" TopLine="527"/>
+        <Caret Line="1929" Column="63" TopLine="1921"/>
       </Position28>
       <Position29>
         <Filename Value="main.pas"/>
-        <Caret Line="1929" Column="63" TopLine="1921"/>
+        <Caret Line="1924" Column="43" TopLine="1908"/>
       </Position29>
-      <Position30>
-        <Filename Value="main.pas"/>
-        <Caret Line="1930" Column="3" TopLine="1931"/>
-      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
