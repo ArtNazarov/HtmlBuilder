@@ -532,7 +532,9 @@ type
       pagesTotal: integer;
       orf       : String;
       ors       : String;
-      useO      : Boolean): string;
+      useO      : Boolean;
+      useTrees : boolean; tree : String
+      ): string;
     procedure AttendConnection(ASocket: TTCPBlockSocket);
     procedure StartOwnServer();
     procedure StopOwnServer();
@@ -2355,13 +2357,12 @@ begin
 end;
 
 function TForm1.buildPagination(url: string; currentPage: byte;
-  pagesTotal: integer; orf: String; ors: String; useO: Boolean): string;
+  pagesTotal: integer; orf: String; ors: String; useO: Boolean;  useTrees : boolean; tree : String): string;
 var
   paginator: string;
   page: byte;
 
   sorted_folder : string;
-
 begin
 
 
@@ -2373,6 +2374,10 @@ begin
       begin
            sorted_folder := '/o/'+orf+'-'+ors+'/';
       end;
+
+  if useTrees then
+    sorted_folder:=tree+sorted_folder;
+
   for page := 1 to pagesTotal do   begin
 
 
@@ -3022,6 +3027,7 @@ var
         tagsHere : TagsMap;
         sql_for_tags : TSQLQuery;
         tags_html : String;
+        processDir : TProcess;
 begin
 
 
@@ -3064,6 +3070,7 @@ begin
             page.sitename := sqlJoin.FieldByName('sitename').AsString;
             page.dirpath := sqlJoin.FieldByName('dirpath').AsString;
             page.dt:=sqlJoin.FieldByName('dt').AsDateTime;
+            page.tree:=sqlJoin.FieldByName('tree').AsString;
 
             //получить теги страницы
 
@@ -3110,7 +3117,21 @@ begin
 
 
             page.sectiontpl := sqlJoin.FieldByName('itemtpl').AsString;
+
+
             page.dir:=sqlJoin.FieldByName('dirpath').AsString;
+
+            if chkUseTrees.checked then
+              begin
+                 processDir:=TProcess.Create(Self);
+                 processDir.CommandLine:='/usr/bin/bash -c "mkdir -p '+page.dir+page.tree+'"';
+                 processDir.Execute;
+                 processDir.WaitOnExit();
+                 processDir.Free;
+                 filenam:=page.dir+page.tree+DELIM+page.id+'.'+prefferedExtension.Text;
+              end
+
+            else
 
             filenam := page.dirpath+DELIM+page.id+'.'+PrefferedExtension.Text;
 
@@ -3854,6 +3875,12 @@ var
   cnt, k : byte;
   bpager : String;
   so : string;
+  tree : string;
+  path_with_tree : string;
+  base_path : string;
+  sort_path : string;
+
+  ProcessDir : TProcess;
 
 begin
 
@@ -3870,6 +3897,7 @@ begin
                        prepared_transaction_start(sqlRubrication.SQL.Text, sqlRubrication, trans);
 
                        sectionId := sqlCounter.FieldByName('section').AsString;
+
 
                        sqlRubrication.ParamByName('section_id').AsString:=sectionId;
                        sqlRubrication.ParamByName('pageoffset').AsInteger:=(page-1)*itemsPerPage;
@@ -3922,7 +3950,9 @@ begin
                                                     pagesInRubrics,
                                                     selected_orf,
                                                     selected_ors,
-                                                    useO);
+                                                    useO,
+                                                    chkUseTrees.Checked,
+                                                    sqlRubrication.FieldByName('tree').AsString);
 
                             sectionHtml:=applyVar(sectionHtml, 'pager', bpager);
                             selector_order := form1.getSortSelector(sectionId);
@@ -3932,6 +3962,7 @@ begin
                             sectionHtml:=applyVar(sectionHtml, 'sectionTitle', sqlRubrication.FieldByName('section').AsString);
                             sectionHtml:=applyVar(sectionHtml, 'sectionNote', sqlRubrication.FieldByName('note').AsString);
                             sectionHtml:=applyVar(sectionHtml, 'sectionFullText', sqlRubrication.FieldByName('full_text').AsString);
+
 
 
 
@@ -3964,25 +3995,44 @@ begin
                             if useO then so:='o/'+selected_orf+'-'+selected_ors+'/';
 
 
-                            if not DirectoryExists(sqlRubrication.FieldByName('dirpath').AsString+DELIM+'o') then
-                               CreateDir( sqlRubrication.FieldByName('dirpath').AsString+DELIM+'o' );
+
+                            if chkUseTrees.checked then
+                              begin
+                                   ProcessDir:=TProcess.Create(Self);
+                                   ProcessDir.CommandLine:='/usr/bin/bash -c "mkdir -p '+ path_with_tree +'"';
+                                   ProcessDir.WaitOnExit;
+                                   ProcessDir.Free;
+                              end;
+
+
+                            base_path:=sqlRubrication.FieldByName('dirpath').AsString;
+
+                            tree:=sqlRubrication.FieldByName('tree').AsString;
+                            path_with_tree:=sqlRubrication.FieldByName('dirpath').AsString+tree;
+
+                            if chkUseTrees.Checked then
+                               base_path:=path_with_tree;
+
+                            if not DirectoryExists(base_path+DELIM+'o') then
+                               CreateDir( base_path+DELIM+'o' );
+
+                            sort_path:= base_path+DELIM+so;
 
                             // for different_sorts need different folrders
-                            If Not DirectoryExists(  sqlRubrication.FieldByName('dirpath').AsString+DELIM+so ) then
-                              begin
-
-                                CreateDir( sqlRubrication.FieldByName('dirpath').AsString+DELIM+so );
-                              end;
+                            If Not DirectoryExists(  sort_path ) then
+                               CreateDir( sort_path );
 
 
                             if page > 1 then
 
                             path:=
-                            sqlRubrication.FieldByName('dirpath').AsString+DELIM+'{so}section_'+
+                            base_path + DELIM + '{so}section_'+
                             sqlRubrication.FieldByName('id').AsString+'_'+IntToStr(page)+'.html'
                             else
-                            path:=sqlRubrication.FieldByName('dirpath').AsString+DELIM+'{so}section_'+
+                              begin
+                            path:=base_path + DELIM +'{so}section_'+
                             sqlRubrication.FieldByName('id').AsString+'.html';
+                              end;
 
                             path:=applyvar(path, 'so', so);
 

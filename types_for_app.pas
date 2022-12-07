@@ -111,6 +111,7 @@ Tag_Page_Link = record
             headtpl : String;
             bodytpl : String;
             sectiontpl : String;
+            tree       : String;
             dir : String;
             user_field_names : array[0..7] of String;
             user_field_values  : array[0..7] of String;
