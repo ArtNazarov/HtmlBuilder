@@ -10,6 +10,8 @@ Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
  db_helpers;
 
 procedure  createSectionsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+procedure createMenusSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+procedure createItemsForMenuSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 procedure  createBlocksSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 procedure  createPresetsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);  // начальная настройка пресетов
 procedure  createPagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
@@ -50,6 +52,41 @@ begin
 
         //SilentMessage('начальная настройка секций, транзакция...');
  end;
+
+procedure createMenusSQL(var konnect: TSQLite3Connection;
+  var tranzact: TSQLTransaction);
+begin
+   checkConnect(konnect, tranzact,'нет соединения <createBlocksSQL>!');
+
+        sql_execute_direct('CREATE TABLE "menu"('+
+                    ' "menu_id" Char(60) NOT NULL PRIMARY KEY,'+
+                    ' "menu_caption" Char(60),'+
+                    ' "menu_wrap_tpl" TEXT,'+
+                    ' "menu_item_tpl" TEXT)', konnect, tranzact);
+
+
+       sql_execute_direct('CREATE UNIQUE INDEX "menu_id_idx" ON "menu"( "menu_id" );', konnect, tranzact);
+
+        tranzact.Commit;
+end;
+
+procedure createItemsForMenuSQL(var konnect: TSQLite3Connection;
+  var tranzact: TSQLTransaction);
+begin
+     checkConnect(konnect, tranzact,'нет соединения <createBlocksSQL>!');
+
+        sql_execute_direct('CREATE TABLE "menu_item"('+
+                    ' "menu_item_id" Char(60) NOT NULL PRIMARY KEY,'+
+                    ' "menu_item_caption" Char(60),'+
+                    ' "menu_item_type" Char(3),'+
+                    ' "menu_item_link_for" Char(60),' +
+                    ' "menu_item_menu_id" Char(60))', konnect, tranzact);
+
+
+       sql_execute_direct('CREATE UNIQUE INDEX "menu_item_id_idx" ON "menu_item"( "menu_item_id" );', konnect, tranzact);
+
+        tranzact.Commit;
+end;
 
 procedure  createBlocksSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 begin

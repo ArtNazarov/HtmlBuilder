@@ -23,6 +23,9 @@ end;
     procedure insertDemoDataJs(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoDataTags(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoDataTagsPages(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+    procedure insertDemoDataMenu(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+    procedure insertDemoDataMenuItem(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
 
 
      {Хелперы}
@@ -37,6 +40,11 @@ end;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
      procedure addIntoTagsPages(id_tag_page, id_tag, id_page : String;  var sq: TSQLQuery;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+     procedure addIntoMenu(m : Menu;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+     procedure addIntoMenuItem(mi : MenuItem;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+
 
 implementation
 
@@ -206,6 +214,21 @@ begin
           end;
 
 
+
+                // инициализация tags
+          try
+              insertDemoDataMenu(sq, konnect, tranzact);
+          except
+             // SilentMessage('Не удалось настроить контент');
+          end;
+
+          try
+              insertDemoDataMenuItem(sq, konnect, tranzact);
+          except
+             // SilentMessage('Не удалось настроить контент');
+          end;
+
+
 end;
 
  procedure insertDemoDataCss(var sq: TSQLQuery; var konnect: TSQLite3Connection;
@@ -243,6 +266,57 @@ end;
    addIntoTagsPages('id_l3', 'gallery', 'photos1', sq, konnect, tranzact);
    addIntoTagsPages('id_l4', 'images', 'photos2', sq, konnect, tranzact);
 
+
+ end;
+
+ procedure insertDemoDataMenu(var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ var m : Menu;
+ begin
+   m.menu_id:='menu1';
+   m.menu_caption:='Меню 1';
+   m.menu_wrap_tpl:='<ul>{items}</ul>';
+   m.menu_item_tpl:='<li><a href="/{itemUrl}.{ext}">{itemTitle}</a><li>';
+   addIntoMenu(m, sq, konnect, tranzact);
+
+   m.menu_id:='menu2';
+   m.menu_caption:='Меню 2';
+   addIntoMenu(m, sq, konnect, tranzact);
+ end;
+
+ procedure insertDemoDataMenuItem(var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ var mi : MenuItem;
+ begin
+    mi.menu_item_menu_id:='menu1';
+
+    mi.menu_item_id:='menu_item11';
+    mi.menu_item_type:='pg';
+    mi.menu_item_caption:='Страница';
+    mi.menu_item_link_for:='index';
+    addIntoMenuItem(mi, sq, konnect, tranzact);
+
+    mi.menu_item_id:='menu_item12';
+    mi.menu_item_type:='sc';
+    mi.menu_item_caption:='Секция blog';
+    mi.menu_item_link_for:='blog';
+    addIntoMenuItem(mi, sq, konnect, tranzact);
+
+
+
+    mi.menu_item_menu_id:='menu2';
+
+    mi.menu_item_id:='menu_item21';
+    mi.menu_item_type:='pg';
+    mi.menu_item_caption:='Страница about';
+    mi.menu_item_link_for:='about';
+    addIntoMenuItem(mi, sq, konnect, tranzact);
+
+    mi.menu_item_id:='menu_item22';
+    mi.menu_item_type:='sc';
+    mi.menu_item_caption:='Секция blog';
+    mi.menu_item_link_for:='blog';
+    addIntoMenuItem(mi, sq, konnect, tranzact);
 
  end;
 
@@ -392,6 +466,41 @@ end;
   sq.Params.ParamByName('ID_TAG').AsString := id_tag;
   sq.Params.ParamByName('ID_PAGE').AsString := id_page;
 
+ prepared_transaction_end( sq, tranzact);
+ end;
+
+ procedure addIntoMenu(m: Menu; var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+      prepared_transaction_start(
+   'insert into menu (menu_id, menu_caption, menu_wrap_tpl, menu_item_tpl) values (:MENU_ID,:MENU_CAPTION,'+
+   ':MENU_WRAP_TPL, :MENU_ITEM_TPL)',
+   sq,
+   tranzact);
+
+ sq.Params.ParamByName('MENU_ID').AsString := m.menu_id;
+ sq.Params.ParamByName('MENU_CAPTION').AsString := m.menu_caption;
+ sq.Params.ParamByName('MENU_WRAP_TPL').AsString := m.menu_wrap_tpl;
+ sq.Params.ParamByName('MENU_ITEM_TPL').AsString := m.menu_item_tpl;
+ prepared_transaction_end( sq, tranzact);
+
+ end;
+
+ procedure addIntoMenuItem(mi: MenuItem; var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+   prepared_transaction_start(
+   'insert into menu_item (menu_item_id, menu_item_caption, menu_item_type, menu_item_link_for, menu_item_menu_id) '+
+   ' values (:MENU_ITEM_ID,:MENU_ITEM_CAPTION,'+
+   ':MENU_ITEM_TYPE, :MENU_ITEM_LINK_FOR, :MENU_ITEM_MENU_ID)',
+   sq,
+   tranzact);
+
+ sq.Params.ParamByName('MENU_ITEM_ID').AsString := mi.menu_item_id;
+ sq.Params.ParamByName('MENU_ITEM_CAPTION').AsString := mi.menu_item_caption;
+ sq.Params.ParamByName('MENU_ITEM_TYPE').AsString := mi.menu_item_type;
+ sq.Params.ParamByName('MENU_ITEM_LINK_FOR').AsString := mi.menu_item_link_for;
+ sq.Params.ParamByName('MENU_ITEM_MENU_ID').AsString := mi.menu_item_menu_id;
  prepared_transaction_end( sq, tranzact);
  end;
 

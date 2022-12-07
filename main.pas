@@ -67,6 +67,19 @@ type
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    dbeMenuItemMenuId: TDBEdit;
+    dbeMenuItemType: TDBEdit;
+    dbeMenuItemCaption: TDBEdit;
+    ds_MenuItem: TDataSource;
+    ds_Menu: TDataSource;
+    dbeItemMenuId: TDBEdit;
+    dbeItemMenuLinkedWith: TDBEdit;
+    dbeMenuId: TDBEdit;
+    dbeMenuCaption: TDBEdit;
+    dbmMenuTpl: TDBMemo;
+    dbmMenuItemTpl: TDBMemo;
+    dbNav_MenuItems: TDBNavigator;
+    dbNav_Menus: TDBNavigator;
     dbSelectorTag: TDBLookupComboBox;
     ds_TagsOnPage: TDataSource;
     dbmTagsTemplate: TDBMemo;
@@ -102,6 +115,16 @@ type
     edGithubPagesPath: TEdit;
     edLocalWysigygServer: TEdit;
     Label12: TLabel;
+    lbMenuItemMenuID: TLabel;
+    lbMenuItemType: TLabel;
+    lbMenuItemID: TLabel;
+    lbMenuItemCaption: TLabel;
+    lbMenuItem_LinkFor: TLabel;
+    lbMenuItems: TLabel;
+    lbMenuId: TLabel;
+    lbMenuCaption: TLabel;
+    lbMenuTpl: TLabel;
+    lbMenuItemTpl: TLabel;
     lbAttachTagToPage: TLabel;
     lbTagsOnPageTab: TLabel;
     lbTagsTemplate: TLabel;
@@ -127,6 +150,7 @@ type
     lbCSS: TLabel;
     lbSpecification: TLabel;
     listTags: TListBox;
+    lvMenuItems: TListView;
     lvTagsPages: TListView;
     lvTags: TListView;
     lvJsScripts: TListView;
@@ -141,6 +165,10 @@ type
     panCSSList: TPanel;
     panCSSElements: TPanel;
     Panel24: TPanel;
+    panMenuProps: TPanel;
+    panMenuItems: TPanel;
+    panMenusList: TPanel;
+    panMenus: TPanel;
     panLvTagsPages: TPanel;
     panTagPagesForm: TPanel;
     panTagsForm: TPanel;
@@ -275,12 +303,15 @@ type
     sqlCssStyles: TSQLQuery;
     sqlJsScripts: TSQLQuery;
     sqlGetTagsForPage: TSQLQuery;
+    sqlMenu: TSQLQuery;
+    sqlMenuItem: TSQLQuery;
     sqlTagsPages: TSQLQuery;
     sqlTags: TSQLQuery;
     sqlRubrication: TSQLQuery;
     tabJoin: TTabSheet;
     tabCSS: TTabSheet;
     tabJs: TTabSheet;
+    tabMenus: TTabSheet;
     tabTagsTemplate: TTabSheet;
     tabItemTagTemplate: TTabSheet;
     tabTagsPages: TTabSheet;
@@ -332,6 +363,7 @@ type
     procedure AppPagesChange(Sender: TObject);
 
     procedure btFtpUpdateClick(Sender: TObject);
+
     procedure btnAttachTagToMaterialClick(Sender: TObject);
     procedure btnEditorCssOpenClick(Sender: TObject);
     procedure btnEditorJsClick(Sender: TObject);
@@ -352,6 +384,7 @@ type
 
     procedure cboLocaleChange(Sender: TObject);
     procedure dbmSectionFullTextChange(Sender: TObject);
+    procedure dbNav_MenuItemsClick(Sender: TObject; Button: TDBNavButtonType);
 
     procedure dbNav_ContentBeforeAction(Sender: TObject; Button: TDBNavButtonType);
     procedure dbNav_BlocksBeforeAction(Sender: TObject; Button: TDBNavButtonType
@@ -361,13 +394,16 @@ type
       Button: TDBNavButtonType);
     procedure dbNav_SectionsBeforeAction(Sender: TObject;
       Button: TDBNavButtonType);
+    procedure ListBox1Click(Sender: TObject);
 
     procedure lvBlocksClick(Sender: TObject);
     procedure lvContentClick(Sender: TObject);
     procedure lvCSSClick(Sender: TObject);
     procedure lvJsScriptsClick(Sender: TObject);
+    procedure lvMenuItemsClick(Sender: TObject);
     procedure lvPresetsClick(Sender: TObject);
     procedure lvSectionsClick(Sender: TObject);
+    procedure redrawLvMenuItems();
 
 
 
@@ -396,17 +432,26 @@ type
     procedure sqlCssStylesAfterEdit(DataSet: TDataSet);
     procedure sqlCssStylesAfterPost(DataSet: TDataSet);
     procedure sqlCssStylesBeforeDelete(DataSet: TDataSet);
+    procedure sqlCssStylesBeforeRefresh(DataSet: TDataSet);
 
     procedure sqlJsScriptsAfterPost(DataSet: TDataSet);
     procedure sqlJsScriptsBeforeDelete(DataSet: TDataSet);
+    procedure sqlJsScriptsBeforeRefresh(DataSet: TDataSet);
+    procedure sqlMenuAfterScroll(DataSet: TDataSet);
+    procedure sqlMenuBeforeRefresh(DataSet: TDataSet);
+    procedure sqlMenuItemBeforeEdit(DataSet: TDataSet);
+    procedure sqlMenuItemBeforeInsert(DataSet: TDataSet);
+    procedure sqlMenuItemBeforeRefresh(DataSet: TDataSet);
 
     procedure sqlPresetsAfterPost(DataSet: TDataSet);
     procedure sqlPresetsBeforeDelete(DataSet: TDataSet);
+    procedure sqlPresetsBeforeRefresh(DataSet: TDataSet);
 
     procedure sqlSectionsAfterPost(DataSet: TDataSet);
     procedure sqlSectionsBeforeDelete(DataSet: TDataSet);
     procedure sqlTagsAfterPost(DataSet: TDataSet);
     procedure sqlTagsBeforeDelete(DataSet: TDataSet);
+    procedure sqlTagsBeforeRefresh(DataSet: TDataSet);
     procedure sqlTagsPagesAfterPost(DataSet: TDataSet);
     procedure sqlTagsPagesBeforeDelete(DataSet: TDataSet);
     procedure sqlTagsPagesBeforeRefresh(DataSet: TDataSet);
@@ -486,6 +531,7 @@ type
     procedure localeENG();
 
     function Pager(layout: String; pages: String): String;
+    function useMenus(app : String) : String;
 
 
     procedure initTransactionSQL(); // Иниц. транзакция Sqlite
@@ -517,6 +563,8 @@ type
     procedure viewTablesSQL(); // выполняем запросы на просмотр таблиц
     procedure viewTagsSQL();
     procedure viewTagsPagesSQL();
+    procedure viewMenuSQL();
+    procedure viewMenuItemSQL();
 
 
 
@@ -706,6 +754,11 @@ begin
   BeforeDeleteHelper(lvCSS, sqlCssStyles, 'css_id');
 end;
 
+procedure TForm1.sqlCssStylesBeforeRefresh(DataSet: TDataSet);
+begin
+  sqlCssStyles.ApplyUpdates;
+end;
+
 procedure TForm1.sqlJsScriptsAfterPost(DataSet: TDataSet);
 begin
   AfterPostHelper(lvJsScripts, sqlJsScripts, 'js_id');
@@ -716,6 +769,45 @@ begin
   BeforeDeleteHelper(lvJsScripts, sqlJsScripts, 'js_id');
 end;
 
+procedure TForm1.sqlJsScriptsBeforeRefresh(DataSet: TDataSet);
+begin
+  sqlJsScripts.ApplyUpdates;
+end;
+
+procedure TForm1.sqlMenuAfterScroll(DataSet: TDataSet);
+var new_request : String;
+begin
+  new_request:='select * from menu_item where menu_item_menu_id="'+
+  sqlMenu.FieldByName('menu_id').AsString+'"';
+  //showMessage(new_request);
+ // sqlMenuItem.Close;
+  sqlMenuItem.SQL.text:=new_request;
+  open_sql(new_request, sqlMenuItem);
+
+  redrawLvMenuItems();
+
+end;
+
+procedure TForm1.sqlMenuBeforeRefresh(DataSet: TDataSet);
+begin
+  sqlMenu.ApplyUpdates;
+end;
+
+procedure TForm1.sqlMenuItemBeforeEdit(DataSet: TDataSet);
+begin
+  sqlMenuItem.Refresh;
+end;
+
+procedure TForm1.sqlMenuItemBeforeInsert(DataSet: TDataSet);
+begin
+  sqlMenuItem.Refresh;
+end;
+
+procedure TForm1.sqlMenuItemBeforeRefresh(DataSet: TDataSet);
+begin
+  sqlMenuItem.ApplyUpdates;
+end;
+
 procedure TForm1.sqlPresetsAfterPost(DataSet: TDataSet);
 begin
    AfterPostHelper(lvPresets, sqlPresets, 'id');
@@ -724,6 +816,11 @@ end;
 procedure TForm1.sqlPresetsBeforeDelete(DataSet: TDataSet);
 begin
   BeforeDeleteHelper(lvPresets, sqlPresets, 'id');
+end;
+
+procedure TForm1.sqlPresetsBeforeRefresh(DataSet: TDataSet);
+begin
+  sqlPresets.ApplyUpdates;
 end;
 
 procedure TForm1.sqlSectionsAfterPost(DataSet: TDataSet);
@@ -766,6 +863,11 @@ end;
 procedure TForm1.sqlTagsBeforeDelete(DataSet: TDataSet);
 begin
   BeforeDeleteHelper(lvTags, sqlTags, 'tag_id');
+end;
+
+procedure TForm1.sqlTagsBeforeRefresh(DataSet: TDataSet);
+begin
+  sqlTags.ApplyUpdates;
 end;
 
 procedure TForm1.sqlTagsPagesAfterPost(DataSet: TDataSet);
@@ -871,6 +973,10 @@ begin
 
 end;
 
+
+
+
+
 procedure TForm1.btnAttachTagToMaterialClick(Sender: TObject);
 var
   link_id : String; id_tag : String; id_page : String;
@@ -948,6 +1054,7 @@ begin
   doCssTables(); // css таблицы
   doJs(); // скрипты
   doTagsMap(); // все теги на сайте
+
 
 
 
@@ -1262,6 +1369,11 @@ begin
 
 end;
 
+procedure TForm1.dbNav_MenuItemsClick(Sender: TObject; Button: TDBNavButtonType);
+begin
+
+end;
+
 
 
 procedure TForm1.dbNav_ContentBeforeAction(Sender: TObject; Button: TDBNavButtonType);
@@ -1313,6 +1425,11 @@ begin
   end;
 end;
 
+procedure TForm1.ListBox1Click(Sender: TObject);
+begin
+
+end;
+
 procedure TForm1.lvBlocksClick(Sender: TObject);
 begin
     listViewClickHelper(lvBlocks, sqlBlocks, 'id');
@@ -1337,6 +1454,11 @@ begin
   listViewClickHelper(lvJsScripts, sqlJsScripts, 'js_id');
 end;
 
+procedure TForm1.lvMenuItemsClick(Sender: TObject);
+begin
+  listViewClickHelper(lvMenuItems, sqlMenuItem, 'menu_item_id');
+end;
+
 procedure TForm1.lvPresetsClick(Sender: TObject);
 begin
   listViewClickHelper(lvPresets, sqlPresets, 'id');
@@ -1345,6 +1467,18 @@ end;
 procedure TForm1.lvSectionsClick(Sender: TObject);
 begin
   listViewClickHelper(lvSections, sqlSections, 'id');
+end;
+
+procedure TForm1.redrawLvMenuItems;
+begin
+  lvMenuItems.Clear;
+  sqlMenuItem.First;
+  while not sqlMenuItem.Eof do
+         begin
+           lvMenuItems.AddItem(sqlMenuItem.FieldByName('menu_item_id').AsString, nil);
+           sqlMenuItem.Next;
+         end;
+  sqlMenuItem.First;
 end;
 
 
@@ -1729,6 +1863,81 @@ begin
   if logger_info then mmRubrics.Lines.Add('Вызвана<insPages> до ' +layout);
   if logger_info then mmRubrics.Lines.Add('Вызвана<insSections> после '+r);
   result:=r;
+end;
+
+function TForm1.useMenus(app: String): String;
+var
+  menu_map : sdict;
+  m : Menu;
+  sql_getMenuItems : TSqlQuery;
+  list_html : String;
+  itemView  : String;
+  itemTitle : String;
+  itemUrl   : String;
+  k : Integer;
+  R : String;
+  menuView : String;
+begin
+
+
+  menu_map := sdict.Create;
+
+
+sqlMenu.Refresh;
+ sqlMenu.ApplyUpdates;
+
+ sqlMenu.First;
+ while not sqlMenu.EOF do
+    begin
+       m.menu_id:=sqlMenu.FieldByName('menu_id').AsString;
+       m.menu_caption:=sqlMenu.FieldByName('menu_caption').AsString;
+
+       sql_GetMenuItems:=TSqlQuery.Create(nil);
+
+
+       sql_GetMenuItems.Transaction:=trans;
+       sql_GetMenuItems.SQLConnection:=conn;
+       sql_GetMenuItems.SQL.Clear;
+       sql_GetMenuItems.SQL.Text:=
+   'select * from menu_item WHERE '+
+   ' menu_item_menu_id = "'+m.menu_id+'"';
+
+   sql_GetMenuItems.Active:=true;
+
+       list_html:='';
+       sql_GetMenuItems.First;
+       while not sql_getMenuItems.Eof do
+          begin
+            itemTitle:=sql_GetMenuItems.FieldByName('menu_item_caption').AsString;
+            itemUrl:=sql_GetMenuItems.FieldByName('menu_item_link_for').AsString;
+            itemView:=sqlMenu.FieldByName('menu_item_tpl').AsString;
+            itemView:=applyVar(itemView, 'itemTitle', itemTitle);
+            itemView:=applyVar(itemView, 'itemUrl', itemUrl);
+            itemView:=applyVar(itemView, 'ext', form1.PrefferedExtension.Text);
+            list_html:=list_html+itemView;
+            sql_GetMenuItems.Next;
+          end;
+
+
+        menuView:=sqlMenu.FieldByName('menu_wrap_tpl').AsString;
+        menuView:=applyVar(menuView, 'items', list_html);
+        menuView:=applyVar(menuView, 'menuCaption', m.menu_caption);
+
+        menu_map.Add( m.menu_id, menuView);
+
+    sql_GetMenuItems.Free;
+    sqlMenu.Next;
+    end;
+
+
+ R:=app;
+ for k:=0 to menu_map.Count-1 do
+     begin
+        R:=applyvar(R, 'menu='+menu_map.Keys[k], menu_map.Data[k]);
+     end;
+ menu_map.free;
+ Result:=R;
+
 end;
 
 
@@ -2368,6 +2577,9 @@ begin
     sqlJsScripts.Active:=true;
     sqlTags.Active:=true;
     sqlTagsPages.Active:=true;
+    sqlMenu.Active:=true;
+    sqlMenuItem.Active:=true;
+
 end;
 
 procedure TForm1.makeSqlInactive;
@@ -2386,6 +2598,9 @@ begin
   sqlJsScripts.Active:=false;
   sqlTags.Active:=false;
   sqlTagsPages.Active:=false;
+  sqlMenu.Active:=false;
+  sqlMenuItem.Active:=false;
+
   conn.Close;
 end;
 
@@ -2441,6 +2656,9 @@ begin
   form1.viewSectionsSQL();
   form1.viewCssSQL();
   form1.viewJsSQL();
+  form1.viewTagsSQL();
+  form1.viewMenuSQL();
+  form1.viewMenuItemSQL();
 end;
 
 procedure TForm1.viewTagsSQL;
@@ -2455,6 +2673,18 @@ begin
   open_sql(    'select * from tags_pages', sqlTagsPages);
   ds_Tags_Pages.AutoEdit:=True;
   SilentMessage('выполнена загрузка страниц!');
+end;
+
+procedure TForm1.viewMenuSQL;
+begin
+  open_sql( 'select * from menu', sqlMenu);
+  ds_Menu.AutoEdit:=true;
+end;
+
+procedure TForm1.viewMenuItemSQL;
+begin
+  open_sql( 'select * from menu_item', sqlMenuItem);
+  ds_MenuItem.AutoEdit:=true;
 end;
 
 (*
@@ -2570,6 +2800,8 @@ begin
             createJsSQL(conn, trans);
             createTagsSQL(conn, trans);
             createTagsPagesSQL(conn, trans);
+            createMenusSQL(conn, trans);
+            createItemsForMenuSQL(conn, trans);
 
 
 
@@ -2780,6 +3012,7 @@ begin
 
                               // постобработка
                               Buffer.Lines.Text :=
+                              useMenus(
                                useModules(
                                 useOwnTags(
                                     buildOwnFields(
@@ -2787,7 +3020,7 @@ begin
                                                   useBlocks(
                                                              buffer.Lines.Text)
                                                     ),
-                                        page)));
+                                        page))));
 
 
                               // id of pages
@@ -3049,12 +3282,12 @@ begin
 
   doc:='<html><head>'+head+'</head><body>'+body+'</body></hmtl>';
 
-  doc:=usePreset(useModules(
+  doc:=useMenus(usePreset(useModules(
                          useOwnTags(
                                     insertSectionsAndLinks(
                                                            useBlocks(doc)
                                                     )
-                                       )));
+                                       ))));
 
   writedocument( doc, doc_path);
 
@@ -3093,12 +3326,12 @@ begin
 
 
          doc:='<html><head>'+head+'</head><body>'+body+'</body></hmtl>';
-         doc:=usePreset(useModules(
+         doc:=useMenus(usePreset(useModules(
                          useOwnTags(
                                     insertSectionsAndLinks(
                                                            useBlocks(doc)
                                                     )
-                                       )));
+                                       ))));
 
          doc_path:=sqlPresets.FieldByName('dirpath').AsString+DELIM +'/tags/'+tm.Keys[i]+'.'+form1.PrefferedExtension.Text;
          writedocument( doc, doc_path);
@@ -3231,6 +3464,12 @@ begin
   if sqlTagsPages.Active then
   sqlTagsPages.ApplyUpdates;
 
+  if sqlMenu.Active then
+  sqlMenu.ApplyUpdates;
+
+    if sqlMenuItem.Active then
+  sqlMenuItem.ApplyUpdates;
+
 
   sqlContent.Refresh;
   sqlSections.Refresh;
@@ -3240,6 +3479,9 @@ begin
   sqlJsScripts.Refresh;
   sqlTags.Refresh;
   sqlTagsPages.Refresh;
+  sqlMenu.Refresh;
+  sqlMenuItem.Refresh;
+
 
 
   scanLinks();
@@ -3305,6 +3547,7 @@ begin
         begin
              doc:=useModules(doc);
              doc:=useOwnTags(doc);
+             doc:=useMenus(doc);
         end;
      writeDocument( doc , doc_path );
 

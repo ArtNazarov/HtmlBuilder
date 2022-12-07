@@ -14,6 +14,22 @@ uses
 
 type
 
+  Menu = record
+       menu_id : String;
+       menu_caption : String;
+       menu_wrap_tpl : String;
+       menu_item_tpl : String;
+  end;
+
+  MenuItem = record
+       menu_item_id : String;
+       menu_item_caption : String;
+       menu_item_type : String;
+       menu_item_link_for : String;
+       menu_item_menu_id  : String; // внешний ключ
+  end;
+
+
   PresetRecord = record
 
   id, sitename, dirpath, headtpl, bodytpl, sectiontpl, itemtpl, orf, ors,
