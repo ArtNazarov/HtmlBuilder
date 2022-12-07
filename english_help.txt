@@ -2,7 +2,9 @@ Author: Nazarov A.A., 2012-2023, Orenburg
 Site: artnazarov.ru
 E-mail:admin@artnazarov.ru
 
-Release 1
+MENU SUPPORT
+
+{menu=ID_MENU} works in global blocks
 
 - Template support
 - Pages are saved under the name /{id}.htm
