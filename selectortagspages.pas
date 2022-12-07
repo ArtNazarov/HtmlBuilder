@@ -111,7 +111,7 @@ begin
   for i:=0 to Tags.count-1 do
      begin
        t:=Tags.Data[i];
-       r:=r+'<br/><a href="/tags/'+t.tag_id+'">'+t.tag_caption+'</a>';
+       r:=r+'<br/><a href="/tags/'+t.tag_id+'.html">'+t.tag_caption+'</a>';
      end;
   result:=r;
 end;
