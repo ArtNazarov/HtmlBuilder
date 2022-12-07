@@ -63,10 +63,12 @@ type
     btnOpenWithWysiwyg: TButton;
     btnPublishToGithubPages: TButton;
     btnAttachTagToMaterial: TButton;
+    btnRefreshTree: TButton;
     cboLocale: TComboBox;
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    dbeTree: TDBEdit;
     dbeMenuItemMenuId: TDBEdit;
     dbeMenuItemType: TDBEdit;
     dbeMenuItemCaption: TDBEdit;
@@ -115,6 +117,7 @@ type
     edGithubPagesPath: TEdit;
     edLocalWysigygServer: TEdit;
     Label12: TLabel;
+    lbTree: TLabel;
     lbMenuItemMenuID: TLabel;
     lbMenuItemType: TLabel;
     lbMenuItemID: TLabel;
@@ -348,6 +351,8 @@ type
     tabHelp: TTabSheet;
     tabGlobalBlocks: TTabSheet;
     tabSections: TTabSheet;
+    tvContent: TTreeView;
+    tvSections: TTreeView;
     WebServerLog: TMemo;
     ZipArchiverCommand: TEdit;
 
@@ -373,6 +378,7 @@ type
     procedure btnLoadFromWysiwygClick(Sender: TObject);
     procedure btnOpenWithWysiwygClick(Sender: TObject);
     procedure btnPublishToGithubPagesClick(Sender: TObject);
+    procedure btnRefreshTreeClick(Sender: TObject);
 
 
     procedure btStartServerClick(Sender: TObject);
@@ -404,6 +410,9 @@ type
     procedure lvPresetsClick(Sender: TObject);
     procedure lvSectionsClick(Sender: TObject);
     procedure redrawLvMenuItems();
+    procedure refreshTrees();
+    procedure refreshContentTree();
+    procedure refreshSectionTree();
 
 
 
@@ -626,6 +635,7 @@ type
     procedure BeforeDeleteHelper(var lv : TListView; var sql : TSQLQuery; field : String);
     procedure listViewClickHelper(var lv : TListView; var sql : TSQLQuery; field : String);
 
+    procedure insertArticlesToNode(var Node : TTreeNode; section : String);
 
 
        end;
@@ -783,7 +793,7 @@ begin
  // sqlMenuItem.Close;
   sqlMenuItem.SQL.text:=new_request;
   open_sql(new_request, sqlMenuItem);
-
+  sqlMenuItem.Refresh;
   redrawLvMenuItems();
 
 end;
@@ -1245,6 +1255,11 @@ begin
 
 end;
 
+procedure TForm1.btnRefreshTreeClick(Sender: TObject);
+begin
+     refreshTrees();
+end;
+
 
 procedure TForm1.acEditorForSectionNoteExecute(Sender: TObject);
 
@@ -1479,6 +1494,133 @@ begin
            sqlMenuItem.Next;
          end;
   sqlMenuItem.First;
+end;
+
+procedure TForm1.refreshTrees;
+begin
+     refreshSectionTree;
+     refreshContentTree;
+end;
+
+procedure TForm1.refreshContentTree;
+var
+  Branch : TStringList; k : Integer;
+  Node, rootNode, parentNode, childNode    : TTreeNode;
+  tree : String; // '/x/y/z';
+  add_root : boolean;
+  prev_node, ins_node : String;
+begin
+  tvContent.Items.Clear;
+
+
+
+  sqlContent.ApplyUpdates;
+  sqlContent.Refresh;
+
+  sqlSections.ApplyUpdates;
+  sqlSections.Refresh;
+
+
+  sqlSections.First;
+  while not sqlSections.EOF do
+    begin
+      tree:=sqlSections.FieldByName('tree').AsString;
+      Branch:=TStringList.Create;
+      Branch.Delimiter:='/';
+      Branch.DelimitedText:=tree;
+
+       add_root:=true;
+       node:=nil;
+      for k:=0 to Branch.Count-1 do
+          begin
+
+            if Branch[k] = '' then continue; // skip empty
+
+            Node:=tvContent.Items.FindNodeWithText(Branch[k]);
+            if (Node=NIL) and (k=1) then
+               begin
+                    Node:=tvContent.Items.Add(Node, Branch[k]);
+                    // add content to this node
+                    insertArticlesToNode(Node, Branch[k]);
+               end;
+            if (k>1) then
+                begin
+                  parentNode:=tvContent.Items.FindNodeWithText(Branch[k-1]);
+                  Node:=tvContent.Items.FindNodeWithText(Branch[k]);
+                  if (parentNode<>NIL) and (Node = NIL) then
+                     begin
+                          childNode:=tvContent.Items.AddChild(parentNode, Branch[k]);
+                          // add content to parent node
+
+                           insertArticlesToNode(childNode, Branch[k]);
+                     end;
+                end;
+
+
+
+
+          end;
+      Branch.Free;
+      sqlSections.Next;
+    end;
+  sqlSections.First;
+
+end;
+
+procedure TForm1.refreshSectionTree;
+var
+  Branch : TStringList; k : Integer;
+  Node, rootNode, parentNode    : TTreeNode;
+  tree : String; // '/x/y/z';
+  add_root : boolean;
+  prev_node, ins_node : String;
+begin
+  tvSections.Items.Clear;
+
+
+
+
+  sqlSections.ApplyUpdates;
+  sqlSections.Refresh;
+
+
+  sqlSections.First;
+  while not sqlSections.EOF do
+    begin
+      tree:=sqlSections.FieldByName('tree').AsString;
+      Branch:=TStringList.Create;
+      Branch.Delimiter:='/';
+      Branch.DelimitedText:=tree;
+
+       add_root:=true;
+       node:=nil;
+      for k:=0 to Branch.Count-1 do
+          begin
+
+            if Branch[k] = '' then continue; // skip empty
+
+            Node:=tvSections.Items.FindNodeWithText(Branch[k]);
+            if (Node=NIL) and (k=1) then
+               Node:=tvSections.Items.Add(Node, Branch[k]);
+
+            if (k>1) then
+                begin
+                  parentNode:=tvSections.Items.FindNodeWithText(Branch[k-1]);
+                  Node:=tvSections.Items.FindNodeWithText(Branch[k]);
+                  if (parentNode<>NIL) and (Node = NIL) then
+                     tvSections.Items.AddChild(parentNode, Branch[k]);
+
+                end;
+
+
+
+
+          end;
+      Branch.Free;
+      sqlSections.Next;
+    end;
+  sqlSections.First;
+
 end;
 
 
@@ -3888,6 +4030,28 @@ begin
   v := lv.Items.Item[ lv.ItemIndex ].Caption;
   sql.Locate(field, v, []);
     end;
+end;
+
+procedure TForm1.insertArticlesToNode(var Node: TTreeNode; section: String);
+var
+   sql : TSqlQuery;
+begin
+  sql:=TSQLQuery.Create(Self);
+
+  sql.Transaction:=trans;
+  sql.SQLConnection:=conn;
+  sql.SQL.Text := 'select * from content where section="'+section+'"';
+
+  sql.ExecSQL;
+  sql.Active:=True;
+  sql.First;
+  while not sql.eof do
+   begin
+     tvContent.Items.AddChild(Node, sql.FieldByName('id').AsString);
+     sql.next;
+   end;
+
+  sql.Free;
 end;
 
 

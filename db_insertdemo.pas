@@ -30,7 +30,7 @@ end;
 
      {Хелперы}
      procedure addIntoBlock( id, markup, remark : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
-     procedure addIntoSection( id, section, preset, note, full_text : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+     procedure addIntoSection( s : TSection_Record ; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoContent( var p : TPage_Record; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoPreset(pr : PresetRecord; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoCss( css_id, css_style, css_path: String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
@@ -93,12 +93,26 @@ implementation
 
 end;
 
- procedure insertDemoDataSections(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+procedure insertDemoDataSections(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+var s : TSection_Record;
 begin
+  s.id:='blog';
+  s.section := 'Блог';
+  s.preset := 'basis';
+  s.note:= 'Мой блог';
+  s.full_text:='Полное описание блога';
+  s.tree:='';
+
   checkConnect( konnect, tranzact, 'нет соединения <inserDemoDataSections>!');
 
-  addIntoSection( 'blog', 'Блог'  , 'basis'  , 'Мой блог', 'Полное описание блога', sq, konnect, tranzact);
-  addIntoSection( 'photos', 'Фото'  , 'basis'  , 'Фотографии', 'Полное описание фотоальбома', sq, konnect, tranzact);
+  addIntoSection(s, sq, konnect, tranzact);
+  s.id:='photos';
+  s.section:='Фото';
+  s.preset:='basis';
+  s.note:='Фотографии';
+  s.full_text:='Полное описание фотоальбома';
+  s.tree:='';
+  addIntoSection(s, sq, konnect, tranzact);
 
 
   //SilentMessage('Демо данные установлены, разделы');
@@ -341,20 +355,23 @@ end;
 
 end;
 
- procedure addIntoSection(id, section, preset, note, full_text: String;
- var sq : TSQLQuery;  var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ procedure addIntoSection(s : TSection_Record; var sq : TSQLQuery;  var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
  begin
 
 
 
-   prepared_transaction_start( 'insert into section (id, section, preset, note, full_text) values (:ID,:SECTION,:PRESET, :NOTE, :FULL_TEXT)',
+   prepared_transaction_start( 'insert into section (id, section, preset, note, full_text, tree) '+
+   ' values (:ID,:SECTION,:PRESET, :NOTE, :FULL_TEXT, :TREE)',
      sq, tranzact);
 
+   with s do begin
   sq.Params.ParamByName('ID').AsString := id;
   sq.Params.ParamByName('SECTION').AsString := section;
   sq.Params.ParamByName('PRESET').AsString := preset;
   sq.Params.ParamByName('NOTE').AsString := note;
   sq.Params.ParamByName('FULL_TEXT').AsString := full_text;
+  sq.Params.ParamByName('TREE').AsString := tree;
+  end;
   prepared_transaction_end( sq, tranzact);
 end;
 

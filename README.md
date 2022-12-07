@@ -1,22 +1,6 @@
 HtmlBuilder
 ===========
-
 Written in FreePascal/Lazarus generator of static html websites
-
-Russian Help file
-
-https://raw.githubusercontent.com/ArtNazarov/HtmlBuilder/master/russian_help.txt
-
-English Help file
-
-https://raw.githubusercontent.com/ArtNazarov/HtmlBuilder/master/enlish_help.txt
-
-Some screenshots
-===============
-
-Menu constructor
-
-![Menu constructor](https://www.dropbox.com/s/j1rkq6c8ma5w1vh/menus.png?raw=1)
 
 UI
 
@@ -30,7 +14,7 @@ Update content
 ![Using ftp](https://www.dropbox.com/s/8a23veig21gqcei/ftp_updater.png?raw=1)
 
 More screens https://htmlbuilder.artnazarov.ru/
-Some articles http://nazarow.ru/section_htmlbuilder.html
+Some articles http://nazarow.ru/category/htmlbuilder/
 
 Project
 ================
@@ -41,8 +25,8 @@ Website in Russian:
 Usage
 ================
 Will be useful for creating websites hosted at P2P networks 
-( such Maelstrom, FreeNet, I2P etc ) or hostings that support 
-static as Vercel, Github Pages etc.
+( such Maelstrom, FreeNet, I2P etc ).
+
 
 What's new
 ================
@@ -53,5 +37,6 @@ What's new
 
 TODO
 =================
-1. Add RSS spider
-2. Make Linux packages
+1. Add integration with github pages.
+2. Add RSS spider
+3. Make Linux packages

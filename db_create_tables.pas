@@ -36,6 +36,7 @@ begin
                      'CREATE TABLE "section"('+
                     ' "id" Char(60) NOT NULL PRIMARY KEY,'+
                     ' "section" Char(60),'+
+                    ' "tree" Char(250),'+
                     ' "preset" Char(60),'+
                     ' "note" TEXT, '+
                     ' "full_text" TEXT, '+

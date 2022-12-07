@@ -14,6 +14,10 @@ uses
 
 type
 
+  TSection_Record = record
+            id, section, preset, note, full_text, tree : String
+  end;
+
   Menu = record
        menu_id : String;
        menu_caption : String;
@@ -84,6 +88,7 @@ Tag_Page_Link = record
             headtpl : string;
             itemtpl : string;
             dirpath : string;
+            tree    : string;
             pages   : array[0..255] of page_pairs;
             pages_counter : byte; // счетчик страниц
 
