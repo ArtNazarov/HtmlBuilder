@@ -65,6 +65,7 @@ type
     btnAttachTagToMaterial: TButton;
     btnRefreshTree: TButton;
     cboLocale: TComboBox;
+    chkUseTrees: TCheckBox;
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
@@ -116,7 +117,9 @@ type
     dbJoin: TDBGrid;
     edGithubPagesPath: TEdit;
     edLocalWysigygServer: TEdit;
+    ImageList1: TImageList;
     Label12: TLabel;
+    lbTreeStructure: TLabel;
     lbTree: TLabel;
     lbMenuItemMenuID: TLabel;
     lbMenuItemType: TLabel;
@@ -1540,6 +1543,7 @@ begin
             if (Node=NIL) and (k=1) then
                begin
                     Node:=tvContent.Items.Add(Node, Branch[k]);
+                    Node.ImageIndex:=0;
                     // add content to this node
                     insertArticlesToNode(Node, Branch[k]);
                end;
@@ -1550,6 +1554,7 @@ begin
                   if (parentNode<>NIL) and (Node = NIL) then
                      begin
                           childNode:=tvContent.Items.AddChild(parentNode, Branch[k]);
+                          childNode.ImageIndex:=0;
                           // add content to parent node
 
                            insertArticlesToNode(childNode, Branch[k]);
@@ -4035,6 +4040,7 @@ end;
 procedure TForm1.insertArticlesToNode(var Node: TTreeNode; section: String);
 var
    sql : TSqlQuery;
+   iNode : TTreeNode;
 begin
   sql:=TSQLQuery.Create(Self);
 
@@ -4047,7 +4053,8 @@ begin
   sql.First;
   while not sql.eof do
    begin
-     tvContent.Items.AddChild(Node, sql.FieldByName('id').AsString);
+     iNode:=tvContent.Items.AddChild(Node, sql.FieldByName('id').AsString);
+     iNode.ImageIndex:=1;
      sql.next;
    end;
 
