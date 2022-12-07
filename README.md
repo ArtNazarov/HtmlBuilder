@@ -1,6 +1,18 @@
 HtmlBuilder
 ===========
+
 Written in FreePascal/Lazarus generator of static html websites
+
+Russian Help file
+
+https://raw.githubusercontent.com/ArtNazarov/HtmlBuilder/master/russian_help.txt
+
+English Help file
+
+https://raw.githubusercontent.com/ArtNazarov/HtmlBuilder/master/enlish_help.txt
+
+Some screenshots
+===============
 
 Menu constructor
 
@@ -29,8 +41,8 @@ Website in Russian:
 Usage
 ================
 Will be useful for creating websites hosted at P2P networks 
-( such Maelstrom, FreeNet, I2P etc ).
-
+( such Maelstrom, FreeNet, I2P etc ) or hostings that support 
+static as Vercel, Github Pages etc.
 
 What's new
 ================
