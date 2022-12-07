@@ -2,6 +2,10 @@ HtmlBuilder
 ===========
 Written in FreePascal/Lazarus generator of static html websites
 
+Menu constructor
+
+![Menu constructor](https://www.dropbox.com/s/j1rkq6c8ma5w1vh/menus.png?raw=1)
+
 UI
 
 ![Screen pages editor](https://htmlbuilder.artnazarov.ru/laz1.png)
