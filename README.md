@@ -30,7 +30,7 @@ Update content
 ![Using ftp](https://www.dropbox.com/s/8a23veig21gqcei/ftp_updater.png?raw=1)
 
 More screens https://htmlbuilder.artnazarov.ru/
-Some articles http://nazarow.ru/category/htmlbuilder/
+Some articles http://nazarow.ru/section_htmlbuilder.html
 
 Project
 ================
