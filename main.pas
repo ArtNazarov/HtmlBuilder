@@ -630,7 +630,7 @@ type
 
      function insParamsToHead(head: String; page : page_params): String;
      function insParamsToBody(body: String; page : page_params): String;
-     function getSortSelector(section : String) : String;
+     function getSortSelector(section : String; tree : String) : String;
      // TODO - declarations
      procedure makeRubricationUsingSorts(page : Integer; itemsPerPage : Integer; pagesInRubrics : Integer;
        rubrication_query: String; selected_orf : String; selected_ors : String; useo : boolean);
@@ -2387,10 +2387,10 @@ begin
     begin
       if page = 1 then
         paginator :=
-          paginator + '<a href="{sorted_folder}section_' + url + '.' + PrefferedExtension.Text + '">1</a> '
+          paginator + '<a href="{sorted_folder}/section_' + url + '.' + PrefferedExtension.Text + '">1</a> '
       else
         paginator :=
-          paginator + '<a href="{sorted_folder}section_' + url + '_' + IntToStr(page) + '.' + PrefferedExtension.Text +
+          paginator + '<a href="{sorted_folder}/section_' + url + '_' + IntToStr(page) + '.' + PrefferedExtension.Text +
           '">' + IntToStr(page) + '</a> ';
     end
     else
@@ -3834,11 +3834,12 @@ begin
   result:=r;
 end;
 
-function TForm1.getSortSelector(section : String): String;
+function TForm1.getSortSelector(section : String; tree : String): String;
 var
   s : String;
   orfs : sdict;
   i : Integer;
+  base_url : String;
 begin
 
 
@@ -3848,11 +3849,14 @@ begin
   orfs.Add('dt', 'По дате');
 
 
-  s:='<a href="/section_'+section+'.html">#</a>';
+  s:='<a href="{base_url}/section_'+section+'.html">#</a>';
 
   for i:=0 to orfs.Count - 1 do
-        s:=s+' &nbsp;|&nbsp; <a href="/o/'+orfs.Keys[i]+'-DESC/section_'+section+'.html">&#x25BC;</a>&nbsp;' + orfs.Data[i] +
-             '&nbsp;<a href="/o/'+orfs.Keys[i]+'-ASC/section_'+section+'.html">&#x25B2;</a>&nbsp;|&nbsp;';
+        s:=s+' &nbsp;|&nbsp; <a href="{base_url}/o/'+orfs.Keys[i]+'-DESC/section_'+section+'.html">&#x25BC;</a>&nbsp;' + orfs.Data[i] +
+             '&nbsp;<a href="{base_url}/o/'+orfs.Keys[i]+'-ASC/section_'+section+'.html">&#x25B2;</a>&nbsp;|&nbsp;';
+  base_url := '';
+  if chkUseTrees.Checked then base_url:=tree;
+  s:=ApplyVar(s, 'base_url', base_url);
   result := s;
 
 end;
@@ -3955,7 +3959,7 @@ begin
                                                     sqlRubrication.FieldByName('tree').AsString);
 
                             sectionHtml:=applyVar(sectionHtml, 'pager', bpager);
-                            selector_order := form1.getSortSelector(sectionId);
+                            selector_order := form1.getSortSelector(sectionId, sqlRubrication.FieldByName('tree').AsString);
                             sectionHtml:=applyVar(sectionHtml, 'sort_order', selector_order);
 
 
