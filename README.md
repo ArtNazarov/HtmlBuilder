@@ -41,6 +41,5 @@ What's new
 
 TODO
 =================
-1. Add integration with github pages.
-2. Add RSS spider
-3. Make Linux packages
+1. Add RSS spider
+2. Make Linux packages
