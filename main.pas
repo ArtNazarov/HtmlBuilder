@@ -525,7 +525,7 @@ type
     function useModules(app: string): string;
     function owntagexec(container, cmd: string): string;
     function useOwnTags(app: string): string;
-    function buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records; tree : String): string;
+    function buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records; tree : String; tags_html : String): string;
     function buildSection(sectiontpl: string; sectionUrl: string;
       sectionTitle: string;
       sectionNote: string;
@@ -3264,7 +3264,7 @@ begin
 
 end;
 
-function TForm1.buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records; tree : String): string;
+function TForm1.buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records; tree : String; tags_html : String): string;
 var
   r: string;
   fi : byte;
@@ -3282,6 +3282,8 @@ begin
   r := applyVar(r, 'itemUrl', itemUrl);
   r := applyVar(r, 'itemTitle', itemTitle);
   r := applyVar(r, 'itemDt', DateTimeToStr(itemDt));
+
+  r := applyVar(r, 'itemTags', tags_html);
 
   // применяем пользовательские поля, если есть
   for fi:=1 to 7 do begin
@@ -3955,6 +3957,9 @@ var
   sort_path : string;
 
   ProcessDir : TProcess;
+  tm : TagsMap;
+  sq : TSqlQuery;
+  tags_html : String;
 
 begin
 
@@ -3997,6 +4002,19 @@ begin
                                          ur[fi].value:=sqlRubrication.FieldByName('uf'+IntToStr(fi)).AsString;
                                       end;
 
+                                  tm:=TagsMap.Create;
+                                  sq:=TSqlQuery.Create(Self);
+                                  sq.SQLConnection:=conn;
+                                  sq.Transaction:=trans;
+
+                                  loadTagsForPages(sqlRubrication.FieldByName('content_id').AsString, tm, sq, trans);
+
+                                  sq.free;
+
+                                  tags_html:=tagsInPageHtml(tm, form1.PrefferedExtension.text);
+
+                                  tm.free;
+
                                    itemHTML := itemHtml +
 
                                    buildItem(
@@ -4004,7 +4022,8 @@ begin
                                      sqlRubrication.FieldByName('content_id').AsString,
                                      sqlRubrication.FieldByName('caption').AsString,
                                      sqlRubrication.FieldByName('dt').AsDateTime,
-                                     ur, sqlRubrication.FieldByName('tree').AsString );
+                                     ur, sqlRubrication.FieldByName('tree').AsString,
+                                     tags_html);
                                    sqlRubrication.Next;
                                    Application.ProcessMessages;
                              end;
