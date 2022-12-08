@@ -3326,7 +3326,11 @@ object Form1: TForm1
     Database = conn
     Transaction = trans
     SQL.Strings = (
-      'SELECT * FROM tags_pages'
+      'SELECT tags_pages.*, section.tree FROM tags_pages'
+      'LEFT JOIN content ON'
+      'tags_pages.id_page = content.id'
+      'LEFT JOIN section ON'
+      'content.section = section.id'
     )
     Params = <>
     Macros = <>

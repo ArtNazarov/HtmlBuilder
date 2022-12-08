@@ -49,6 +49,7 @@ Tag_Page_Link = record
             id_tag_page : String;
             id_tag : String;
             id_page : String;
+            tree    : String;
   end;
 
   sdict = specialize TFPGmap<string, string>;{define type under type}

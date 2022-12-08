@@ -13,7 +13,7 @@ uses
   ActnList, Buttons, blcksock, sockets, Synautil, synaip, synsock, ftpsend,
   db_helpers, db_insertdemo, db_create_tables, replacers, editor_in_window,
   editor_css, editor_js, DateUtils, fgl, regexpr, types_for_app,
-  selectorTagsPages, const_for_app; {Use Synaptic}
+  selectorTagsPages, const_for_app, selectors_for_menu; {Use Synaptic}
 
 
 
@@ -1924,6 +1924,7 @@ begin
 
       r.id_tag:=sqlTagsPages.FieldByName('id_tag').AsString;
       r.id_page:=sqlTagsPages.FieldByName('id_page').AsString;
+      r.tree:=sqlTagsPages.FieldByName('tree').AsString;
       mTagsPages.Add(r.id_tag_page, r);
       sqlTagsPages.Next;
 
@@ -2060,6 +2061,7 @@ var
   itemTitle : String;
   itemUrl   : String;
   k : Integer;
+  tree : String;
   R : String;
   menuView : String;
 begin
@@ -2098,9 +2100,25 @@ sqlMenu.Refresh;
             itemView:=sqlMenu.FieldByName('menu_item_tpl').AsString;
             itemView:=applyVar(itemView, 'itemTitle', itemTitle);
 
-
+            tree:='';
             if sql_GetMenuItems.FieldByName('menu_item_type').AsString='sc' then
+              begin
+
+              tree:=getTreeBySectionId(itemUrl, conn, trans);
+
               itemUrl:='section_'+itemUrl;
+
+              end
+            else
+               begin
+                 tree:=getTreeByPageId(itemUrl, conn, trans);
+               end;
+
+            if chkUseTrees.Checked then
+                 itemUrl:=tree+'/'+itemUrl;
+
+            if itemUrl[1]<>'/' then itemUrl:='/'+itemUrl;
+
 
             itemView:=applyVar(itemView, 'itemUrl', itemUrl);
 
@@ -2108,7 +2126,7 @@ sqlMenu.Refresh;
 
 
             itemView:=applyVar(itemView, 'ext', form1.PrefferedExtension.Text);
-            list_html:=list_html+itemView;
+            list_html:=list_html+itemView+'<!-- '+tree+' -->';
             sql_GetMenuItems.Next;
           end;
 

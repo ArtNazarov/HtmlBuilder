@@ -290,7 +290,7 @@ end;
    m.menu_id:='menu1';
    m.menu_caption:='Меню 1';
    m.menu_wrap_tpl:='<ul>{items}</ul>';
-   m.menu_item_tpl:='<li><a href="/{itemUrl}.{ext}">{itemTitle}</a><li>';
+   m.menu_item_tpl:='<li><a href="{itemUrl}.{ext}">{itemTitle}</a><li>';
    addIntoMenu(m, sq, konnect, tranzact);
 
    m.menu_id:='menu2';
