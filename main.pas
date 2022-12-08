@@ -3268,10 +3268,13 @@ end;
 
 function TForm1.buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records; tree : String; tags_html : String): string;
 var
-  r: string;
+
   fi : byte;
+  Rnr : Render;
+  R : String;
 begin
-  r := itemTpl;
+  Rnr:=Render.Create;
+  Rnr.setTemplate(itemTpl);
 
   if chkUseTrees.checked then
      itemUrl := tree+ DELIM+itemUrl;
@@ -3281,20 +3284,24 @@ begin
   // fix relative links
   if itemUrl[1]<>'/' then itemUrl:='/'+itemUrl;
 
-  r := applyVar(r, 'itemUrl', itemUrl);
-  r := applyVar(r, 'itemTitle', itemTitle);
-  r := applyVar(r, 'itemDt', DateTimeToStr(itemDt));
-
-  r := applyVar(r, 'itemTags', tags_html);
+  Rnr.setVar('itemUrl', itemUrl);
+  Rnr.setVar('itemTitle', itemTitle);
+  Rnr.setVar('itemDt', DateTimeToStr(itemDt));
+  Rnr.setVar('itemTags', tags_html);
 
   // применяем пользовательские поля, если есть
   for fi:=1 to 7 do begin
-      r:=applyVar(r, 'f'+IntToStr(fi), ur[fi].name);
-      r:=applyVar(r, 'v'+IntToStr(fi), ur[fi].value);
+      Rnr.setVar('f'+IntToStr(fi), ur[fi].name);
+      Rnr.setVar('v'+IntToStr(fi), ur[fi].value);
   end;
+
+
+  R:=Rnr.getHtml();
+  Rnr.Free;
 
   r := insSections(insLinks(r));
   r := prefExtension(r);
+
   Result := R;
 end;
 
@@ -3974,7 +3981,9 @@ var
   tm : TagsMap;
   sq : TSqlQuery;
   tags_html : String;
-
+  Rnr : Render;
+  RnrHead : Render;
+  RnrDoc  : Render;
 begin
 
 
@@ -4043,6 +4052,9 @@ begin
                              end;
 
 
+                            Rnr := Render.Create;
+                            RnrHead:= Render.Create;
+                            RnrDoc := Render.Create;
 
                             sectionHtml := buildSection( sqlRubrication.FieldByName('sectiontpl').AsString,
                                               sqlRubrication.FieldByName('id').asString,
@@ -4050,6 +4062,8 @@ begin
                                               sqlRubrication.FieldByName('note').AsString,
                                               sqlRubrication.FieldByName('full_text').AsString,
                                               itemHtml );
+
+                            Rnr.setTemplate(sectionHtml);
 
 
                             bpager:=buildPagination( sqlRubrication.FieldByName('id').AsString,
@@ -4061,31 +4075,47 @@ begin
                                                     chkUseTrees.Checked,
                                                     sqlRubrication.FieldByName('tree').AsString);
 
-                            sectionHtml:=applyVar(sectionHtml, 'pager', bpager);
+                            Rnr.setVar( 'pager', bpager );
                             selector_order := form1.getSortSelector(sectionId, sqlRubrication.FieldByName('tree').AsString);
-                            sectionHtml:=applyVar(sectionHtml, 'sort_order', selector_order);
+                            Rnr.setVar('sort_order', selector_order);
 
 
-                            sectionHtml:=applyVar(sectionHtml, 'sectionTitle', sqlRubrication.FieldByName('section').AsString);
-                            sectionHtml:=applyVar(sectionHtml, 'sectionNote', sqlRubrication.FieldByName('note').AsString);
-                            sectionHtml:=applyVar(sectionHtml, 'sectionFullText', sqlRubrication.FieldByName('full_text').AsString);
-
-
-
-
-
-                            headHtml:= buildHead( sqlRubrication.FieldByName('section').AsString,
-                                                  sqlRubrication.FieldByName('headtpl').AsString);
-
-                            headHtml:= applyVar(headHtml, 'sectionTitle',  sqlRubrication.FieldByName('section').AsString);
+                            Rnr.setVar( 'sectionTitle', sqlRubrication.FieldByName('section').AsString);
+                            Rnr.setVar( 'sectionNote', sqlRubrication.FieldByName('note').AsString);
+                            Rnr.setVar( 'sectionFullText', sqlRubrication.FieldByName('full_text').AsString);
 
 
 
 
-                            document:='<html><head>{header}</head><body>{body}</body>';
+                            RnrHead.setTemplate(
+                                      buildHead( sqlRubrication.FieldByName('section').AsString,
+                                                  sqlRubrication.FieldByName('headtpl').AsString));
 
-                            document:=ApplyVar(document, 'header', headHtml);
-                            document:=ApplyVar(document, 'body', sectionHtml);
+                            RnrHead.setVar('sectionTitle',  sqlRubrication.FieldByName('section').AsString);
+
+
+
+
+
+                            RnrDoc.setTemplate('<html><head>{header}</head><body>{body}</body>');
+
+                            headHtml := rnrHead.getHtml();
+                            sectionHtml:= rnr.getHtml();
+
+
+
+                            RnrDoc.setVar('header', headHtml);
+                            RnrDoc.setVar('body', sectionHtml);
+                            document:=RnrDoc.getHtml();
+
+                            Rnr.Free;
+                            RnrHead.Free;
+                            RnrDoc.Free;
+
+
+
+
+
                             // постобработка
 
                             document:=
