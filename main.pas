@@ -3495,64 +3495,84 @@ begin
 
 
 procedure TForm1.doSitemap;
-var fbuffer : TMemo;
-  sitemap_param : page_params;
-  k, cnt : byte;
-  listItem, tree : String;
+
+procedure getInfoAboutSection(id : String; var section  : String);
+var sq : TSQLQuery;
+begin
+ sq:=TSqlQuery.Create(self);
+ sq.Transaction:=trans;
+ sq.SQLConnection:=conn;
+ sq.SQL.Text:='select * from section where id="'+id+'" limit 1';
+ sq.ExecSQL;
+ sq.Active:=true;
+ sq.first;
+ section:=sq.FieldByName('section').AsString;
+
+ sq.free;
+ end;
+
+function TraverseNode(Node : TTreeNode; level : Integer) : String;
+var
+  id : String;
+  r : String;
+  section : String;
+  listItem, tree, filler : String;
   Rnr :  Render;
+  childNode : TTreeNode;
 begin
 
-  Rnr:=Render.create;
-
-  fbuffer := TMemo.Create(self);
-  // карта категорий
-  cnt:=form1.SiteSectionTitles.Lines.Count;
-  pBar.Max:=cnt;
-  pBar.Step:=1;
-  pBar.Min:=1;
-  pBar.Position:=1;
-  k:=0;
-
-  fbuffer.Clear;
-  fbuffer.Lines.Add('<ul>');
-  sqlSections.First;
-  while not sqlSections.EOF do
-        begin
-         lbProgress.Caption:='Сборка карты сайта '+IntToStr(k+1) + ' / '+IntToStr(cnt);
-
-             tree:='';
-             if chkUseTrees.Checked then
-               tree:=sqlSections.FieldByName('tree').AsString;
-
-
-             Rnr.setTemplate(
-                                '<li><a href="{tree}/section_' + sqlSections.FieldByName('id').AsString + '.{ext}">'+
-                                sqlSections.FieldByName('section').AsString + '</a></li>');
-
+  if node = NIL then exit;
+  id:=node.text;
+  getInfoAboutSection(id, section);
+  filler:=StringOfChar('-', level);
+  Rnr:=Render.Create;
+  Rnr.setTemplate(
+  filler + '<a href="{tree}/section_{id}.{ext}">{section}</a><br/>');
+             Rnr.setVar('id', id);
+             Rnr.setVar('section', section);
              Rnr.setVar('tree', tree);
-
+             Rnr.setVar('ext', form1.PrefferedExtension.text);
              listItem:=Rnr.getHtml();
+  Rnr.Free;
+  R:=listItem;
+  if Node.HasChildren then
+      begin
+        childNode:=Node.GetFirstChild;
+        while childNode<>NIL do
+         begin
+              R:=R+TraverseNode(childNode, level+1);
+              childNode:=childNode.GetNextSibling;
+         end;
+      end;
+  Result:=R;
+end;
 
 
-             fbuffer.Lines.Add(listItem);
+var
+  sitemap_param : page_params;
+  k, cnt : byte;
 
-             sqlSections.Next;
-             Application.ProcessMessages;
-             inc(k);
-             pBar.Position:=k;
-        end;
-  fbuffer.Lines.Add('</ul>');
+  level : Integer;
+  Rnr : Render;
+  RootNode : TTreeNode;
+begin
+   form1.refreshSectionTree;
 
+  Rnr:=Render.create;
+  RootNode:=tvSections.Items[0];
+  sitemap_param.body:=TraverseNode(RootNode, 0);
 
   sitemap_param.headtpl:=sqlPresets.FieldByName('headtpl').AsString;
   sitemap_param.title:='Карта сайта';
-  sitemap_param.body:=fbuffer.Text;
+
   sitemap_param.bodytpl:=sqlPresets.FieldByName('bodytpl').AsString;
   makePageJoin( sitemap_param,
   sqlPresets.FieldByName('dirpath').AsString+DELIM +'sitemap.'+form1.PrefferedExtension.Text);
-  fbuffer.Free;
+
 
   Rnr.Free;
+
+
 end;
 
 procedure TForm1.doTagsMap;
