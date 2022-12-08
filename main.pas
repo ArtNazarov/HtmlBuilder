@@ -2064,6 +2064,7 @@ var
   tree : String;
   R : String;
   menuView : String;
+  RenderItem, RenderList : Render;
 begin
 
 
@@ -2097,8 +2098,11 @@ sqlMenu.Refresh;
           begin
             itemTitle:=sql_GetMenuItems.FieldByName('menu_item_caption').AsString;
             itemUrl:=sql_GetMenuItems.FieldByName('menu_item_link_for').AsString;
+            RenderItem:=Render.Create;
             itemView:=sqlMenu.FieldByName('menu_item_tpl').AsString;
-            itemView:=applyVar(itemView, 'itemTitle', itemTitle);
+            RenderItem.setTemplate(itemView);
+
+            RenderItem.setVar('itemTitle', itemTitle);
 
             tree:='';
             if sql_GetMenuItems.FieldByName('menu_item_type').AsString='sc' then
@@ -2120,20 +2124,25 @@ sqlMenu.Refresh;
             if itemUrl[1]<>'/' then itemUrl:='/'+itemUrl;
 
 
-            itemView:=applyVar(itemView, 'itemUrl', itemUrl);
+             RenderItem.setVar( 'itemUrl', itemUrl);
 
 
 
 
-            itemView:=applyVar(itemView, 'ext', form1.PrefferedExtension.Text);
+             RenderItem.setVar( 'ext', form1.PrefferedExtension.Text);
+             itemView:=RenderItem.getHtml(); RenderItem.Free;
             list_html:=list_html+itemView+'<!-- '+tree+' -->';
             sql_GetMenuItems.Next;
           end;
 
 
         menuView:=sqlMenu.FieldByName('menu_wrap_tpl').AsString;
-        menuView:=applyVar(menuView, 'items', list_html);
-        menuView:=applyVar(menuView, 'menuCaption', m.menu_caption);
+        RenderList:=Render.Create;
+        RenderList.setTemplate(menuView);
+
+        RenderList.setVar('items', list_html);
+        RenderList.setVar('menuCaption', m.menu_caption);
+        menuView:=RenderList.getHtml(); RenderList.Free;
 
         menu_map.Add( m.menu_id, menuView);
 
