@@ -1513,20 +1513,37 @@ begin
      refreshContentTree;
 end;
 
+
+
+
 procedure TForm1.refreshContentTree;
 var
   Branch : TStringList; k : Integer;
-  Node, rootNode, parentNode, childNode    : TTreeNode;
+  Node, rootNode, parentNode, childNode   : TTreeNode;
   tree : String; // '/x/y/z';
-  add_root : boolean;
-  prev_node, ins_node : String;
+
+  RootId : String;
 begin
   tvContent.Items.Clear;
 
+  sqlSections.First;
+  while not sqlSections.EOF do
+    begin
+      tree:=sqlSections.FieldByName('tree').AsString;
+      if (tree='') or (tree='/') then
+        begin
+           RootId:=sqlSections.FieldByName('id').AsString;
+           tvContent.Items.Add(nil, RootId );
+           RootNode:=tvContent.Items.FindNodeWithText(RootId);
+           RootNode.ImageIndex:=0;
+           insertArticlesToNode(RootNode, RootId);
+           break;
+        end;
+      sqlSections.Next;
+    end;
 
 
-  sqlContent.ApplyUpdates;
-  sqlContent.Refresh;
+
 
   sqlSections.ApplyUpdates;
   sqlSections.Refresh;
@@ -1540,33 +1557,29 @@ begin
       Branch.Delimiter:='/';
       Branch.DelimitedText:=tree;
 
-       add_root:=true;
+
        node:=nil;
       for k:=0 to Branch.Count-1 do
           begin
 
-            if Branch[k] = '' then continue; // skip empty
+            if (Branch[k] = '') or (Branch[k] = RootId) then continue; // skip empty
 
+            RootNode:=tvContent.Items.FindNodeWithText(RootId);
             Node:=tvContent.Items.FindNodeWithText(Branch[k]);
-            if (Node=NIL) and (k=1) then
-               begin
-                    Node:=tvContent.Items.Add(Node, Branch[k]);
-                    Node.ImageIndex:=0;
-                    // add content to this node
-                    insertArticlesToNode(Node, Branch[k]);
-               end;
-            if (k>1) then
+            if (Node=NIL) and (k=1)   then
+              begin
+               Node:=tvContent.Items.AddChild(RootNode, Branch[k]);
+               Node.ImageIndex:=0;
+               insertArticlesToNode(Node, Branch[k]);
+              end;
+            if (k>1)   then
                 begin
                   parentNode:=tvContent.Items.FindNodeWithText(Branch[k-1]);
                   Node:=tvContent.Items.FindNodeWithText(Branch[k]);
                   if (parentNode<>NIL) and (Node = NIL) then
-                     begin
-                          childNode:=tvContent.Items.AddChild(parentNode, Branch[k]);
-                          childNode.ImageIndex:=0;
-                          // add content to parent node
-
-                           insertArticlesToNode(childNode, Branch[k]);
-                     end;
+                     childNode:=tvContent.Items.AddChild(parentNode, Branch[k]);
+                     childNode.ImageIndex:=0;
+                     insertArticlesToNode(childNode, Branch[k]);
                 end;
 
 
@@ -1575,20 +1588,34 @@ begin
           end;
       Branch.Free;
       sqlSections.Next;
+
     end;
   sqlSections.First;
 
 end;
 
 procedure TForm1.refreshSectionTree;
-var
+ var
   Branch : TStringList; k : Integer;
   Node, rootNode, parentNode    : TTreeNode;
   tree : String; // '/x/y/z';
-  add_root : boolean;
-  prev_node, ins_node : String;
+
+  RootId : String;
 begin
   tvSections.Items.Clear;
+
+  sqlSections.First;
+  while not sqlSections.EOF do
+    begin
+      tree:=sqlSections.FieldByName('tree').AsString;
+      if (tree='') or (tree='/') then
+        begin
+           RootId:=sqlSections.FieldByName('id').AsString;
+           tvSections.Items.Add(nil, RootId );
+           break;
+        end;
+      sqlSections.Next;
+    end;
 
 
 
@@ -1605,18 +1632,19 @@ begin
       Branch.Delimiter:='/';
       Branch.DelimitedText:=tree;
 
-       add_root:=true;
+
        node:=nil;
       for k:=0 to Branch.Count-1 do
           begin
 
-            if Branch[k] = '' then continue; // skip empty
+            if (Branch[k] = '') or (Branch[k] = RootId) then continue; // skip empty
 
+            RootNode:=tvSections.Items.FindNodeWithText(RootId);
             Node:=tvSections.Items.FindNodeWithText(Branch[k]);
-            if (Node=NIL) and (k=1) then
-               Node:=tvSections.Items.Add(Node, Branch[k]);
+            if (Node=NIL) and (k=1)   then
+               Node:=tvSections.Items.AddChild(RootNode, Branch[k]);
 
-            if (k>1) then
+            if (k>1)   then
                 begin
                   parentNode:=tvSections.Items.FindNodeWithText(Branch[k-1]);
                   Node:=tvSections.Items.FindNodeWithText(Branch[k]);
@@ -1631,6 +1659,7 @@ begin
           end;
       Branch.Free;
       sqlSections.Next;
+
     end;
   sqlSections.First;
 
