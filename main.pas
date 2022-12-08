@@ -13,7 +13,7 @@ uses
   ActnList, Buttons, blcksock, sockets, Synautil, synaip, synsock, ftpsend,
   db_helpers, db_insertdemo, db_create_tables, replacers, editor_in_window,
   editor_css, editor_js, DateUtils, fgl, regexpr, types_for_app,
-  selectorTagsPages, const_for_app, selectors_for_menu; {Use Synaptic}
+  selectorTagsPages, const_for_app, selectors_for_menu, RenderHtml; {Use Synaptic}
 
 
 
@@ -3211,38 +3211,40 @@ procedure TForm1.makePageJoin(page: page_params; filenam: String) ;
 var
   id : String;
   t : String;
+  Rnr : Render;
 
 
 
 begin
+ Rnr:=Render.Create;
+
 
 
     if FileExists(filenam) then DeleteFile(filenam);
+
     Buffer.Clear;
     Buffer.Lines.Add('<!DOCTYPE html>');
-    Buffer.Lines.Add('<html><head>');
-                              Buffer.Lines.Add(
+    Buffer.Lines.Add('<html><head>{header}');
+    Buffer.Lines.Add('</head><body>');
+    Buffer.Lines.Add('<html><head>{body}');
+    Buffer.Lines.Add('</body></html>');
+    Rnr.setTemplate(Buffer.Text);
+    Rnr.setVar('header',
+                        insparamstohead(
+                         buildHead(page.title, page.headtpl),
+                                    page));
 
-                                           insparamstohead(
-                                                                  buildHead(page.title, page.headtpl),
-                                                           page)
+     t:=page.bodytpl;
+     Rnr.setVar('body',
+                       insParamsToBody(
+                             buildBody(page.title, page.body, t),
+                           page)
+                       );
+     Buffer.Lines.Text:= Rnr.getHtml();
 
-                               );
 
-
-                                t:=page.bodytpl;
-
-                              Buffer.Lines.Add('</head><body>');
-                              Buffer.Lines.Add(
-                                               insParamsToBody(
-                                                               buildBody(page.title, page.body, t),
-                                               page)
-
-                              );
-                              Buffer.Lines.Add('</body></html>');
-
-                              // постобработка
-                              Buffer.Lines.Text :=
+     // постобработка
+     Buffer.Lines.Text :=
                               useMenus(
                                useModules(
                                 useOwnTags(
@@ -3261,7 +3263,7 @@ begin
                               id , [rfReplaceAll]);
                               WriteDocument(Buffer.Lines.Text, filenam);
 
-
+   Rnr.Free;
 end;
 
 function TForm1.buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records; tree : String; tags_html : String): string;
@@ -3452,7 +3454,10 @@ var fbuffer : TMemo;
   sitemap_param : page_params;
   k, cnt : byte;
   listItem, tree : String;
+  Rnr :  Render;
 begin
+
+  Rnr:=Render.create;
 
   fbuffer := TMemo.Create(self);
   // карта категорий
@@ -3474,9 +3479,16 @@ begin
              if chkUseTrees.Checked then
                tree:=sqlSections.FieldByName('tree').AsString;
 
-             listItem:='<li><a href="{tree}/section_' + sqlSections.FieldByName('id').AsString + '.{ext}">';
-             listItem:= listItem + sqlSections.FieldByName('section').AsString + '</a></li>';
-             listItem:=applyVar(listItem, 'tree', tree);
+
+             Rnr.setTemplate(
+                                '<li><a href="{tree}/section_' + sqlSections.FieldByName('id').AsString + '.{ext}">'+
+                                sqlSections.FieldByName('section').AsString + '</a></li>');
+
+             Rnr.setVar('tree', tree);
+
+             listItem:=Rnr.getHtml();
+
+
              fbuffer.Lines.Add(listItem);
 
              sqlSections.Next;
@@ -3494,6 +3506,8 @@ begin
   makePageJoin( sitemap_param,
   sqlPresets.FieldByName('dirpath').AsString+DELIM +'sitemap.'+form1.PrefferedExtension.Text);
   fbuffer.Free;
+
+  Rnr.Free;
 end;
 
 procedure TForm1.doTagsMap;

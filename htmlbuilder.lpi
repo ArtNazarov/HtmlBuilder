@@ -55,7 +55,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="18">
+    <Units Count="19">
       <Unit0>
         <Filename Value="htmlbuilder.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -144,6 +144,11 @@
         <Filename Value="selectors_for_menu.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit17>
+      <Unit18>
+        <Filename Value="renderhtml.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RenderHtml"/>
+      </Unit18>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
