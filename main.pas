@@ -476,7 +476,11 @@ type
   public
     { public declarations }
     Titles, Urls, Sections: TMemo;
+    PagesTree : sdict;
+
     SiteSectionUrls, SiteSectionTitles: TMemo;
+    SiteSectionTree : sdict;
+
     CssTitles   : TStringList;
     JsTitles    : TStringList;
 
@@ -665,6 +669,8 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  SiteSectionTree:=sdict.Create;
+  PagesTree:=sdict.Create;
 
   rubrication_start:=sqlRubrication.SQL.Text;
 
@@ -1798,27 +1804,38 @@ begin
 end;
 
 procedure TForm1.scanLinks;
-var i : integer;
+var
+   i : integer;
+   sql_GetLinks : TSQLQuery;
 begin
+   sql_GetLinks:=TSQLQuery.Create(Self);
+   sql_GetLinks.SQLConnection:=conn;
+   sql_GetLinks.Transaction:=trans;
+   sql_GetLinks.SQL.Text:='select content.* , section.tree from content left join section on content.section = section.id';
+   sql_GetLinks.ExecSQL;
+   sql_GetLinks.Active:=true;
+
   form1.dbNav_Content.Enabled:=false;
 
   Titles.Clear;      // Titles is a list of pages captions
   Urls.Clear;        // Urls is a list of urls for pages
   Sections.Clear;
   lvContent.clear;
+  PagesTree.Clear;
 
-  if not  sqlContent.Eof then  begin
-  sqlContent.First;  // lookup from first record
-  while not sqlContent.EOF do
+  if not sql_GetLinks.Eof then  begin
+  sql_GetLinks.First;  // lookup from first record
+  while not sql_GetLinks.EOF do
   begin
     // add to list so each index is same item
-    Titles.Lines.Add(sqlContent.FieldByName('caption').AsString);
-    Urls.Lines.Add(sqlContent.FieldByName('id').AsString);
-    Sections.Lines.Add(sqlContent.FieldByName('section').AsString);
-    sqlContent.Next;  // see next page
+    Titles.Lines.Add(sql_GetLinks.FieldByName('caption').AsString);
+    Urls.Lines.Add(sql_GetLinks.FieldByName('id').AsString);
+    Sections.Lines.Add(sql_GetLinks.FieldByName('section').AsString);
+    PagesTree.Add(sql_GetLinks.FieldByName('id').AsString, sql_GetLinks.FieldByName('tree').AsString);
+    sql_GetLinks.Next;  // see next page
     Application.ProcessMessages;
   end;
-  sqlContent.First;  // set cursor to first
+  sql_GetLinks.Free;  // set cursor to first
 
 
   for i:=0 to Urls.Lines.Count-1 do
@@ -1834,6 +1851,7 @@ procedure TForm1.scanSections;
 var i : integer;
 begin
   // identically as scanLinks
+  SiteSectionTree.Clear;
   SiteSectionUrls.Clear;
   SiteSectionTitles.Clear;
   lvSections.clear;
@@ -1845,6 +1863,7 @@ begin
   begin
     SiteSectionTitles.Lines.Add(sqlSections.FieldByName('section').AsString);
     SiteSectionUrls.Lines.Add(sqlSections.FieldByName('id').AsString);
+    SiteSectionTree.Add(sqlSections.FieldByName('id').AsString, sqlSections.FieldByName('tree').AsString );
     sqlSections.Next;
     Application.ProcessMessages;
   end;
@@ -1926,6 +1945,7 @@ function TForm1.insLinks(body: string): string;
 var
   r: string;
   i: integer;
+  url, base_url, link : String;
 begin
   // in body tag all existing shorttags
   // [linkname] replaced to <a href="linkurl">title</a>
@@ -1933,13 +1953,24 @@ begin
   i := 0;
   while i < Urls.Lines.Count do
   begin
-    r :=
-      StringReplace(r, '[' + Urls.Lines[i] + ']',
-      '<a href="' + Urls.Lines[i] + '.' +
-      PrefferedExtension.Text + '">' + Titles.Lines[i] + '</a>', [rfReplaceAll]);
+    base_url:='';
+    if chkUseTrees.Checked then
+      base_url:=PagesTree[ Urls.Lines[i] ];
+
+
+
+    link:='<a href="{base_url}/' + Urls.Lines[i] + '.' +
+      PrefferedExtension.Text + '">' + Titles.Lines[i] + '</a>';
+
+    link:=ApplyVar(link, 'base_url', base_url);
+
+    r := StringReplace(r, '[' + Urls.Lines[i] + ']',
+      link, [rfReplaceAll]);
     Inc(i);
     Application.ProcessMessages;
   end;
+
+
   if logger_info then mmRubrics.Lines.Add('ПРОСТАВЛЯЕМ ССЫЛКИ');
   if logger_info then mmRubrics.Lines.Add('Вызвана<insLinks> до '+body);
   if logger_info then mmRubrics.Lines.Add('Вызвана<insLinks> после '+r);
@@ -1950,6 +1981,7 @@ function TForm1.insSections(body: string): string;
 var
   r: string;
   i: integer;
+  base_url, url : String;
 begin
   //  in body identically as insSections
   //  <<section_url>> will be replaced to <a href="section_url">section_title</a>
@@ -1958,10 +1990,14 @@ begin
   //showMessage(IntToStr(SiteSectionUrls.Lines.Count));
   while i < SiteSectionUrls.Lines.Count do
   begin
-    r :=
-      StringReplace(r, '<<' + SiteSectionUrls.Lines[i] + '>>',
-      '<a href="section_' + SiteSectionUrls.Lines[i] +
-      '.' + PrefferedExtension.Text + '">' + SiteSectionTitles.Lines[i] + '</a>', [rfReplaceAll]);
+    url:='<a href="{base_url}/section_' + SiteSectionUrls.Lines[i] +
+      '.' + PrefferedExtension.Text + '">' + SiteSectionTitles.Lines[i] + '</a>';
+    base_url:='';
+    if chkUseTrees.Checked then
+       base_url:=SiteSectionTree[SiteSectionUrls.Lines[i]];
+    url:=applyVar(url, 'base_url', base_url);
+
+    r := StringReplace(r, '<<' + SiteSectionUrls.Lines[i] + '>>', url, [rfReplaceAll]);
     Inc(i);
     Application.ProcessMessages;
   end;

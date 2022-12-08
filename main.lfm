@@ -3045,7 +3045,9 @@ object Form1: TForm1
     Database = conn
     Transaction = trans
     SQL.Strings = (
-      'select * from content'
+      'select'
+      '*'
+      'from content'
     )
     Params = <>
     Macros = <>
