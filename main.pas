@@ -43,14 +43,16 @@ type
     acFindContentByCaption: TAction;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
+    btnAttachTagToMaterial: TButton;
+    btnEditorContent: TButton;
     btnJoin: TButton;
     btnLoadFromWysiwyg: TButton;
+    btnOpenWithWysiwyg: TButton;
     btStartServer: TButton;
     btStopServer: TButton;
     Buffer: TMemo;
     btnMakeArchive: TButton;
     btnLoad: TButton;
-    btnEditorContent: TButton;
     btnEditorForSectionNote: TButton;
     btnEditorForSectionFullText: TButton;
     btnEditorForBlockMarkup: TButton;
@@ -60,19 +62,38 @@ type
     btnEditorTemplateOfItem: TButton;
     btnEditorCssOpen: TButton;
     btnEditorJs: TButton;
-    btnOpenWithWysiwyg: TButton;
     btnPublishToGithubPages: TButton;
-    btnAttachTagToMaterial: TButton;
     btnRefreshTree: TButton;
+    btnAlterTableAddField: TButton;
+    btnGetCustomFields: TButton;
+    btnRemoveCustomField: TButton;
     cboLocale: TComboBox;
     chkUseTrees: TCheckBox;
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    DBDateTimePicker1: TDBDateTimePicker;
+    dbePageField1: TDBEdit;
+    dbePageField2: TDBEdit;
+    dbePageField3: TDBEdit;
+    dbePageField4: TDBEdit;
+    dbePageField5: TDBEdit;
+    dbePageField6: TDBEdit;
+    dbePageField7: TDBMemo;
     dbeTree: TDBEdit;
     dbeMenuItemMenuId: TDBEdit;
     dbeMenuItemType: TDBEdit;
     dbeMenuItemCaption: TDBEdit;
+    dbGridPages: TDBGrid;
+    dbNav_Content: TDBNavigator;
+    dbSelectorTag: TDBLookupComboBox;
+    DBText1: TDBText;
+    DBText2: TDBText;
+    DBText3: TDBText;
+    DBText4: TDBText;
+    DBText5: TDBText;
+    DBText6: TDBText;
+    DBText7: TDBText;
     ds_MenuItem: TDataSource;
     ds_Menu: TDataSource;
     dbeItemMenuId: TDBEdit;
@@ -83,7 +104,6 @@ type
     dbmMenuItemTpl: TDBMemo;
     dbNav_MenuItems: TDBNavigator;
     dbNav_Menus: TDBNavigator;
-    dbSelectorTag: TDBLookupComboBox;
     ds_TagsOnPage: TDataSource;
     dbmTagsTemplate: TDBMemo;
     dbmItemTagTemplate: TDBMemo;
@@ -98,7 +118,6 @@ type
     dbNav_Tags: TDBNavigator;
     dbOrder_Field_Set: TDBComboBox;
     dbOrder_Field: TDBComboBox;
-    DBDateTimePicker1: TDBDateTimePicker;
     ds_JsScripts: TDataSource;
     dbeJsScriptId: TDBEdit;
     dbeScriptPath: TDBEdit;
@@ -116,9 +135,23 @@ type
     ds_Join: TDataSource;
     dbJoin: TDBGrid;
     edGithubPagesPath: TEdit;
+    edFieldName: TEdit;
+    edFieldType: TEdit;
     edLocalWysigygServer: TEdit;
+    fCaption: TDBEdit;
+    fContent: TDBMemo;
+    fID: TDBEdit;
     ImageList1: TImageList;
+    Label1: TLabel;
     Label12: TLabel;
+    Label4: TLabel;
+    lbAttachTagToPage: TLabel;
+    lbCategory: TLabel;
+    lbDt: TLabel;
+    lbFieldsList: TLabel;
+    lbFieldName: TLabel;
+    lbFieldType: TLabel;
+    lbTagsOnPageTab: TLabel;
     lbTreeStructure: TLabel;
     lbTree: TLabel;
     lbMenuItemMenuID: TLabel;
@@ -131,8 +164,6 @@ type
     lbMenuCaption: TLabel;
     lbMenuTpl: TLabel;
     lbMenuItemTpl: TLabel;
-    lbAttachTagToPage: TLabel;
-    lbTagsOnPageTab: TLabel;
     lbTagsTemplate: TLabel;
     lbItemTagTempate: TLabel;
     lbTagsPages_Page_Tag: TLabel;
@@ -145,7 +176,6 @@ type
     lbGithubPagesPath: TLabel;
     lbOrderSet: TLabel;
     lbOrderField: TLabel;
-    lbDt: TLabel;
     lbProgress: TLabel;
     lbJsScriptId: TLabel;
     lbJsScriptPath: TLabel;
@@ -155,7 +185,9 @@ type
     lbCssStyle: TLabel;
     lbCSS: TLabel;
     lbSpecification: TLabel;
+    listFields: TListBox;
     listTags: TListBox;
+    lvContent: TListView;
     lvMenuItems: TListView;
     lvTagsPages: TListView;
     lvTags: TListView;
@@ -163,14 +195,25 @@ type
     lvCSS: TListView;
     lvPresets: TListView;
     lvBlocks: TListView;
-    lvContent: TListView;
     lvSections: TListView;
     mnuFinder: TMenuItem;
     mnuFind: TMenuItem;
     mmRubrics: TMemo;
+    PageControl1: TPageControl;
+    PageControl3: TPageControl;
     panCSSList: TPanel;
     panCSSElements: TPanel;
+    Panel1: TPanel;
+    panPageFormView: TPanel;
+    Panel13: TPanel;
+    Panel14: TPanel;
+    Panel15: TPanel;
+    Panel18: TPanel;
     Panel24: TPanel;
+    Panel26: TPanel;
+    Panel6: TPanel;
+    panFieldsList: TPanel;
+    panAddField: TPanel;
     panMenuProps: TPanel;
     panMenuItems: TPanel;
     panMenusList: TPanel;
@@ -184,19 +227,11 @@ type
     panJs: TPanel;
     panJoin: TPanel;
     pBar: TProgressBar;
-    selSection: TDBLookupComboBox;
     ds_Content: TDataSource;
     ds_Presets: TDataSource;
     ds_Blocks: TDataSource;
     ds_Sections: TDataSource;
     dbeBlockId: TDBEdit;
-    dbePageField1: TDBEdit;
-    dbePageField2: TDBEdit;
-    dbePageField3: TDBEdit;
-    dbePageField4: TDBEdit;
-    dbePageField5: TDBEdit;
-    dbePageField6: TDBEdit;
-    dbePageField7: TDBMemo;
     dbeUserField1: TDBEdit;
     dbeUserField2: TDBEdit;
     dbeUserField3: TDBEdit;
@@ -216,17 +251,9 @@ type
     dbmSectionNote: TDBMemo;
     dbmBodySectionsTemplate: TDBMemo;
     dbmTemplateOfItem: TDBMemo;
-    dbNav_Content: TDBNavigator;
     dbNav_Blocks: TDBNavigator;
     dbNav_Presets: TDBNavigator;
     dbNav_Sections: TDBNavigator;
-    DBText1: TDBText;
-    DBText2: TDBText;
-    DBText3: TDBText;
-    DBText4: TDBText;
-    DBText5: TDBText;
-    DBText6: TDBText;
-    DBText7: TDBText;
     edFtpIP: TEdit;
     edFtpPassword: TEdit;
     edFtpPort: TEdit;
@@ -237,17 +264,12 @@ type
     edPort: TEdit;
     edPathToBuild: TEdit;
     edItemsPerPage: TEdit;
-    fCaption: TDBEdit;
-    fContent: TDBMemo;
-    fID: TDBEdit;
-    Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
     Label13: TLabel;
     Label14: TLabel;
     Label15: TLabel;
     Label16: TLabel;
-    lbCategory: TLabel;
     Label18: TLabel;
     Label19: TLabel;
     Label2: TLabel;
@@ -273,7 +295,6 @@ type
     lbPathToBuild: TLabel;
     lbFileManager: TLabel;
     lbItemsPerPage: TLabel;
-    Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
     Label7: TLabel;
@@ -281,14 +302,9 @@ type
     Label9: TLabel;
     mmFtpLog: TMemo;
     PageControl2: TPageControl;
-    PageControl3: TPageControl;
     Panel10: TPanel;
     Panel11: TPanel;
-    Panel13: TPanel;
-    Panel14: TPanel;
     panUserFields: TPanel;
-    Panel15: TPanel;
-    Panel18: TPanel;
     Panel19: TPanel;
     Panel20: TPanel;
     Panel21: TPanel;
@@ -297,12 +313,12 @@ type
     panWebServer: TPanel;
     panServActions: TPanel;
     Panel25: TPanel;
-    Panel6: TPanel;
     Panel7: TPanel;
     Panel8: TPanel;
     Panel9: TPanel;
     PrefferedExtension: TComboBox;
     conn: TSQLite3Connection;
+    selSection: TDBLookupComboBox;
     sqlContent: TSQLQuery;
     sqlJoin: TSQLQuery;
     sqlCounter: TSQLQuery;
@@ -318,6 +334,11 @@ type
     tabCSS: TTabSheet;
     tabJs: TTabSheet;
     tabMenus: TTabSheet;
+    TabSheet1: TTabSheet;
+    TabSheet11: TTabSheet;
+    TabSheet12: TTabSheet;
+    TabSheet2: TTabSheet;
+    TabSheet3: TTabSheet;
     tabTagsTemplate: TTabSheet;
     tabItemTagTemplate: TTabSheet;
     tabTagsPages: TTabSheet;
@@ -327,8 +348,6 @@ type
     sqlSections: TSQLQuery;
     sqlBlocks: TSQLQuery;
     sqlPresets: TSQLQuery;
-    TabSheet11: TTabSheet;
-    TabSheet12: TTabSheet;
     TabSheet13: TTabSheet;
     TabSheet6: TTabSheet;
     TabSheet7: TTabSheet;
@@ -341,7 +360,6 @@ type
     tabSpecial: TTabSheet;
     mmAbout: TMemo;
     AppPages: TPageControl;
-    Panel1: TPanel;
     Panel12: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
@@ -371,10 +389,12 @@ type
     procedure AppPagesChange(Sender: TObject);
 
     procedure btFtpUpdateClick(Sender: TObject);
+    procedure btnAlterTableAddFieldClick(Sender: TObject);
 
     procedure btnAttachTagToMaterialClick(Sender: TObject);
     procedure btnEditorCssOpenClick(Sender: TObject);
     procedure btnEditorJsClick(Sender: TObject);
+    procedure btnGetCustomFieldsClick(Sender: TObject);
 
     procedure btnJoinClick(Sender: TObject);
     procedure btnLoadClick(Sender: TObject);
@@ -382,6 +402,7 @@ type
     procedure btnOpenWithWysiwygClick(Sender: TObject);
     procedure btnPublishToGithubPagesClick(Sender: TObject);
     procedure btnRefreshTreeClick(Sender: TObject);
+    procedure btnRemoveCustomFieldClick(Sender: TObject);
 
 
     procedure btStartServerClick(Sender: TObject);
@@ -403,6 +424,7 @@ type
       Button: TDBNavButtonType);
     procedure dbNav_SectionsBeforeAction(Sender: TObject;
       Button: TDBNavButtonType);
+    procedure lbFieldTypeClick(Sender: TObject);
     procedure ListBox1Click(Sender: TObject);
 
     procedure lvBlocksClick(Sender: TObject);
@@ -412,6 +434,7 @@ type
     procedure lvMenuItemsClick(Sender: TObject);
     procedure lvPresetsClick(Sender: TObject);
     procedure lvSectionsClick(Sender: TObject);
+    procedure panFieldsListClick(Sender: TObject);
     procedure redrawLvMenuItems();
     procedure refreshTrees();
     procedure refreshContentTree();
@@ -434,6 +457,9 @@ type
 
     procedure sqlBlocksAfterPost(DataSet: TDataSet);
     procedure sqlBlocksBeforeDelete(DataSet: TDataSet);
+    procedure sqlContentAfterDelete(DataSet: TDataSet);
+    procedure sqlContentAfterEdit(DataSet: TDataSet);
+    procedure sqlContentAfterInsert(DataSet: TDataSet);
 
 
     procedure sqlContentAfterPost(DataSet: TDataSet);
@@ -458,6 +484,9 @@ type
     procedure sqlPresetsAfterPost(DataSet: TDataSet);
     procedure sqlPresetsBeforeDelete(DataSet: TDataSet);
     procedure sqlPresetsBeforeRefresh(DataSet: TDataSet);
+    procedure sqlSectionsAfterDelete(DataSet: TDataSet);
+    procedure sqlSectionsAfterEdit(DataSet: TDataSet);
+    procedure sqlSectionsAfterInsert(DataSet: TDataSet);
 
     procedure sqlSectionsAfterPost(DataSet: TDataSet);
     procedure sqlSectionsBeforeDelete(DataSet: TDataSet);
@@ -586,6 +615,7 @@ type
 
 
 
+
     { Переназначение datasource для таблицы content - страницы }
     procedure changeDataSourcesContent();
     { Переназначение datasource для таблицы section - разделы}
@@ -645,6 +675,11 @@ type
     procedure listViewClickHelper(var lv : TListView; var sql : TSQLQuery; field : String);
 
     procedure insertArticlesToNode(var Node : TTreeNode; section : String);
+    procedure updateCustomColumns();
+    procedure addCustomColumn(field_name, field_type : String);
+    procedure deleteCustomColumn(field_name : String);
+    function useCustomFields(  template : String; page_id : String) : String;
+
 
 
        end;
@@ -735,6 +770,22 @@ end;
 procedure TForm1.sqlBlocksBeforeDelete(DataSet: TDataSet);
 begin
   beforedeletehelper(lvBlocks, sqlblocks, 'id');
+end;
+
+procedure TForm1.sqlContentAfterDelete(DataSet: TDataSet);
+begin
+
+  form1.refreshContentTree();
+end;
+
+procedure TForm1.sqlContentAfterEdit(DataSet: TDataSet);
+begin
+   form1.refreshContentTree();
+end;
+
+procedure TForm1.sqlContentAfterInsert(DataSet: TDataSet);
+begin
+  form1.refreshContentTree();
 end;
 
 
@@ -844,9 +895,27 @@ begin
   sqlPresets.ApplyUpdates;
 end;
 
+procedure TForm1.sqlSectionsAfterDelete(DataSet: TDataSet);
+begin
+  form1.refreshSectionTree();
+  form1.refreshContentTree();
+end;
+
+procedure TForm1.sqlSectionsAfterEdit(DataSet: TDataSet);
+begin
+end;
+
+procedure TForm1.sqlSectionsAfterInsert(DataSet: TDataSet);
+begin
+end;
+
 procedure TForm1.sqlSectionsAfterPost(DataSet: TDataSet);
 begin
   afterPostHelper(lvSections, sqlSections, 'id');
+
+  form1.refreshSectionTree();
+  form1.refreshContentTree();
+
 end;
 
 
@@ -994,6 +1063,18 @@ begin
 
 end;
 
+procedure TForm1.btnAlterTableAddFieldClick(Sender: TObject);
+var field_name, field_type : String;
+begin
+  field_name := edFieldName.Text;
+  field_type := edFieldType.Text;
+  if (field_name<>'') and (field_type<>'') then
+    begin
+          AddCustomColumn('custom_'+field_name, field_type);
+          updateCustomColumns();
+    end;
+end;
+
 
 
 
@@ -1046,6 +1127,11 @@ begin
    sqlJsScripts.FieldByName('js_file').AsString:=jE.editor.text;
    sqlJsScripts.Post;
 
+end;
+
+procedure TForm1.btnGetCustomFieldsClick(Sender: TObject);
+begin
+  updateCustomColumns();
 end;
 
 
@@ -1271,6 +1357,15 @@ begin
      refreshTrees();
 end;
 
+procedure TForm1.btnRemoveCustomFieldClick(Sender: TObject);
+begin
+  if ListFields.ItemIndex>-1 then
+     begin
+     DeleteCustomColumn(ListFields.Items[ ListFields.ItemIndex ]);
+     updateCustomColumns();
+     end;
+end;
+
 
 procedure TForm1.acEditorForSectionNoteExecute(Sender: TObject);
 
@@ -1451,6 +1546,11 @@ begin
   end;
 end;
 
+procedure TForm1.lbFieldTypeClick(Sender: TObject);
+begin
+
+end;
+
 procedure TForm1.ListBox1Click(Sender: TObject);
 begin
 
@@ -1493,6 +1593,11 @@ end;
 procedure TForm1.lvSectionsClick(Sender: TObject);
 begin
   listViewClickHelper(lvSections, sqlSections, 'id');
+end;
+
+procedure TForm1.panFieldsListClick(Sender: TObject);
+begin
+
 end;
 
 procedure TForm1.redrawLvMenuItems;
@@ -1953,7 +2058,9 @@ begin
 
       r.id_tag:=sqlTagsPages.FieldByName('id_tag').AsString;
       r.id_page:=sqlTagsPages.FieldByName('id_page').AsString;
-      r.tree:=sqlTagsPages.FieldByName('tree').AsString;
+
+      r.tree:=getTreeByPageId(r.id_page, conn, trans);
+
       mTagsPages.Add(r.id_tag_page, r);
       sqlTagsPages.Next;
 
@@ -2923,7 +3030,7 @@ end;
 
 procedure TForm1.viewTagsPagesSQL;
 begin
-  open_sql(    'select * from tags_pages', sqlTagsPages);
+  //open_sql(    'select * from tags_pages', sqlTagsPages);
   ds_Tags_Pages.AutoEdit:=True;
   SilentMessage('выполнена загрузка страниц!');
 end;
@@ -2939,6 +3046,8 @@ begin
   open_sql( 'select * from menu_item', sqlMenuItem);
   ds_MenuItem.AutoEdit:=true;
 end;
+
+
 
 (*
 переназначает источник данных с tdbf на sqlite  - ТАБЛИЦА КОНТЕНТ
@@ -3292,6 +3401,8 @@ begin
                                                              buffer.Lines.Text)
                                                     ),
                                         page))));
+     // add custom columns with prefix custom_
+     Buffer.Lines.Text:=useCustomFields( Buffer.Lines.Text, page.id);
 
 
                               // id of pages
@@ -3496,7 +3607,7 @@ begin
 
 procedure TForm1.doSitemap;
 
-procedure getInfoAboutSection(id : String; var section  : String);
+procedure getInfoAboutSection(id : String; var section, tree  : String);
 var sq : TSQLQuery;
 begin
  sq:=TSqlQuery.Create(self);
@@ -3507,6 +3618,7 @@ begin
  sq.Active:=true;
  sq.first;
  section:=sq.FieldByName('section').AsString;
+ tree:=sq.FieldByName('tree').AsString;
 
  sq.free;
  end;
@@ -3523,7 +3635,7 @@ begin
 
   if node = NIL then exit;
   id:=node.text;
-  getInfoAboutSection(id, section);
+  getInfoAboutSection(id, section, tree);
   filler:=StringOfChar('-', level);
   Rnr:=Render.Create;
   Rnr.setTemplate(
@@ -3820,6 +3932,11 @@ begin
   scanJs();
   scanTags();
   scanTagsPages();
+
+  form1.refreshContentTree();
+  form1.refreshSectionTree();
+
+  updateCustomColumns();
 
   Form1.Enabled:=True;
 end;
@@ -4305,6 +4422,90 @@ begin
 
   sql.Free;
 end;
+
+procedure TForm1.updateCustomColumns;
+var
+   sq : TSQLQuery;
+   field_name : String;
+   field_type : String;
+begin
+  sq:=TSQLQuery.Create(Self);
+  sq.SQLConnection:=conn;
+  sq.SQLTransaction:=trans;
+  open_sql('PRAGMA TABLE_INFO(content)', sq);
+  sq.first;
+  listFields.Clear;
+  while not sq.eof do
+   begin
+     field_name:=sq.FieldByName('name').AsString;
+     field_type:=sq.FieldByName('type').AsString;
+     listFields.Items.add(field_name);
+     sq.next;
+   end;
+  sq.Free;
+end;
+
+procedure TForm1.addCustomColumn(field_name, field_type: String);
+var sq : TSQLQuery;
+begin
+  if field_name.Contains('custom_') then
+     begin
+  sq:=TSQLQuery.create(Self);
+  sq.SQLConnection:=conn;
+  sq.SQLTransaction:=trans;
+  sq.SQL.Text:='ALTER TABLE content ADD COLUMN '+field_name+' '+field_type;
+  sq.ExecSQL;
+  sq.Free;
+     end;
+end;
+
+procedure TForm1.deleteCustomColumn(field_name: String);
+var sq : TSQLQuery;
+begin
+  if field_name.Contains('custom_') then begin
+  sq:=TSQLQuery.create(self);
+  sq.SQLConnection:=conn;
+  sq.SQLTransaction:=trans;
+  sq.SQL.Text:='ALTER TABLE content DROP COLUMN '+field_name;
+  sq.ExecSQL;
+  sq.Free;
+  end;
+end;
+
+function TForm1.useCustomFields( template: String; page_id: String): String;
+var
+   sq : TSQLQuery;
+   i : Integer;
+   R : String;
+   rnr : Render;
+begin
+  rnr := Render.Create;
+  rnr.setTemplate(template);
+
+  sq:=TSQLQuery.create(self);
+  sq.SQLConnection:=conn;
+  sq.SQLTransaction:=trans;
+  sq.SQL.Text:='SELECT * FROM content WHERE id="'+page_id+'" LIMIT 1';
+  sq.ExecSQL;
+  sq.Active:=True;
+  sq.First;
+  for i:=0 to listFields.Count-1 do
+      begin
+        if ListFields.Items[i].Contains('custom_') then
+           begin
+           // todo not strings
+             rnr.setVar( ListFields.Items[i], sq.FieldByName( ListFields.Items[i] ).AsString);
+           end;
+      end;
+   R:=Rnr.getHtml();
+
+  sq.Free;
+  rnr.free;
+
+  Result:=R;
+end;
+
+
 
 
 
