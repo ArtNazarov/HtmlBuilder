@@ -4277,14 +4277,14 @@ begin
                                   tm.free;
 
                                    itemHTML := itemHtml +
-
+                                   useCustomFields(
                                    buildItem(
                                      sqlRubrication.FieldByName('itemtpl').AsString,
                                      sqlRubrication.FieldByName('content_id').AsString,
                                      sqlRubrication.FieldByName('caption').AsString,
                                      sqlRubrication.FieldByName('dt').AsDateTime,
                                      ur, sqlRubrication.FieldByName('tree').AsString,
-                                     tags_html);
+                                     tags_html), sqlRubrication.FieldByName('content_id').asString);
                                    sqlRubrication.Next;
                                    Application.ProcessMessages;
                              end;
