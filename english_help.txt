@@ -6,6 +6,10 @@ MENU SUPPORT
 
 {menu=ID_MENU} works in global blocks
 
+Paste content from remote source
+
+{remote_url="https://something.com/source.txt"}
+
 - Template support
 - Pages are saved under the name /{id}.htm
 - In the HEAD template section, the {title} code corresponds to the page title
@@ -14,6 +18,8 @@ MENU SUPPORT
 {title} - page title
 {body} - html content markup
 {dt} - date of material
+{tags} - tags of material
+
 - Global markup blocks
 
 {id of the global block} is replaced by the markup of this block
@@ -35,6 +41,7 @@ MENU SUPPORT
 {itemUrl} - part of the address of the link to the page
 {itemTitle} - page title
 {itemDt} - date of material
+{itemTags} - tags of material
 {ext} - preferred file extension
 
 - Quick links
