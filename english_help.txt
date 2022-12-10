@@ -57,6 +57,8 @@ Paste content from remote source
 {itemDt} - date of material
 {itemTags} - tags of material
 {ext} - preferred file extension
+{fX}, {vX} - caption and value of additional fields,X=1..7
+{custom_name} - value of user custom column
 
 - Quick links
 
