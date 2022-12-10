@@ -2,9 +2,23 @@ Author: Nazarov A.A., 2012-2023, Orenburg
 Site: artnazarov.ru
 E-mail:admin@artnazarov.ru
 
-MENU SUPPORT
+Custom fields in content
+
+in common settings can be created (or deleted)
+additional columns for content table with
+names started with custom_
+
+For output use shortcode {custom_name}
+
+Menu support
 
 {menu=ID_MENU} works in global blocks
+
+In template for item can be used
+{itemUrl}, {ext}, {itemTitle} shortcodes
+
+In template of menu for output items
+list just use {items}
 
 Paste content from remote source
 
