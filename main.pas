@@ -13,7 +13,8 @@ uses
   ActnList, Buttons, blcksock, sockets, Synautil, synaip, synsock, ftpsend,
   db_helpers, db_insertdemo, db_create_tables, replacers, editor_in_window,
   editor_css, editor_js, DateUtils, fgl, regexpr, types_for_app,
-  selectorTagsPages, const_for_app, selectors_for_menu, RenderHtml; {Use Synaptic}
+  selectorTagsPages, const_for_app, selectors_for_menu, RenderHtml,
+  httpsend; {Use Synaptic}
 
 
 
@@ -679,6 +680,8 @@ type
     procedure addCustomColumn(field_name, field_type : String);
     procedure deleteCustomColumn(field_name : String);
     function useCustomFields(  template : String; page_id : String) : String;
+
+    function remotes_urls(app : String) : String;
 
 
 
@@ -3392,6 +3395,7 @@ begin
 
      // постобработка
      Buffer.Lines.Text :=
+                       remotes_urls(
                               useMenus(
                                useModules(
                                 useOwnTags(
@@ -3400,7 +3404,7 @@ begin
                                                   useBlocks(
                                                              buffer.Lines.Text)
                                                     ),
-                                        page))));
+                                        page)))));
      // add custom columns with prefix custom_
      Buffer.Lines.Text:=useCustomFields( Buffer.Lines.Text, page.id);
 
@@ -4503,6 +4507,87 @@ begin
   rnr.free;
 
   Result:=R;
+end;
+
+function TForm1.remotes_urls(app: String): String;
+
+function CurlGet(URL: String): String;
+var
+  CurlProcess : TProcess;
+  Response : TStringList;
+  file_name : String;
+  R : String;
+begin
+  R:='';
+  CurlProcess:=TProcess.Create(Self);
+  file_name:=form1.edPathToBuild.Text +'/temp_text.txt';
+  CurlProcess.CommandLine:='/usr/bin/curl '+URL+ ' -o '+file_name;
+  //showMessage(CurlProcess.CommandLine);
+  CurlProcess.Execute;
+  while CurlProcess.Running do ;
+  CurlProcess.Free;
+  Response:=TStringList.Create;
+  if FileExists(file_name) then
+      begin
+           Response.LoadFromFile(file_name);
+           R:=Response.Text;
+           DeleteFile(file_name);
+      end;
+  Response.Free;
+  Result:=R;
+end;
+
+
+var
+   re : TRegExpr;
+   http_template : String;
+   url : String;
+   urls_list : TStringList;
+   i : Integer;
+   Rnr : Render;
+   Response : TStrings;
+   var_name : String;
+   var_value : String;
+begin
+
+
+  Rnr:=Render.Create;
+  Rnr.setTemplate(app);
+
+  urls_list := TStringList.Create;
+
+  http_template:='([\w\d@:%._\+~#=?()&//]+)';
+
+
+  re := TRegExpr.Create('{remote_url="'+http_template+'"}');
+
+
+  if re.Exec(app) then begin
+       url:=re.Match[1];
+       urls_list.Add( url );
+       while re.ExecNext do begin
+         url := re.Match[1];
+         urls_list.Add( url ) ;
+         Application.ProcessMessages;
+      end;
+  end;
+
+  for i:=0 to urls_list.Count-1 do
+       begin
+        url:=urls_list.Strings[i];
+        Response := TStrings.Create;
+        var_name := 'remote_url="'+url+'"';
+        var_value := CurlGet(url);
+
+        //showMessage(var_name);
+        //showMessage(var_value);
+        Rnr.setVar(var_name, var_value);
+        Response.Free;
+       end;
+  urls_list.free;
+  Result := Rnr.getHtml();
+  Rnr.Free;
+
 end;
 
 
