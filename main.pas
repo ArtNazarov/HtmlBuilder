@@ -68,6 +68,8 @@ type
     btnAlterTableAddField: TButton;
     btnGetCustomFields: TButton;
     btnRemoveCustomField: TButton;
+    btnRemoveAssocTag: TButton;
+    btnRemoveOneTag: TButton;
     cboLocale: TComboBox;
     chkUseTrees: TCheckBox;
     chkUseModules: TCheckBox;
@@ -403,7 +405,9 @@ type
     procedure btnOpenWithWysiwygClick(Sender: TObject);
     procedure btnPublishToGithubPagesClick(Sender: TObject);
     procedure btnRefreshTreeClick(Sender: TObject);
+    procedure btnRemoveAssocTagClick(Sender: TObject);
     procedure btnRemoveCustomFieldClick(Sender: TObject);
+    procedure btnRemoveOneTagClick(Sender: TObject);
 
 
     procedure btStartServerClick(Sender: TObject);
@@ -1087,6 +1091,9 @@ var
   link_id : String; id_tag : String; id_page : String;
   add_sql : TSqlQuery;
 begin
+
+
+
   add_sql:=TSqlQuery.Create(self);
   add_sql.SQLConnection:=conn;
   add_sql.Transaction:=trans;
@@ -1360,6 +1367,21 @@ begin
      refreshTrees();
 end;
 
+procedure TForm1.btnRemoveAssocTagClick(Sender: TObject);
+var
+  id_page : String;
+  remove_sql_tags : TSqlQuery;
+begin
+  id_page:=sqlContent.FieldByName('id').AsString;
+  remove_sql_tags:=TSqlQuery.Create(self);
+  remove_sql_tags.SQLConnection:=conn;
+  remove_sql_tags.Transaction:=trans;
+  remove_sql_tags.SQL.Text:='delete from tags_pages where id_page="'+id_page+'"';
+  remove_sql_tags.ExecSQL;
+  remove_sql_tags.Free;
+  form1.showTagsOnPage(id_page);
+end;
+
 procedure TForm1.btnRemoveCustomFieldClick(Sender: TObject);
 begin
   if ListFields.ItemIndex>-1 then
@@ -1367,6 +1389,35 @@ begin
      DeleteCustomColumn(ListFields.Items[ ListFields.ItemIndex ]);
      updateCustomColumns();
      end;
+end;
+
+procedure TForm1.btnRemoveOneTagClick(Sender: TObject);
+var
+  id_tag, tag_caption, id_page : String;
+  remove_sql_tag : TSqlQuery;
+  get_id_tag_by_name : TSqlQuery;
+begin
+  if listTags.ItemIndex>-1 then
+    begin
+       tag_caption:=listTags.Items[ listTags.ItemIndex ];
+       id_page:=sqlContent.FieldByName('id').AsString;
+
+       get_id_tag_by_name:=TSQLQuery.Create(self);
+       get_id_tag_by_name.SQLConnection:=conn;
+       get_id_tag_by_name.Transaction:=trans;
+       get_id_tag_by_name.sql.text:='select tag_id from tags WHERE tag_caption="'+tag_caption+'" LIMIT 1';
+       get_id_tag_by_name.ExecSQL;
+       get_id_tag_by_name.Active:=true;
+       get_id_tag_by_name.First;
+       id_tag:=get_id_tag_by_name.FieldByName('tag_id').AsString;
+       get_id_tag_by_name.Active:=false;
+       get_id_tag_by_name.Free;
+
+
+       conn.ExecuteDirect('delete from tags_pages where (id_page="'+id_page+'") AND (id_tag="'+id_tag+'")');
+
+       form1.showTagsOnPage(id_page);
+    end;
 end;
 
 
