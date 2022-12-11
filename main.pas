@@ -42,6 +42,8 @@ type
     acEditorForRubricItemTemplate: TAction;
     acActionsForMenu: TActionList;
     acFindContentByCaption: TAction;
+    acDatabaseOpen: TAction;
+    acDatabaseSaveAs: TAction;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
     btnAttachTagToMaterial: TButton;
@@ -199,9 +201,13 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuDatabase: TMenuItem;
+    mnuOpenDataBase: TMenuItem;
+    mnuSaveDataBase: TMenuItem;
     mnuFinder: TMenuItem;
     mnuFind: TMenuItem;
     mmRubrics: TMemo;
+    OpenDialog1: TOpenDialog;
     PageControl1: TPageControl;
     PageControl3: TPageControl;
     PageControl4: TPageControl;
@@ -325,6 +331,7 @@ type
     Panel9: TPanel;
     PrefferedExtension: TComboBox;
     conn: TSQLite3Connection;
+    SaveDialog1: TSaveDialog;
     selSection: TDBLookupComboBox;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
@@ -389,6 +396,8 @@ type
     ZipArchiverCommand: TEdit;
 
 
+    procedure acDatabaseOpenExecute(Sender: TObject);
+    procedure acDatabaseSaveAsExecute(Sender: TObject);
     procedure acEditorForBlockMarkupExecute(Sender: TObject);
     procedure acEditorForBodyTemplateExecute(Sender: TObject);
     procedure acEditorForHeadTemplateExecute(Sender: TObject);
@@ -517,6 +526,7 @@ type
     { private declarations }
   public
     { public declarations }
+    db_filename : String;
     Titles, Urls, Sections: TMemo;
     PagesTree : sdict;
 
@@ -1469,6 +1479,55 @@ end;
 procedure TForm1.acEditorForBlockMarkupExecute(Sender: TObject);
 begin
      editor_win_show( sqlBlocks, 'markup');
+end;
+
+procedure TForm1.acDatabaseOpenExecute(Sender: TObject);
+var
+   filename : String;
+ begin
+   if OpenDialog1.Execute then begin
+
+
+
+   makeSqlInactive;
+
+   filename := OpenDialog1.FileName;
+   form1.Caption:=filename;
+   conn.DatabaseName := filename;
+
+
+
+         conn.Open;
+
+         trans.Active:=True;
+
+         conn.ExecuteDirect('End transaction');
+         conn.ExecuteDirect('pragma synchronous = 0');
+         conn.ExecuteDirect('pragma foreign_keys = off');
+         conn.ExecuteDirect('pragma journal_mode = off');
+
+         trans.Active:=True;
+         conn.ExecuteDirect('Begin transaction');
+
+
+         checkConnect(conn, trans, 'initTransactionSQL');
+         makeSqlActive();
+         doScan;
+         refreshTrees;
+     end;
+end;
+
+procedure TForm1.acDatabaseSaveAsExecute(Sender: TObject);
+var
+   dest_filename : String;
+   source_filename : String;
+begin
+  if SaveDialog1.Execute then
+   begin
+     source_filename := db_filename;
+     dest_filename := SaveDialog1.FileName;
+     CopyFile(source_filename, dest_filename);
+   end;
 end;
 
 procedure TForm1.acEditorForBodyTemplateExecute(Sender: TObject);
@@ -2895,9 +2954,9 @@ begin
 
 
 
-
-  conn.DatabaseName := getCurrentDir() + DELIM + sqlite_filename; // назначаем имя файла
-  //showMessage( conn.DatabaseName );
+  db_filename := getCurrentDir() + DELIM + sqlite_filename;
+  conn.DatabaseName := db_filename; // назначаем имя файла
+  form1.Caption:=db_filename;
   try
   //Поскольку мы делаем эту базу данных впервые,
   // проверяем, существует ли уже файл

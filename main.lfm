@@ -3176,8 +3176,17 @@ object Form1: TForm1
     end
   end
   object mnuMainMenu: TMainMenu
-    Left = 1520
-    Top = 144
+    Left = 1480
+    Top = 120
+    object mnuDatabase: TMenuItem
+      Caption = 'База данных'
+      object mnuOpenDataBase: TMenuItem
+        Action = acDatabaseOpen
+      end
+      object mnuSaveDataBase: TMenuItem
+        Action = acDatabaseSaveAs
+      end
+    end
     object mnuFinder: TMenuItem
       Caption = 'Поиск'
       object mnuFind: TMenuItem
@@ -3547,6 +3556,14 @@ object Form1: TForm1
       Caption = 'Поиск контента по заголовку'
       OnExecute = acFindContentByCaptionExecute
     end
+    object acDatabaseOpen: TAction
+      Caption = 'Открыть базу...'
+      OnExecute = acDatabaseOpenExecute
+    end
+    object acDatabaseSaveAs: TAction
+      Caption = 'Сохранить базу как...'
+      OnExecute = acDatabaseSaveAsExecute
+    end
   end
   object ds_Tags: TDataSource
     DataSet = sqlTags
@@ -3673,5 +3690,13 @@ object Form1: TForm1
       AA3B065177B4414563B8461CE21AFC3F03FFAFA9699CABCB1225CFD3BD753888
       435C7DF70BF4A3BBB0
     }
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 384
+    Top = 32
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 296
+    Top = 32
   end
 end
