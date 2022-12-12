@@ -1,42 +1,56 @@
 HtmlBuilder
 ===========
+Написанный на FPC/Lazarus генератор статических сайтов
 Written in FreePascal/Lazarus generator of static html websites
 
-UI
+UI sample / Примерный вид интерфейса
 
 ![Screen pages editor](https://htmlbuilder.artnazarov.ru/laz1.png)
 
-Built-in webserver
+Built-in webserver / Встроенный веб-сервер
+
 ![With own webserver](https://www.dropbox.com/s/m9d4ccf2gynwvaq/web_server.png?raw=1)
 
-Update content
+Update content / Обновление контента
 
 ![Using ftp](https://www.dropbox.com/s/8a23veig21gqcei/ftp_updater.png?raw=1)
 
-More screens https://htmlbuilder.artnazarov.ru/
-Some articles http://nazarow.ru/category/htmlbuilder/
+More screens / Больше скриншотов https://htmlbuilder.artnazarov.ru/
+Some articles / Некоторые статьи http://nazarow.ru/category/htmlbuilder/
 
-Project
+Project / Проект
 ================
-Website in Russian: 
+Website in Russian / Сайт на русском 
 [HtmlBuilder project page](https://htmlbuilder.artnazarov.ru)
 
 
-Usage
+Usage / Использование
 ================
 Will be useful for creating websites hosted at P2P networks 
-( such Maelstrom, FreeNet, I2P etc ).
+( such Maelstrom, FreeNet, I2P etc ) or jamstack hostings
+like Vercel
+Может быть полезен для создания сайтов, используемых
+в пиринговых сетях или хостингах jamstack типа Vercel
 
 
-What's new
+What's new / Что нового
 ================
-1. Added import from text file or directly generation to preview another template.
-2. Engine now use sqlite.
-3. Can use annotations and full descriptions at sections
+1. Engine now use sqlite. Движок использует sqlite
+2. Can use annotations and full descriptions at sections.
+Аннотации и полные описания к разделам
+3. Using tags. Использование тегов
+4. Tree/flat structure. Плоская/древовидная структура сайта
+5. Autosave/autoload special settings. Автосохранение/загрузка настроек
+6. Backup database / Резервное копирование базы
+7. Commit to github pages / Публикация на GH pages
+8. Wysiwyg editor addition example / Пример дополнения с Wysiwyg
+9. Menu constructor / Конструктор меню
+10. Custom fields in content / Пользовательские поля в контенте
+
+More info in / больше информации english_help / russian_help.txt 
 
 
-TODO
+TODO / В планах
 =================
-1. Add integration with github pages.
-2. Add RSS spider
-3. Make Linux packages
+1. Add RSS spider
+2. Make Linux packages
