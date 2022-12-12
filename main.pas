@@ -44,6 +44,8 @@ type
     acFindContentByCaption: TAction;
     acDatabaseOpen: TAction;
     acDatabaseSaveAs: TAction;
+    acSaveSpecialSettings: TAction;
+    acRestoreSpecialSetting: TAction;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
     btnAttachTagToMaterial: TButton;
@@ -201,6 +203,9 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuSpecialSettings: TMenuItem;
+    mnuSaveSpecialSettings: TMenuItem;
+    mnuRestoreSpecialSettings: TMenuItem;
     mnuDatabase: TMenuItem;
     mnuOpenDataBase: TMenuItem;
     mnuSaveDataBase: TMenuItem;
@@ -406,6 +411,8 @@ type
     procedure acEditorForSectionFullTextExecute(Sender: TObject);
     procedure acEditorForSectionNoteExecute(Sender: TObject);
     procedure acFindContentByCaptionExecute(Sender: TObject);
+    procedure acRestoreSpecialSettingExecute(Sender: TObject);
+    procedure acSaveSpecialSettingsExecute(Sender: TObject);
     procedure AppPagesChange(Sender: TObject);
 
     procedure btFtpUpdateClick(Sender: TObject);
@@ -553,6 +560,8 @@ type
     PostsEditorState : String;
 
     rubrication_start : String;
+
+    special_settings : TSpecial_Settings;
 
     procedure initdbSQL(); // <-- новая инициализация
     function buildHead(title: string; headTemplate: string): string;
@@ -705,6 +714,11 @@ type
 
     function remotes_urls(app : String) : String;
 
+    procedure SaveSpecialSettings(path : String);
+    procedure RestoreSpecialSettings(path : String);
+    procedure loadfromui_special_setting();
+    procedure updateui_special_setting();
+
 
 
        end;
@@ -729,6 +743,14 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+
+  if not FileExists('special_settings.dat')  then
+      form1.SaveSpecialSettings('special_settings.dat')
+  else
+      begin
+      form1.RestoreSpecialSettings('special_settings.dat');
+      form1.loadfromui_special_setting();
+      end;
   SiteSectionTree:=sdict.Create;
   PagesTree:=sdict.Create;
 
@@ -1466,6 +1488,16 @@ begin
     end;
 end;
 
+procedure TForm1.acRestoreSpecialSettingExecute(Sender: TObject);
+begin
+   RestoreSpecialSettings('');
+end;
+
+procedure TForm1.acSaveSpecialSettingsExecute(Sender: TObject);
+begin
+  SaveSpecialSettings('');
+end;
+
 procedure TForm1.AppPagesChange(Sender: TObject);
 begin
 
@@ -1913,6 +1945,7 @@ end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  form1.SaveSpecialSettings('special_settings.dat');
 
   Tags.Free;
 
@@ -4706,6 +4739,71 @@ begin
   Result := Rnr.getHtml();
   Rnr.Free;
 
+end;
+
+procedure TForm1.SaveSpecialSettings(path : String);
+var
+   fout : file of TSpecial_Settings;
+
+
+begin
+
+  form1.loadfromui_special_setting();
+  if path='' then
+     if SaveDialog1.Execute then
+         path  := SaveDialog1.FileName;
+  if path <> '' then begin
+  AssignFile(fout, path);
+  Rewrite(fout);
+  Write(fout, special_settings);
+  closefile(fout);
+  end;
+
+end;
+
+procedure TForm1.RestoreSpecialSettings(path : String);
+var
+   fin : file of TSpecial_Settings;
+
+begin
+  if path = '' then
+   if OpenDialog1.Execute then
+          path := SaveDialog1.FileName;
+    if path <> '' then begin
+          AssignFile(fin, path);
+          Reset(fin);
+          Read(fin, special_settings);
+          closefile(fin);
+          updateui_special_setting();
+     end;
+end;
+
+procedure TForm1.loadfromui_special_setting;
+begin
+  special_settings.ArchiveName:=form1.edArchiveName.Text;
+  special_settings.ext:=form1.PrefferedExtension.Text;
+  special_settings.fileManager:=form1.edFileManager.Text;
+  special_settings.Locale:=form1.cboLocale.ItemIndex;
+  special_settings.LocalWysiwygExpress:=form1.edLocalWysigygServer.Text;
+  special_settings.numOfRecords:=StrToInt(form1.edItemsPerPage.Text);
+  special_settings.pathToBuild:=form1.edPathToBuild.Text;
+  special_settings.UseGlobalsFromFiles:=form1.chkGetBlocksFromFile.Checked;
+  special_settings.UseModule:=form1.chkUseModules.checked;
+  special_settings.useTree:=form1.chkUseTrees.Checked;
+end;
+
+procedure TForm1.updateui_special_setting;
+begin
+  form1.edArchiveName.Text:= special_settings.ArchiveName;
+  form1.PrefferedExtension.Text:=special_settings.ext;
+  form1.edFileManager.Text:=special_settings.fileManager;
+  form1.cboLocale.ItemIndex:=special_settings.Locale;
+  form1.edLocalWysigygServer.Text:=special_settings.LocalWysiwygExpress;
+  form1.edItemsPerPage.Text:=IntToStr(special_settings.numOfRecords);
+  form1.edPathToBuild.Text:=special_settings.pathToBuild;
+  special_settings.UseGlobalsFromFiles:=form1.chkGetBlocksFromFile.Checked;
+  form1.chkUseModules.checked:= special_settings.UseModule;
+  form1.chkUseTrees.Checked:=special_settings.useTree;
 end;
 
 

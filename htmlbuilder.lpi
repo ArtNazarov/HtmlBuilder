@@ -21,7 +21,7 @@
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="3"/>
       <RevisionNr Value="5"/>
-      <BuildNr Value="107"/>
+      <BuildNr Value="108"/>
       <Language Value="0419"/>
       <Attributes pvaPreRelease="True"/>
       <StringTable CompanyName="artnazarov.ru" LegalCopyright="Artyom Nazarov (artnazarov.ru)" ProductName="HtmlBuilder"/>

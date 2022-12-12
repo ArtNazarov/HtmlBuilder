@@ -1,11 +1,11 @@
 object Form1: TForm1
   Left = 0
-  Height = 774
-  Top = 44
-  Width = 1532
+  Height = 863
+  Top = 0
+  Width = 1600
   Caption = 'Генератор статических HTML сайтов'
-  ClientHeight = 747
-  ClientWidth = 1532
+  ClientHeight = 836
+  ClientWidth = 1600
   Menu = mnuMainMenu
   OnClose = FormClose
   OnCreate = FormCreate
@@ -14,9 +14,9 @@ object Form1: TForm1
   WindowState = wsMaximized
   object AppPages: TPageControl
     Left = 0
-    Height = 687
+    Height = 776
     Top = 0
-    Width = 1532
+    Width = 1600
     ActivePage = tabPages
     Align = alClient
     AutoSize = True
@@ -26,87 +26,87 @@ object Form1: TForm1
     OnChange = AppPagesChange
     object tabPages: TTabSheet
       Caption = 'Страницы'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object Panel26: TPanel
         Left = 0
-        Height = 623
+        Height = 712
         Top = 0
-        Width = 1528
+        Width = 1596
         Align = alClient
         Caption = 'Panel26'
-        ClientHeight = 623
-        ClientWidth = 1528
+        ClientHeight = 712
+        ClientWidth = 1596
         TabOrder = 0
         object PageControl1: TPageControl
           Left = 1
-          Height = 621
+          Height = 710
           Top = 1
-          Width = 1526
+          Width = 1594
           ActivePage = TabSheet2
           Align = alClient
           TabIndex = 0
           TabOrder = 0
           object TabSheet2: TTabSheet
             Caption = 'Форма'
-            ClientHeight = 582
-            ClientWidth = 1522
+            ClientHeight = 671
+            ClientWidth = 1590
             object panPageFormView: TPanel
               Left = 0
-              Height = 582
+              Height = 671
               Top = 0
-              Width = 1522
+              Width = 1590
               Align = alClient
-              ClientHeight = 582
-              ClientWidth = 1522
+              ClientHeight = 671
+              ClientWidth = 1590
               ParentColor = False
               TabOrder = 0
               object Panel18: TPanel
                 Left = 569
-                Height = 580
+                Height = 669
                 Top = 1
-                Width = 952
+                Width = 1020
                 Align = alClient
-                ClientHeight = 580
-                ClientWidth = 952
+                ClientHeight = 669
+                ClientWidth = 1020
                 TabOrder = 0
                 object panPagePropsContainer: TPanel
                   Left = 1
-                  Height = 578
+                  Height = 667
                   Top = 1
-                  Width = 950
+                  Width = 1018
                   Align = alClient
                   Caption = 'panPagePropsContainer'
-                  ClientHeight = 578
-                  ClientWidth = 950
+                  ClientHeight = 667
+                  ClientWidth = 1018
                   TabOrder = 0
                   object PageControl4: TPageControl
                     Left = 1
-                    Height = 576
+                    Height = 665
                     Top = 1
-                    Width = 948
+                    Width = 1016
                     ActivePage = tabMainProps
                     Align = alClient
                     TabIndex = 0
                     TabOrder = 0
                     object tabMainProps: TTabSheet
                       Caption = 'Главные свойства страницы'
-                      ClientHeight = 537
-                      ClientWidth = 944
+                      ClientHeight = 626
+                      ClientWidth = 1012
                       object panPageMainProps: TPanel
                         Left = 0
-                        Height = 537
+                        Height = 626
                         Top = 0
-                        Width = 944
+                        Width = 1012
                         Align = alClient
-                        ClientHeight = 537
-                        ClientWidth = 944
+                        ClientHeight = 626
+                        ClientWidth = 1012
                         TabOrder = 0
                         object Label4: TLabel
                           Left = 1
                           Height = 22
                           Top = 1
-                          Width = 942
+                          Width = 1010
                           Align = alTop
                           Caption = 'ID страницы'
                           ParentColor = False
@@ -115,7 +115,7 @@ object Form1: TForm1
                           Left = 1
                           Height = 30
                           Top = 23
-                          Width = 942
+                          Width = 1010
                           DataField = 'id'
                           Align = alTop
                           MaxLength = 0
@@ -125,7 +125,7 @@ object Form1: TForm1
                           Left = 1
                           Height = 22
                           Top = 53
-                          Width = 942
+                          Width = 1010
                           Align = alTop
                           Caption = 'Заголовок страницы'
                           ParentColor = False
@@ -134,7 +134,7 @@ object Form1: TForm1
                           Left = 1
                           Height = 30
                           Top = 75
-                          Width = 942
+                          Width = 1010
                           DataField = 'caption'
                           Align = alTop
                           MaxLength = 0
@@ -144,16 +144,16 @@ object Form1: TForm1
                           Left = 1
                           Height = 22
                           Top = 232
-                          Width = 942
+                          Width = 1010
                           Align = alTop
                           Caption = 'Теги материала'
                           ParentColor = False
                         end
                         object listTags: TListBox
                           Left = 1
-                          Height = 180
+                          Height = 269
                           Top = 254
-                          Width = 942
+                          Width = 1010
                           Align = alClient
                           ItemHeight = 0
                           TabOrder = 2
@@ -162,7 +162,7 @@ object Form1: TForm1
                           Left = 1
                           Height = 22
                           Top = 155
-                          Width = 942
+                          Width = 1010
                           Align = alTop
                           Caption = 'Связать тег со статьей'
                           ParentColor = False
@@ -171,7 +171,7 @@ object Form1: TForm1
                           Left = 1
                           Height = 30
                           Top = 202
-                          Width = 942
+                          Width = 1010
                           Align = alTop
                           DataField = 'tag_id'
                           DataSource = ds_Tags
@@ -187,7 +187,7 @@ object Form1: TForm1
                           Left = 1
                           Height = 25
                           Top = 177
-                          Width = 942
+                          Width = 1010
                           Align = alTop
                           Caption = 'Добавить тег к статье'
                           OnClick = btnAttachTagToMaterialClick
@@ -196,8 +196,8 @@ object Form1: TForm1
                         object btnRemoveOneTag: TButton
                           Left = 1
                           Height = 25
-                          Top = 434
-                          Width = 942
+                          Top = 523
+                          Width = 1010
                           Align = alBottom
                           Caption = 'Удалить выбранный тег'
                           OnClick = btnRemoveOneTagClick
@@ -206,8 +206,8 @@ object Form1: TForm1
                         object btnRemoveAssocTag: TButton
                           Left = 1
                           Height = 25
-                          Top = 459
-                          Width = 942
+                          Top = 548
+                          Width = 1010
                           Align = alBottom
                           Caption = 'Удалить связанные теги'
                           OnClick = btnRemoveAssocTagClick
@@ -217,7 +217,7 @@ object Form1: TForm1
                           Left = 1
                           Height = 22
                           Top = 105
-                          Width = 942
+                          Width = 1010
                           Align = alTop
                           Caption = 'Дата материала'
                           ParentColor = False
@@ -226,7 +226,7 @@ object Form1: TForm1
                           Left = 1
                           Height = 28
                           Top = 127
-                          Width = 942
+                          Width = 1010
                           DataField = 'dt'
                           DataSource = ds_Content
                           ReadOnly = False
@@ -249,8 +249,8 @@ object Form1: TForm1
                         object selSection: TDBLookupComboBox
                           Left = 1
                           Height = 30
-                          Top = 506
-                          Width = 942
+                          Top = 595
+                          Width = 1010
                           Align = alBottom
                           DataField = 'section'
                           DataSource = ds_Content
@@ -264,8 +264,8 @@ object Form1: TForm1
                         object lbCategory: TLabel
                           Left = 1
                           Height = 22
-                          Top = 484
-                          Width = 942
+                          Top = 573
+                          Width = 1010
                           Align = alBottom
                           Caption = 'ID категории'
                           ParentColor = False
@@ -274,47 +274,47 @@ object Form1: TForm1
                     end
                     object tabEditorProps: TTabSheet
                       Caption = 'Контент страницы'
-                      ClientHeight = 537
-                      ClientWidth = 944
+                      ClientHeight = 626
+                      ClientWidth = 1012
                       object Panel6: TPanel
                         Left = 0
-                        Height = 537
+                        Height = 626
                         Top = 0
-                        Width = 944
+                        Width = 1012
                         Align = alClient
                         Caption = 'panContentEditorPanel'
-                        ClientHeight = 537
-                        ClientWidth = 944
+                        ClientHeight = 626
+                        ClientWidth = 1012
                         TabOrder = 0
                         object PageControl3: TPageControl
                           Left = 1
-                          Height = 535
+                          Height = 624
                           Top = 1
-                          Width = 942
+                          Width = 1010
                           ActivePage = TabSheet11
                           Align = alClient
                           TabIndex = 0
                           TabOrder = 0
                           object TabSheet11: TTabSheet
                             Caption = 'Основной текст'
-                            ClientHeight = 496
-                            ClientWidth = 938
+                            ClientHeight = 585
+                            ClientWidth = 1006
                             object Panel13: TPanel
                               Left = 0
-                              Height = 496
+                              Height = 585
                               Top = 0
-                              Width = 938
+                              Width = 1006
                               Align = alClient
                               Caption = 'Panel13'
-                              ClientHeight = 496
-                              ClientWidth = 938
+                              ClientHeight = 585
+                              ClientWidth = 1006
                               ParentColor = False
                               TabOrder = 0
                               object fContent: TDBMemo
                                 Left = 1
-                                Height = 460
+                                Height = 549
                                 Top = 35
-                                Width = 936
+                                Width = 1004
                                 Align = alClient
                                 DataField = 'content'
                                 ScrollBars = ssAutoBoth
@@ -324,10 +324,10 @@ object Form1: TForm1
                                 Left = 1
                                 Height = 34
                                 Top = 1
-                                Width = 936
+                                Width = 1004
                                 Align = alTop
                                 ClientHeight = 34
-                                ClientWidth = 936
+                                ClientWidth = 1004
                                 TabOrder = 1
                                 object btnEditorContent: TButton
                                   Left = 1
@@ -364,32 +364,32 @@ object Form1: TForm1
                           end
                           object TabSheet12: TTabSheet
                             Caption = 'Дополнительная информация'
-                            ClientHeight = 496
-                            ClientWidth = 938
+                            ClientHeight = 585
+                            ClientWidth = 1006
                             object Panel15: TPanel
                               Left = 0
-                              Height = 496
+                              Height = 585
                               Top = 0
-                              Width = 938
+                              Width = 1006
                               Align = alClient
-                              ClientHeight = 496
-                              ClientWidth = 938
+                              ClientHeight = 585
+                              ClientWidth = 1006
                               ParentColor = False
                               TabOrder = 0
                               object Panel29: TPanel
                                 Left = 1
-                                Height = 494
+                                Height = 583
                                 Top = 1
-                                Width = 936
+                                Width = 1004
                                 Align = alClient
-                                ClientHeight = 494
-                                ClientWidth = 936
+                                ClientHeight = 583
+                                ClientWidth = 1004
                                 TabOrder = 0
                                 object DBText1: TDBText
                                   Left = 1
                                   Height = 22
                                   Top = 1
-                                  Width = 934
+                                  Width = 1002
                                   Align = alTop
                                   DataField = 'ufn1'
                                   DataSource = ds_Presets
@@ -399,7 +399,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 30
                                   Top = 23
-                                  Width = 934
+                                  Width = 1002
                                   DataField = 'uf1'
                                   DataSource = ds_Content
                                   Align = alTop
@@ -410,7 +410,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 22
                                   Top = 53
-                                  Width = 934
+                                  Width = 1002
                                   Align = alTop
                                   DataField = 'ufn2'
                                   DataSource = ds_Presets
@@ -420,7 +420,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 30
                                   Top = 75
-                                  Width = 934
+                                  Width = 1002
                                   DataField = 'uf2'
                                   DataSource = ds_Content
                                   Align = alTop
@@ -431,7 +431,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 22
                                   Top = 105
-                                  Width = 934
+                                  Width = 1002
                                   Align = alTop
                                   DataField = 'ufn3'
                                   DataSource = ds_Presets
@@ -441,7 +441,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 30
                                   Top = 127
-                                  Width = 934
+                                  Width = 1002
                                   DataField = 'uf3'
                                   DataSource = ds_Content
                                   Align = alTop
@@ -452,7 +452,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 22
                                   Top = 157
-                                  Width = 934
+                                  Width = 1002
                                   Align = alTop
                                   DataField = 'ufn4'
                                   DataSource = ds_Presets
@@ -462,7 +462,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 30
                                   Top = 179
-                                  Width = 934
+                                  Width = 1002
                                   DataField = 'uf4'
                                   DataSource = ds_Content
                                   Align = alTop
@@ -473,7 +473,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 22
                                   Top = 209
-                                  Width = 934
+                                  Width = 1002
                                   Align = alTop
                                   DataField = 'ufn5'
                                   DataSource = ds_Presets
@@ -483,7 +483,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 30
                                   Top = 231
-                                  Width = 934
+                                  Width = 1002
                                   DataField = 'uf5'
                                   DataSource = ds_Content
                                   Align = alTop
@@ -494,7 +494,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 22
                                   Top = 261
-                                  Width = 934
+                                  Width = 1002
                                   Align = alTop
                                   DataField = 'ufn6'
                                   DataSource = ds_Presets
@@ -504,7 +504,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 30
                                   Top = 283
-                                  Width = 934
+                                  Width = 1002
                                   DataField = 'uf6'
                                   DataSource = ds_Content
                                   Align = alTop
@@ -515,7 +515,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 22
                                   Top = 313
-                                  Width = 934
+                                  Width = 1002
                                   Align = alTop
                                   DataField = 'ufn7'
                                   DataSource = ds_Presets
@@ -525,7 +525,7 @@ object Form1: TForm1
                                   Left = 1
                                   Height = 36
                                   Top = 335
-                                  Width = 934
+                                  Width = 1002
                                   Align = alTop
                                   DataField = 'uf7'
                                   DataSource = ds_Content
@@ -542,7 +542,7 @@ object Form1: TForm1
               end
               object lvContent: TListView
                 Left = 261
-                Height = 580
+                Height = 669
                 Top = 1
                 Width = 303
                 Align = alLeft
@@ -552,7 +552,7 @@ object Form1: TForm1
               end
               object tvContent: TTreeView
                 Left = 1
-                Height = 580
+                Height = 669
                 Top = 1
                 Width = 255
                 Align = alLeft
@@ -561,13 +561,13 @@ object Form1: TForm1
               end
               object Splitter1: TSplitter
                 Left = 256
-                Height = 580
+                Height = 669
                 Top = 1
                 Width = 5
               end
               object Splitter2: TSplitter
                 Left = 564
-                Height = 580
+                Height = 669
                 Top = 1
                 Width = 5
               end
@@ -575,23 +575,23 @@ object Form1: TForm1
           end
           object TabSheet3: TTabSheet
             Caption = 'Таблица'
-            ClientHeight = 582
-            ClientWidth = 1522
+            ClientHeight = 671
+            ClientWidth = 1590
             object Panel1: TPanel
               Left = 0
-              Height = 582
+              Height = 671
               Top = 0
-              Width = 1522
+              Width = 1590
               Align = alClient
               Caption = 'Panel1'
-              ClientHeight = 582
-              ClientWidth = 1522
+              ClientHeight = 671
+              ClientWidth = 1590
               TabOrder = 0
               object dbGridPages: TDBGrid
                 Left = 1
-                Height = 580
+                Height = 669
                 Top = 1
-                Width = 1520
+                Width = 1588
                 Align = alClient
                 Color = clWindow
                 Columns = <>
@@ -606,8 +606,8 @@ object Form1: TForm1
       object dbNav_Content: TDBNavigator
         Left = 0
         Height = 25
-        Top = 623
-        Width = 1528
+        Top = 712
+        Width = 1596
         Align = alBottom
         BeforeAction = dbNav_ContentBeforeAction
         BevelOuter = bvNone
@@ -618,39 +618,39 @@ object Form1: TForm1
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 100
         ClientHeight = 25
-        ClientWidth = 1528
+        ClientWidth = 1596
         Options = []
         TabOrder = 1
       end
     end
     object tabSections: TTabSheet
       Caption = 'Разделы'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object Panel5: TPanel
         Left = 0
-        Height = 648
+        Height = 737
         Top = 0
-        Width = 1528
+        Width = 1596
         Align = alClient
-        ClientHeight = 648
-        ClientWidth = 1528
+        ClientHeight = 737
+        ClientWidth = 1596
         ParentColor = False
         TabOrder = 0
         object Panel19: TPanel
           Left = 601
-          Height = 646
+          Height = 735
           Top = 1
-          Width = 926
+          Width = 994
           Align = alClient
-          ClientHeight = 646
-          ClientWidth = 926
+          ClientHeight = 735
+          ClientWidth = 994
           TabOrder = 0
           object Label13: TLabel
             Left = 1
             Height = 22
             Top = 1
-            Width = 924
+            Width = 992
             Align = alTop
             Caption = 'ID раздела'
             ParentColor = False
@@ -659,7 +659,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 23
-            Width = 924
+            Width = 992
             DataField = 'id'
             Align = alTop
             MaxLength = 0
@@ -669,7 +669,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 53
-            Width = 924
+            Width = 992
             Align = alTop
             Caption = 'Название раздела'
             ParentColor = False
@@ -678,7 +678,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 75
-            Width = 924
+            Width = 992
             DataField = 'section'
             Align = alTop
             MaxLength = 0
@@ -688,7 +688,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 182
-            Width = 924
+            Width = 992
             Align = alTop
             Caption = 'Примечания к разделу'
             ParentColor = False
@@ -697,7 +697,7 @@ object Form1: TForm1
             Left = 1
             Height = 110
             Top = 204
-            Width = 924
+            Width = 992
             Align = alTop
             DataField = 'note'
             TabOrder = 2
@@ -705,8 +705,8 @@ object Form1: TForm1
           object Label16: TLabel
             Left = 1
             Height = 22
-            Top = 568
-            Width = 924
+            Top = 657
+            Width = 992
             Align = alBottom
             Caption = 'Пресет'
             ParentColor = False
@@ -714,8 +714,8 @@ object Form1: TForm1
           object dbNav_Sections: TDBNavigator
             Left = 1
             Height = 25
-            Top = 620
-            Width = 924
+            Top = 709
+            Width = 992
             Align = alBottom
             BeforeAction = dbNav_SectionsBeforeAction
             BevelOuter = bvNone
@@ -726,15 +726,15 @@ object Form1: TForm1
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 100
             ClientHeight = 25
-            ClientWidth = 924
+            ClientWidth = 992
             Options = []
             TabOrder = 3
           end
           object choicePreset: TDBLookupComboBox
             Left = 1
             Height = 30
-            Top = 590
-            Width = 924
+            Top = 679
+            Width = 992
             Align = alBottom
             DataField = 'preset'
             DataSource = ds_Sections
@@ -747,9 +747,9 @@ object Form1: TForm1
           end
           object dbmSectionFullText: TDBMemo
             Left = 1
-            Height = 179
+            Height = 268
             Top = 389
-            Width = 924
+            Width = 992
             Align = alClient
             DataField = 'full_text'
             DataSource = ds_Sections
@@ -760,7 +760,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 339
-            Width = 924
+            Width = 992
             Align = alTop
             Caption = 'Полное описание'
             ParentColor = False
@@ -769,7 +769,7 @@ object Form1: TForm1
             Left = 1
             Height = 25
             Top = 314
-            Width = 924
+            Width = 992
             Action = acEditorForSectionNote
             Align = alTop
             Caption = 'Редактор в окне...'
@@ -779,7 +779,7 @@ object Form1: TForm1
             Left = 1
             Height = 28
             Top = 361
-            Width = 924
+            Width = 992
             Action = acEditorForSectionFullText
             Align = alTop
             Caption = 'Редактор в окне...'
@@ -789,7 +789,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 105
-            Width = 924
+            Width = 992
             Align = alTop
             Caption = 'Иерархия (section1/section2)'
             ParentColor = False
@@ -798,7 +798,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 127
-            Width = 924
+            Width = 992
             DataField = 'tree'
             DataSource = ds_Sections
             Align = alTop
@@ -809,7 +809,7 @@ object Form1: TForm1
             Left = 1
             Height = 25
             Top = 157
-            Width = 924
+            Width = 992
             Align = alTop
             Caption = 'Перестроить дерево'
             OnClick = btnRefreshTreeClick
@@ -818,7 +818,7 @@ object Form1: TForm1
         end
         object lvSections: TListView
           Left = 301
-          Height = 646
+          Height = 735
           Top = 1
           Width = 300
           Align = alLeft
@@ -828,7 +828,7 @@ object Form1: TForm1
         end
         object tvSections: TTreeView
           Left = 1
-          Height = 646
+          Height = 735
           Top = 1
           Width = 300
           Align = alLeft
@@ -838,16 +838,16 @@ object Form1: TForm1
     end
     object tabTags: TTabSheet
       Caption = 'Теги'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object Panel24: TPanel
         Left = 0
-        Height = 648
+        Height = 737
         Top = 0
         Width = 240
         Align = alLeft
         Caption = 'Panel24'
-        ClientHeight = 648
+        ClientHeight = 737
         ClientWidth = 240
         TabOrder = 0
         object lbTags: TLabel
@@ -861,7 +861,7 @@ object Form1: TForm1
         end
         object lvTags: TListView
           Left = 1
-          Height = 624
+          Height = 713
           Top = 23
           Width = 238
           Align = alClient
@@ -872,18 +872,18 @@ object Form1: TForm1
       end
       object panTagsForm: TPanel
         Left = 240
-        Height = 648
+        Height = 737
         Top = 0
-        Width = 1288
+        Width = 1356
         Align = alClient
-        ClientHeight = 648
-        ClientWidth = 1288
+        ClientHeight = 737
+        ClientWidth = 1356
         TabOrder = 1
         object lbTagId: TLabel
           Left = 1
           Height = 22
           Top = 1
-          Width = 1286
+          Width = 1354
           Align = alTop
           Caption = 'ID тега'
           ParentColor = False
@@ -892,7 +892,7 @@ object Form1: TForm1
           Left = 1
           Height = 30
           Top = 23
-          Width = 1286
+          Width = 1354
           DataField = 'tag_id'
           DataSource = ds_Tags
           Align = alTop
@@ -903,7 +903,7 @@ object Form1: TForm1
           Left = 1
           Height = 30
           Top = 75
-          Width = 1286
+          Width = 1354
           DataField = 'tag_caption'
           DataSource = ds_Tags
           Align = alTop
@@ -914,7 +914,7 @@ object Form1: TForm1
           Left = 1
           Height = 22
           Top = 53
-          Width = 1286
+          Width = 1354
           Align = alTop
           Caption = 'Текст тега'
           ParentColor = False
@@ -922,8 +922,8 @@ object Form1: TForm1
         object dbNav_Tags: TDBNavigator
           Left = 1
           Height = 25
-          Top = 622
-          Width = 1286
+          Top = 711
+          Width = 1354
           Align = alBottom
           BevelOuter = bvNone
           ChildSizing.EnlargeHorizontal = crsScaleChilds
@@ -933,7 +933,7 @@ object Form1: TForm1
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
           ChildSizing.ControlsPerLine = 100
           ClientHeight = 25
-          ClientWidth = 1286
+          ClientWidth = 1354
           DataSource = ds_Tags
           Options = []
           TabOrder = 2
@@ -942,16 +942,16 @@ object Form1: TForm1
     end
     object tabTagsPages: TTabSheet
       Caption = 'Теги и страницы'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object panLvTagsPages: TPanel
         Left = 0
-        Height = 648
+        Height = 737
         Top = 0
         Width = 298
         Align = alLeft
         Caption = 'panLvTagsPages'
-        ClientHeight = 648
+        ClientHeight = 737
         ClientWidth = 298
         TabOrder = 0
         object lbTagsPages: TLabel
@@ -965,7 +965,7 @@ object Form1: TForm1
         end
         object lvTagsPages: TListView
           Left = 1
-          Height = 624
+          Height = 713
           Top = 23
           Width = 296
           Align = alClient
@@ -976,18 +976,18 @@ object Form1: TForm1
       end
       object panTagPagesForm: TPanel
         Left = 298
-        Height = 648
+        Height = 737
         Top = 0
-        Width = 1230
+        Width = 1298
         Align = alClient
-        ClientHeight = 648
-        ClientWidth = 1230
+        ClientHeight = 737
+        ClientWidth = 1298
         TabOrder = 1
         object lbTagsPages_Id_tag_page: TLabel
           Left = 1
           Height = 22
           Top = 1
-          Width = 1228
+          Width = 1296
           Align = alTop
           Caption = 'ID связи'
           ParentColor = False
@@ -995,8 +995,8 @@ object Form1: TForm1
         object dbNav_TagsPages: TDBNavigator
           Left = 1
           Height = 25
-          Top = 622
-          Width = 1228
+          Top = 711
+          Width = 1296
           Align = alBottom
           BevelOuter = bvNone
           ChildSizing.EnlargeHorizontal = crsScaleChilds
@@ -1006,7 +1006,7 @@ object Form1: TForm1
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
           ChildSizing.ControlsPerLine = 100
           ClientHeight = 25
-          ClientWidth = 1228
+          ClientWidth = 1296
           DataSource = ds_Tags_Pages
           Options = []
           TabOrder = 0
@@ -1015,7 +1015,7 @@ object Form1: TForm1
           Left = 1
           Height = 30
           Top = 23
-          Width = 1228
+          Width = 1296
           DataField = 'id_tag_page'
           DataSource = ds_Tags_Pages
           Align = alTop
@@ -1026,7 +1026,7 @@ object Form1: TForm1
           Left = 1
           Height = 30
           Top = 75
-          Width = 1228
+          Width = 1296
           DataField = 'id_tag'
           DataSource = ds_Tags_Pages
           Align = alTop
@@ -1037,7 +1037,7 @@ object Form1: TForm1
           Left = 1
           Height = 30
           Top = 127
-          Width = 1228
+          Width = 1296
           DataField = 'id_page'
           DataSource = ds_Tags_Pages
           Align = alTop
@@ -1048,7 +1048,7 @@ object Form1: TForm1
           Left = 1
           Height = 22
           Top = 53
-          Width = 1228
+          Width = 1296
           Align = alTop
           Caption = 'ID тега'
           ParentColor = False
@@ -1057,7 +1057,7 @@ object Form1: TForm1
           Left = 1
           Height = 22
           Top = 105
-          Width = 1228
+          Width = 1296
           Align = alTop
           Caption = 'ID страницы'
           ParentColor = False
@@ -1066,34 +1066,34 @@ object Form1: TForm1
     end
     object tabGlobalBlocks: TTabSheet
       Caption = 'Глобальные блоки'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object Panel4: TPanel
         Left = 0
-        Height = 648
+        Height = 737
         Top = 0
-        Width = 1528
+        Width = 1596
         Align = alClient
         Caption = 'Panel4'
-        ClientHeight = 648
-        ClientWidth = 1528
+        ClientHeight = 737
+        ClientWidth = 1596
         ParentColor = False
         TabOrder = 0
         object Panel20: TPanel
           Left = 376
-          Height = 646
+          Height = 735
           Top = 1
-          Width = 1151
+          Width = 1219
           Align = alClient
           Caption = 'Panel20'
-          ClientHeight = 646
-          ClientWidth = 1151
+          ClientHeight = 735
+          ClientWidth = 1219
           TabOrder = 0
           object Label7: TLabel
             Left = 1
             Height = 22
             Top = 1
-            Width = 1149
+            Width = 1217
             Align = alTop
             Caption = 'ID блока'
             ParentColor = False
@@ -1102,7 +1102,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 23
-            Width = 1149
+            Width = 1217
             DataField = 'id'
             Align = alTop
             MaxLength = 0
@@ -1112,7 +1112,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 53
-            Width = 1149
+            Width = 1217
             Align = alTop
             Caption = 'Примечание к блоку'
             ParentColor = False
@@ -1121,7 +1121,7 @@ object Form1: TForm1
             Left = 1
             Height = 56
             Top = 75
-            Width = 1149
+            Width = 1217
             Align = alTop
             DataField = 'remark'
             ScrollBars = ssAutoBoth
@@ -1131,16 +1131,16 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 131
-            Width = 1149
+            Width = 1217
             Align = alTop
             Caption = 'HTML разметка блока'
             ParentColor = False
           end
           object dbeBlockHtml: TDBMemo
             Left = 1
-            Height = 392
+            Height = 481
             Top = 178
-            Width = 1149
+            Width = 1217
             Align = alClient
             DataField = 'markup'
             ScrollBars = ssAutoBoth
@@ -1149,8 +1149,8 @@ object Form1: TForm1
           object dbNav_Blocks: TDBNavigator
             Left = 1
             Height = 25
-            Top = 620
-            Width = 1149
+            Top = 709
+            Width = 1217
             Align = alBottom
             BeforeAction = dbNav_BlocksBeforeAction
             BevelOuter = bvNone
@@ -1161,18 +1161,18 @@ object Form1: TForm1
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 100
             ClientHeight = 25
-            ClientWidth = 1149
+            ClientWidth = 1217
             Options = []
             TabOrder = 3
           end
           object Panel23: TPanel
             Left = 1
             Height = 50
-            Top = 570
-            Width = 1149
+            Top = 659
+            Width = 1217
             Align = alBottom
             ClientHeight = 50
-            ClientWidth = 1149
+            ClientWidth = 1217
             TabOrder = 4
             object btnLoad: TButton
               Left = 1
@@ -1189,7 +1189,7 @@ object Form1: TForm1
             Left = 1
             Height = 25
             Top = 153
-            Width = 1149
+            Width = 1217
             Action = acEditorForBlockMarkup
             Align = alTop
             Caption = 'Редактор в окне...'
@@ -1198,7 +1198,7 @@ object Form1: TForm1
         end
         object lvBlocks: TListView
           Left = 1
-          Height = 646
+          Height = 735
           Top = 1
           Width = 375
           Align = alLeft
@@ -1210,15 +1210,15 @@ object Form1: TForm1
     end
     object tabCSS: TTabSheet
       Caption = 'Таблицы CSS'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object panCSSList: TPanel
         Left = 0
-        Height = 648
+        Height = 737
         Top = 0
         Width = 368
         Align = alLeft
-        ClientHeight = 648
+        ClientHeight = 737
         ClientWidth = 368
         TabOrder = 0
         object lbCSS: TLabel
@@ -1232,7 +1232,7 @@ object Form1: TForm1
         end
         object lvCSS: TListView
           Left = 1
-          Height = 624
+          Height = 713
           Top = 23
           Width = 366
           Align = alClient
@@ -1243,18 +1243,18 @@ object Form1: TForm1
       end
       object panCSSElements: TPanel
         Left = 368
-        Height = 648
+        Height = 737
         Top = 0
-        Width = 1160
+        Width = 1228
         Align = alClient
-        ClientHeight = 648
-        ClientWidth = 1160
+        ClientHeight = 737
+        ClientWidth = 1228
         TabOrder = 1
         object lbCSS_id: TLabel
           Left = 1
           Height = 22
           Top = 1
-          Width = 1158
+          Width = 1226
           Align = alTop
           Caption = 'CSS таблица'
           ParentColor = False
@@ -1263,7 +1263,7 @@ object Form1: TForm1
           Left = 1
           Height = 30
           Top = 23
-          Width = 1158
+          Width = 1226
           DataField = 'css_id'
           DataSource = ds_CssStyles
           Align = alTop
@@ -1274,7 +1274,7 @@ object Form1: TForm1
           Left = 1
           Height = 22
           Top = 105
-          Width = 1158
+          Width = 1226
           Align = alTop
           Caption = 'Таблица стилей'
           ParentColor = False
@@ -1282,8 +1282,8 @@ object Form1: TForm1
         object dbNav_Css: TDBNavigator
           Left = 1
           Height = 25
-          Top = 622
-          Width = 1158
+          Top = 711
+          Width = 1226
           Align = alBottom
           BeforeAction = dbNav_CssBeforeAction
           BevelOuter = bvNone
@@ -1294,16 +1294,16 @@ object Form1: TForm1
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
           ChildSizing.ControlsPerLine = 100
           ClientHeight = 25
-          ClientWidth = 1158
+          ClientWidth = 1226
           DataSource = ds_CssStyles
           Options = []
           TabOrder = 1
         end
         object dbmCssStyle: TDBMemo
           Left = 1
-          Height = 470
+          Height = 559
           Top = 152
-          Width = 1158
+          Width = 1226
           Align = alClient
           DataField = 'css_style'
           DataSource = ds_CssStyles
@@ -1313,7 +1313,7 @@ object Form1: TForm1
           Left = 1
           Height = 22
           Top = 53
-          Width = 1158
+          Width = 1226
           Align = alTop
           Caption = 'Путь к файлу'
           ParentColor = False
@@ -1322,7 +1322,7 @@ object Form1: TForm1
           Left = 1
           Height = 30
           Top = 75
-          Width = 1158
+          Width = 1226
           DataField = 'css_path'
           DataSource = ds_CssStyles
           Align = alTop
@@ -1333,7 +1333,7 @@ object Form1: TForm1
           Left = 1
           Height = 25
           Top = 127
-          Width = 1158
+          Width = 1226
           Align = alTop
           Caption = 'Редактор CSS'
           OnClick = btnEditorCssOpenClick
@@ -1343,34 +1343,34 @@ object Form1: TForm1
     end
     object tabJs: TTabSheet
       Caption = 'Скрипты JS'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object panJs: TPanel
         Left = 208
-        Height = 648
+        Height = 737
         Top = 0
-        Width = 1320
+        Width = 1388
         Align = alClient
         Caption = 'panJs'
-        ClientHeight = 648
-        ClientWidth = 1320
+        ClientHeight = 737
+        ClientWidth = 1388
         TabOrder = 0
         OnClick = panJsClick
         object panJsProps: TPanel
           Left = 1
-          Height = 646
+          Height = 735
           Top = 1
-          Width = 1318
+          Width = 1386
           Align = alClient
           Caption = 'panJsProps'
-          ClientHeight = 646
-          ClientWidth = 1318
+          ClientHeight = 735
+          ClientWidth = 1386
           TabOrder = 0
           object dbNav_JsScripts: TDBNavigator
             Left = 1
             Height = 25
-            Top = 620
-            Width = 1316
+            Top = 709
+            Width = 1384
             Align = alBottom
             BevelOuter = bvNone
             ChildSizing.EnlargeHorizontal = crsScaleChilds
@@ -1380,7 +1380,7 @@ object Form1: TForm1
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 100
             ClientHeight = 25
-            ClientWidth = 1316
+            ClientWidth = 1384
             DataSource = ds_JsScripts
             Options = []
             TabOrder = 0
@@ -1389,7 +1389,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 1
-            Width = 1316
+            Width = 1384
             Align = alTop
             Caption = 'ID скрипта'
             ParentColor = False
@@ -1398,7 +1398,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 23
-            Width = 1316
+            Width = 1384
             DataField = 'js_id'
             DataSource = ds_JsScripts
             Align = alTop
@@ -1409,7 +1409,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 75
-            Width = 1316
+            Width = 1384
             DataField = 'js_path'
             DataSource = ds_JsScripts
             Align = alTop
@@ -1420,7 +1420,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 53
-            Width = 1316
+            Width = 1384
             Align = alTop
             Caption = 'Путь в файловой системе'
             ParentColor = False
@@ -1429,16 +1429,16 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 105
-            Width = 1316
+            Width = 1384
             Align = alTop
             Caption = 'Команды скрипта'
             ParentColor = False
           end
           object dbmJsScriptFile: TDBMemo
             Left = 1
-            Height = 468
+            Height = 557
             Top = 152
-            Width = 1316
+            Width = 1384
             Align = alClient
             DataField = 'js_file'
             DataSource = ds_JsScripts
@@ -1448,7 +1448,7 @@ object Form1: TForm1
             Left = 1
             Height = 25
             Top = 127
-            Width = 1316
+            Width = 1384
             Align = alTop
             Caption = 'Редактор...'
             OnClick = btnEditorJsClick
@@ -1458,7 +1458,7 @@ object Form1: TForm1
       end
       object lvJsScripts: TListView
         Left = 0
-        Height = 648
+        Height = 737
         Top = 0
         Width = 208
         Align = alLeft
@@ -1469,22 +1469,22 @@ object Form1: TForm1
     end
     object tabMenus: TTabSheet
       Caption = 'Меню и пункты меню'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object panMenusList: TPanel
         Left = 0
-        Height = 648
+        Height = 737
         Top = 0
         Width = 656
         Align = alLeft
         Caption = 'panMenusList'
-        ClientHeight = 648
+        ClientHeight = 737
         ClientWidth = 656
         TabOrder = 0
         object dbNav_Menus: TDBNavigator
           Left = 1
           Height = 25
-          Top = 622
+          Top = 711
           Width = 654
           Align = alBottom
           BevelOuter = bvNone
@@ -1534,7 +1534,7 @@ object Form1: TForm1
         end
         object dbmMenuItemTpl: TDBMemo
           Left = 1
-          Height = 383
+          Height = 472
           Top = 239
           Width = 654
           Align = alClient
@@ -1581,20 +1581,20 @@ object Form1: TForm1
       end
       object panMenus: TPanel
         Left = 656
-        Height = 648
+        Height = 737
         Top = 0
-        Width = 872
+        Width = 940
         Align = alClient
-        ClientHeight = 648
-        ClientWidth = 872
+        ClientHeight = 737
+        ClientWidth = 940
         TabOrder = 1
         object panMenuItems: TPanel
           Left = 1
-          Height = 646
+          Height = 735
           Top = 1
           Width = 290
           Align = alLeft
-          ClientHeight = 646
+          ClientHeight = 735
           ClientWidth = 290
           TabOrder = 0
           object lbMenuItems: TLabel
@@ -1608,7 +1608,7 @@ object Form1: TForm1
           end
           object lvMenuItems: TListView
             Left = 1
-            Height = 622
+            Height = 711
             Top = 23
             Width = 288
             Align = alClient
@@ -1619,18 +1619,18 @@ object Form1: TForm1
         end
         object panMenuProps: TPanel
           Left = 291
-          Height = 646
+          Height = 735
           Top = 1
-          Width = 580
+          Width = 648
           Align = alClient
-          ClientHeight = 646
-          ClientWidth = 580
+          ClientHeight = 735
+          ClientWidth = 648
           TabOrder = 1
           object lbMenuItemID: TLabel
             Left = 1
             Height = 22
             Top = 1
-            Width = 578
+            Width = 646
             Align = alTop
             Caption = 'ID пункта меню'
             ParentColor = False
@@ -1639,7 +1639,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 23
-            Width = 578
+            Width = 646
             DataField = 'menu_item_id'
             DataSource = ds_MenuItem
             Align = alTop
@@ -1650,7 +1650,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 179
-            Width = 578
+            Width = 646
             DataField = 'menu_item_link_for'
             DataSource = ds_MenuItem
             Align = alTop
@@ -1661,7 +1661,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 53
-            Width = 578
+            Width = 646
             Align = alTop
             Caption = 'Название пункта меню'
             ParentColor = False
@@ -1670,7 +1670,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 157
-            Width = 578
+            Width = 646
             Align = alTop
             Caption = 'С чем связан (ID)'
             ParentColor = False
@@ -1678,8 +1678,8 @@ object Form1: TForm1
           object dbNav_MenuItems: TDBNavigator
             Left = 1
             Height = 25
-            Top = 620
-            Width = 578
+            Top = 709
+            Width = 646
             Align = alBottom
             BevelOuter = bvNone
             ChildSizing.EnlargeHorizontal = crsScaleChilds
@@ -1689,7 +1689,7 @@ object Form1: TForm1
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 100
             ClientHeight = 25
-            ClientWidth = 578
+            ClientWidth = 646
             DataSource = ds_MenuItem
             OnClick = dbNav_MenuItemsClick
             Options = []
@@ -1699,7 +1699,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 105
-            Width = 578
+            Width = 646
             Align = alTop
             Caption = 'Тип пункта меню'
             ParentColor = False
@@ -1708,7 +1708,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 75
-            Width = 578
+            Width = 646
             DataField = 'menu_item_caption'
             DataSource = ds_MenuItem
             Align = alTop
@@ -1719,7 +1719,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 127
-            Width = 578
+            Width = 646
             DataField = 'menu_item_type'
             DataSource = ds_MenuItem
             Align = alTop
@@ -1730,7 +1730,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 231
-            Width = 578
+            Width = 646
             DataField = 'menu_item_menu_id'
             DataSource = ds_MenuItem
             Align = alTop
@@ -1741,7 +1741,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 209
-            Width = 578
+            Width = 646
             Align = alTop
             Caption = 'К какому меню относится, ID'
             ParentColor = False
@@ -1751,33 +1751,33 @@ object Form1: TForm1
     end
     object tabCommonSettings: TTabSheet
       Caption = 'Общие настройки'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object Panel2: TPanel
         Left = 0
-        Height = 648
+        Height = 737
         Top = 0
-        Width = 1528
+        Width = 1596
         Align = alClient
         Caption = 'Общие настройки'
-        ClientHeight = 648
-        ClientWidth = 1528
+        ClientHeight = 737
+        ClientWidth = 1596
         ParentColor = False
         TabOrder = 0
         object Panel21: TPanel
           Left = 368
-          Height = 646
+          Height = 735
           Top = 1
-          Width = 1159
+          Width = 1227
           Align = alClient
-          ClientHeight = 646
-          ClientWidth = 1159
+          ClientHeight = 735
+          ClientWidth = 1227
           TabOrder = 0
           object Label10: TLabel
             Left = 1
             Height = 22
             Top = 1
-            Width = 1157
+            Width = 1225
             Align = alTop
             Caption = 'Пресет'
             ParentColor = False
@@ -1786,7 +1786,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 23
-            Width = 1157
+            Width = 1225
             DataField = 'id'
             Align = alTop
             MaxLength = 0
@@ -1796,7 +1796,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 53
-            Width = 1157
+            Width = 1225
             Align = alTop
             Caption = 'Название сайта'
             ParentColor = False
@@ -1805,7 +1805,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 75
-            Width = 1157
+            Width = 1225
             DataField = 'sitename'
             Align = alTop
             MaxLength = 0
@@ -1815,7 +1815,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 105
-            Width = 1157
+            Width = 1225
             Align = alTop
             Caption = 'Каталог'
             ParentColor = False
@@ -1824,7 +1824,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 127
-            Width = 1157
+            Width = 1225
             DataField = 'dirpath'
             Align = alTop
             MaxLength = 0
@@ -1832,42 +1832,42 @@ object Form1: TForm1
           end
           object PageControl2: TPageControl
             Left = 1
-            Height = 359
+            Height = 448
             Top = 261
-            Width = 1157
+            Width = 1225
             ActivePage = TabSheet6
             Align = alClient
             TabIndex = 0
             TabOrder = 3
             object TabSheet6: TTabSheet
               Caption = 'Заголовок'
-              ClientHeight = 320
-              ClientWidth = 1153
+              ClientHeight = 409
+              ClientWidth = 1221
               object Panel8: TPanel
                 Left = 0
-                Height = 320
+                Height = 409
                 Top = 0
-                Width = 1153
+                Width = 1221
                 Align = alClient
                 Caption = 'Panel8'
-                ClientHeight = 320
-                ClientWidth = 1153
+                ClientHeight = 409
+                ClientWidth = 1221
                 ParentColor = False
                 TabOrder = 0
                 object Label5: TLabel
                   Left = 1
                   Height = 22
                   Top = 26
-                  Width = 1151
+                  Width = 1219
                   Align = alTop
                   Caption = 'Шаблон секции HEAD'
                   ParentColor = False
                 end
                 object dbmHeadTemplate: TDBMemo
                   Left = 1
-                  Height = 271
+                  Height = 360
                   Top = 48
-                  Width = 1151
+                  Width = 1219
                   Align = alClient
                   DataField = 'headtpl'
                   ScrollBars = ssAutoBoth
@@ -1877,7 +1877,7 @@ object Form1: TForm1
                   Left = 1
                   Height = 25
                   Top = 1
-                  Width = 1151
+                  Width = 1219
                   Action = acEditorForHeadTemplate
                   Align = alTop
                   Caption = 'РЕДАКТОР'
@@ -1887,33 +1887,33 @@ object Form1: TForm1
             end
             object TabSheet7: TTabSheet
               Caption = 'Документ'
-              ClientHeight = 320
-              ClientWidth = 1153
+              ClientHeight = 409
+              ClientWidth = 1221
               object Panel9: TPanel
                 Left = 0
-                Height = 320
+                Height = 409
                 Top = 0
-                Width = 1153
+                Width = 1221
                 Align = alClient
                 Caption = 'Panel9'
-                ClientHeight = 320
-                ClientWidth = 1153
+                ClientHeight = 409
+                ClientWidth = 1221
                 ParentColor = False
                 TabOrder = 0
                 object Label6: TLabel
                   Left = 1
                   Height = 22
                   Top = 26
-                  Width = 1151
+                  Width = 1219
                   Align = alTop
                   Caption = 'Шаблон секции BODY отдельной страницы'
                   ParentColor = False
                 end
                 object dbmBodyPagesTemplate: TDBMemo
                   Left = 1
-                  Height = 271
+                  Height = 360
                   Top = 48
-                  Width = 1151
+                  Width = 1219
                   Align = alClient
                   DataField = 'bodytpl'
                   ScrollBars = ssAutoBoth
@@ -1923,7 +1923,7 @@ object Form1: TForm1
                   Left = 1
                   Height = 25
                   Top = 1
-                  Width = 1151
+                  Width = 1219
                   Action = acEditorForBodyTemplate
                   Align = alTop
                   Caption = 'РЕДАКТОР'
@@ -1933,33 +1933,33 @@ object Form1: TForm1
             end
             object TabSheet8: TTabSheet
               Caption = 'Раздел'
-              ClientHeight = 320
-              ClientWidth = 1153
+              ClientHeight = 409
+              ClientWidth = 1221
               object Panel10: TPanel
                 Left = 0
-                Height = 320
+                Height = 409
                 Top = 0
-                Width = 1153
+                Width = 1221
                 Align = alClient
                 Caption = 'Panel10'
-                ClientHeight = 320
-                ClientWidth = 1153
+                ClientHeight = 409
+                ClientWidth = 1221
                 ParentColor = False
                 TabOrder = 0
                 object Label18: TLabel
                   Left = 1
                   Height = 22
                   Top = 26
-                  Width = 1151
+                  Width = 1219
                   Align = alTop
                   Caption = 'Шаблон BODY для оформления списка статей в категории'
                   ParentColor = False
                 end
                 object dbmBodySectionsTemplate: TDBMemo
                   Left = 1
-                  Height = 271
+                  Height = 360
                   Top = 48
-                  Width = 1151
+                  Width = 1219
                   Align = alClient
                   DataField = 'sectiontpl'
                   TabOrder = 0
@@ -1968,7 +1968,7 @@ object Form1: TForm1
                   Left = 1
                   Height = 25
                   Top = 1
-                  Width = 1151
+                  Width = 1219
                   Action = acEditorForRubricSectionTemplate
                   Align = alTop
                   Caption = 'РЕДАКТОР'
@@ -1978,33 +1978,33 @@ object Form1: TForm1
             end
             object TabSheet9: TTabSheet
               Caption = 'Элемент раздела'
-              ClientHeight = 320
-              ClientWidth = 1153
+              ClientHeight = 409
+              ClientWidth = 1221
               object Panel11: TPanel
                 Left = 0
-                Height = 320
+                Height = 409
                 Top = 0
-                Width = 1153
+                Width = 1221
                 Align = alClient
                 Caption = 'Panel11'
-                ClientHeight = 320
-                ClientWidth = 1153
+                ClientHeight = 409
+                ClientWidth = 1221
                 ParentColor = False
                 TabOrder = 0
                 object Label19: TLabel
                   Left = 1
                   Height = 22
                   Top = 26
-                  Width = 1151
+                  Width = 1219
                   Align = alTop
                   Caption = 'Оформление элемента раздела'
                   ParentColor = False
                 end
                 object dbmTemplateOfItem: TDBMemo
                   Left = 1
-                  Height = 271
+                  Height = 360
                   Top = 48
-                  Width = 1151
+                  Width = 1219
                   Align = alClient
                   DataField = 'itemtpl'
                   TabOrder = 0
@@ -2013,7 +2013,7 @@ object Form1: TForm1
                   Left = 1
                   Height = 25
                   Top = 1
-                  Width = 1151
+                  Width = 1219
                   Action = acEditorForRubricItemTemplate
                   Align = alTop
                   Caption = 'РЕДАКТОР'
@@ -2023,22 +2023,22 @@ object Form1: TForm1
             end
             object tabTagsTemplate: TTabSheet
               Caption = 'Шаблон списка тегов'
-              ClientHeight = 320
-              ClientWidth = 1153
+              ClientHeight = 409
+              ClientWidth = 1221
               object lbTagsTemplate: TLabel
                 Left = 0
                 Height = 22
                 Top = 0
-                Width = 1153
+                Width = 1221
                 Align = alTop
                 Caption = 'Шаблон списка тегов'
                 ParentColor = False
               end
               object dbmTagsTemplate: TDBMemo
                 Left = 0
-                Height = 298
+                Height = 387
                 Top = 22
-                Width = 1153
+                Width = 1221
                 Align = alClient
                 DataField = 'tags_tpl'
                 DataSource = ds_Presets
@@ -2047,22 +2047,22 @@ object Form1: TForm1
             end
             object tabItemTagTemplate: TTabSheet
               Caption = 'Тег в списке'
-              ClientHeight = 320
-              ClientWidth = 1153
+              ClientHeight = 409
+              ClientWidth = 1221
               object lbItemTagTempate: TLabel
                 Left = 0
                 Height = 22
                 Top = 0
-                Width = 1153
+                Width = 1221
                 Align = alTop
                 Caption = 'Шаблон тега'
                 ParentColor = False
               end
               object dbmItemTagTemplate: TDBMemo
                 Left = 0
-                Height = 298
+                Height = 387
                 Top = 22
-                Width = 1153
+                Width = 1221
                 Align = alClient
                 DataField = 'item_tag_tpl'
                 DataSource = ds_Presets
@@ -2071,16 +2071,16 @@ object Form1: TForm1
             end
             object TabSheet13: TTabSheet
               Caption = 'Пользовательские поля'
-              ClientHeight = 320
-              ClientWidth = 1153
+              ClientHeight = 409
+              ClientWidth = 1221
               object panUserFields: TPanel
                 Left = 0
-                Height = 320
+                Height = 409
                 Top = 0
-                Width = 1153
+                Width = 1221
                 Align = alClient
-                ClientHeight = 320
-                ClientWidth = 1153
+                ClientHeight = 409
+                ClientWidth = 1221
                 ParentColor = False
                 TabOrder = 0
                 object dbeUserField1: TDBEdit
@@ -2213,15 +2213,15 @@ object Form1: TForm1
             end
             object TabSheet1: TTabSheet
               Caption = 'Редактор структуры'
-              ClientHeight = 320
-              ClientWidth = 1153
+              ClientHeight = 409
+              ClientWidth = 1221
               object panFieldsList: TPanel
                 Left = 0
-                Height = 320
+                Height = 409
                 Top = 0
                 Width = 344
                 Align = alLeft
-                ClientHeight = 320
+                ClientHeight = 409
                 ClientWidth = 344
                 TabOrder = 0
                 OnClick = panFieldsListClick
@@ -2236,7 +2236,7 @@ object Form1: TForm1
                 end
                 object listFields: TListBox
                   Left = 1
-                  Height = 246
+                  Height = 335
                   Top = 23
                   Width = 342
                   Align = alClient
@@ -2246,7 +2246,7 @@ object Form1: TForm1
                 object btnGetCustomFields: TButton
                   Left = 1
                   Height = 25
-                  Top = 294
+                  Top = 383
                   Width = 342
                   Align = alBottom
                   Caption = 'Получить колонки'
@@ -2256,7 +2256,7 @@ object Form1: TForm1
                 object btnRemoveCustomField: TButton
                   Left = 1
                   Height = 25
-                  Top = 269
+                  Top = 358
                   Width = 342
                   Align = alBottom
                   Caption = 'Удалить колонку'
@@ -2266,18 +2266,18 @@ object Form1: TForm1
               end
               object panAddField: TPanel
                 Left = 344
-                Height = 320
+                Height = 409
                 Top = 0
-                Width = 809
+                Width = 877
                 Align = alClient
-                ClientHeight = 320
-                ClientWidth = 809
+                ClientHeight = 409
+                ClientWidth = 877
                 TabOrder = 1
                 object lbFieldName: TLabel
                   Left = 1
                   Height = 22
                   Top = 1
-                  Width = 807
+                  Width = 875
                   Align = alTop
                   Caption = 'Имя колонки (будет добавлено CUSTOM_)'
                   ParentColor = False
@@ -2286,7 +2286,7 @@ object Form1: TForm1
                   Left = 1
                   Height = 30
                   Top = 23
-                  Width = 807
+                  Width = 875
                   Align = alTop
                   TabOrder = 0
                   Text = 'edFieldName'
@@ -2295,7 +2295,7 @@ object Form1: TForm1
                   Left = 1
                   Height = 22
                   Top = 53
-                  Width = 807
+                  Width = 875
                   Align = alTop
                   Caption = 'Тип колонки SQLITE'
                   ParentColor = False
@@ -2305,7 +2305,7 @@ object Form1: TForm1
                   Left = 1
                   Height = 30
                   Top = 75
-                  Width = 807
+                  Width = 875
                   Align = alTop
                   TabOrder = 1
                   Text = 'edFieldType'
@@ -2313,8 +2313,8 @@ object Form1: TForm1
                 object btnAlterTableAddField: TButton
                   Left = 1
                   Height = 25
-                  Top = 294
-                  Width = 807
+                  Top = 383
+                  Width = 875
                   Align = alBottom
                   Caption = 'Добавить колонку'
                   OnClick = btnAlterTableAddFieldClick
@@ -2326,8 +2326,8 @@ object Form1: TForm1
           object dbNav_Presets: TDBNavigator
             Left = 1
             Height = 25
-            Top = 620
-            Width = 1157
+            Top = 709
+            Width = 1225
             Align = alBottom
             BeforeAction = dbNav_PresetsBeforeAction
             BevelOuter = bvNone
@@ -2338,7 +2338,7 @@ object Form1: TForm1
             ChildSizing.Layout = cclLeftToRightThenTopToBottom
             ChildSizing.ControlsPerLine = 100
             ClientHeight = 25
-            ClientWidth = 1157
+            ClientWidth = 1225
             Options = []
             TabOrder = 4
           end
@@ -2346,7 +2346,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 157
-            Width = 1157
+            Width = 1225
             Align = alTop
             Caption = 'По какому полю сортируем'
             ParentColor = False
@@ -2355,7 +2355,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 179
-            Width = 1157
+            Width = 1225
             Align = alTop
             DataField = 'orf'
             DataSource = ds_Presets
@@ -2378,7 +2378,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 209
-            Width = 1157
+            Width = 1225
             Align = alTop
             Caption = 'Как сортируем'
             ParentColor = False
@@ -2387,7 +2387,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 231
-            Width = 1157
+            Width = 1225
             Align = alTop
             DataField = 'ors'
             DataSource = ds_Presets
@@ -2402,7 +2402,7 @@ object Form1: TForm1
         end
         object lvPresets: TListView
           Left = 1
-          Height = 646
+          Height = 735
           Top = 1
           Width = 367
           Align = alLeft
@@ -2414,33 +2414,33 @@ object Form1: TForm1
     end
     object tabSpecial: TTabSheet
       Caption = 'Специальное'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object Panel17: TPanel
         Left = 0
-        Height = 648
+        Height = 737
         Top = 0
-        Width = 1528
+        Width = 1596
         Align = alClient
-        ClientHeight = 648
-        ClientWidth = 1528
+        ClientHeight = 737
+        ClientWidth = 1596
         ParentColor = False
         ParentFont = False
         TabOrder = 0
         object Panel22: TPanel
           Left = 1
-          Height = 646
+          Height = 735
           Top = 1
-          Width = 1526
+          Width = 1594
           Align = alClient
-          ClientHeight = 646
-          ClientWidth = 1526
+          ClientHeight = 735
+          ClientWidth = 1594
           TabOrder = 0
           object Label25: TLabel
             Left = 1
             Height = 22
             Top = 51
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Расширение'
             ParentColor = False
@@ -2449,7 +2449,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 73
-            Width = 1524
+            Width = 1592
             Align = alTop
             ItemHeight = 22
             ItemIndex = 1
@@ -2464,7 +2464,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 103
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Командная строка для архивации сайта'
             ParentColor = False
@@ -2473,7 +2473,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 125
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 1
             Text = '/bin/bash -c "zip {DEST}/{ZIPNAME} {DIR} -rj"'
@@ -2482,7 +2482,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 155
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Локализация / Localization'
             ParentColor = False
@@ -2491,7 +2491,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 177
-            Width = 1524
+            Width = 1592
             Align = alTop
             ItemHeight = 22
             ItemIndex = 0
@@ -2507,7 +2507,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 229
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 3
             Text = '7'
@@ -2516,7 +2516,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 207
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Число записей в разделе'
             ParentColor = False
@@ -2525,7 +2525,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 259
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Файловый менеджер'
             ParentColor = False
@@ -2534,7 +2534,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 281
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 4
             Text = 'dolphin'
@@ -2543,7 +2543,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 311
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Путь к архиву со сборкой'
             ParentColor = False
@@ -2552,7 +2552,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 333
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 5
             Text = '/home'
@@ -2561,7 +2561,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 467
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Имя архива'
             ParentColor = False
@@ -2570,7 +2570,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 489
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 6
             Text = 'site.zip'
@@ -2579,7 +2579,7 @@ object Form1: TForm1
             Left = 1
             Height = 28
             Top = 547
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Использовать глобальные блоки из файлов'
             TabOrder = 7
@@ -2588,7 +2588,7 @@ object Form1: TForm1
             Left = 1
             Height = 28
             Top = 519
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Использовать модуль'
             TabOrder = 8
@@ -2597,7 +2597,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 415
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Локальный сервер визуального редактора'
             ParentColor = False
@@ -2606,7 +2606,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 437
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 9
             Text = '/home/artem/wysiwyg-express'
@@ -2615,7 +2615,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 363
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Путь к Github Pages'
             ParentColor = False
@@ -2624,7 +2624,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 385
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 10
             Text = '/home/artem/Документы/GitHub/artnazarov.github.io'
@@ -2633,7 +2633,7 @@ object Form1: TForm1
             Left = 1
             Height = 28
             Top = 23
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Использовать данные о структуре разделов'
             TabOrder = 11
@@ -2642,7 +2642,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 1
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Древовидная структура'
             ParentColor = False
@@ -2652,33 +2652,33 @@ object Form1: TForm1
     end
     object tabUpdateByFTP: TTabSheet
       Caption = 'Обновление по FTP'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object Panel16: TPanel
         Left = 0
-        Height = 648
+        Height = 737
         Top = 0
-        Width = 1528
+        Width = 1596
         Align = alClient
-        ClientHeight = 648
-        ClientWidth = 1528
+        ClientHeight = 737
+        ClientWidth = 1596
         ParentColor = False
         TabOrder = 0
         object Panel7: TPanel
           Left = 1
-          Height = 646
+          Height = 735
           Top = 1
-          Width = 1526
+          Width = 1594
           Align = alClient
           Caption = 'Panel7'
-          ClientHeight = 646
-          ClientWidth = 1526
+          ClientHeight = 735
+          ClientWidth = 1594
           TabOrder = 0
           object Label2: TLabel
             Left = 1
             Height = 22
             Top = 1
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'IP'
             ParentColor = False
@@ -2687,7 +2687,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 23
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 0
             Text = '127.0.0.1'
@@ -2696,7 +2696,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 53
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Порт'
             ParentColor = False
@@ -2705,7 +2705,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 75
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 1
             Text = '21'
@@ -2714,7 +2714,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 105
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Имя пользователя'
             ParentColor = False
@@ -2723,7 +2723,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 127
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 2
             Text = 'testuser'
@@ -2732,7 +2732,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 157
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Пароль'
             ParentColor = False
@@ -2741,7 +2741,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 179
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 3
             Text = 'testuser'
@@ -2750,16 +2750,16 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 209
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Лог FTP обновления'
             ParentColor = False
           end
           object mmFtpLog: TMemo
             Left = 1
-            Height = 389
+            Height = 478
             Top = 231
-            Width = 1524
+            Width = 1592
             Align = alClient
             ScrollBars = ssBoth
             TabOrder = 4
@@ -2767,8 +2767,8 @@ object Form1: TForm1
           object btFtpUpdate: TButton
             Left = 1
             Height = 25
-            Top = 620
-            Width = 1524
+            Top = 709
+            Width = 1592
             Align = alBottom
             Caption = 'Обновление...'
             OnClick = btFtpUpdateClick
@@ -2779,41 +2779,41 @@ object Form1: TForm1
     end
     object tabWebServer: TTabSheet
       Caption = 'Веб-сервер'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object Panel12: TPanel
         Left = 0
-        Height = 648
+        Height = 737
         Top = 0
-        Width = 1528
+        Width = 1596
         Align = alClient
-        ClientHeight = 648
-        ClientWidth = 1528
+        ClientHeight = 737
+        ClientWidth = 1596
         ParentColor = False
         TabOrder = 0
         object panWebServer: TPanel
           Left = 1
-          Height = 646
+          Height = 735
           Top = 1
-          Width = 1526
+          Width = 1594
           Align = alClient
-          ClientHeight = 646
-          ClientWidth = 1526
+          ClientHeight = 735
+          ClientWidth = 1594
           TabOrder = 0
           object lbIpAddress: TLabel
             Left = 1
             Height = 22
             Top = 1
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'IP локального сервера (127.0.0.1)'
             ParentColor = False
           end
           object WebServerLog: TMemo
             Left = 1
-            Height = 468
+            Height = 557
             Top = 127
-            Width = 1524
+            Width = 1592
             Align = alClient
             ScrollBars = ssAutoBoth
             TabOrder = 0
@@ -2821,14 +2821,14 @@ object Form1: TForm1
           object panServActions: TPanel
             Left = 1
             Height = 50
-            Top = 595
-            Width = 1524
+            Top = 684
+            Width = 1592
             Align = alBottom
             ClientHeight = 50
-            ClientWidth = 1524
+            ClientWidth = 1592
             TabOrder = 1
             object btStopServer: TButton
-              Left = 1331
+              Left = 1399
               Height = 48
               Top = 1
               Width = 192
@@ -2853,7 +2853,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 105
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Журнал соединений'
             ParentColor = False
@@ -2862,7 +2862,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 23
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 2
             Text = '127.0.0.1'
@@ -2871,7 +2871,7 @@ object Form1: TForm1
             Left = 1
             Height = 22
             Top = 53
-            Width = 1524
+            Width = 1592
             Align = alTop
             Caption = 'Порт локального сервера (8080)'
             ParentColor = False
@@ -2880,7 +2880,7 @@ object Form1: TForm1
             Left = 1
             Height = 30
             Top = 75
-            Width = 1524
+            Width = 1592
             Align = alTop
             TabOrder = 3
             Text = '8080'
@@ -2890,22 +2890,22 @@ object Form1: TForm1
     end
     object tabJoin: TTabSheet
       Caption = 'Объединить'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object panJoin: TPanel
         Left = 0
-        Height = 610
+        Height = 699
         Top = 0
-        Width = 1528
+        Width = 1596
         Align = alClient
-        ClientHeight = 610
-        ClientWidth = 1528
+        ClientHeight = 699
+        ClientWidth = 1596
         Color = clWhite
         ParentColor = False
         TabOrder = 0
         object dbJoin: TDBGrid
           Left = 1
-          Height = 608
+          Height = 697
           Top = 1
           Width = 374
           Align = alLeft
@@ -2916,7 +2916,7 @@ object Form1: TForm1
         end
         object dgCounter: TDBGrid
           Left = 375
-          Height = 608
+          Height = 697
           Top = 1
           Width = 369
           Align = alLeft
@@ -2927,9 +2927,9 @@ object Form1: TForm1
         end
         object mmRubrics: TMemo
           Left = 744
-          Height = 608
+          Height = 697
           Top = 1
-          Width = 783
+          Width = 851
           Align = alClient
           Lines.Strings = (
             'mmRubrics'
@@ -2940,11 +2940,11 @@ object Form1: TForm1
       object panJoinAction: TPanel
         Left = 0
         Height = 38
-        Top = 610
-        Width = 1528
+        Top = 699
+        Width = 1596
         Align = alBottom
         ClientHeight = 38
-        ClientWidth = 1528
+        ClientWidth = 1596
         TabOrder = 1
         object btnPublishToGithubPages: TButton
           Left = 299
@@ -2970,24 +2970,24 @@ object Form1: TForm1
     end
     object tabHelp: TTabSheet
       Caption = 'О программе'
-      ClientHeight = 648
-      ClientWidth = 1528
+      ClientHeight = 737
+      ClientWidth = 1596
       object Panel3: TPanel
         Left = 0
-        Height = 648
+        Height = 737
         Top = 0
-        Width = 1528
+        Width = 1596
         Align = alClient
         Caption = 'Panel3'
-        ClientHeight = 648
-        ClientWidth = 1528
+        ClientHeight = 737
+        ClientWidth = 1596
         ParentColor = False
         TabOrder = 0
         object mmAbout: TMemo
           Left = 1
-          Height = 646
+          Height = 735
           Top = 1
-          Width = 1526
+          Width = 1594
           Align = alClient
           Lines.Strings = (
             'Автор: Назаров А.А., 2012-2022, Оренбург'
@@ -3131,14 +3131,14 @@ object Form1: TForm1
   object Panel25: TPanel
     Left = 0
     Height = 34
-    Top = 713
-    Width = 1532
+    Top = 802
+    Width = 1600
     Align = alBottom
     ClientHeight = 34
-    ClientWidth = 1532
+    ClientWidth = 1600
     TabOrder = 2
     object btnMakeArchive: TButton
-      Left = 1288
+      Left = 1356
       Height = 32
       Top = 1
       Width = 243
@@ -3151,11 +3151,11 @@ object Form1: TForm1
   object panProgress: TPanel
     Left = 0
     Height = 26
-    Top = 687
-    Width = 1532
+    Top = 776
+    Width = 1600
     Align = alBottom
     ClientHeight = 26
-    ClientWidth = 1532
+    ClientWidth = 1600
     TabOrder = 3
     object lbProgress: TLabel
       Left = 1
@@ -3170,7 +3170,7 @@ object Form1: TForm1
       Left = 88
       Height = 24
       Top = 1
-      Width = 1443
+      Width = 1511
       Align = alClient
       TabOrder = 0
     end
@@ -3185,6 +3185,15 @@ object Form1: TForm1
       end
       object mnuSaveDataBase: TMenuItem
         Action = acDatabaseSaveAs
+      end
+    end
+    object mnuSpecialSettings: TMenuItem
+      Caption = 'Спец. настройки'
+      object mnuSaveSpecialSettings: TMenuItem
+        Action = acSaveSpecialSettings
+      end
+      object mnuRestoreSpecialSettings: TMenuItem
+        Action = acRestoreSpecialSetting
       end
     end
     object mnuFinder: TMenuItem
@@ -3476,8 +3485,8 @@ object Form1: TForm1
   end
   object ds_Rubrication: TDataSource
     DataSet = sqlRubrication
-    Left = 272
-    Top = 552
+    Left = 328
+    Top = 632
   end
   object actsEditors: TActionList
     Left = 1552
@@ -3563,6 +3572,14 @@ object Form1: TForm1
     object acDatabaseSaveAs: TAction
       Caption = 'Сохранить базу как...'
       OnExecute = acDatabaseSaveAsExecute
+    end
+    object acSaveSpecialSettings: TAction
+      Caption = 'Сохранить спец настройки'
+      OnExecute = acSaveSpecialSettingsExecute
+    end
+    object acRestoreSpecialSetting: TAction
+      Caption = 'Загрузить спец настройки'
+      OnExecute = acRestoreSpecialSettingExecute
     end
   end
   object ds_Tags: TDataSource

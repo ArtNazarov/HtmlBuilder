@@ -14,6 +14,21 @@ uses
 
 type
 
+  TSpecial_Settings = record
+            useTree : boolean;
+            ext     : String[255];
+            zipCommandLine : String[255];
+            Locale  : integer;
+            numOfRecords : integer;
+            fileManager : String[255];
+            pathToBuild : String[255];
+            pathToGhPages : String[255];
+            LocalWysiwygExpress : String[255];
+            ArchiveName : String[255];
+            UseModule : boolean;
+            UseGlobalsFromFiles : boolean;
+  end;
+
   TSection_Record = record
             id, section, preset, note, full_text, tree : String
   end;
