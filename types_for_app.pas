@@ -27,6 +27,12 @@ type
             ArchiveName : String[255];
             UseModule : boolean;
             UseGlobalsFromFiles : boolean;
+            ftpIp : String[32];
+            ftpUserName : String[255];
+            ftpPassword : String[255];
+            ftpPort : String[6];
+            webLocalServerIp : String[32];
+            webLocalServerPort : String[6];
   end;
 
   TSection_Record = record

@@ -4790,6 +4790,16 @@ begin
   special_settings.UseGlobalsFromFiles:=form1.chkGetBlocksFromFile.Checked;
   special_settings.UseModule:=form1.chkUseModules.checked;
   special_settings.useTree:=form1.chkUseTrees.Checked;
+  special_settings.zipCommandLine:=form1.ZipArchiverCommand.Text;
+  special_settings.pathToGhPages:=form1.edGithubPagesPath.Text;
+
+  special_settings.ftpIp:=form1.edFtpIP.text;
+  special_settings.ftpUserName:=form1.edFtpUsername.text;
+  special_settings.ftpPassword:=form1.edFtpPassword.text;
+  special_settings.ftpPort:=form1.edFtpPort.text;
+
+  special_settings.webLocalServerIp:=form1.edIpAddress.text;
+  special_settings.webLocalServerPort:=form1.edPort.text;
 end;
 
 procedure TForm1.updateui_special_setting;
@@ -4801,9 +4811,21 @@ begin
   form1.edLocalWysigygServer.Text:=special_settings.LocalWysiwygExpress;
   form1.edItemsPerPage.Text:=IntToStr(special_settings.numOfRecords);
   form1.edPathToBuild.Text:=special_settings.pathToBuild;
-  special_settings.UseGlobalsFromFiles:=form1.chkGetBlocksFromFile.Checked;
+  form1.chkGetBlocksFromFile.Checked:=special_settings.UseGlobalsFromFiles;
   form1.chkUseModules.checked:= special_settings.UseModule;
   form1.chkUseTrees.Checked:=special_settings.useTree;
+  form1.ZipArchiverCommand.Text:=special_settings.zipCommandLine;
+  form1.edGithubPagesPath.Text:=special_settings.pathToGhPages;
+
+
+
+  form1.edFtpIP.text:=special_settings.ftpIp;
+  form1.edFtpUsername.text:=special_settings.ftpUserName;
+  form1.edFtpPassword.text:=special_settings.ftpPassword;
+  form1.edFtpPort.text:=special_settings.ftpPort;
+
+  form1.edIpAddress.text:=special_settings.webLocalServerIp;
+  form1.edPort.text:=special_settings.webLocalServerPort;
 end;
 
 
