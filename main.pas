@@ -3524,10 +3524,11 @@ begin
     if FileExists(filenam) then DeleteFile(filenam);
 
     Buffer.Clear;
+    // TODO maybe separate template
     Buffer.Lines.Add('<!DOCTYPE html>');
     Buffer.Lines.Add('<html><head>{header}');
     Buffer.Lines.Add('</head><body>');
-    Buffer.Lines.Add('<html><head>{body}');
+    Buffer.Lines.Add('{body}');
     Buffer.Lines.Add('</body></html>');
     Rnr.setTemplate(Buffer.Text);
     Rnr.setVar('header',
