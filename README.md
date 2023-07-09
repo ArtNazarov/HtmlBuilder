@@ -16,7 +16,7 @@ Update content / Обновление контента
 ![Using ftp](https://www.dropbox.com/s/8a23veig21gqcei/ftp_updater.png?raw=1)
 
 More screens / Больше скриншотов https://htmlbuilder.artnazarov.ru/
-Some articles / Некоторые статьи [http://nazarow.ru/category/htmlbuilder/](http://nazarow.ru/section_htmlbuilder.html)
+Some articles / Некоторые статьи [blog](http://nazarow.ru/section_htmlbuilder.html)
 
 Project / Проект
 ================
