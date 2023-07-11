@@ -15,6 +15,10 @@ Update content / Обновление контента
 
 ![Using ftp](https://www.dropbox.com/s/8a23veig21gqcei/ftp_updater.png?raw=1)
 
+Uploading with bridge / Выгрузка с помощью моста
+
+![Using bridge API](https://ucea61a6a70aed7663be706f453c.dl.dropboxusercontent.com/cd/0/inline/B_oT8TPY5A6Kiii4xqFZPqf7IKEH9RMLRR-PxRNldQ5Rem-gT8iEABi8SqLWW816PTbGaLO4HK-1WcCTggBaXSI1HGmc1yqVSWW2yje3eqjvrmPTBZhGjKr_Ma4Hm0PteTLU521lsSIlNGQusjARGCulu0oWtWXoMm9-o6MOd331Aw/file#)
+
 More screens / Больше скриншотов https://htmlbuilder.artnazarov.ru/
 Some articles / Некоторые статьи [blog](http://nazarow.ru/section_htmlbuilder.html)
 
@@ -46,6 +50,7 @@ What's new / Что нового
 8. Wysiwyg editor addition example / Пример дополнения с Wysiwyg
 9. Menu constructor / Конструктор меню
 10. Custom fields in content / Пользовательские поля в контенте
+11. Uploading with bridge API / Выгрузка с помощью bridge API
 
 More info in / больше информации english_help / russian_help.txt 
 
