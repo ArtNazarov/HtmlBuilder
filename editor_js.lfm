@@ -1,17 +1,17 @@
 object frmEditorJs: TfrmEditorJs
   Left = 381
-  Height = 458
-  Top = 278
-  Width = 851
+  Height = 839
+  Top = 377
+  Width = 1600
   Caption = 'Редактор JS'
-  ClientHeight = 458
-  ClientWidth = 851
+  ClientHeight = 839
+  ClientWidth = 1600
   LCLVersion = '2.2.4.0'
   inline editor: TSynEdit
     Left = 0
-    Height = 361
+    Height = 742
     Top = 72
-    Width = 851
+    Width = 1600
     Align = alClient
     Font.Height = -20
     Font.Name = 'JetBrains Mono'
@@ -510,8 +510,8 @@ object frmEditorJs: TfrmEditorJs
   object btnClose: TButton
     Left = 0
     Height = 25
-    Top = 433
-    Width = 851
+    Top = 814
+    Width = 1600
     Align = alBottom
     Caption = 'ОК'
     OnClick = btnCloseClick
@@ -521,7 +521,7 @@ object frmEditorJs: TfrmEditorJs
     Left = 0
     Height = 22
     Top = 0
-    Width = 851
+    Width = 1600
     Align = alTop
     Caption = 'Текст сценария'
     ParentColor = False
@@ -530,10 +530,10 @@ object frmEditorJs: TfrmEditorJs
     Left = 0
     Height = 50
     Top = 22
-    Width = 851
+    Width = 1600
     Align = alTop
     ClientHeight = 50
-    ClientWidth = 851
+    ClientWidth = 1600
     TabOrder = 2
     OnClick = panJsClick
     object btnAddFunction: TButton

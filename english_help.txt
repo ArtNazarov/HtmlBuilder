@@ -2,7 +2,27 @@ Author: Nazarov A.A., 2012-2023, Orenburg
 Site: artnazarov.ru
 E-mail:admin@artnazarov.ru
 
-Release 1
+Custom fields in content
+
+in common settings can be created (or deleted)
+additional columns for content table with
+names started with custom_
+
+For output use shortcode {custom_name}
+
+Menu support
+
+{menu=ID_MENU} works in global blocks
+
+In template for item can be used
+{itemUrl}, {ext}, {itemTitle} shortcodes
+
+In template of menu for output items
+list just use {items}
+
+Paste content from remote source
+
+{remote_url="https://something.com/source.txt"}
 
 - Template support
 - Pages are saved under the name /{id}.htm
@@ -11,6 +31,8 @@ Release 1
 
 {title} - page title
 {body} - html content markup
+{dt} - date of material
+{tags} - tags of material
 
 - Global markup blocks
 
@@ -25,14 +47,19 @@ Release 1
 {sectionNote} - annotation of section
 {sectionFullText} - full description of section
 {items} - list of category elements
+{sort_order} - navigation links for changing sort order
 {pager} - pagination
 
 - Category List Item Template
 
 {itemUrl} - part of the address of the link to the page
 {itemTitle} - page title
+{itemDt} - date of material
+{itemTags} - tags of material
 {ext} - preferred file extension
- 
+{fX}, {vX} - caption and value of additional fields,X=1..7
+{custom_name} - value of user custom column
+
 - Quick links
 
 In order to quickly link to a page with a known id,
@@ -104,6 +131,16 @@ SITE PAGE GENERATION ORDER
 4. Links to the categories of the section <<sectionID>> are included
 5. %module% handlers are executed
 6. Run handlers ~module~ .... ~/module~
+
+For sections:
+Pages are sorted by
+- default order (set in general settings)
+- by caption of page (ascending, descending)
+- by date of publication (ascending, descending).
+For default sorted order sections will be placed to
+/section_SECTIONID.html
+For non-default sort order will be created navigation folders:
+/o/FIELD-[ASC-DESC]/section_SECTIONID.html
 
 USAGE EXAMPLE
 

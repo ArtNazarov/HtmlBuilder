@@ -21,7 +21,7 @@
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="3"/>
       <RevisionNr Value="5"/>
-      <BuildNr Value="7"/>
+      <BuildNr Value="111"/>
       <Language Value="0419"/>
       <Attributes pvaPreRelease="True"/>
       <StringTable CompanyName="artnazarov.ru" LegalCopyright="Artyom Nazarov (artnazarov.ru)" ProductName="HtmlBuilder"/>
@@ -38,21 +38,24 @@
         <Mode0 Name="default"/>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="4">
+    <RequiredPackages Count="5">
       <Item1>
-        <PackageName Value="SynEdit"/>
+        <PackageName Value="DateTimeCtrls"/>
       </Item1>
       <Item2>
-        <PackageName Value="DBFLaz"/>
+        <PackageName Value="SynEdit"/>
       </Item2>
       <Item3>
-        <PackageName Value="FCL"/>
+        <PackageName Value="DBFLaz"/>
       </Item3>
       <Item4>
-        <PackageName Value="LCL"/>
+        <PackageName Value="FCL"/>
       </Item4>
+      <Item5>
+        <PackageName Value="LCL"/>
+      </Item5>
     </RequiredPackages>
-    <Units Count="10">
+    <Units Count="19">
       <Unit0>
         <Filename Value="htmlbuilder.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -105,8 +108,47 @@
         <Filename Value="css_props_dlg.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmCssProps"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit9>
+      <Unit10>
+        <Filename Value="sitemap_thread.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="selectortagspages.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="selectorTagsPages"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="types_for_app.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="const_for_app.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="sql_tags_for_all.txt"/>
+        <IsPartOfProject Value="True"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="sql_tags_for_page.txt"/>
+        <IsPartOfProject Value="True"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="sql_pages_by_tag.txt"/>
+        <IsPartOfProject Value="True"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="selectors_for_menu.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="renderhtml.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RenderHtml"/>
+      </Unit18>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -143,6 +185,10 @@
         <ShoLineNum Value="True"/>
         <ShowDebugInfo Value="True"/>
       </Verbosity>
+      <CustomOptions Value="-dUseCThreads"/>
+      <OtherDefines Count="1">
+        <Define0 Value="UseCThreads"/>
+      </OtherDefines>
     </Other>
   </CompilerOptions>
   <Debugging>
