@@ -17,7 +17,7 @@ Update content / Обновление контента
 
 Uploading with bridge / Выгрузка с помощью моста
 
-![Using bridge API](https://ucea61a6a70aed7663be706f453c.dl.dropboxusercontent.com/cd/0/inline/B_oT8TPY5A6Kiii4xqFZPqf7IKEH9RMLRR-PxRNldQ5Rem-gT8iEABi8SqLWW816PTbGaLO4HK-1WcCTggBaXSI1HGmc1yqVSWW2yje3eqjvrmPTBZhGjKr_Ma4Hm0PteTLU521lsSIlNGQusjARGCulu0oWtWXoMm9-o6MOd331Aw/file#)
+![Using bridge API](https://previews.dropbox.com/p/thumb/AB9pTCHHupH7Pe3Elc7rkvTRdzUqOrk7n6rrb3sY7wya3YUP5W--13XjNluR2oEXucXB6Y0jGw5NjnIFPscGAw-ehEGq2UNLrXgi7cLXJZ0wRz1WECBbGeMKR9m3oC8xCMd3LJN_DDoOr50hs6p_Semb7i5ZDwYgrRarSRPE8M06gvQCzGpoQADmLOijcgRt0HUP4YwpRZ6dmTKy9sOYi3WNMc4Ai4GtNo5T_cv8yufSfKgE9eo8ARjpZsWb1pM7rHsb-ITVWHc4GQdzypM0rcfyR53pWV18whGuiLTR9IinMzAYr8lPxmxFSIkdRqBkCYVX9rHIssAo19CyfcPSW5yj/p.png)
 
 More screens / Больше скриншотов https://htmlbuilder.artnazarov.ru/
 Some articles / Некоторые статьи [blog](http://nazarow.ru/section_htmlbuilder.html)
