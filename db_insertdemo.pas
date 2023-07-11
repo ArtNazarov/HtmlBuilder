@@ -7,8 +7,13 @@ interface
 uses
   Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
   DBCtrls,   SQLite3Conn, SQLDB, process, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids,
-  db_helpers;
+  db_helpers, types_for_app;
 
+type
+TPage_Record = record
+    id, cap, content, section : String;
+    dt : TDateTime;
+end;
     procedure insertDemoDataContent(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoDataSections(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoDataBlocks(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
@@ -16,33 +21,69 @@ uses
     procedure insertDemoData(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoDataCss(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
     procedure insertDemoDataJs(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+    procedure insertDemoDataTags(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+    procedure insertDemoDataTagsPages(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+    procedure insertDemoDataMenu(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+    procedure insertDemoDataMenuItem(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+
 
      {Хелперы}
      procedure addIntoBlock( id, markup, remark : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
-     procedure addIntoSection( id, section, preset, note, full_text : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
-     procedure addIntoContent( id, cap, content, section : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
-     procedure addIntoPreset(id, sitename, dirpath, headtpl, bodytpl, sectiontpl, itemtpl : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+     procedure addIntoSection( s : TSection_Record ; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+     procedure addIntoContent( var p : TPage_Record; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+     procedure addIntoPreset(pr : PresetRecord; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoCss( css_id, css_style, css_path: String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
      procedure addIntoJs(js_id, js_path, js_file: String;  var sq: TSQLQuery;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+     procedure addIntoTag(tag_id, tag_caption : String;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+     procedure addIntoTagsPages(id_tag_page, id_tag, id_page : String;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+     procedure addIntoMenu(m : Menu;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+     procedure addIntoMenuItem(mi : MenuItem;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+
 
 implementation
 
 
  procedure insertDemoDataContent(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
-begin
+ var p : tpage_record;
+     FS: TFormatSettings;
+ begin
   checkConnect(konnect, tranzact, 'нет соединения <insertDemoDataContent>!');
 
-  addIntoContent('index', 'Hello!',
-    'This is my first static page. Here link <<blog>> to section', 'blog', sq, konnect, tranzact);
-  addIntoContent('about', 'Other page',
-    'This is my second static page. See <<photos>>. Here link <<blog>> to section', 'blog', sq, konnect, tranzact);
-   addIntoContent('photos1', 'Demo image 1',
-    '<img width="640" src="https://iso.500px.com/wp-content/uploads/2015/01/50shades_17.jpg">. Here link <<blog>> to section', 'photos', sq, konnect, tranzact);
-  addIntoContent('photos2', 'Demo image2',
-    '<img width="640" src="https://images.squarespace-cdn.com/content/v1/5b0cc6d2e2ccd12e7e8c03c6/1542800092550-16CBUJK7FOSVUC5SC46D/levitating_woman_hat_01.jpg?format=1000w"/>. See <<photos>>. Here link <<blog>> to section',
-    'photos',
-    sq, konnect, tranzact);
+  p.id:='index';
+  p.cap:='Hello!';
+  p.content:= 'This is my first static page. Here link <<blog>> to section';
+  p.section:='blog';
+  FS.DateSeparator:='.';
+  FS.ShortDateFormat := 'dd.mm.yyyy';
+  FS.ShortTimeFormat := 'hh:mm:ss';
+  p.dt:=StrToDateTime('26.11.2022');
+  addIntoContent(p, sq, konnect, tranzact);
+
+  p.id:='about';
+  p.cap:='Other page';
+  p.content:= 'This is my second static page. See <<photos>>. Here link <<blog>> to section';
+  p.section:='blog';
+  addIntoContent(p, sq, konnect, tranzact);
+
+
+  p.id:='photos1';
+  p.cap:='Demo image 1';
+  p.content:='<img width="640" src="https://iso.500px.com/wp-content/uploads/2015/01/50shades_17.jpg">. Here link <<blog>> to section';
+  p.section:='photos';
+  addIntoContent(p, sq, konnect, tranzact);
+
+  p.id:='photos2';
+  p.cap:='Demo image2';
+  p.content:='<img width="640" src="https://images.squarespace-cdn.com/content/v1/5b0cc6d2e2ccd12e7e8c03c6/1542800092550-16CBUJK7FOSVUC5SC46D/levitating_woman_hat_01.jpg?format=1000w"/>. See <<photos>>. Here link <<blog>> to section';
+  p.section:='photos';
+
+  addIntoContent(p, sq, konnect, tranzact);
   // параметризированный запрос
 
   //or possibly CommitRetaining, depending on how your application is set up
@@ -52,12 +93,26 @@ begin
 
 end;
 
- procedure insertDemoDataSections(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+procedure insertDemoDataSections(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+var s : TSection_Record;
 begin
+  s.id:='blog';
+  s.section := 'Блог';
+  s.preset := 'basis';
+  s.note:= 'Мой блог';
+  s.full_text:='Полное описание блога';
+  s.tree:='';
+
   checkConnect( konnect, tranzact, 'нет соединения <inserDemoDataSections>!');
 
-  addIntoSection( 'blog', 'Блог'  , 'basis'  , 'Мой блог', 'Полное описание блога', sq, konnect, tranzact);
-  addIntoSection( 'photos', 'Фото'  , 'basis'  , 'Фотографии', 'Полное описание фотоальбома', sq, konnect, tranzact);
+  addIntoSection(s, sq, konnect, tranzact);
+  s.id:='photos';
+  s.section:='Фото';
+  s.preset:='basis';
+  s.note:='Фотографии';
+  s.full_text:='Полное описание фотоальбома';
+  s.tree:='';
+  addIntoSection(s, sq, konnect, tranzact);
 
 
   //SilentMessage('Демо данные установлены, разделы');
@@ -82,18 +137,28 @@ begin
   //SilentMessage('Демо данные установлены, блоки');
 end;
 
- procedure insertDemoDataPresets(var sq : TSQLQuery; var konnect: TSQLite3Connection;
+ procedure insertDemoDataPresets( var sq : TSQLQuery; var konnect: TSQLite3Connection;
    var tranzact: TSQLTransaction);
+ var
+      pr : PresetRecord;
  begin
 
 
      checkConnect(konnect, tranzact, 'нет соединения <inserDemoDataPresets>!');
 
-     addIntoPreset( 'basis', 'My Site' , GetEnvironmentVariable('HOME')+'/mysite',
-     '{bootstrap}<meta charset="utf-8"><title>{sitename}-{title}</title>',
-     '{mainmenu}<h1>{title}</h1><p>{content}</p>',
-     '{mainmenu}<h1>Тема: {sectionTitle}</h1> Материалы :<ul>{items}</ul>',
-      '<li><a href="{itemUrl}.{ext}">{itemTitle}</a></li>', sq, konnect, tranzact);
+     pr.id:= 'basis';
+     pr.sitename:='My Site';
+     pr.dirpath:= GetEnvironmentVariable('HOME')+'/mysite';
+     pr.headtpl:='{bootstrap}<meta charset="utf-8"><title>{sitename}-{title}</title>';
+     pr.bodytpl:='{mainmenu}<h1>{title}</h1><p>{content}</p>';
+     pr.sectiontpl:='{mainmenu}<h1>Тема: {sectionTitle}</h1> {sort_order} Материалы :<ul>{items}</ul>{pager}';
+     pr.itemtpl:='<li><a href="{itemUrl}.{ext}">{itemTitle}</a></li>';
+     pr.orf:='dt';
+     pr.ors:='asc';
+     pr.tags_tpl:='{mainmenu}<h1>Тег: {tagCaption}</h1> Список страниц :<ul>{items}</ul>';
+     pr.item_tag_tpl:='<li><a href="{itemUrl}.{ext}">{itemTitle}</a></li>';
+
+     addIntoPreset(pr, sq, konnect, tranzact);
 
 
 
@@ -149,6 +214,35 @@ begin
           end;
 
 
+                // инициализация tags
+          try
+              insertDemoDataTags(sq, konnect, tranzact);
+          except
+             // SilentMessage('Не удалось настроить контент');
+          end;
+
+          try
+              insertDemoDataTagsPages(sq, konnect, tranzact);
+          except
+             // SilentMessage('Не удалось настроить контент');
+          end;
+
+
+
+                // инициализация tags
+          try
+              insertDemoDataMenu(sq, konnect, tranzact);
+          except
+             // SilentMessage('Не удалось настроить контент');
+          end;
+
+          try
+              insertDemoDataMenuItem(sq, konnect, tranzact);
+          except
+             // SilentMessage('Не удалось настроить контент');
+          end;
+
+
 end;
 
  procedure insertDemoDataCss(var sq: TSQLQuery; var konnect: TSQLite3Connection;
@@ -164,6 +258,80 @@ end;
 
    addIntoJs('hello', '/home/artem/mysite/hello.js', 'alert("Hello!")', sq, konnect, tranzact);
    addIntoJs('console','/home/artem/mysite/console.js', 'console.log(1)', sq, konnect, tranzact);
+ end;
+
+ procedure insertDemoDataTags(var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+
+   addIntoTag('images', 'Картинки', sq, konnect, tranzact);
+   addIntoTag('gallery', 'Галерея', sq, konnect, tranzact);
+   addIntoTag('information', 'Информация', sq, konnect, tranzact);
+   addIntoTag('etc', 'Прочее', sq, konnect, tranzact);
+
+ end;
+
+ procedure insertDemoDataTagsPages(var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+
+   addIntoTagsPages('id_l1', 'etc', 'index',  sq, konnect, tranzact);
+   addIntoTagsPages('id_l2', 'etc', 'other', sq, konnect, tranzact);
+   addIntoTagsPages('id_l3', 'gallery', 'photos1', sq, konnect, tranzact);
+   addIntoTagsPages('id_l4', 'images', 'photos2', sq, konnect, tranzact);
+
+
+ end;
+
+ procedure insertDemoDataMenu(var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ var m : Menu;
+ begin
+   m.menu_id:='menu1';
+   m.menu_caption:='Меню 1';
+   m.menu_wrap_tpl:='<ul>{items}</ul>';
+   m.menu_item_tpl:='<li><a href="{itemUrl}.{ext}">{itemTitle}</a><li>';
+   addIntoMenu(m, sq, konnect, tranzact);
+
+   m.menu_id:='menu2';
+   m.menu_caption:='Меню 2';
+   addIntoMenu(m, sq, konnect, tranzact);
+ end;
+
+ procedure insertDemoDataMenuItem(var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ var mi : MenuItem;
+ begin
+    mi.menu_item_menu_id:='menu1';
+
+    mi.menu_item_id:='menu_item11';
+    mi.menu_item_type:='pg';
+    mi.menu_item_caption:='Страница';
+    mi.menu_item_link_for:='index';
+    addIntoMenuItem(mi, sq, konnect, tranzact);
+
+    mi.menu_item_id:='menu_item12';
+    mi.menu_item_type:='sc';
+    mi.menu_item_caption:='Секция blog';
+    mi.menu_item_link_for:='blog';
+    addIntoMenuItem(mi, sq, konnect, tranzact);
+
+
+
+    mi.menu_item_menu_id:='menu2';
+
+    mi.menu_item_id:='menu_item21';
+    mi.menu_item_type:='pg';
+    mi.menu_item_caption:='Страница about';
+    mi.menu_item_link_for:='about';
+    addIntoMenuItem(mi, sq, konnect, tranzact);
+
+    mi.menu_item_id:='menu_item22';
+    mi.menu_item_type:='sc';
+    mi.menu_item_caption:='Секция blog';
+    mi.menu_item_link_for:='blog';
+    addIntoMenuItem(mi, sq, konnect, tranzact);
+
  end;
 
  procedure addIntoBlock(id, markup, remark: String; var sq : TSQLQuery;
@@ -187,53 +355,60 @@ end;
 
 end;
 
- procedure addIntoSection(id, section, preset, note, full_text: String;
- var sq : TSQLQuery;  var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ procedure addIntoSection(s : TSection_Record; var sq : TSQLQuery;  var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
  begin
 
 
 
-   prepared_transaction_start( 'insert into section (id, section, preset, note, full_text) values (:ID,:SECTION,:PRESET, :NOTE, :FULL_TEXT)',
+   prepared_transaction_start( 'insert into section (id, section, preset, note, full_text, tree) '+
+   ' values (:ID,:SECTION,:PRESET, :NOTE, :FULL_TEXT, :TREE)',
      sq, tranzact);
 
+   with s do begin
   sq.Params.ParamByName('ID').AsString := id;
   sq.Params.ParamByName('SECTION').AsString := section;
   sq.Params.ParamByName('PRESET').AsString := preset;
   sq.Params.ParamByName('NOTE').AsString := note;
   sq.Params.ParamByName('FULL_TEXT').AsString := full_text;
+  sq.Params.ParamByName('TREE').AsString := tree;
+  end;
   prepared_transaction_end( sq, tranzact);
 end;
 
 
-  procedure addIntoContent( id, cap, content, section : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+  procedure addIntoContent( var p : TPage_Record; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
   begin
    prepared_transaction_start(
-    'insert into content (id, caption, content, section) values (:ID,:CAPTION,:CONTENT, :SECTION)',
+    'insert into content (id, caption, content, section, dt) values (:ID,:CAPTION,:CONTENT, :SECTION, :DT)',
     sq, tranzact);
     // заполним параметры
 
-    sq.Params.ParamByName('ID').AsString := id;
+    sq.Params.ParamByName('ID').AsString := p.id;
 
-    sq.Params.ParamByName('CAPTION').AsString := cap;
+    sq.Params.ParamByName('CAPTION').AsString := p.cap;
 
-    sq.Params.ParamByName('CONTENT').AsString := content;
+    sq.Params.ParamByName('CONTENT').AsString := p.content;
 
 
-    sq.Params.ParamByName('SECTION').AsString := section;
+    sq.Params.ParamByName('SECTION').AsString := p.section;
+
+    sq.Params.ParamByName('DT').AsDateTime := p.dt;
+
    prepared_transaction_end( sq, tranzact);
   end;
 
- procedure addIntoPreset(id, sitename, dirpath, headtpl, bodytpl, sectiontpl,
-   itemtpl: String; var sq : TSQLQuery; var konnect: TSQLite3Connection;
+ procedure addIntoPreset(pr : PresetRecord; var sq : TSQLQuery; var konnect: TSQLite3Connection;
    var tranzact: TSQLTransaction);
  begin
 
 
 
    prepared_transaction_start(
-   'insert into preset (id, sitename,dirpath,headtpl,bodytpl,sectiontpl,itemtpl) values '+
-  '(:ID,:SITENAME,:DIRPATH,:HEADTPL,:BODYTPL,:SECTIONTPL,:ITEMTPL)',
+   'insert into preset (id, sitename,dirpath,headtpl,bodytpl,sectiontpl,itemtpl, ors, orf,  tags_tpl, item_tag_tpl ) values '+
+  '(:ID,:SITENAME,:DIRPATH,:HEADTPL,:BODYTPL,:SECTIONTPL,:ITEMTPL, :ORS, :ORF, :TAGS_TPL, :ITEM_TAG_TPL)',
   sq, tranzact);
+
+   with pr do begin
 
   sq.Params.ParamByName('ID').AsString := id;
   sq.Params.ParamByName('SITENAME').AsString := sitename;
@@ -242,6 +417,11 @@ end;
   sq.Params.ParamByName('BODYTPL').AsString :=  bodytpl;
   sq.Params.ParamByName('SECTIONTPL').AsString :=  sectiontpl;
   sq.Params.ParamByName('ITEMTPL').AsString := itemtpl;
+  sq.Params.ParamByName('ORF').AsString := orf;
+  sq.Params.ParamByName('ORS').AsString := ors;
+  sq.Params.ParamByName('TAGS_TPL').AsString := tags_tpl;
+  sq.Params.ParamByName('ITEM_TAG_TPL').AsString := item_tag_tpl;
+          end;
 
  prepared_transaction_end( sq, tranzact);
 end;
@@ -273,6 +453,71 @@ end;
   sq.Params.ParamByName('JS_PATH').AsString := js_path;
   sq.Params.ParamByName('JS_FILE').AsString := js_file;
 
+ prepared_transaction_end( sq, tranzact);
+ end;
+
+ procedure addIntoTag(tag_id, tag_caption: String; var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+      prepared_transaction_start(
+   'insert into tags (tag_id, tag_caption) values '+
+  '(:TAG_ID,:TAG_CAPTION)',
+  sq, tranzact);
+
+  sq.Params.ParamByName('TAG_ID').AsString := tag_id;
+  sq.Params.ParamByName('TAG_CAPTION').AsString := tag_caption;
+
+ prepared_transaction_end( sq, tranzact);
+ end;
+
+ procedure addIntoTagsPages(id_tag_page, id_tag, id_page: String;
+   var sq: TSQLQuery; var konnect: TSQLite3Connection;
+   var tranzact: TSQLTransaction);
+ begin
+      prepared_transaction_start(
+   'insert into tags_pages (id_tag_page, id_tag, id_page) values '+
+  '(:ID_TAG_PAGE, :ID_TAG,:ID_PAGE)',
+  sq, tranzact);
+
+  sq.Params.ParamByName('ID_TAG_PAGE').AsString := id_tag_page;
+  sq.Params.ParamByName('ID_TAG').AsString := id_tag;
+  sq.Params.ParamByName('ID_PAGE').AsString := id_page;
+
+ prepared_transaction_end( sq, tranzact);
+ end;
+
+ procedure addIntoMenu(m: Menu; var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+      prepared_transaction_start(
+   'insert into menu (menu_id, menu_caption, menu_wrap_tpl, menu_item_tpl) values (:MENU_ID,:MENU_CAPTION,'+
+   ':MENU_WRAP_TPL, :MENU_ITEM_TPL)',
+   sq,
+   tranzact);
+
+ sq.Params.ParamByName('MENU_ID').AsString := m.menu_id;
+ sq.Params.ParamByName('MENU_CAPTION').AsString := m.menu_caption;
+ sq.Params.ParamByName('MENU_WRAP_TPL').AsString := m.menu_wrap_tpl;
+ sq.Params.ParamByName('MENU_ITEM_TPL').AsString := m.menu_item_tpl;
+ prepared_transaction_end( sq, tranzact);
+
+ end;
+
+ procedure addIntoMenuItem(mi: MenuItem; var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+   prepared_transaction_start(
+   'insert into menu_item (menu_item_id, menu_item_caption, menu_item_type, menu_item_link_for, menu_item_menu_id) '+
+   ' values (:MENU_ITEM_ID,:MENU_ITEM_CAPTION,'+
+   ':MENU_ITEM_TYPE, :MENU_ITEM_LINK_FOR, :MENU_ITEM_MENU_ID)',
+   sq,
+   tranzact);
+
+ sq.Params.ParamByName('MENU_ITEM_ID').AsString := mi.menu_item_id;
+ sq.Params.ParamByName('MENU_ITEM_CAPTION').AsString := mi.menu_item_caption;
+ sq.Params.ParamByName('MENU_ITEM_TYPE').AsString := mi.menu_item_type;
+ sq.Params.ParamByName('MENU_ITEM_LINK_FOR').AsString := mi.menu_item_link_for;
+ sq.Params.ParamByName('MENU_ITEM_MENU_ID').AsString := mi.menu_item_menu_id;
  prepared_transaction_end( sq, tranzact);
  end;
 

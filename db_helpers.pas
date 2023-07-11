@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
-  DBCtrls,   SQLite3Conn, SQLDB, process, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids ;
+  DBCtrls,   SQLite3Conn, SQLDB, process,  ExtCtrls, ComCtrls, Menus, DBGrids ;
 
 
 procedure checkConnect(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction; msg: String);
@@ -30,6 +30,13 @@ begin
 
            konnect.Open;
            tranzact.Active:=true;
+              konnect.ExecuteDirect('End transaction');
+         konnect.ExecuteDirect('pragma synchronous = 0');
+         konnect.ExecuteDirect('pragma foreign_keys = off');
+         konnect.ExecuteDirect('pragma journal_mode = off');
+         tranzact.Active:=true;
+         konnect.ExecuteDirect('Begin transaction');
+
           end;
 
 
@@ -51,12 +58,13 @@ end;
 procedure  sql_execute_direct(request: string; var konnect: TSQLite3Connection;
   var tranzact: TSQLTransaction );
 begin
-  if not tranzact.Active then tranzact.StartTransaction;
+
+  //if not tranzact.Active then tranzact.StartTransaction;
   try
 
     konnect.ExecuteDirect( request );
   finally
-    if tranzact.Active then tranzact.Commit; { or fTrans.CommitRetaining; }
+    //if tranzact.Active then tranzact.Commit; { or fTrans.CommitRetaining; }
   end;
 end;
 

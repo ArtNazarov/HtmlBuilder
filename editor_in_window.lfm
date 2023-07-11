@@ -1,18 +1,18 @@
 object frmEditor: TfrmEditor
   Left = 0
-  Height = 767
-  Top = 93
-  Width = 1598
+  Height = 839
+  Top = 0
+  Width = 1600
   Caption = 'Редактор разметки'
-  ClientHeight = 740
-  ClientWidth = 1598
+  ClientHeight = 812
+  ClientWidth = 1600
   Menu = mmMenuEditor
   LCLVersion = '2.2.4.0'
   inline editor: TSynEdit
     Left = 0
-    Height = 543
+    Height = 615
     Top = 172
-    Width = 1598
+    Width = 1600
     Align = alClient
     Font.Height = -16
     Font.Name = 'JetBrains Mono'
@@ -512,8 +512,8 @@ object frmEditor: TfrmEditor
   object btnCloseEditor: TButton
     Left = 0
     Height = 25
-    Top = 715
-    Width = 1598
+    Top = 787
+    Width = 1600
     Align = alBottom
     Caption = 'ОК'
     OnClick = btnCloseEditorClick
@@ -523,7 +523,7 @@ object frmEditor: TfrmEditor
     Left = 0
     Height = 22
     Top = 150
-    Width = 1598
+    Width = 1600
     Align = alTop
     Caption = 'Разметка'
     ParentColor = False
@@ -532,11 +532,11 @@ object frmEditor: TfrmEditor
     Left = 0
     Height = 50
     Top = 50
-    Width = 1598
+    Width = 1600
     Align = alTop
     Caption = 'Panel1'
     ClientHeight = 50
-    ClientWidth = 1598
+    ClientWidth = 1600
     TabOrder = 2
     object btnFormatter: TButton
       Left = 173
@@ -725,10 +725,10 @@ object frmEditor: TfrmEditor
     Left = 0
     Height = 50
     Top = 100
-    Width = 1598
+    Width = 1600
     Align = alTop
     ClientHeight = 50
-    ClientWidth = 1598
+    ClientWidth = 1600
     TabOrder = 3
     object btnHr: TButton
       Left = 443
@@ -810,10 +810,10 @@ object frmEditor: TfrmEditor
     Left = 0
     Height = 50
     Top = 0
-    Width = 1598
+    Width = 1600
     Align = alTop
     ClientHeight = 50
-    ClientWidth = 1598
+    ClientWidth = 1600
     TabOrder = 4
     object btnSection: TButton
       Left = 1

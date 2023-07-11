@@ -10,11 +10,16 @@ Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
  db_helpers;
 
 procedure  createSectionsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+procedure createMenusSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+procedure createItemsForMenuSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 procedure  createBlocksSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 procedure  createPresetsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);  // начальная настройка пресетов
 procedure  createPagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 procedure createCssSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 procedure createJsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+procedure createTagsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+procedure createTagsPagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
 
 
 
@@ -31,6 +36,7 @@ begin
                      'CREATE TABLE "section"('+
                     ' "id" Char(60) NOT NULL PRIMARY KEY,'+
                     ' "section" Char(60),'+
+                    ' "tree" Char(250),'+
                     ' "preset" Char(60),'+
                     ' "note" TEXT, '+
                     ' "full_text" TEXT, '+
@@ -47,6 +53,41 @@ begin
 
         //SilentMessage('начальная настройка секций, транзакция...');
  end;
+
+procedure createMenusSQL(var konnect: TSQLite3Connection;
+  var tranzact: TSQLTransaction);
+begin
+   checkConnect(konnect, tranzact,'нет соединения <createBlocksSQL>!');
+
+        sql_execute_direct('CREATE TABLE "menu"('+
+                    ' "menu_id" Char(60) NOT NULL PRIMARY KEY,'+
+                    ' "menu_caption" Char(60),'+
+                    ' "menu_wrap_tpl" TEXT,'+
+                    ' "menu_item_tpl" TEXT)', konnect, tranzact);
+
+
+       sql_execute_direct('CREATE UNIQUE INDEX "menu_id_idx" ON "menu"( "menu_id" );', konnect, tranzact);
+
+        tranzact.Commit;
+end;
+
+procedure createItemsForMenuSQL(var konnect: TSQLite3Connection;
+  var tranzact: TSQLTransaction);
+begin
+     checkConnect(konnect, tranzact,'нет соединения <createBlocksSQL>!');
+
+        sql_execute_direct('CREATE TABLE "menu_item"('+
+                    ' "menu_item_id" Char(60) NOT NULL PRIMARY KEY,'+
+                    ' "menu_item_caption" Char(60),'+
+                    ' "menu_item_type" Char(3),'+
+                    ' "menu_item_link_for" Char(60),' +
+                    ' "menu_item_menu_id" Char(60))', konnect, tranzact);
+
+
+       sql_execute_direct('CREATE UNIQUE INDEX "menu_item_id_idx" ON "menu_item"( "menu_item_id" );', konnect, tranzact);
+
+        tranzact.Commit;
+end;
 
 procedure  createBlocksSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 begin
@@ -73,11 +114,16 @@ begin
        sql_execute_direct('CREATE TABLE "preset"('+
                     ' "id" Char(60) NOT NULL PRIMARY KEY,'+
                     ' "sitename" Char(60),'+  // Название сайта
+                    ' "orf" Char(60),'+      // По какому полю сортировка
+                    ' "ors" Char(4),'+      // Порядок сортировки
                     ' "dirpath" Char(60),'+      // Путь к папке в результатами
                     ' "headtpl" TEXT,'+         // Заголовочная часть шаблона
                     ' "bodytpl" TEXT,'+     // Основная часть шаблона
                     ' "sectiontpl" TEXT,'+  // Раздела обрамление
                     ' "itemtpl" TEXT,'+      // Оформление списка
+                    ' "tags_tpl" TEXT,'+  // Оформление тега
+                    ' "item_tag_tpl" TEXT,'+      // Оформление элемента в списке тегов
+
                     ' "ufn1" Char(60),'+     // Название доп. поля 1, 2...
                     ' "ufn2" Char(60),'+
                     ' "ufn3" Char(60),'+
@@ -104,6 +150,7 @@ begin
                     ' "caption" Char(128),'+
                     ' "content" TEXT,'+
                     ' "section" Chat(128),'+
+                    ' "dt" DATETIME, '+
                     ' "uf1" Char(60),'+
                     ' "uf2" Char(60),'+
                     ' "uf3" Char(60),'+
@@ -157,6 +204,35 @@ begin
 
         // Создание индекса на основе идентификатора в таблице "DATA"
        sql_execute_direct('CREATE UNIQUE INDEX "js_id_idx" ON "js"( "js_id" );',konnect, tranzact);
+end;
+
+procedure createTagsSQL(var konnect: TSQLite3Connection;
+  var tranzact: TSQLTransaction);
+begin
+   sql_execute_direct( 'PRAGMA foreign_keys = ON;', konnect, tranzact);
+       // Здесь мы настраиваем таблицу с именем "tags" в новой базе данных.
+     sql_execute_direct('CREATE TABLE "tags"('+
+                    ' "tag_id" Char(128) NOT NULL PRIMARY KEY,'+
+                    ' "tag_caption" Char(255)'+
+                    ');', konnect, tranzact);
+
+        // Создание индекса на основе идентификатора в таблице "DATA"
+       sql_execute_direct('CREATE UNIQUE INDEX "tag_id_idx" ON "tags"( "tag_id" );',konnect, tranzact);
+end;
+
+procedure createTagsPagesSQL(var konnect: TSQLite3Connection;
+  var tranzact: TSQLTransaction);
+begin
+  sql_execute_direct( 'PRAGMA foreign_keys = ON;', konnect, tranzact);
+       // Здесь мы настраиваем таблицу с именем "tags" в новой базе данных.
+     sql_execute_direct('CREATE TABLE "tags_pages"('+
+                    ' "id_tag_page" Char(128) NOT NULL PRIMARY KEY,'+
+                    ' "id_tag" Char(255),'+
+                    ' "id_page" Char(255)'+
+                    ');', konnect, tranzact);
+
+        // Создание индекса на основе идентификатора в таблице "DATA"
+       sql_execute_direct('CREATE UNIQUE INDEX "id_tag_page_idx" ON "tags_pages"( "id_tag_page" );',konnect, tranzact);
 end;
 
 end.
