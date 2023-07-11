@@ -54,6 +54,10 @@ What's new / Что нового
 bridge API endpoint addon for server (php version) / Дополнение API для сервера (php версия)    
 https://github.com/ArtNazarov/htmlbuilder-php-bridge
 
+bridge API endpoint addon for server (nodejs version) / Дополнение API для сервера (nodejs версия)
+
+https://github.com/artNazarov/htmlbuilder-nodejs-bridge
+
 
 More info in / больше информации english_help / russian_help.txt 
 
