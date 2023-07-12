@@ -51,12 +51,15 @@ What's new / Что нового
 9. Menu constructor / Конструктор меню
 10. Custom fields in content / Пользовательские поля в контенте
 11. Uploading with bridge API / Выгрузка с помощью bridge API
-bridge API endpoint addon for server (php version) / Дополнение API для сервера (php версия)    
-https://github.com/ArtNazarov/htmlbuilder-php-bridge
 
-bridge API endpoint addon for server (nodejs version) / Дополнение API для сервера (nodejs версия)
 
-https://github.com/artNazarov/htmlbuilder-nodejs-bridge
+PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
+
+Docker image with PHP https://github.com/ArtNazarov/dockerbridgephp
+
+Nodejs endpoint for server https://github.com/artNazarov/htmlbuilder-nodejs-bridge
+
+Docker image with NodeJs https://github.com/ArtNazarov/dockerbridgenodejs
 
 
 More info in / больше информации english_help / russian_help.txt 
