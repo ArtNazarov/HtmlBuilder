@@ -17,7 +17,7 @@ Update content / Обновление контента
 
 Uploading with bridge / Выгрузка с помощью моста
 
-![Using bridge API](https://uc4e20496e990c75989d989e407d.dl.dropboxusercontent.com/cd/0/inline/B_oACTH6VF3jqJnMhHSSs3kx3zjXQ-Bv28dddYnSM_-mu5NazoIpp5d_KyVDkzB9AdqPjOhEvWaKYj6yPJWoc8ODpjLzfbzjSKufxzUjJ_OUuklNZA8USWXxGRfBfYT-oJDCnN6f_okk4Zr75yKEf0TFvEOw140y42_4dPF6cuZPwg/file#)
+![Using bridge API](http://apprr.rf.gd/upload_with_a_bridge.png)
 
 More screens / Больше скриншотов https://htmlbuilder.artnazarov.ru/
 Some articles / Некоторые статьи [blog](http://nazarow.ru/section_htmlbuilder.html)
