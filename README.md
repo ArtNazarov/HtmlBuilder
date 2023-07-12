@@ -61,6 +61,8 @@ Nodejs endpoint for server https://github.com/artNazarov/htmlbuilder-nodejs-brid
 
 Docker image with NodeJs https://github.com/ArtNazarov/dockerbridgenodejs
 
+Python endpoint https://github.com/ArtNazarov/htmlbuilder-python-bridge
+
 
 More info in / больше информации english_help / russian_help.txt 
 
