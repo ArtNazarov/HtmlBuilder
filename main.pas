@@ -7,7 +7,7 @@ interface
 
 
 uses
-  Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
+  AsyncQueue, Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
   DBCtrls, dbf, SQLite3Conn, SQLDB, process, FileUtil, SynHighlighterHTML,
   SynEdit, DBDateTimePicker, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids,
   ActnList, Buttons, blcksock, sockets, Synautil, synaip, synsock, ftpsend,
@@ -579,6 +579,8 @@ type
 
     special_settings : TSpecial_Settings;
 
+    Writer : TFilesQueue;
+
     procedure initdbSQL(); // <-- новая инициализация
     function buildHead(title: string; headTemplate: string): string;
     function buildBody(title: string; body: string; bodyTemplate: string): string;
@@ -691,7 +693,7 @@ type
      (* НОВАЯ ВЕРСИЯ СБОРКИ СТРАНИЦ *)
      procedure doJoinPages();
      procedure  makePageJoin(page : page_params; filenam : String );
-     procedure  writeDocument( document : String; filenam: String);
+
      procedure doSections();
      procedure doSitemap();
      procedure doTagsMap();
@@ -1205,7 +1207,7 @@ end;
 { Тестовый код }
 procedure TForm1.btnJoinClick(Sender: TObject);
 var start, stop: TDateTime;
-
+ptr : Pointer;
 
 
 begin
@@ -1220,6 +1222,8 @@ begin
 
 
 
+  Writer := TFilesQueue.Create();
+
 
   doJoinPages(); // страницы
   doSections();  // разделы
@@ -1228,6 +1232,7 @@ begin
   doJs(); // скрипты
   doTagsMap(); // все теги на сайте
 
+  Writer.processEach();
 
 
 
@@ -1236,6 +1241,8 @@ begin
 
   mmRubrics.Lines.Add('НА СБОРКУ ПОТРЕБОВАЛОСЬ СЕКУНД:');
   mmRubrics.Lines.Add(FloatToStr(MilliSecondsBetween(start, stop)/1000));
+
+  mmRubrics.Lines.Add('Обработано файлов: '+IntToStr(writer.last+1));
 
 
 
@@ -3634,7 +3641,8 @@ begin
                               id := Copy(id, 1, Pos('.', id)-1);
                               Buffer.Text:=StringReplace(Buffer.Text, '{id}',
                               id , [rfReplaceAll]);
-                              WriteDocument(Buffer.Lines.Text, filenam);
+
+                              Writer.addToJob(Buffer.Lines.Text, filenam);
 
    Rnr.Free;
 end;
@@ -3679,24 +3687,7 @@ begin
 end;
 
 
-procedure TForm1.writeDocument( document : String; filenam: String);
-var
-  id : String;
-  t : String;
 
-
-
-begin
-    buffer.clear;
-    buffer.lines.add(document);
-
-    if FileExists(filenam) then DeleteFile(filenam);
-
-                              try
-                              Buffer.Lines.SaveToFile(filenam);
-                              except
-                              end;
-end;
 
 procedure TForm1.doSections;
 var
@@ -3953,7 +3944,7 @@ begin
                                                     )
                                        ))));
 
-  writedocument( doc, doc_path);
+  Writer.AddToJob( doc, doc_path);
 
 
   if Not DirectoryExists( sqlPresets.FieldByName('dirpath').AsString+DELIM+'/tags') then
@@ -3998,7 +3989,7 @@ begin
                                        ))));
 
          doc_path:=sqlPresets.FieldByName('dirpath').AsString+DELIM +'/tags/'+tm.Keys[i]+'.'+form1.PrefferedExtension.Text;
-         writedocument( doc, doc_path);
+         writer.AddToJob( doc, doc_path);
 
          pm.Free;
     end;
@@ -4218,7 +4209,7 @@ begin
              doc:=useOwnTags(doc);
              doc:=useMenus(doc);
         end;
-     writeDocument( doc , doc_path );
+     writer.AddToJob( doc , doc_path );
 
      sqlCssStyles.Next;
      Application.ProcessMessages;
@@ -4274,7 +4265,7 @@ begin
   while not sqlJsScripts.Eof do
    begin
      lbProgress.Caption:='Генерация скриптов '+IntToStr(i+1)+' / '+IntToStr(cnt);
-     writeDocument( sqlJsScripts.FieldByName('js_file').AsString,
+     Writer.AddToJob( sqlJsScripts.FieldByName('js_file').AsString,
             sqlJsScripts.FieldByName('js_path').AsString );
      sqlJsScripts.Next;
      Application.ProcessMessages;
@@ -4574,7 +4565,7 @@ begin
 
 
 
-                            writeDocument( document,
+                            Writer.addToJob( document,
                             path
                                            );
 

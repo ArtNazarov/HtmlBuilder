@@ -1,7 +1,7 @@
 program htmlbuilder;
 
 {$mode objfpc}{$H+}
-
+{$linklib Qt5Pas}
 uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads, // диспетчер памяти C в некоторых системах намного быстрее для многопоточности
@@ -10,7 +10,7 @@ uses
   Forms, dbflaz, datetimectrls, main, db_helpers, db_insertdemo,
   db_create_tables, replacers, editor_in_window, editor_css, editor_js,
   css_props_dlg, const_for_app, types_for_app,
-  selectorTagsPages, selectors_for_menu, RenderHtml;
+  selectorTagsPages, selectors_for_menu, RenderHtml, AsyncQueue;
 
 {$R *.res}
 

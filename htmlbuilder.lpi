@@ -11,6 +11,10 @@
       <Title Value="htmlbuilder"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
+      <XPManifest>
+        <TextName Value="ru.artnazarov.htmlbuilder"/>
+        <TextDesc Value="Static website generator with local webserver and ftp updater "/>
+      </XPManifest>
       <Icon Value="0"/>
     </General>
     <i18n>
@@ -21,7 +25,7 @@
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="3"/>
       <RevisionNr Value="5"/>
-      <BuildNr Value="111"/>
+      <BuildNr Value="118"/>
       <Language Value="0419"/>
       <Attributes pvaPreRelease="True"/>
       <StringTable CompanyName="artnazarov.ru" LegalCopyright="Artyom Nazarov (artnazarov.ru)" ProductName="HtmlBuilder"/>
@@ -55,7 +59,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="19">
+    <Units Count="20">
       <Unit0>
         <Filename Value="htmlbuilder.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -149,6 +153,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="RenderHtml"/>
       </Unit18>
+      <Unit19>
+        <Filename Value="asyncqueue.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AsyncQueue"/>
+      </Unit19>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
