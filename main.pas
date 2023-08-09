@@ -1,3 +1,4 @@
+{ Main form application }
 unit main;
 
 {$mode objfpc}{$H+}

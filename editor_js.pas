@@ -1,3 +1,4 @@
+{ Contains editor for javascript }
 unit editor_js;
 
 {$mode ObjFPC}{$H+}
@@ -12,6 +13,7 @@ type
 
   { TfrmEditorJs }
 
+  { Window with javascript editor }
   TfrmEditorJs = class(TForm)
     btnClose: TButton;
     btnAddFunction: TButton;
@@ -20,9 +22,17 @@ type
     panJs: TPanel;
     SynCompletion1: TSynCompletion;
     SynJScriptSyn1: TSynJScriptSyn;
+
+    { Handles click of btnAddFunction }
     procedure btnAddFunctionClick(Sender: TObject);
+
+    { Handles click of btnClose }
     procedure btnCloseClick(Sender: TObject);
+
+    { Handles click of panJs }
     procedure panJsClick(Sender: TObject);
+
+    { Handles autocompletions for javascript }
     procedure SynCompletion1CodeCompletion(var Value: string;
       SourceValue: string; var SourceStart, SourceEnd: TPoint;
       KeyChar: TUTF8Char; Shift: TShiftState);

@@ -1,3 +1,4 @@
+{ Contains helpers for using transactions and SQL queries}
 unit db_helpers;
 
 {$mode ObjFPC}{$H+}
@@ -9,14 +10,24 @@ uses
   DBCtrls,   SQLite3Conn, SQLDB, process,  ExtCtrls, ComCtrls, Menus, DBGrids ;
 
 
+{ Check connection to database }
 procedure checkConnect(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction; msg: String);
 
+{ Executes sQ sql query }
 procedure  sql_execute(request: string; var konnect: TSQLite3Connection;
   var tranzact: TSQLTransaction; var sQ: TSQLQuery);
+
+{ Executes sQ sql query directly }
 procedure  sql_execute_direct(request: string; var konnect: TSQLite3Connection;
   var tranzact: TSQLTransaction );
+
+{ Starts prepared transaction }
 procedure  prepared_transaction_start(request : String; var sQ : TSQLQuery; tranzact : TSQLTransaction);
+
+{ Ends prepared transaction }
 procedure  prepared_transaction_end(var sQ : TSQLQuery; tranzact : TSQLTransaction);
+
+{ Opens sql request }
 procedure  open_sql(request : string; var sQ : TSQLQuery);
 
 

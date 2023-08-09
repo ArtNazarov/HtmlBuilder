@@ -1,3 +1,4 @@
+{ Contains procedures for initialization new database }
 unit db_create_tables;
 
 {$mode ObjFPC}{$H+}
@@ -9,15 +10,25 @@ Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
  DBCtrls,   SQLite3Conn, SQLDB, process, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids,
  db_helpers;
 
+{ Create table section }
 procedure  createSectionsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+{ Create table menu }
 procedure createMenusSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+{ Create table menu_item }
 procedure createItemsForMenuSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+{ Create table block }
 procedure  createBlocksSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+{ Create table preset }
 procedure  createPresetsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);  // начальная настройка пресетов
+{ Create table content }
 procedure  createPagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+{ Create table css }
 procedure createCssSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+{ Create table js }
 procedure createJsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+{ Create table tags }
 procedure createTagsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+{ Create table tags_pages }
 procedure createTagsPagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 
 

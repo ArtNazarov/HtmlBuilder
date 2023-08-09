@@ -1,3 +1,4 @@
+{ Some types for storing data}
 unit types_for_app;
 
 {$mode ObjFPC}{$H+}
@@ -14,6 +15,7 @@ uses
 
 type
 
+  { Special setting of whole application }
   TSpecial_Settings = record
             useTree : boolean;
             ext     : String[255];
@@ -35,10 +37,12 @@ type
             webLocalServerPort : String[6];
   end;
 
+  { Properties of section }
   TSection_Record = record
             id, section, preset, note, full_text, tree : String
   end;
 
+  { Properties of menus }
   Menu = record
        menu_id : String;
        menu_caption : String;
@@ -46,6 +50,7 @@ type
        menu_item_tpl : String;
   end;
 
+  { Properties of menu item }
   MenuItem = record
        menu_item_id : String;
        menu_item_caption : String;
@@ -54,36 +59,44 @@ type
        menu_item_menu_id  : String; // внешний ключ
   end;
 
-
+   { Properties of preset }
   PresetRecord = record
 
   id, sitename, dirpath, headtpl, bodytpl, sectiontpl, itemtpl, orf, ors,
   tags_tpl, item_tag_tpl : String;
   end;
 
+ { Properties of tag }
   Tag = record
             tag_id : String;
             tag_caption : String;
   end;
 
-Tag_Page_Link = record
+  { Properties of tag link }
+ Tag_Page_Link = record
             id_tag_page : String;
             id_tag : String;
             id_page : String;
             tree    : String;
   end;
 
+  { Hashmap dictationary for pairing String to String }
   sdict = specialize TFPGmap<string, string>;{define type under type}
+  { Hashmap dictationary for pairing String to Tag_Page_Link }
   TagsPagesMap = specialize TFPGmap<string, Tag_Page_Link>;
+  { Hashmap dictationary for pairing String to Tag }
   TagsMap = specialize TFPGmap<string, Tag>;
 
+  { List for sql queries}
   sqls_list = array[byte] of TSQLquery;
 
+  { User Record properties}
   user_records = array[0..7] of record
               name : string;
               value : string;
             end;
 
+  { Rubrication properties}
   rubric_pages = record
             pages_total   : array[0..255] of byte; // число страниц
             section_index : array[0..255] of byte;
@@ -94,11 +107,13 @@ Tag_Page_Link = record
 
   end;
 
+  { Page pair for content_id and caption}
   page_pairs = record
             content_id : string;
             caption    : string;
   end;
 
+  { Parameters of section }
   section_params = record
             id : string;
             section : string;
@@ -116,11 +131,13 @@ Tag_Page_Link = record
 
   end;
 
+  { List of section properties }
   section_list = record
             sections : array[0..255] of section_params;
             section_counter : byte; // счетчик разделов
   end;
 
+  { Parameters of page }
   page_params = record
             id        : String;
             title     : String;
@@ -140,6 +157,7 @@ Tag_Page_Link = record
             tags : String;
   end;
 
+  {HashMap String to Page_Params}
   PagesMap = specialize TFPGmap<string, page_params>;
 
 implementation

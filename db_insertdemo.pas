@@ -1,3 +1,4 @@
+{ contains requests for inserting new data in database during initialization }
 unit db_insertdemo;
 
 {$mode ObjFPC}{$H+}
@@ -10,38 +11,82 @@ uses
   db_helpers, types_for_app;
 
 type
+
+{ Record of some properties of page in table content }
 TPage_Record = record
     id, cap, content, section : String;
     dt : TDateTime;
 end;
+
+    { Inserts demo data to table content }
     procedure insertDemoDataContent(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+    { Inserts demo data to table section }
     procedure insertDemoDataSections(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+    { Inserts demo data to table block }
     procedure insertDemoDataBlocks(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+    { Inserts demo data to table preset }
     procedure insertDemoDataPresets(var sq : TSQLQuery;var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+    { Inserts demo data }
     procedure insertDemoData(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+    { Inserts demo data to table css }
     procedure insertDemoDataCss(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+    { Inserts demo data to table js }
     procedure insertDemoDataJs(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+    { Inserts demo data to table tags }
     procedure insertDemoDataTags(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+    { Inserts demo data to table tags_pages}
     procedure insertDemoDataTagsPages(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+    { Inserts demo data to table menu}
     procedure insertDemoDataMenu(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+    { Inserts demo data to table menu_item}
     procedure insertDemoDataMenuItem(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 
 
 
      {Хелперы}
+
+     { Executes request for adding block }
      procedure addIntoBlock( id, markup, remark : String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+     { Executes request for adding section }
      procedure addIntoSection( s : TSection_Record ; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+     { Executes request for adding content }
      procedure addIntoContent( var p : TPage_Record; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+     { Executes request for adding preset }
      procedure addIntoPreset(pr : PresetRecord; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+     { Executes request for adding css }
      procedure addIntoCss( css_id, css_style, css_path: String; var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+     { Executes request for adding js }
      procedure addIntoJs(js_id, js_path, js_file: String;  var sq: TSQLQuery;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+
+     { Executes request for adding tag }
      procedure addIntoTag(tag_id, tag_caption : String;  var sq: TSQLQuery;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+
+     { Executes request for adding tag to pages }
      procedure addIntoTagsPages(id_tag_page, id_tag, id_page : String;  var sq: TSQLQuery;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+
+     { Executes request for adding menu }
      procedure addIntoMenu(m : Menu;  var sq: TSQLQuery;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+
+     { Executes request for adding menu item }
      procedure addIntoMenuItem(mi : MenuItem;  var sq: TSQLQuery;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
 

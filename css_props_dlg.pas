@@ -1,3 +1,4 @@
+{ Contains class TfrmCssProps for dialog with css properties }
 unit css_props_dlg;
 
 {$mode ObjFPC}{$H+}
@@ -11,6 +12,7 @@ type
 
   { TfrmCssProps }
 
+  { Dialog for css properties }
   TfrmCssProps = class(TForm)
     btnClose: TButton;
     lbCssProps: TLabel;

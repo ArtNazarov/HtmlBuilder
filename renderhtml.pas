@@ -1,3 +1,4 @@
+{Contains class Render for build HTML file using variables}
 unit RenderHtml;
 
 {$mode ObjFPC}{$H+}
@@ -12,14 +13,23 @@ type
   { Render }
 
   Render = class
+    { Hashmap for variables and their values }
     vars : sdict;
+    { String contained HTML template }
     template : String;
+    { Result of building template }
     html     : String;
+    { Constructor }
     constructor Create;
+    { Destructor }
     destructor Free;
+    { Setter for member template }
     procedure setTemplate(aTemplate : String);
+    { Setter for member vars }
     procedure setVar(varname, varvalue : String);
+    { Builds member html }
     procedure buildHtml();
+    { Getter of member html}
     function getHtml() : String;
 
   end;

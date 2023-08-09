@@ -1,3 +1,4 @@
+{ SQL requests for gettings tags }
 unit selectorTagsPages;
 
 {$mode ObjFPC}{$H+}
@@ -9,22 +10,27 @@ uses
   DBCtrls,   SQLite3Conn, SQLDB, process, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids,
   db_helpers, types_for_app, replacers;
 
-
+{ Gets to TagsMaps tm tags for page with id id_page }
 procedure loadTagsForPages(id_page : String; var tm : TagsMap; var sq : TSqlQuery;
   var tranzact : TSqlTransaction);
 
+{ Return tags links for html page }
 function tagsInPageHtml(var tags : TagsMap; ext : String) : String;
 
-
+{ Load all tags for site sitemap }
 procedure loadAllTagsForSitemap(var tm : TagsMap; var sq : TSqlQuery;
   var tranzact : TSqlTransaction);
 
+{ Returns all tag links for html page }
 function tagsInSitemap(var tags : TagsMap) : String;
 
 
+{ Gets to PagesMap pages with given tag id_tag }
 procedure loadPagesByTag(id_tag : String; var pm : PagesMap; var sq : TSqlQuery;
   var tranzact : TSqlTransaction);
 
+
+{ Returns HTML markup for PagesMap pm }
 function pagesWithTag(var pm : PagesMap; item_tag_tpl : String; ext : String; useT : boolean) : String;
 
 implementation

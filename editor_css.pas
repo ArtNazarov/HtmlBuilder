@@ -1,3 +1,4 @@
+{ Contains dialog with css editor }
 unit editor_css;
 
 {$mode ObjFPC}{$H+}
@@ -13,6 +14,7 @@ type
 
   { TfrmEditorCss }
 
+  { Dialog for css stylesheets }
   TfrmEditorCss = class(TForm)
     btnClose: TButton;
     btnAddClass: TButton;
@@ -22,9 +24,17 @@ type
     SynCompletion1: TSynCompletion;
     SynCssSyn1: TSynCssSyn;
     editor: TSynEdit;
+
+    { handles click of btnAddClass }
     procedure btnAddClassClick(Sender: TObject);
+
+    { handles click of btnAddId }
     procedure btnAddIdClick(Sender: TObject);
+
+    { handles click of btnClose }
     procedure btnCloseClick(Sender: TObject);
+
+    { handles autocompletion for css }
     procedure SynCompletion1CodeCompletion(var Value: string;
       SourceValue: string; var SourceStart, SourceEnd: TPoint;
       KeyChar: TUTF8Char; Shift: TShiftState);

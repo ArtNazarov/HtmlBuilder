@@ -1,3 +1,4 @@
+{ Contains window with HTML editor }
 unit editor_in_window;
 
 {$mode ObjFPC}{$H+}
@@ -13,6 +14,7 @@ type
 
   { TfrmEditor }
 
+  { Window with HTML editor }
   TfrmEditor = class(TForm)
     acEditor: TActionList;
     acSearch: TAction;
@@ -101,16 +103,34 @@ type
   private
 
   public
+    { HTML text}
     markup : String;
+
+    { Places paired tag }
     procedure pair(t: string);
+
+    { Places a href tag}
     procedure tagHref();
+
+    { Places img tag}
     procedure tagImg();
+
+    { Places anchor }
     procedure tagAnchor();
+
+    { Places list tag}
     procedure tagList(t: string);
 
+    { Setter for member markup }
     procedure setMarkup(html : String);
+
+    { Getter for member markup}
     function getMarkup() : String;
+
+    { Places open and closed tags}
     procedure tagC(tg, params : String);
+
+    { Places single tag like hr}
     procedure tagX(tg, params : String);
   end;
 
