@@ -27,6 +27,11 @@ Project / Проект
 Website in Russian / Сайт на русском 
 [HtmlBuilder project page](https://htmlbuilder.artnazarov.ru)
 
+Documentation for developers / Документация для разработчика
+[PasDoc documention](https://htmlbuilder-docs.artnazarov.ru)
+
+Blog with examples / Блог с примерами
+[Blog](https://nazarow.ru/section_htmlbuilder.html)
 
 Usage / Использование
 ================
@@ -51,7 +56,7 @@ What's new / Что нового
 9. Menu constructor / Конструктор меню
 10. Custom fields in content / Пользовательские поля в контенте
 11. Uploading with bridge API / Выгрузка с помощью bridge API
-
+12. Writing builded files in separate threads / Запись собранных файлов в несколько потоков 
 
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
 
