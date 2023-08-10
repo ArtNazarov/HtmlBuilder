@@ -56,7 +56,19 @@ What's new / Что нового
 9. Menu constructor / Конструктор меню
 10. Custom fields in content / Пользовательские поля в контенте
 11. Uploading with bridge API / Выгрузка с помощью bridge API
-12. Writing builded files in separate threads / Запись собранных файлов в несколько потоков 
+12. Writing builded files in separate threads / Запись собранных файлов в несколько потоков
+13. Storing images in sqlite3 blob and quick image links / Хранение иллюстраций в поле BLOB базы sqlite3
+и быстрые ссылки на изображения вида 
+
+```
+((image_id))
+```
+
+![Example1](https://htmlbuilder.artnazarov.ru/images/images1_demo.png) 
+
+![Example2](https://htmlbuilder.artnazarov.ru/images/images2_demo.png)
+
+![Example3](https://htmlbuilder.artnazarov.ru/images/images3_demo.png)
 
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
 
