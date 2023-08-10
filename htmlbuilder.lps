@@ -351,7 +351,7 @@
     <OtherDefines Count="1">
       <Define0 Value="UseCThreads"/>
     </OtherDefines>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="main.pas"/>
         <Caret Line="2115" Column="19" TopLine="2110"/>
@@ -466,12 +466,8 @@
       </Position28>
       <Position29>
         <Filename Value="main.pas"/>
-        <Caret Line="500" Column="15" TopLine="849"/>
-      </Position29>
-      <Position30>
-        <Filename Value="main.pas"/>
         <Caret Line="897" Column="21" TopLine="882"/>
-      </Position30>
+      </Position29>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
