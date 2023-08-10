@@ -5,7 +5,7 @@ Written in FreePascal/Lazarus generator of static html websites
 
 UI sample / Примерный вид интерфейса
 
-![Screen pages editor](https://htmlbuilder.artnazarov.ru/laz1.png)
+![Screen pages editor](https://htmlbuilder.artnazarov.ru/images/new_ui.png)
 
 Built-in webserver / Встроенный веб-сервер
 
