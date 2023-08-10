@@ -1291,8 +1291,31 @@ begin
 end;
 
 procedure TForm1.sqlGetAllImagesAfterEdit(DataSet: TDataSet);
+var
+  Image_Caption : String;
+  Image_Id : String;
 begin
- // TODO AfterEdit
+  lvImages.Items.Clear;
+  Images.Clear;
+
+  sqlGetAllImages.First;
+  while not sqlGetAllImages.EOF do
+    begin
+           Image_id := sqlGetAllImages.FieldByName('image_id').AsString;
+           Image_caption := sqlGetAllImages.FieldByName('image_caption').AsString;
+           Images.Add(image_id, image_caption);
+           lvImages.AddItem( Image_id, nil);
+      sqlGetAllImages.Next;
+    end;
+
+
+
+
+  sqlGetAllImages.ApplyUpdates;
+  sqlGetAllImages.Refresh;
+
+
+  sqlGetAllImages.First;
 end;
 
 procedure TForm1.sqlGetAllImagesAfterInsert(DataSet: TDataSet);
@@ -2982,8 +3005,8 @@ begin
   for i:=0 to cnt-1 do
       begin
         R:=applyImage(R, Images.Keys[i], '/images/' +Images.Keys[i], Images.KeyData[Images.Keys[i]]);
-        Form1.mmRubrics.Append(Images.Keys[i]);
-        Form1.mmRubrics.Append(Images.KeyData[Images.Keys[i]]);
+        // Form1.mmRubrics.Append(Images.Keys[i]);
+        // Form1.mmRubrics.Append(Images.KeyData[Images.Keys[i]]);
 
 
       end;
