@@ -15,7 +15,7 @@ uses
   synaip, synsock, ftpsend, db_helpers, db_insertdemo, db_create_tables,
   replacers, editor_in_window, editor_css, editor_js, DateUtils, fgl, regexpr,
   types_for_app, selectorTagsPages, const_for_app, selectors_for_menu,
-  RenderHtml, httpsend; {Use Synaptic}
+  RenderHtml, httpsend, LazFileUtils, storing_attachments; {Use Synaptic}
 
 
 
@@ -78,12 +78,18 @@ type
     btnSelectZipArchive: TButton;
     btnUploadWithBridge: TButton;
     btnSetImage: TButton;
+    btnSetAttachment: TButton;
+    btnGetAttachment: TButton;
     cboLocale: TComboBox;
     chkUseTrees: TCheckBox;
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    ds_Attachments: TDataSource;
+    dbeAttachmentId: TDBEdit;
+    dbeAttachmentCaption: TDBEdit;
     dbImage: TDBImage;
+    dbNav_Attachments: TDBNavigator;
     ds_Images: TDataSource;
     DBDateTimePicker1: TDBDateTimePicker;
     dbeImageCaption: TDBEdit;
@@ -164,6 +170,10 @@ type
     ImageList1: TImageList;
     Label1: TLabel;
     Label12: TLabel;
+    lbIsFileUploaded: TLabel;
+    lbAttachmentCaption: TLabel;
+    lbAttachmentId: TLabel;
+    lbAttachmentsList: TLabel;
     lbImageData: TLabel;
     lbImageCaption: TLabel;
     lbImageId: TLabel;
@@ -216,6 +226,7 @@ type
     lbSpecification: TLabel;
     listFields: TListBox;
     listTags: TListBox;
+    lvAttachments: TListView;
     lvImages: TListView;
     lvContent: TListView;
     lvMenuItems: TListView;
@@ -239,6 +250,7 @@ type
     OpenDialog1: TOpenDialog;
     OpenDialog2: TOpenDialog;
     opdSelectPicture: TOpenPictureDialog;
+    opdSelectFileAsAttachment: TOpenDialog;
     PageControl1: TPageControl;
     PageControl3: TPageControl;
     PageControl4: TPageControl;
@@ -248,6 +260,9 @@ type
     Panel13: TPanel;
     Panel14: TPanel;
     Panel15: TPanel;
+    panAttachmentNav: TPanel;
+    panAttachmentForm: TPanel;
+    panAttachmentsActions: TPanel;
     panImageActions: TPanel;
     panImageView: TPanel;
     panImagesNavigation: TPanel;
@@ -367,6 +382,7 @@ type
     PrefferedExtension: TComboBox;
     conn: TSQLite3Connection;
     SaveDialog1: TSaveDialog;
+    svdGetFromDatabase: TSaveDialog;
     selSection: TDBLookupComboBox;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
@@ -379,6 +395,7 @@ type
     sqlMenu: TSQLQuery;
     sqlMenuItem: TSQLQuery;
     sqlGetAllImages: TSQLQuery;
+    sqlGetAllAttachments: TSQLQuery;
     sqlTagsPages: TSQLQuery;
     sqlTags: TSQLQuery;
     sqlRubrication: TSQLQuery;
@@ -394,6 +411,7 @@ type
     tabMainProps: TTabSheet;
     tabEditorProps: TTabSheet;
     tabImages: TTabSheet;
+    tabAttachments: TTabSheet;
     tabUploadingWithBridge: TTabSheet;
     tabTagsTemplate: TTabSheet;
     tabItemTagTemplate: TTabSheet;
@@ -492,6 +510,7 @@ type
 
     { Обработчик кнопки открыть редактор JavaScript }
     procedure btnEditorJsClick(Sender: TObject);
+    procedure btnGetAttachmentClick(Sender: TObject);
 
     { Обработчик кнопки получить пользовательские поля }
     procedure btnGetCustomFieldsClick(Sender: TObject);
@@ -524,6 +543,11 @@ type
 
     { Обработчик для выбора Zip архива }
     procedure btnSelectZipArchiveClick(Sender: TObject);
+
+    { Обработчик для загрузки в базу вложения}
+    procedure btnSetAttachmentClick(Sender: TObject);
+
+    { Обработчик для загрузки в базу изображения}
     procedure btnSetImageClick(Sender: TObject);
 
     { Обработчик кнопки выгрузки zip архива через мост}
@@ -550,6 +574,7 @@ type
 
     { Обработчик смены текста в полном описании раздела }
     procedure dbmSectionFullTextChange(Sender: TObject);
+    procedure dbNav_AttachmentsClick(Sender: TObject; Button: TDBNavButtonType);
     procedure dbNav_ImagesBeforeAction(Sender: TObject; Button: TDBNavButtonType
       );
 
@@ -574,6 +599,7 @@ type
 
     procedure lbFieldTypeClick(Sender: TObject);
     procedure ListBox1Click(Sender: TObject);
+    procedure lvAttachmentsClick(Sender: TObject);
 
     { --------------------------------------------------------------- }
 
@@ -658,17 +684,24 @@ type
     procedure sqlContentAfterPost(DataSet: TDataSet);
     procedure sqlContentBeforeDelete(DataSet: TDataSet);
 
-    procedure sqlCssAfterPost(DataSet: TDataSet);
 
-    procedure sqlCssStylesAfterEdit(DataSet: TDataSet);
+
+
     procedure sqlCssStylesAfterPost(DataSet: TDataSet);
     procedure sqlCssStylesBeforeDelete(DataSet: TDataSet);
     procedure sqlCssStylesBeforeRefresh(DataSet: TDataSet);
+    procedure sqlGetAllAttachmentsAfterEdit(DataSet: TDataSet);
+    procedure sqlGetAllAttachmentsAfterInsert(DataSet: TDataSet);
+    procedure sqlGetAllAttachmentsAfterPost(DataSet: TDataSet);
+    procedure sqlGetAllAttachmentsBeforeDelete(DataSet: TDataSet);
+    procedure sqlGetAllAttachmentsBeforeRefresh(DataSet: TDataSet);
+
     procedure sqlGetAllImagesAfterDelete(DataSet: TDataSet);
     procedure sqlGetAllImagesAfterEdit(DataSet: TDataSet);
-    procedure sqlGetAllImagesAfterInsert(DataSet: TDataSet);
+
     procedure sqlGetAllImagesAfterPost(DataSet: TDataSet);
     procedure sqlGetAllImagesBeforeDelete(DataSet: TDataSet);
+
 
     procedure sqlJsScriptsAfterPost(DataSet: TDataSet);
     procedure sqlJsScriptsBeforeDelete(DataSet: TDataSet);
@@ -743,6 +776,9 @@ type
     { Словарь для связи id изображения - название изображения}
     Images      : sdict;
 
+    { Словарь для связи id вложения - название вложения}
+    Attachments : sdict;
+
 
     { Какое порядок используется для сортировки }
     POrs   : sdict;
@@ -810,6 +846,9 @@ type
 
     { Сканирование отношения теги - страницы }
     procedure scanTagsPages();
+
+    { Сканирование вложений }
+    procedure scanAttachments();
 
     { ----------------------------------------------}
 
@@ -896,6 +935,11 @@ type
     { Применяет к шаблону быстрые ссылки на картинки }
     function useImages(template : String) : String;
 
+    { Применяет к шаблону быстрые ссылки на вложения }
+    function useAttachments(template : String) : String;
+
+
+
 
     { Выполняет инициализацию базы данных, то есть создает структуру в новом
     файле }
@@ -947,6 +991,10 @@ type
     procedure viewImagesSQL();
 
 
+    { Выполняет запрос для получения прикрепленных изображений }
+    procedure viewAttachmentsSQL();
+
+
     { Единая точка для выполнения всех запросов на просмотр }
     procedure viewTablesSQL();
 
@@ -982,6 +1030,11 @@ type
 
     { Переназначает datasource для таблицы images }
      procedure changeDataSourcesImages();
+
+    { Переназначает datasource для таблицы attachments }
+     procedure changeDataSourcesAttachments();
+
+
 
 
      { Для всех переназначений }
@@ -1031,12 +1084,15 @@ type
      { Scan table tags }
      procedure scanTags();
 
-     { Scan table images for publication attachments }
+     { Scan table images for /images/ }
      procedure scanImages();
+
+
 
 
      { All scan actions, place here scan procedures }
      procedure doScan();
+
 
 
      {  Показывает окно редактора  }
@@ -1055,6 +1111,9 @@ type
 
      { Обработчик для прикрепленных изображений }
      procedure doImages();
+
+     { Обработчик для вложенных файлов }
+     procedure doAttachments();
 
 
      { Вставляет параметры в Head из page }
@@ -1111,6 +1170,17 @@ type
 
     { Обновляет у элементов управления настройки согласно заданным }
     procedure updateui_special_setting();
+
+
+
+    { Загрузка в базу файла }
+    procedure setAttachment();
+
+    { Выгрузка из базы }
+    procedure getAttachment();
+
+    {Отображает статус загрузки вложения}
+    procedure displayAttachmentStatus();
 
 
 
@@ -1172,6 +1242,7 @@ begin
   POrs := sdict.create();
 
   Images:= sdict.create();
+  Attachments:=sdict.create();
 
 
   SiteSectionUrls := TMemo.Create(Self); // URL разделов
@@ -1248,15 +1319,7 @@ begin
   BeforeDeleteHelper(lvContent, sqlContent, 'id');
 end;
 
-procedure TForm1.sqlCssAfterPost(DataSet: TDataSet);
-begin
 
-end;
-
-procedure TForm1.sqlCssStylesAfterEdit(DataSet: TDataSet);
-begin
-
-end;
 
 procedure TForm1.sqlCssStylesAfterPost(DataSet: TDataSet);
 begin
@@ -1272,6 +1335,43 @@ procedure TForm1.sqlCssStylesBeforeRefresh(DataSet: TDataSet);
 begin
   sqlCssStyles.ApplyUpdates;
 end;
+
+procedure TForm1.sqlGetAllAttachmentsAfterEdit(DataSet: TDataSet);
+begin
+  { #todo : sqlGetAllAttachmentsAfterEdit }
+  displayAttachmentStatus();
+end;
+
+procedure TForm1.sqlGetAllAttachmentsAfterInsert(DataSet: TDataSet);
+
+begin
+
+  displayAttachmentStatus();
+
+
+
+end;
+
+procedure TForm1.sqlGetAllAttachmentsAfterPost(DataSet: TDataSet);
+begin
+  displayAttachmentStatus();
+
+
+
+end;
+
+procedure TForm1.sqlGetAllAttachmentsBeforeDelete(DataSet: TDataSet);
+begin
+   BeforeDeleteHelper(lvAttachments, sqlGetAllAttachments, 'attachment_id');
+end;
+
+procedure TForm1.sqlGetAllAttachmentsBeforeRefresh(DataSet: TDataSet);
+begin
+   sqlGetAllAttachments.ApplyUpdates();
+end;
+
+
+
 
 procedure TForm1.sqlGetAllImagesAfterDelete(DataSet: TDataSet);
 begin
@@ -1318,20 +1418,21 @@ begin
   sqlGetAllImages.First;
 end;
 
-procedure TForm1.sqlGetAllImagesAfterInsert(DataSet: TDataSet);
-begin
-  // TODO AfterInsert
-end;
+
 
 procedure TForm1.sqlGetAllImagesAfterPost(DataSet: TDataSet);
 begin
   AfterPostHelper(lvImages, sqlGetAllImages, 'image_id');
+
+
 end;
 
 procedure TForm1.sqlGetAllImagesBeforeDelete(DataSet: TDataSet);
 begin
   BeforeDeleteHelper(lvImages, sqlGetAllImages, 'image_id');
 end;
+
+
 
 procedure TForm1.sqlJsScriptsAfterPost(DataSet: TDataSet);
 begin
@@ -1634,6 +1735,11 @@ begin
 
 end;
 
+procedure TForm1.btnGetAttachmentClick(Sender: TObject);
+begin
+  getAttachment();
+end;
+
 procedure TForm1.btnGetCustomFieldsClick(Sender: TObject);
 begin
   updateCustomColumns();
@@ -1670,6 +1776,7 @@ begin
   doTagsMap(); // все теги на сайте
 
   doImages();
+  doAttachments();
 
   Writer.processEach();
 
@@ -1928,6 +2035,11 @@ begin
      form1.edPathToZip.Text:=  OpenDialog2.FileName;
 end;
 
+procedure TForm1.btnSetAttachmentClick(Sender: TObject);
+begin
+   setAttachment();
+end;
+
 
 procedure TForm1.btnSetImageClick(Sender: TObject);
 begin
@@ -2166,6 +2278,13 @@ begin
 
 end;
 
+procedure TForm1.dbNav_AttachmentsClick(Sender: TObject;
+  Button: TDBNavButtonType);
+begin
+    if (Button = nbNext) or (Button = nbNext) or (Button = nbRefresh) then
+        displayAttachmentStatus();
+end;
+
 procedure TForm1.dbNav_ImagesBeforeAction(Sender: TObject;
   Button: TDBNavButtonType);
 begin
@@ -2240,6 +2359,12 @@ end;
 procedure TForm1.ListBox1Click(Sender: TObject);
 begin
 
+end;
+
+procedure TForm1.lvAttachmentsClick(Sender: TObject);
+begin
+  listViewClickHelper(lvAttachments, sqlGetAllAttachments, 'attachment_id');
+  displayAttachmentStatus();
 end;
 
 procedure TForm1.lvBlocksClick(Sender: TObject);
@@ -2770,6 +2895,32 @@ begin
 
 end;
 
+procedure TForm1.scanAttachments;
+var ar : TAttachmentRecord;
+begin
+     Attachments.Clear;
+     lvAttachments.Clear;
+
+   sqlGetAllAttachments.First;
+  while not sqlGetAllAttachments.EOF do
+    begin
+
+      ar.attachment_id :=sqlGetAllAttachments.FieldByName('attachment_id').AsString;
+      
+      ar.attachment_caption:=sqlGetAllAttachments.FieldByName('attachment_caption').AsString;
+
+      Attachments.AddOrSetData(ar.attachment_id, ar.attachment_caption);
+
+      lvAttachments.AddItem(ar.attachment_id, nil);
+
+      sqlGetAllAttachments.Next;
+
+    end;
+  sqlGetAllAttachments.First;
+  sqlGetAllAttachments.ApplyUpdates();
+  sqlGetAllAttachments.Refresh;
+end;
+
 
 
 function TForm1.insLinks(body: string): string;
@@ -3013,6 +3164,30 @@ begin
 
   Result := R;
 
+end;
+
+function TForm1.useAttachments(template: String): String;
+   var
+   cnt, i : Integer;
+   R : String;
+begin
+
+
+  cnt  := Attachments.Count;
+
+  R := template;
+
+  for i:=0 to cnt-1 do
+      begin
+        R:=applyFileLink(R, Attachments.Keys[i], '/files/' +Attachments.Keys[i],
+                            Attachments.KeyData[Attachments.Keys[i]]);
+        //Form1.mmRubrics.Append(Attachments.Keys[i]);
+        //Form1.mmRubrics.Append(Attachments.KeyData[Attachments.Keys[i]]);
+
+
+      end;
+
+  Result := R;
 end;
 
 
@@ -3524,6 +3699,7 @@ begin
   tabWebServer.Caption := 'Веб-сервер';
   tabHelp.Caption := 'О программе';
   mmAbout.lines.LoadFromFile('russian_help.txt');
+
 end;
 
 procedure TForm1.localeENG;
@@ -3539,6 +3715,7 @@ begin
   tabWebServer.Caption := 'Web Server';
   tabHelp.Caption := 'About app';
   mmAbout.lines.LoadFromFile('english_help.txt');
+  { #todo :  need translation other ui elements }
 end;
 
 
@@ -3660,6 +3837,7 @@ begin
     sqlMenu.Active:=true;
     sqlMenuItem.Active:=true;
     sqlGetAllImages.Active:=true;
+    sqlGetAllAttachments.Active:=true;
 
 end;
 
@@ -3682,6 +3860,7 @@ begin
   sqlMenu.Active:=false;
   sqlMenuItem.Active:=false;
   sqlGetAllImages.Active:=false;
+  sqlGetAllAttachments.Active:=false;
 
   conn.Close;
 end;
@@ -3742,6 +3921,7 @@ begin
   form1.viewMenuSQL();
   form1.viewMenuItemSQL();
   form1.viewImagesSQL();
+  form1.viewAttachmentsSQL();
 end;
 
 procedure TForm1.viewTagsSQL;
@@ -3780,6 +3960,17 @@ begin
              ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
    end;
 
+end;
+
+procedure TForm1.viewAttachmentsSQL;
+begin
+     try
+       open_sql( 'select * from attachments', sqlGetAllAttachments);
+       ds_Attachments.AutoEdit:=true;
+   except
+       on E: Exception do
+             ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+   end;
 end;
 
 
@@ -3885,6 +4076,19 @@ begin
 
 end;
 
+procedure TForm1.changeDataSourcesAttachments;
+begin
+     try
+      form1.dbeAttachmentId.DataSource:=ds_Attachments;
+      form1.dbeAttachmentCaption.DataSource:=ds_Attachments;
+      form1.dbNav_Attachments.DataSource:=ds_Attachments;
+     except
+           on E: Exception do
+              ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+     end;
+
+end;
+
 
 procedure TForm1.makeCreationTables;
 begin
@@ -3908,6 +4112,7 @@ begin
             createMenusSQL(conn, trans);
             createItemsForMenuSQL(conn, trans);
             createImagesSQL(conn, trans);
+            createAttachmentsSQL(conn, trans);
 
         except
           on E: Exception do
@@ -3920,15 +4125,19 @@ end;
 procedure TForm1.changeDataSources;
 begin
   try
-      Form1.changeDataSourcesContent();
-      Form1.changeDataSourcesSections();
-      Form1.changeDataSourcesBlocks();
-      Form1.changeDataSourcesPresets();
-      Form1.changeDataSourcesCss();
-      Form1.changeDataSourcesJs();
-      Form1.changeDataSourcesTags();
-      Form1.changeDataSourcesTagsPages();
-      Form1.changeDataSourcesImages();
+      with Form1 do begin
+           changeDataSourcesContent();
+           changeDataSourcesSections();
+           changeDataSourcesBlocks();
+           changeDataSourcesPresets();
+           changeDataSourcesCss();
+           changeDataSourcesJs();
+           changeDataSourcesTags();
+           changeDataSourcesTagsPages();
+           changeDataSourcesImages();
+           changeDataSourcesAttachments();
+
+      end;
   except
    on E: Exception do
     ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
@@ -3969,6 +4178,8 @@ begin
 
 
        if sqlGetAllImages.Active then sqlGetAllImages.ApplyUpdates;
+
+       if sqlGetAllAttachments.Active then sqlGetAllAttachments.ApplyUpdates();
 
        trans.Commit();
    except
@@ -4157,6 +4368,7 @@ begin
 
      // постобработка
      Buffer.Lines.Text :=
+               useAttachments(
                     useImages(
                        remotes_urls(
                               useMenus(
@@ -4167,7 +4379,7 @@ begin
                                                   useBlocks(
                                                              buffer.Lines.Text)
                                                     ),
-                                        page))))));
+                                        page)))))));
      // add custom columns with prefix custom_
      Buffer.Lines.Text:=useCustomFields( Buffer.Lines.Text, page.id);
 
@@ -4697,6 +4909,9 @@ begin
     if sqlGetAllImages.Active then
   sqlGetAllImages.ApplyUpdates;
 
+    if sqlGetAllAttachments.Active then
+  sqlGetAllAttachments.ApplyUpdates;
+
 
   sqlContent.Refresh;
   sqlSections.Refresh;
@@ -4709,6 +4924,7 @@ begin
   sqlMenu.Refresh;
   sqlMenuItem.Refresh;
   sqlGetAllImages.Refresh;
+  sqlGetAllAttachments.Refresh;
 
 
 
@@ -4721,6 +4937,7 @@ begin
   scanTags();
   scanTagsPages();
   scanImages();
+  scanAttachments();
 
   form1.refreshContentTree();
   form1.refreshSectionTree();
@@ -4889,9 +5106,12 @@ begin
    begin
      lbProgress.Caption:='Генерация картинок '+IntToStr(i+1)+' / '+IntToStr(cnt);
 
+
+     if (False = sqlGetAllImages.FieldByName('image_data').IsNull) then
+                                begin
      DBImage.Picture.SaveToFile( image_dir +
                                  sqlGetAllImages.FieldByName('image_id').AsString);
-
+                                 end;
      sqlGetAllImages.Next;
      Application.ProcessMessages;
      inc(i);
@@ -4899,6 +5119,60 @@ begin
 
    end;
   sqlGetAllImages.First;
+end;
+
+procedure TForm1.doAttachments;
+var
+  cnt, i : Byte;
+  attachment_dir : String;
+  filename : String;
+  full_path : String;
+  blobField : TBlobField;
+
+begin
+
+   attachment_dir := sqlJoin.FieldByName('dirpath').AsString + '/files/';
+
+   if not DirectoryExists(attachment_dir) then
+    CreateDir(attachment_dir);
+
+
+  cnt:=Attachments.Count;
+  pBar.Max:=cnt;
+  pBar.Step:=1;
+  pBar.Min:=1;
+  pBar.Position:=1;
+
+
+
+
+  sqlGetAllAttachments.First;
+  i:=0;
+  while not sqlGetAllAttachments.Eof do
+   begin
+                                  // write not nulled
+     if (False = sqlGetAllAttachments.FieldByName('attachment_data').IsNull) then
+                                  begin
+
+     filename :=   sqlGetAllAttachments.FieldByName('attachment_id').AsString;
+
+     full_path := attachment_dir + filename;
+
+
+     lbProgress.Caption:='Генерация прикрепленных документов '+IntToStr(i+1)+' / '+IntToStr(cnt);
+
+     blobField := sqlGetAllAttachments.FieldByName('attachment_data') as TBlobField;
+
+        GetFromDatabase(blobField, full_path);
+                                       end;
+
+     sqlGetAllAttachments.Next;
+     Application.ProcessMessages;
+     inc(i);
+     pBar.Position:=i;
+
+   end;
+  sqlGetAllAttachments.First;
 end;
 
 function TForm1.insParamsToHead(head: String; page : page_params): String;
@@ -5503,6 +5777,61 @@ begin
 
   form1.edIpAddress.text:=special_settings.webLocalServerIp;
   form1.edPort.text:=special_settings.webLocalServerPort;
+end;
+
+
+
+
+procedure TForm1.setAttachment;
+    var
+      blobField : TBlobField;
+      filename  : String;
+begin
+
+
+
+  blobField := sqlGetAllAttachments.FieldByName('attachment_data') as TBlobField;
+
+  if Form1.opdSelectFileAsAttachment.execute then
+   begin
+     try
+      filename :=    Form1.opdSelectFileAsAttachment.FileName;
+      SaveToDatabaze(blobField, filename);
+
+     except on E: Exception do ShowMessage(E.Message);
+     end;
+   end;
+
+
+end;
+
+procedure TForm1.getAttachment;
+var
+  filename : String;
+  blobField : TBlobField;
+begin
+    
+   blobField := sqlGetAllAttachments.FieldByName('attachment_data') as TBlobField;
+   form1.svdGetFromDatabase.FileName := sqlGetAllAttachments.FieldByName('attachment_id').AsString;
+   if svdGetFromDatabase.Execute then
+    begin
+           try
+         filename :=  form1.svdGetFromDatabase.FileName;
+         GetFromDatabase(blobField,  filename );
+
+           except on E: Exception do ShowMessage(E.Message);
+           end;
+
+    end;
+
+end;
+
+procedure TForm1.displayAttachmentStatus;
+begin
+ if sqlGetAllAttachments.FieldByName('attachment_data').IsNull then
+               form1.lbIsFileUploaded.Caption:='Не загружено'
+               else
+               form1.lbIsFileUploaded.Caption:='Загружено';
 end;
 
 

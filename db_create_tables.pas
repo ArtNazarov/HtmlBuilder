@@ -34,6 +34,9 @@ procedure createTagsPagesSQL(var konnect : TSQLite3Connection; var tranzact : TS
 { Create table images }
 procedure createImagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 
+{ Create table attachments }
+procedure createAttachmentsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
 
 implementation
 
@@ -257,6 +260,22 @@ begin
                 ' "image_data" BLOB )', konnect, tranzact);
 
               sql_execute_direct('CREATE UNIQUE INDEX "id_image_idx" ON "images"( "image_id" );',konnect, tranzact);
+        except on E: Exception do
+               ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+        end;
+end;
+
+procedure createAttachmentsSQL(var konnect: TSQLite3Connection;
+  var tranzact: TSQLTransaction);
+begin
+     try
+              sql_execute_direct( 'PRAGMA foreign_keys = ON;', konnect, tranzact);
+              sql_execute_direct('CREATE TABLE "attachments"('+
+                ' "attachment_id" Char(128) NOT NULL PRIMARY KEY, '+
+                ' "attachment_caption" Char(255), ' +
+                ' "attachment_data" BLOB )', konnect, tranzact);
+
+              sql_execute_direct('CREATE UNIQUE INDEX "id_attachment_idx" ON "attachments"( "attachment_id" );',konnect, tranzact);
         except on E: Exception do
                ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
         end;

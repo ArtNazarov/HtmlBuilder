@@ -168,6 +168,15 @@ type
 
   end;
 
+
+  { TAttachmentRecord for representation any document }
+  TAttachmentRecord = record
+            attachment_id : String;
+            attachment_caption : String;
+            attachment_data : String; // hex format
+
+  end;
+
 implementation
 
 end.

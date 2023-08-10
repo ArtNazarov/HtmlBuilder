@@ -58,11 +58,19 @@ What's new / Что нового
 11. Uploading with bridge API / Выгрузка с помощью bridge API
 12. Writing builded files in separate threads / Запись собранных файлов в несколько потоков
 13. Storing images in sqlite3 blob and quick image links / Хранение иллюстраций в поле BLOB базы sqlite3
-и быстрые ссылки на изображения вида 
+и быстрые ссылки на изображения вида
 
 ```
 ((image_id))
 ```
+
+14. Storing attached documents in blob / Хранение прикрепленных документов
+Will placed in folder /files/
+```
+||document_id||
+```
+
+![Attachments](https://htmlbuilder.artnazarov.ru/images/files_ui.png)
 
 ![Example1](https://htmlbuilder.artnazarov.ru/images/images1_demo.png) 
 

@@ -54,6 +54,8 @@ end;
     { Insert demo data to table images}
     procedure insertDemoDataImage(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 
+      { Insert demo data to table attachments}
+    procedure insertDemoDataAttachment(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 
 
 
@@ -96,6 +98,11 @@ end;
 
      { Executes request for adding image }
      procedure addIntoImage(ir : TImageRecord;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+
+
+     { Executes request for adding attachment }
+     procedure addIntoAttachment(ar : TAttachmentRecord;  var sq: TSQLQuery;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
 
 
@@ -302,6 +309,12 @@ begin
             // SilentMessage('Cant setup images');
           end;
 
+           try
+              insertDemoDataAttachment(sq, konnect, tranzact);
+          except
+            // SilentMessage('Cant setup images');
+          end;
+
 
 end;
 
@@ -404,6 +417,15 @@ end;
 
      addIntoImage(ir, sq, konnect, tranzact);
 
+ end;
+
+ procedure insertDemoDataAttachment(var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ var ar : TAttachmentRecord;
+ begin
+       ar.attachment_caption:='Example of document';
+       ar.attachment_id:='attach1';
+       addIntoAttachment(ar, sq, konnect, tranzact);
  end;
 
  procedure addIntoBlock(id, markup, remark: String; var sq : TSQLQuery;
@@ -612,6 +634,26 @@ end;
                ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
      end;
 
+ end;
+
+ procedure addIntoAttachment(ar: TAttachmentRecord; var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+      try
+     prepared_transaction_start(
+          'insert into attachments (attachment_id, attachment_caption, attachment_data ) '+
+          ' values (:ATTACH_ID, :ATTACH_CAPTION, NULL )',
+          sq, tranzact);
+
+          sq.ParamByName('ATTACH_ID').AsString :=    ar.attachment_id;
+          sq.ParamByName('ATTACH_CAPTION').AsString := ar.attachment_caption;
+
+
+
+           prepared_transaction_end( sq, tranzact);
+     except on E: Exception do
+               ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+     end;
  end;
 
 end.
