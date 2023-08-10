@@ -8,14 +8,14 @@ interface
 
 
 uses
-  AsyncQueue, Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
-  DBCtrls, dbf, SQLite3Conn, SQLDB, process, FileUtil, SynHighlighterHTML,
-  SynEdit, DBDateTimePicker, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids,
-  ActnList, Buttons, blcksock, sockets, Synautil, synaip, synsock, ftpsend,
-  db_helpers, db_insertdemo, db_create_tables, replacers, editor_in_window,
-  editor_css, editor_js, DateUtils, fgl, regexpr, types_for_app,
-  selectorTagsPages, const_for_app, selectors_for_menu, RenderHtml,
-  httpsend; {Use Synaptic}
+  AsyncQueue, Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics,
+  Dialogs, DBCtrls, dbf, SQLite3Conn, SQLDB, process, FileUtil,
+  SynHighlighterHTML, SynEdit, DBDateTimePicker, StdCtrls, ExtCtrls, ComCtrls,
+  Menus, DBGrids, ActnList, Buttons, ExtDlgs, blcksock, sockets, Synautil,
+  synaip, synsock, ftpsend, db_helpers, db_insertdemo, db_create_tables,
+  replacers, editor_in_window, editor_css, editor_js, DateUtils, fgl, regexpr,
+  types_for_app, selectorTagsPages, const_for_app, selectors_for_menu,
+  RenderHtml, httpsend; {Use Synaptic}
 
 
 
@@ -77,12 +77,17 @@ type
     btnRemoveCustomField: TButton;
     btnSelectZipArchive: TButton;
     btnUploadWithBridge: TButton;
+    btnSetImage: TButton;
     cboLocale: TComboBox;
     chkUseTrees: TCheckBox;
     chkUseModules: TCheckBox;
     chkGetBlocksFromFile: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    dbImage: TDBImage;
+    ds_Images: TDataSource;
     DBDateTimePicker1: TDBDateTimePicker;
+    dbeImageCaption: TDBEdit;
+    dbeImageId: TDBEdit;
     dbePageField1: TDBEdit;
     dbePageField2: TDBEdit;
     dbePageField3: TDBEdit;
@@ -95,6 +100,7 @@ type
     dbeMenuItemType: TDBEdit;
     dbeMenuItemCaption: TDBEdit;
     dbGridPages: TDBGrid;
+    dbNav_Images: TDBNavigator;
     dbNav_Content: TDBNavigator;
     dbSelectorTag: TDBLookupComboBox;
     DBText1: TDBText;
@@ -158,6 +164,10 @@ type
     ImageList1: TImageList;
     Label1: TLabel;
     Label12: TLabel;
+    lbImageData: TLabel;
+    lbImageCaption: TLabel;
+    lbImageId: TLabel;
+    lbImagesNavigation: TLabel;
     lbDetails: TLabel;
     lbListenerURL: TLabel;
     lbBridgeURL: TLabel;
@@ -206,6 +216,7 @@ type
     lbSpecification: TLabel;
     listFields: TListBox;
     listTags: TListBox;
+    lvImages: TListView;
     lvContent: TListView;
     lvMenuItems: TListView;
     lvTagsPages: TListView;
@@ -227,6 +238,7 @@ type
     mmRubrics: TMemo;
     OpenDialog1: TOpenDialog;
     OpenDialog2: TOpenDialog;
+    opdSelectPicture: TOpenPictureDialog;
     PageControl1: TPageControl;
     PageControl3: TPageControl;
     PageControl4: TPageControl;
@@ -236,6 +248,10 @@ type
     Panel13: TPanel;
     Panel14: TPanel;
     Panel15: TPanel;
+    panImageActions: TPanel;
+    panImageView: TPanel;
+    panImagesNavigation: TPanel;
+    panImages: TPanel;
     Panel29: TPanel;
     Panel6: TPanel;
     panPageMainProps: TPanel;
@@ -362,6 +378,7 @@ type
     sqlGetTagsForPage: TSQLQuery;
     sqlMenu: TSQLQuery;
     sqlMenuItem: TSQLQuery;
+    sqlGetAllImages: TSQLQuery;
     sqlTagsPages: TSQLQuery;
     sqlTags: TSQLQuery;
     sqlRubrication: TSQLQuery;
@@ -376,6 +393,7 @@ type
     TabSheet3: TTabSheet;
     tabMainProps: TTabSheet;
     tabEditorProps: TTabSheet;
+    tabImages: TTabSheet;
     tabUploadingWithBridge: TTabSheet;
     tabTagsTemplate: TTabSheet;
     tabItemTagTemplate: TTabSheet;
@@ -416,74 +434,192 @@ type
     ZipArchiverCommand: TEdit;
 
 
+    { --------------------------------------------------------- }
+    { Группа обработчиков, описывающая действия }
+    { Часть обработчиков нужна для вызова окон с редактором }
+
+
+    { Действие для открытия базы данных }
     procedure acDatabaseOpenExecute(Sender: TObject);
+
+    { Действие для сохранения базы под новым именем }
     procedure acDatabaseSaveAsExecute(Sender: TObject);
+
+    { Действие для открытия разметки в редакторе }
     procedure acEditorForBlockMarkupExecute(Sender: TObject);
+
+    { Действие для открытия в редакторе шаблона Body }
     procedure acEditorForBodyTemplateExecute(Sender: TObject);
+
+    { Действие для открытия в редактора шаблона Head }
     procedure acEditorForHeadTemplateExecute(Sender: TObject);
+
+    { Действие для открытия в редакторе шаблона элемента рубрики }
     procedure acEditorForRubricItemTemplateExecute(Sender: TObject);
+
+    { Действие для открытия в редактора шаблона тела рубрики }
     procedure acEditorForRubricSectionTemplateExecute(Sender: TObject);
+
+    { Действие для открытия в редакторе подробного описания }
     procedure acEditorForSectionFullTextExecute(Sender: TObject);
+
+    { Действие для открытия в редакторе заметки к рубрике }
     procedure acEditorForSectionNoteExecute(Sender: TObject);
+
+    { Выполняет поиск в базе по заголовку }
     procedure acFindContentByCaptionExecute(Sender: TObject);
+
+    { Действие для восстановления специальных настроек }
     procedure acRestoreSpecialSettingExecute(Sender: TObject);
+
+    { Сохраняет специальные настройки программы}
     procedure acSaveSpecialSettingsExecute(Sender: TObject);
+
     procedure AppPagesChange(Sender: TObject);
 
+
+    { Обработчик нажатия на кнопку выгрузить по FTP }
     procedure btFtpUpdateClick(Sender: TObject);
+
+    { Обработчик для кнопки добавить новое поле }
     procedure btnAlterTableAddFieldClick(Sender: TObject);
 
+    { Обработчик кнопки добавить новый материал }
     procedure btnAttachTagToMaterialClick(Sender: TObject);
+
+    { Обработчик кнопки открыть окно редактора CSS }
     procedure btnEditorCssOpenClick(Sender: TObject);
+
+    { Обработчик кнопки открыть редактор JavaScript }
     procedure btnEditorJsClick(Sender: TObject);
+
+    { Обработчик кнопки получить пользовательские поля }
     procedure btnGetCustomFieldsClick(Sender: TObject);
 
+    {  }
     procedure btnJoinClick(Sender: TObject);
     procedure btnLoadClick(Sender: TObject);
+
+
+    { Обработчик кнопки получить из WYSIWYG редактора }
     procedure btnLoadFromWysiwygClick(Sender: TObject);
+
+    { Обработчик кнопки открыть в WYSIWYG редакторе }
     procedure btnOpenWithWysiwygClick(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку опубликовать на Github }
     procedure btnPublishToGithubPagesClick(Sender: TObject);
+
+    { Обработка удаления дерева }
     procedure btnRefreshTreeClick(Sender: TObject);
+
+    { Обработчик для удаления ассоцированного тега }
     procedure btnRemoveAssocTagClick(Sender: TObject);
+
+    { Обработчик для удаления пользовательской колонки }
     procedure btnRemoveCustomFieldClick(Sender: TObject);
+
+    { Обработчик для удаления оддного тега }
     procedure btnRemoveOneTagClick(Sender: TObject);
+
+    { Обработчик для выбора Zip архива }
     procedure btnSelectZipArchiveClick(Sender: TObject);
+    procedure btnSetImageClick(Sender: TObject);
+
+    { Обработчик кнопки выгрузки zip архива через мост}
     procedure btnUploadWithBridgeClick(Sender: TObject);
 
 
+    { Обработчик кнопки запуска лок. сервера }
     procedure btStartServerClick(Sender: TObject);
+
+    { Обработчик кнопки останова лок. сервера }
     procedure btStopServerClick(Sender: TObject);
 
+
+    { Обработчик кнопки создания архива}
     procedure btnMakeArchiveClick(Sender: TObject);
 
+
+    { Обработчик кнопки вызова редактора контента}
     procedure btnEditorContentClick(Sender: TObject);
 
-    procedure cboLocaleChange(Sender: TObject);
-    procedure dbmSectionFullTextChange(Sender: TObject);
-    procedure dbNav_MenuItemsClick(Sender: TObject; Button: TDBNavButtonType);
 
-    procedure dbNav_ContentBeforeAction(Sender: TObject; Button: TDBNavButtonType);
-    procedure dbNav_BlocksBeforeAction(Sender: TObject; Button: TDBNavButtonType
+    { Обработчик смены списка языка программы }
+    procedure cboLocaleChange(Sender: TObject);
+
+    { Обработчик смены текста в полном описании раздела }
+    procedure dbmSectionFullTextChange(Sender: TObject);
+    procedure dbNav_ImagesBeforeAction(Sender: TObject; Button: TDBNavButtonType
       );
+
+
+
+
+    { ----------------------------------------------- }
+
+
+    { Группы обработчиков связанных с навигацией }
+
+
+    procedure dbNav_MenuItemsClick(Sender: TObject; Button: TDBNavButtonType);
+    procedure dbNav_ContentBeforeAction(Sender: TObject; Button: TDBNavButtonType);
+    procedure dbNav_BlocksBeforeAction(Sender: TObject; Button: TDBNavButtonType);
     procedure dbNav_CssBeforeAction(Sender: TObject; Button: TDBNavButtonType);
     procedure dbNav_PresetsBeforeAction(Sender: TObject;
       Button: TDBNavButtonType);
     procedure dbNav_SectionsBeforeAction(Sender: TObject;
       Button: TDBNavButtonType);
+
+
     procedure lbFieldTypeClick(Sender: TObject);
     procedure ListBox1Click(Sender: TObject);
 
+    { --------------------------------------------------------------- }
+
+    { Группа действий связанная с выбором определенного элемента в списке
+    ListView слева на каждой вкладке }
+
+
+
+    { Выполнится при щелчке по названию блока }
     procedure lvBlocksClick(Sender: TObject);
+
+    { Выполнится при щелчке по названию страницы }
     procedure lvContentClick(Sender: TObject);
+
+    { Выполнится при щелчке по названию CSS таблицы}
     procedure lvCSSClick(Sender: TObject);
+    procedure lvImagesClick(Sender: TObject);
+
+    { Выполнится при щелчке по названию JavaScript}
     procedure lvJsScriptsClick(Sender: TObject);
+
+    { Выполнится при щелчке по пункту меню}
     procedure lvMenuItemsClick(Sender: TObject);
+
+    { Выполнится при щелчке при выборе настройки }
     procedure lvPresetsClick(Sender: TObject);
+
+    { Выполнится при щелчке при выборе раздела }
     procedure lvSectionsClick(Sender: TObject);
+
+    { Выпоняется при щелчке по списку полей }
     procedure panFieldsListClick(Sender: TObject);
+
+    { ----------------------------------------------------------- }
+
+    { Перерисовывает список элементов меню}
     procedure redrawLvMenuItems();
+
+
+    { Перестраивает деревья }
     procedure refreshTrees();
+
+    { Перестраивает дерево страниц }
     procedure refreshContentTree();
+
+    { Перестраивает дерево разделов }
     procedure refreshSectionTree();
 
 
@@ -491,14 +627,25 @@ type
 
 
 
-
+    { Выполнится при закрытии основного окна программы }
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
 
+    { Выполнится при создании основного окна программы }
     procedure FormCreate(Sender: TObject);
+
+
+    { Выполнится при щелчке на конкретный тег в списке }
     procedure lvTagsClick(Sender: TObject);
+
+    { Выполнится при щелчке по опредленному тегу в списке отношений }
     procedure lvTagsPagesClick(Sender: TObject);
+
+    { Выполнится при щелчке на панели JS}
     procedure panJsClick(Sender: TObject);
 
+    { --------------------------------------------- }
+    {  Запросы связанные с изменениями в интерфейсе
+    в связи с добавлением-удалением данных }
 
 
     procedure sqlBlocksAfterPost(DataSet: TDataSet);
@@ -517,6 +664,11 @@ type
     procedure sqlCssStylesAfterPost(DataSet: TDataSet);
     procedure sqlCssStylesBeforeDelete(DataSet: TDataSet);
     procedure sqlCssStylesBeforeRefresh(DataSet: TDataSet);
+    procedure sqlGetAllImagesAfterDelete(DataSet: TDataSet);
+    procedure sqlGetAllImagesAfterEdit(DataSet: TDataSet);
+    procedure sqlGetAllImagesAfterInsert(DataSet: TDataSet);
+    procedure sqlGetAllImagesAfterPost(DataSet: TDataSet);
+    procedure sqlGetAllImagesBeforeDelete(DataSet: TDataSet);
 
     procedure sqlJsScriptsAfterPost(DataSet: TDataSet);
     procedure sqlJsScriptsBeforeDelete(DataSet: TDataSet);
@@ -550,67 +702,157 @@ type
     { private declarations }
   public
     { public declarations }
+
+
+    { Имя файла, в котором хранится база }
     db_filename : String;
-    Titles, Urls, Sections: TMemo;
+
+    { Список названий страниц }
+    Titles : TMemo;
+
+    { Список URL для страниц }
+    Urls : TMemo;
+
+    { Список разделов сайта }
+    Sections: TMemo;
+
+    { Словарь для отношения теги - страницы }
     PagesTree : sdict;
 
-    SiteSectionUrls, SiteSectionTitles: TMemo;
+    { Список URL для разделов }
+    SiteSectionUrls : TMemo;
+
+    { Список URL для заголовков разделов }
+    SiteSectionTitles: TMemo;
+
+    { Хранит отношение раздел сайта - иерархия }
     SiteSectionTree : sdict;
 
+    { Список имен CSS }
     CssTitles   : TStringList;
+
+    { Список имен JS}
     JsTitles    : TStringList;
 
+    { Отображение для тегов}
     Tags        : sdict;
+
+    { Словарь для связи теги - страницы}
     mTagsPages  : TagsPagesMap;
 
+    { Словарь для связи id изображения - название изображения}
+    Images      : sdict;
+
+
+    { Какое порядок используется для сортировки }
     POrs   : sdict;
+
+    { Какое поле используется для сортировки }
     POrf   : sdict;
 
 
+    { Список доступных настроек }
     SitePresets : TMemo;
+
+    { Список SQL запросов }
     sqls : sqls_list;
+
+    { Сокеты для сетевых соединений }
     ListenerSocket, ConnectionSocket: TTCPBlockSocket;
 
-    Blocks : TStringList; // блоки
+    { Список глобальных блоков }
+    Blocks : TStringList;
 
-    Cache : tStringList;    {{ for webserver }}
+    { Кеш - для веб сервера }
+    Cache : tStringList;
+
+
     PostsEditorState : String;
 
     rubrication_start : String;
 
+    { Хранит специальные настройки программы }
     special_settings : TSpecial_Settings;
 
+
+    { Очередь для записи файлов}
     Writer : TFilesQueue;
 
-    procedure initdbSQL(); // <-- новая инициализация
+
+    { новая инициализация  }
+    procedure initdbSQL();
+
+    { Собирает Head у страиницы по шаблону }
     function buildHead(title: string; headTemplate: string): string;
+
+    { Собирает Body у страницы по шаблону}
     function buildBody(title: string; body: string; bodyTemplate: string): string;
+
+    { Применяет глобальные блоки к шаблону }
     function useBlocks(part: string): string;
+
+
+    { ----------------------------------------------}
+
+    { Сканирование используется для наполнения списков ListView
+    и для генерации сайтов, так  как заполняются вспомогательные структуры
+    данных. По сути сканирование сводится выборке всех элементов из опред.
+    таблиц }
+
+    { Сканирование страниц }
     procedure scanLinks();
+
+    { Сканирование разделов }
     procedure scanSections();
+
+    { Сканирование каскадных таблиц }
     procedure scanCss();
+
+    { Сканирование отношения теги - страницы }
     procedure scanTagsPages();
 
+    { ----------------------------------------------}
 
 
+
+    { Вставляет быстрые ссылки на страницы }
     function insLinks(body: string): string;
+
+    { Вставляет быстрые ссылки на разделы }
     function insSections(body: string): string;
+
+    { Отображает теги на странице с данным id}
     procedure showTagsOnPage(id : string);
 
 
 
 
+    { Выполняет запуск модуля и возвращает результат его выполнения }
     function moduleexec(cmd: string): string;
+
+    { Задействует пресет для шаблона }
     function usePreset(app : String) : string;
+
+    { Применяет модуль к шаблону}
     function useModules(app: string): string;
+
+    {Выполняет запуск обработчика пользовательского тега}
     function owntagexec(container, cmd: string): string;
+
+    { Применяет к шаблону пользовательские теги}
     function useOwnTags(app: string): string;
+
+    { Построитель отдельной страницы }
     function buildItem(itemtpl: string; itemUrl: string; itemTitle: string; itemDt : TDateTime; ur : user_records; tree : String; tags_html : String): string;
+
+    { Построитель раздела }
     function buildSection(sectiontpl: string; sectionUrl: string;
       sectionTitle: string;
       sectionNote: string;
       sectionFullText : string;
       items: string): string;
+
+    { Построитель переключения страниц }
     function buildPagination(
       url: string; currentPage: byte;
       pagesTotal: integer;
@@ -619,123 +861,255 @@ type
       useO      : Boolean;
       useTrees : boolean; tree : String
       ): string;
+
+    { Обработчик подключений к локальному серверу}
     procedure AttendConnection(ASocket: TTCPBlockSocket);
+
+    { Пуск локального веб-сервера }
     procedure StartOwnServer();
+
+    { Остановка локального веб-сервера}
     procedure StopOwnServer();
+
+
     function OutputHTMLFile(uri: string): string;
+
+    { Применяет к шаблону html пользовательские поля }
     function buildOwnFields(html: string; p : page_params): string;
+
+
+    { Возвращает предпочитаемое расширение }
     function prefExtension(lin: string): string;
+
+    { Меняет интерфейс на русский }
     procedure localeRUS();
+
+    { Меняет интерфейс на английский }
     procedure localeENG();
 
+    { Применяет к шаблону переключатель страниц }
     function Pager(layout: String; pages: String): String;
+
+    { Применяет к шаблону меню }
     function useMenus(app : String) : String;
 
-
-    procedure initTransactionSQL(); // Иниц. транзакция Sqlite
-
-
+    { Применяет к шаблону быстрые ссылки на картинки }
+    function useImages(template : String) : String;
 
 
+    { Выполняет инициализацию базы данных, то есть создает структуру в новом
+    файле }
+    procedure initTransactionSQL();
 
 
-
-
-
-
-
-
-
-
-
+    { ------------------------------------------------------- }
 
     { Просмотр базы }
+
+    { Делает источники данных активными }
     procedure makeSqlActive();
+
+    { Делает источники данных неактивными }
     procedure makeSqlInactive();
-    procedure viewPagesSQL();   // раздел страницы
-    procedure viewSectionsSQL();  // раздел секции сайта
-    procedure viewBlocksSQL();  // раздел глобальные блоки сайта
-    procedure viewPresetsSQL();  // раздел пресеты (настройки сайта)
-    procedure viewCssSQL(); // просмотр таблиц CSS
+
+    { Выполняет запрос для получения списка всех страниц }
+    procedure viewPagesSQL();
+
+    { Выполняет запрос для получения списка всех разделов }
+    procedure viewSectionsSQL();
+
+    { Выполняет запрос для получения всех глобальных блоков }
+    procedure viewBlocksSQL();
+
+    { Выполняет запрос для получения всех настроек (пресетов) }
+    procedure viewPresetsSQL();
+
+    { Выполняет запрос для получения всех каскадных таблиц }
+    procedure viewCssSQL();
+
+    { Выполняет запрос для получения всех javascript }
     procedure viewJsSQL();
-    procedure viewTablesSQL(); // выполняем запросы на просмотр таблиц
+
+
+    { Выполняет запросы для получения тегов }
     procedure viewTagsSQL();
+
+    { Выполняет запрос для получения отношения теги - страницы }
     procedure viewTagsPagesSQL();
+
+    { Выполняет запрос для получениях всех меню }
     procedure viewMenuSQL();
+
+    { Выполняет запрос для получения пунктов меню }
     procedure viewMenuItemSQL();
 
+    { Выполняет запрос для получения прикрепленных изображений }
+    procedure viewImagesSQL();
 
 
+    { Единая точка для выполнения всех запросов на просмотр }
+    procedure viewTablesSQL();
+
+
+    { ------------------------------------------------------- }
+
+    { Переназначения datasource }
 
     { Переназначение datasource для таблицы content - страницы }
     procedure changeDataSourcesContent();
+
     { Переназначение datasource для таблицы section - разделы}
      procedure changeDataSourcesSections();
+
     { Переназначение datasource для таблицы block - глоб. блоки}
      procedure changeDataSourcesBlocks();
-     { Переназначение datasource для таблицы preset - нач. настройки сайта}
+
+    { Переназначение datasource для таблицы preset - нач. настройки сайта}
      procedure changeDataSourcesPresets();
+
+    { Переназначение datasource для таблицы css - таблицы стилей}
      procedure changeDataSourcesCss();
+
+    { Переназначение datasource для таблицы Tags}
      procedure changeDataSourcesTags();
+
+    { Переназначение datasource для таблицы Tags_Pages - отношение страница - теги}
      procedure changeDataSourcesTagsPages();
 
-     (* Заполнение демо данными *)
-
-     procedure makeCreationTables();
-     procedure changeDataSources();
-
-
-
-
-
-     procedure SilentMessage(msg : String);
-
-     procedure AutoSaveDb();
-     (* НОВАЯ ВЕРСИЯ СБОРКИ СТРАНИЦ *)
-     procedure doJoinPages();
-     procedure  makePageJoin(page : page_params; filenam : String );
-
-     procedure doSections();
-     procedure doSitemap();
-     procedure doTagsMap();
-     function insertSectionsAndLinks(str : string) : string;
-     procedure scanBlocks();
-     procedure scanPresets();
-     procedure scanTags();
-     procedure doScan();
-
-
-     procedure editor_win_show(var sql : TSQLQuery; field : String );
-
-     procedure doCssTables();
-     procedure scanJs();
-     procedure doJs();
+    { Переназначение datasource у таблицы js }
      procedure changeDataSourcesJs();
 
 
+    { Переназначает datasource для таблицы images }
+     procedure changeDataSourcesImages();
+
+
+     { Для всех переназначений }
+     procedure changeDataSources();
+
+     { ------------------------------------------------------- }
+
+     { Заполнение демо данными }
+     procedure makeCreationTables();
+
+
+
+
+     { Используется для сообщений для отладки }
+     procedure SilentMessage(msg : String);
+
+     { Автоматическое сохранение базы данных}
+     procedure AutoSaveDb();
+
+     { НОВАЯ ВЕРСИЯ СБОРКИ СТРАНИЦ }
+     procedure doJoinPages();
+
+     { Собирает страницу с параметрами page и именем filenam}
+     procedure  makePageJoin(page : page_params; filenam : String );
+
+
+     { Обработчик для сборки разделов }
+     procedure doSections();
+
+
+     { Обработчик для сборки карты сайта }
+     procedure doSitemap();
+
+     { Обработчик для сборки страницы со списком всех тегов }
+     procedure doTagsMap();
+
+
+     { Вставляет секции и разделы в строку }
+     function insertSectionsAndLinks(str : string) : string;
+
+     { Сканирует глобальные блоки }
+     procedure scanBlocks();
+
+     { Scan table preset }
+     procedure scanPresets();
+
+     { Scan table tags }
+     procedure scanTags();
+
+     { Scan table images for publication attachments }
+     procedure scanImages();
+
+
+     { All scan actions, place here scan procedures }
+     procedure doScan();
+
+
+     {  Показывает окно редактора  }
+     procedure editor_win_show(var sql : TSQLQuery; field : String );
+
+     { Обработчик для таблиц стилей }
+     procedure doCssTables();
+
+     { Сканирует таблицу с javascript }
+     procedure scanJs();
+
+     { Обработчик таблиц javascript }
+     procedure doJs();
+
+
+
+     { Обработчик для прикрепленных изображений }
+     procedure doImages();
+
+
+     { Вставляет параметры в Head из page }
      function insParamsToHead(head: String; page : page_params): String;
+
+     { Вставляет параметры page в Body}
      function insParamsToBody(body: String; page : page_params): String;
+
+     { Получает ссылку на раздел }
      function getSortSelector(section : String; tree : String) : String;
-     // TODO - declarations
+
+
+     { Создает отсортированную рубрикацию }
      procedure makeRubricationUsingSorts(page : Integer; itemsPerPage : Integer; pagesInRubrics : Integer;
        rubrication_query: String; selected_orf : String; selected_ors : String; useo : boolean);
 
 
-    procedure AfterPostHelper(var lv : TListView; var sql : TSQLQuery; field : String);
+     { Действия ПОСЛЕ добавления для изменения списка lv }
+     procedure AfterPostHelper(var lv : TListView; var sql : TSQLQuery; field : String);
+
+    { Действия ПОСЛЕ удаления для изменения списка lv }
     procedure BeforeDeleteHelper(var lv : TListView; var sql : TSQLQuery; field : String);
+
+
+    { Действия при щелчке по списку для выбора определенной строки }
     procedure listViewClickHelper(var lv : TListView; var sql : TSQLQuery; field : String);
 
+    { Вставляет статьи в указанный узел }
     procedure insertArticlesToNode(var Node : TTreeNode; section : String);
+
+    { Обновляет пользовательские колонки}
     procedure updateCustomColumns();
+
+    { Добавляет пользовательскую колонки у указанным именем и типом }
     procedure addCustomColumn(field_name, field_type : String);
+
+    { Удаляет пользовательскую колонку }
     procedure deleteCustomColumn(field_name : String);
+
+    { Для применения к шаблону пользовательских полей }
     function useCustomFields(  template : String; page_id : String) : String;
 
+    { Выполняет запрос к удаленному источнику }
     function remotes_urls(app : String) : String;
 
+    { Сохраняет в файл специальные настройки}
     procedure SaveSpecialSettings(path : String);
+
+    { Восстанавливает из файла специальные настройки }
     procedure RestoreSpecialSettings(path : String);
+
+    { Считывает специальные настройки из интерфейса }
     procedure loadfromui_special_setting();
+
+    { Обновляет у элементов управления настройки согласно заданным }
     procedure updateui_special_setting();
 
 
@@ -796,6 +1170,8 @@ begin
 
   POrf := sdict.create();
   POrs := sdict.create();
+
+  Images:= sdict.create();
 
 
   SiteSectionUrls := TMemo.Create(Self); // URL разделов
@@ -895,6 +1271,31 @@ end;
 procedure TForm1.sqlCssStylesBeforeRefresh(DataSet: TDataSet);
 begin
   sqlCssStyles.ApplyUpdates;
+end;
+
+procedure TForm1.sqlGetAllImagesAfterDelete(DataSet: TDataSet);
+begin
+  // TODO AfterDelete
+end;
+
+procedure TForm1.sqlGetAllImagesAfterEdit(DataSet: TDataSet);
+begin
+ // TODO AfterEdit
+end;
+
+procedure TForm1.sqlGetAllImagesAfterInsert(DataSet: TDataSet);
+begin
+  // TODO AfterInsert
+end;
+
+procedure TForm1.sqlGetAllImagesAfterPost(DataSet: TDataSet);
+begin
+  AfterPostHelper(lvImages, sqlGetAllImages, 'image_id');
+end;
+
+procedure TForm1.sqlGetAllImagesBeforeDelete(DataSet: TDataSet);
+begin
+  BeforeDeleteHelper(lvImages, sqlGetAllImages, 'image_id');
 end;
 
 procedure TForm1.sqlJsScriptsAfterPost(DataSet: TDataSet);
@@ -1233,6 +1634,8 @@ begin
   doJs(); // скрипты
   doTagsMap(); // все теги на сайте
 
+  doImages();
+
   Writer.processEach();
 
 
@@ -1490,6 +1893,15 @@ begin
      form1.edPathToZip.Text:=  OpenDialog2.FileName;
 end;
 
+
+procedure TForm1.btnSetImageClick(Sender: TObject);
+begin
+    if opdSelectPicture.Execute then
+    begin
+      DBImage.Picture.LoadFromFile(opdSelectPicture.FileName);
+    end;
+end;
+
 procedure TForm1.btnUploadWithBridgeClick(Sender: TObject);
 const
    scriptname : String = 'send-files.py';
@@ -1719,6 +2131,16 @@ begin
 
 end;
 
+procedure TForm1.dbNav_ImagesBeforeAction(Sender: TObject;
+  Button: TDBNavButtonType);
+begin
+  if (Button = nbRefresh) or (Button=nbDelete) then
+  begin
+   sqlGetAllImages.ApplyUpdates();
+   trans.CommitRetaining;
+  end;
+end;
+
 procedure TForm1.dbNav_MenuItemsClick(Sender: TObject; Button: TDBNavButtonType);
 begin
 
@@ -1801,6 +2223,11 @@ end;
 procedure TForm1.lvCSSClick(Sender: TObject);
 begin
   listViewClickHelper(lvCSS, sqlCssStyles, 'css_id');
+end;
+
+procedure TForm1.lvImagesClick(Sender: TObject);
+begin
+  listViewClickHelper(lvImages, sqlGetAllImages, 'image_id');
 end;
 
 procedure TForm1.lvJsScriptsClick(Sender: TObject);
@@ -2024,6 +2451,8 @@ begin
   form1.SaveSpecialSettings('special_settings.dat');
 
   Tags.Free;
+
+  Images.Free;
 
   try
   form1.makeSqlInactive();
@@ -2526,6 +2955,32 @@ sqlMenu.Refresh;
  Result:=R;
 
 end;
+
+function TForm1.useImages(template: String): String;
+var
+   cnt, i : Integer;
+   R : String;
+begin
+
+
+  cnt  := Images.Count;
+
+  R := template;
+
+  for i:=0 to cnt-1 do
+      begin
+        R:=applyImage(R, Images.Keys[i], '/images/' +Images.Keys[i], Images.KeyData[Images.Keys[i]]);
+        Form1.mmRubrics.Append(Images.Keys[i]);
+        Form1.mmRubrics.Append(Images.KeyData[Images.Keys[i]]);
+
+
+      end;
+
+  Result := R;
+
+end;
+
+
 
 
 
@@ -3169,6 +3624,7 @@ begin
     sqlTagsPages.Active:=true;
     sqlMenu.Active:=true;
     sqlMenuItem.Active:=true;
+    sqlGetAllImages.Active:=true;
 
 end;
 
@@ -3190,6 +3646,7 @@ begin
   sqlTagsPages.Active:=false;
   sqlMenu.Active:=false;
   sqlMenuItem.Active:=false;
+  sqlGetAllImages.Active:=false;
 
   conn.Close;
 end;
@@ -3249,6 +3706,7 @@ begin
   form1.viewTagsSQL();
   form1.viewMenuSQL();
   form1.viewMenuItemSQL();
+  form1.viewImagesSQL();
 end;
 
 procedure TForm1.viewTagsSQL;
@@ -3275,6 +3733,18 @@ procedure TForm1.viewMenuItemSQL;
 begin
   open_sql( 'select * from menu_item', sqlMenuItem);
   ds_MenuItem.AutoEdit:=true;
+end;
+
+procedure TForm1.viewImagesSQL;
+begin
+   try
+       open_sql( 'select * from images', sqlGetAllImages);
+       ds_Images.AutoEdit:=true;
+   except
+       on E: Exception do
+             ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+   end;
+
 end;
 
 
@@ -3366,23 +3836,31 @@ begin
   dbNav_TagsPages.DataSource:=ds_Tags_Pages;
 end;
 
+procedure TForm1.changeDataSourcesImages;
+begin
 
+  try
+    form1.dbeImageId.DataSource:=ds_Images;
+    form1.dbeImageCaption.DataSource:=ds_Images;
+    form1.dbNav_Images.DataSource:=ds_Images;
+  except
+    on E: Exception do
+             ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+  end;
 
-
-
-
-
-
-
-
+end;
 
 
 procedure TForm1.makeCreationTables;
 begin
 
-          checkConnect(conn, trans, 'makeCreationTables');
 
 
+
+
+         try
+
+           checkConnect(conn, trans, 'makeCreationTables');
 
             createPagesSQL(conn, trans);
             createSectionsSQL(conn, trans);
@@ -3394,21 +3872,32 @@ begin
             createTagsPagesSQL(conn, trans);
             createMenusSQL(conn, trans);
             createItemsForMenuSQL(conn, trans);
+            createImagesSQL(conn, trans);
 
+        except
+          on E: Exception do
+             ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+         end;
 
 
 end;
 
 procedure TForm1.changeDataSources;
 begin
-  Form1.changeDataSourcesContent();
-  Form1.changeDataSourcesSections();
-  Form1.changeDataSourcesBlocks();
-  Form1.changeDataSourcesPresets();
-  Form1.changeDataSourcesCss();
-  Form1.changeDataSourcesJs();
-  Form1.changeDataSourcesTags();
-  Form1.changeDataSourcesTagsPages();
+  try
+      Form1.changeDataSourcesContent();
+      Form1.changeDataSourcesSections();
+      Form1.changeDataSourcesBlocks();
+      Form1.changeDataSourcesPresets();
+      Form1.changeDataSourcesCss();
+      Form1.changeDataSourcesJs();
+      Form1.changeDataSourcesTags();
+      Form1.changeDataSourcesTagsPages();
+      Form1.changeDataSourcesImages();
+  except
+   on E: Exception do
+    ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+  end;
 end;
 
 
@@ -3431,17 +3920,27 @@ procedure TForm1.AutoSaveDb; // автосохранение, исп. в FormClo
 
 begin
 
+   try
 
-   if sqlPresets.Active then sqlPresets.ApplyUpdates();
+       if sqlPresets.Active then sqlPresets.ApplyUpdates();
 
-   if sqlContent.Active then sqlContent.ApplyUpdates();
+       if sqlContent.Active then sqlContent.ApplyUpdates();
 
-   if sqlBlocks.Active then sqlBlocks.ApplyUpdates();
+       if sqlBlocks.Active then sqlBlocks.ApplyUpdates();
 
-   if sqlSections.Active then sqlSections.ApplyUpdates();
+       if sqlSections.Active then sqlSections.ApplyUpdates();
 
-   if sqlCssStyles.Active then sqlCssStyles.ApplyUpdates();
-   trans.Commit();
+       if sqlCssStyles.Active then sqlCssStyles.ApplyUpdates();
+
+
+       if sqlGetAllImages.Active then sqlGetAllImages.ApplyUpdates;
+
+       trans.Commit();
+   except
+   on E: Exception do
+             ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+   end;
+
 
 end;
 
@@ -3623,6 +4122,7 @@ begin
 
      // постобработка
      Buffer.Lines.Text :=
+                    useImages(
                        remotes_urls(
                               useMenus(
                                useModules(
@@ -3632,7 +4132,7 @@ begin
                                                   useBlocks(
                                                              buffer.Lines.Text)
                                                     ),
-                                        page)))));
+                                        page))))));
      // add custom columns with prefix custom_
      Buffer.Lines.Text:=useCustomFields( Buffer.Lines.Text, page.id);
 
@@ -4091,6 +4591,39 @@ begin
 
 end;
 
+procedure TForm1.scanImages;
+var i : Integer;
+begin
+
+  try
+
+   Images.Clear;
+   sqlGetAllImages.First;
+   while not sqlGetAllImages.EOF do begin
+     Images.Add(
+              sqlGetAllImages.FieldByName('image_id').AsString,
+              sqlGetAllImages.FieldByName('image_caption').AsString
+              );
+
+   sqlGetAllImages.Next;
+   end;
+   sqlGetAllImages.First;
+
+    // to interface
+
+
+     for i:=0 to Images.Count-1 do
+      begin
+        lvImages.AddItem(Images.Keys[i], nil);
+        application.ProcessMessages;
+      end;
+
+  except
+        on E: Exception do
+             ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+  end;
+end;
+
 procedure TForm1.doScan;
 begin
   Form1.Enabled:=False;
@@ -4126,6 +4659,9 @@ begin
     if sqlMenuItem.Active then
   sqlMenuItem.ApplyUpdates;
 
+    if sqlGetAllImages.Active then
+  sqlGetAllImages.ApplyUpdates;
+
 
   sqlContent.Refresh;
   sqlSections.Refresh;
@@ -4137,6 +4673,7 @@ begin
   sqlTagsPages.Refresh;
   sqlMenu.Refresh;
   sqlMenuItem.Refresh;
+  sqlGetAllImages.Refresh;
 
 
 
@@ -4148,6 +4685,7 @@ begin
   scanJs();
   scanTags();
   scanTagsPages();
+  scanImages();
 
   form1.refreshContentTree();
   form1.refreshSectionTree();
@@ -4279,10 +4817,53 @@ end;
 
 procedure TForm1.changeDataSourcesJs;
 begin
-
+ try
   dbeJsScriptId.DataSource:=ds_JsScripts;
   dbeScriptPath.DataSource:=ds_JsScripts;
   dbmJsScriptFile.DataSource:=ds_JsScripts;
+ finally
+ end
+
+end;
+
+{ Processing of images. Must retrieve images from blob field image_data
+and writes it to destination folder }
+procedure TForm1.doImages;
+var cnt, i : Byte;
+  image_dir : String;
+begin
+
+   image_dir := sqlJoin.FieldByName('dirpath').AsString + '/images/';
+
+   if not DirectoryExists(image_dir) then
+    CreateDir(image_dir);
+
+
+  cnt:=Images.Count;
+  pBar.Max:=cnt;
+  pBar.Step:=1;
+  pBar.Min:=1;
+  pBar.Position:=1;
+
+
+
+
+  sqlGetAllImages.First;
+  i:=0;
+  while not sqlGetAllImages.Eof do
+   begin
+     lbProgress.Caption:='Генерация картинок '+IntToStr(i+1)+' / '+IntToStr(cnt);
+
+     DBImage.Picture.SaveToFile( image_dir +
+                                 sqlGetAllImages.FieldByName('image_id').AsString);
+
+     sqlGetAllImages.Next;
+     Application.ProcessMessages;
+     inc(i);
+     pBar.Position:=i;
+
+   end;
+  sqlGetAllImages.First;
 end;
 
 function TForm1.insParamsToHead(head: String; page : page_params): String;

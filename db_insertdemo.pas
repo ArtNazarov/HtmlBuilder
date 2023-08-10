@@ -51,6 +51,10 @@ end;
     { Inserts demo data to table menu_item}
     procedure insertDemoDataMenuItem(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 
+    { Insert demo data to table images}
+    procedure insertDemoDataImage(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+
+
 
 
      {Хелперы}
@@ -89,6 +93,11 @@ end;
      { Executes request for adding menu item }
      procedure addIntoMenuItem(mi : MenuItem;  var sq: TSQLQuery;
    var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+
+     { Executes request for adding image }
+     procedure addIntoImage(ir : TImageRecord;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+
 
 
 implementation
@@ -287,6 +296,12 @@ begin
              // SilentMessage('Не удалось настроить контент');
           end;
 
+          try
+              insertDemoDataImage(sq, konnect, tranzact);
+          except
+            // SilentMessage('Cant setup images');
+          end;
+
 
 end;
 
@@ -376,6 +391,18 @@ end;
     mi.menu_item_caption:='Секция blog';
     mi.menu_item_link_for:='blog';
     addIntoMenuItem(mi, sq, konnect, tranzact);
+
+ end;
+
+ procedure insertDemoDataImage(var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ var ir : TImageRecord;
+ begin
+     ir.image_caption:= 'First image';
+     ir.image_data:= '';
+     ir.image_id:= 'image1';
+
+     addIntoImage(ir, sq, konnect, tranzact);
 
  end;
 
@@ -564,6 +591,27 @@ end;
  sq.Params.ParamByName('MENU_ITEM_LINK_FOR').AsString := mi.menu_item_link_for;
  sq.Params.ParamByName('MENU_ITEM_MENU_ID').AsString := mi.menu_item_menu_id;
  prepared_transaction_end( sq, tranzact);
+ end;
+
+ procedure addIntoImage(ir : TImageRecord;  var sq: TSQLQuery;
+   var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+ begin
+     try
+     prepared_transaction_start(
+          'insert into images (image_id, image_caption, image_data ) '+
+          ' values (:IMAGE_ID, :IMAGE_CAPTION, NULL )',
+          sq, tranzact);
+
+          sq.ParamByName('IMAGE_ID').AsString :=    ir.image_id;
+          sq.ParamByName('IMAGE_CAPTION').AsString := ir.image_caption;
+
+
+
+           prepared_transaction_end( sq, tranzact);
+     except on E: Exception do
+               ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+     end;
+
  end;
 
 end.

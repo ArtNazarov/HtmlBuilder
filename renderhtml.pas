@@ -12,6 +12,8 @@ type
 
   { Render }
 
+  { @abstract(Template engine)
+  Class for rendeing template to html using variables }
   Render = class
     { Hashmap for variables and their values }
     vars : sdict;

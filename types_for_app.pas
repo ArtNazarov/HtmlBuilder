@@ -160,6 +160,14 @@ type
   {HashMap String to Page_Params}
   PagesMap = specialize TFPGmap<string, page_params>;
 
+  { TImageRecord for representation image }
+  TImageRecord = record
+            image_id : String;
+            image_caption : String;
+            image_data : String; // hex format
+
+  end;
+
 implementation
 
 end.

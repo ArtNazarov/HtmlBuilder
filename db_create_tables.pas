@@ -31,7 +31,8 @@ procedure createTagsSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTra
 { Create table tags_pages }
 procedure createTagsPagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 
-
+{ Create table images }
+procedure createImagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
 
 
 implementation
@@ -244,6 +245,21 @@ begin
 
         // Создание индекса на основе идентификатора в таблице "DATA"
        sql_execute_direct('CREATE UNIQUE INDEX "id_tag_page_idx" ON "tags_pages"( "id_tag_page" );',konnect, tranzact);
+end;
+
+procedure createImagesSQL(var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
+begin
+       try
+              sql_execute_direct( 'PRAGMA foreign_keys = ON;', konnect, tranzact);
+              sql_execute_direct('CREATE TABLE "images"('+
+                ' "image_id" Char(128) NOT NULL PRIMARY KEY, '+
+                ' "image_caption" Char(255), ' +
+                ' "image_data" BLOB )', konnect, tranzact);
+
+              sql_execute_direct('CREATE UNIQUE INDEX "id_image_idx" ON "images"( "image_id" );',konnect, tranzact);
+        except on E: Exception do
+               ShowMessage( 'Error: '+ E.ClassName + #13#10 + E.Message );
+        end;
 end;
 
 end.
