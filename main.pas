@@ -1275,7 +1275,19 @@ end;
 
 procedure TForm1.sqlGetAllImagesAfterDelete(DataSet: TDataSet);
 begin
-  // TODO AfterDelete
+ Images.Clear;
+ lvImages.Items.Clear;
+ sqlGetAllImages.First;
+ while not sqlGetAllImages.EOF do
+   begin
+          Images.Add( sqlGetAllImages.FieldByName('image_id').asString,
+                      sqlGetAllImages.FieldByName('image_caption').asString);
+          lvImages.AddItem(sqlGetAllImages.FieldByName('image_id').AsString, nil);
+           sqlGetAllImages.Next;
+       end;
+
+ sqlGetAllImages.ApplyUpdates;
+ sqlGetAllImages.Refresh;
 end;
 
 procedure TForm1.sqlGetAllImagesAfterEdit(DataSet: TDataSet);
