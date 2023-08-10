@@ -70,6 +70,8 @@ What's new / Что нового
 
 ![Example3](https://htmlbuilder.artnazarov.ru/images/images3_demo.png)
 
+![Example4](https://htmlbuilder.artnazarov.ru/images/images4_demo.png)
+
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
 
 Docker image with PHP https://github.com/ArtNazarov/dockerbridgephp
