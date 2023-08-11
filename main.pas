@@ -15,7 +15,7 @@ uses
   synaip, synsock, ftpsend, db_helpers, db_insertdemo, db_create_tables,
   replacers, editor_in_window, editor_css, editor_js, DateUtils, fgl, regexpr,
   types_for_app, selectorTagsPages, const_for_app, selectors_for_menu,
-  RenderHtml, httpsend, LazFileUtils, storing_attachments; {Use Synaptic}
+  RenderHtml, httpsend,  storing_attachments; {Use Synaptic}
 
 
 
@@ -690,6 +690,7 @@ type
     procedure sqlCssStylesAfterPost(DataSet: TDataSet);
     procedure sqlCssStylesBeforeDelete(DataSet: TDataSet);
     procedure sqlCssStylesBeforeRefresh(DataSet: TDataSet);
+    procedure sqlGetAllAttachmentsAfterDelete(DataSet: TDataSet);
     procedure sqlGetAllAttachmentsAfterEdit(DataSet: TDataSet);
     procedure sqlGetAllAttachmentsAfterInsert(DataSet: TDataSet);
     procedure sqlGetAllAttachmentsAfterPost(DataSet: TDataSet);
@@ -1336,9 +1337,29 @@ begin
   sqlCssStyles.ApplyUpdates;
 end;
 
+procedure TForm1.sqlGetAllAttachmentsAfterDelete(DataSet: TDataSet);
+begin
+
+end;
+
 procedure TForm1.sqlGetAllAttachmentsAfterEdit(DataSet: TDataSet);
 begin
-  { #todo : sqlGetAllAttachmentsAfterEdit }
+
+ if not Assigned(Attachments) then Exit;
+
+ Attachments.Clear;
+ lvAttachments.Items.Clear;
+ sqlGetAllAttachments.First;
+ while not sqlGetAllAttachments.EOF do
+   begin
+          Images.Add( sqlGetAllAttachments.FieldByName('image_id').asString,
+                      sqlGetAllAttachments.FieldByName('image_caption').asString);
+          lvAttachments.AddItem(sqlGetAllAttachments.FieldByName('image_id').AsString, nil);
+           sqlGetAllAttachments.Next;
+       end;
+
+ sqlGetAllAttachments.ApplyUpdates;
+ sqlGetAllAttachments.Refresh;
   displayAttachmentStatus();
 end;
 
@@ -1354,6 +1375,7 @@ end;
 
 procedure TForm1.sqlGetAllAttachmentsAfterPost(DataSet: TDataSet);
 begin
+  AfterPostHelper(lvAttachments, sqlGetAllAttachments, 'attachment_id');
   displayAttachmentStatus();
 
 
@@ -1375,6 +1397,8 @@ end;
 
 procedure TForm1.sqlGetAllImagesAfterDelete(DataSet: TDataSet);
 begin
+ if not Assigned(Images) then Exit;
+
  Images.Clear;
  lvImages.Items.Clear;
  sqlGetAllImages.First;
