@@ -68,6 +68,9 @@ it is enough to write [id] in the text
 To put a link in the text to a section by its id,
 it is enough to type <<id>> in the markup
 
+((image_id)) - output image
+||attachment_id|| - output link to attached document
+
 - Custom fields
 
 The material of each page can be supplemented with 7 text fields
