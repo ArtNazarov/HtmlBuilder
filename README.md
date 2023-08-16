@@ -98,3 +98,21 @@ TODO / В планах
 =================
 1. Add RSS spider
 2. Make Linux packages
+
+Troubleshooting
+================
+
+1. Error while loading shared libraries: libQt5Pas.so.1: 
+cannot open shared object file: No such file or directory
+
+Install qt5pas
+
+```
+yay -Sy qt5pas
+```
+
+Tests
+=====
+
+https://github.com/ArtNazarov/HtmlBuilder_tests
+
