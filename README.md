@@ -5,7 +5,7 @@ Written in FreePascal/Lazarus generator of static html websites
 
 UI sample / Примерный вид интерфейса
 
-![Screen pages editor](https://htmlbuilder.artnazarov.ru/images/new_ui.png)
+![Screen pages editor](https://htmlbuilder.onhalt.site/images/new_ui.png)
 
 Built-in webserver / Встроенный веб-сервер
 
@@ -19,19 +19,19 @@ Uploading with bridge / Выгрузка с помощью моста
 
 ![Using bridge API](http://apprr.rf.gd/upload_with_a_bridge.png)
 
-More screens / Больше скриншотов https://htmlbuilder.artnazarov.ru/
+More screens / Больше скриншотов https://htmlbuilder.onhalt.site/
 Some articles / Некоторые статьи [blog](http://nazarow.ru/section_htmlbuilder.html)
 
 Project / Проект
 ================
 Website in Russian / Сайт на русском 
-[HtmlBuilder project page](https://htmlbuilder.artnazarov.ru)
+[HtmlBuilder project page](https://htmlbuilder.onhalt.site)
 
 Documentation for developers / Документация для разработчика
-[PasDoc documention](https://htmlbuilder-docs.artnazarov.ru)
+[PasDoc documention](https://htmlbuilder-docs.onhalt.site)
 
 Blog with examples / Блог с примерами
-[Blog](https://nazarow.ru/section_htmlbuilder.html)
+[Blog](http://nazarow.ru/section_htmlbuilder.html)
 
 Usage / Использование
 ================
@@ -70,15 +70,15 @@ Will placed in folder /files/
 ||document_id||
 ```
 
-![Attachments](https://htmlbuilder.artnazarov.ru/images/files_ui.png)
+![Attachments](https://htmlbuilder.onhalt.site/images/files_ui.png)
 
-![Example1](https://htmlbuilder.artnazarov.ru/images/images1_demo.png) 
+![Example1](https://htmlbuilder.onhalt.site/images/images1_demo.png) 
 
-![Example2](https://htmlbuilder.artnazarov.ru/images/images2_demo.png)
+![Example2](https://htmlbuilder.onhalt.site/images/images2_demo.png)
 
-![Example3](https://htmlbuilder.artnazarov.ru/images/images3_demo.png)
+![Example3](https://htmlbuilder.onhalt.site/images/images3_demo.png)
 
-![Example4](https://htmlbuilder.artnazarov.ru/images/images4_demo.png)
+![Example4](https://htmlbuilder.onhalt.site/images/images4_demo.png)
 
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
 
