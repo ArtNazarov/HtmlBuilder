@@ -1,6 +1,6 @@
 Author: Nazarov A.A., 2012-2023, Orenburg
-Site: artnazarov.ru
-E-mail:admin@artnazarov.ru
+Site: https://htmlbuilder.onhalt.site/
+E-mail:awnlwt1ty@mozmail.com
 
 Custom fields in content
 
