@@ -1,7 +1,7 @@
 MIT License
 ===
 
-Copyright (c) 2023 Artem Nazarov  (admin@artnazarov.ru)
+Copyright (c) 2023-2024 Artem Nazarov  (webveter@yandex.ru)
 
 Permission is hereby granted, **free of charge**, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@ SOFTWARE.*
 Лицензия MIT 
 ===
 
-Copyright (c) 2023 Артем Назаров (admin@artnazarov.ru) 
+Copyright (c) 2023-2024 Артем Назаров (webveter@yandex.ru) 
 
 Настоящим предоставляется **бесплатное разрешение** любому лицу, получившему копию
 данного программного обеспечения и связанных с ним файлов документации ("Программное обеспечение"), для
