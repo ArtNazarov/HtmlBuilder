@@ -47,6 +47,7 @@ type
     acDatabaseSaveAs: TAction;
     acSaveSpecialSettings: TAction;
     acRestoreSpecialSetting: TAction;
+    acBuildSite: TAction;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
     btnAttachTagToMaterial: TButton;
@@ -237,6 +238,8 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuBuildProject: TMenuItem;
+    mnuProject: TMenuItem;
     mmDetails: TMemo;
     mnuSpecialSettings: TMenuItem;
     mnuSaveSpecialSettings: TMenuItem;
@@ -492,6 +495,7 @@ type
 
     { Сохраняет специальные настройки программы}
     procedure acSaveSpecialSettingsExecute(Sender: TObject);
+    procedure acBuildSiteExecute(Sender: TObject);
 
     procedure AppPagesChange(Sender: TObject);
 
@@ -1183,6 +1187,9 @@ type
     {Отображает статус загрузки вложения}
     procedure displayAttachmentStatus();
 
+    {Сборка сайта, будет вызвано в действии}
+    procedure actionBuildSite();
+
 
 
        end;
@@ -1773,50 +1780,8 @@ end;
 
 { Тестовый код }
 procedure TForm1.btnJoinClick(Sender: TObject);
-var start, stop: TDateTime;
-ptr : Pointer;
-
-
 begin
-
-
-
-  start:=Now();
-
-  form1.scanLinks(); // сканер ссылок нужен для автозамены
-  form1.scanSections(); // сканер секций нужен для автозамены
-  form1.scanBlocks(); // сканируем блоки
-
-
-
-  Writer := TFilesQueue.Create();
-
-
-  doJoinPages(); // страницы
-  doSections();  // разделы
-  doSitemap(); // карта сайта
-  doCssTables(); // css таблицы
-  doJs(); // скрипты
-  doTagsMap(); // все теги на сайте
-
-  doImages();
-  doAttachments();
-
-  Writer.processEach();
-
-
-
-  stop:=Now();
-
-
-  mmRubrics.Lines.Add('НА СБОРКУ ПОТРЕБОВАЛОСЬ СЕКУНД:');
-  mmRubrics.Lines.Add(FloatToStr(MilliSecondsBetween(start, stop)/1000));
-
-  mmRubrics.Lines.Add('Обработано файлов: '+IntToStr(writer.last+1));
-
-
-
-
+ actionBuildSite();
 end;
 
 {{ ===============     ЗАГРУЗКА ИЗ ТЕКСТОВЫХ ФАЙЛОВ ============= }}
@@ -2155,6 +2120,11 @@ end;
 procedure TForm1.acSaveSpecialSettingsExecute(Sender: TObject);
 begin
   SaveSpecialSettings('');
+end;
+
+procedure TForm1.acBuildSiteExecute(Sender: TObject);
+begin
+  actionBuildSite();
 end;
 
 procedure TForm1.AppPagesChange(Sender: TObject);
@@ -5856,6 +5826,50 @@ begin
                form1.lbIsFileUploaded.Caption:='Не загружено'
                else
                form1.lbIsFileUploaded.Caption:='Загружено';
+end;
+
+procedure TForm1.actionBuildSite();
+var start, stop: TDateTime;
+ptr : Pointer;
+
+
+begin
+
+
+
+  start:=Now();
+
+  form1.scanLinks(); // сканер ссылок нужен для автозамены
+  form1.scanSections(); // сканер секций нужен для автозамены
+  form1.scanBlocks(); // сканируем блоки
+
+
+
+  Writer := TFilesQueue.Create();
+
+
+  doJoinPages(); // страницы
+  doSections();  // разделы
+  doSitemap(); // карта сайта
+  doCssTables(); // css таблицы
+  doJs(); // скрипты
+  doTagsMap(); // все теги на сайте
+
+  doImages();
+  doAttachments();
+
+  Writer.processEach();
+
+
+
+  stop:=Now();
+
+
+  mmRubrics.Lines.Add('НА СБОРКУ ПОТРЕБОВАЛОСЬ СЕКУНД:');
+  mmRubrics.Lines.Add(FloatToStr(MilliSecondsBetween(start, stop)/1000));
+
+  mmRubrics.Lines.Add('Обработано файлов: '+IntToStr(writer.last+1));
+
 end;
 
 

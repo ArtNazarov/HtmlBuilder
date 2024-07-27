@@ -1,6 +1,6 @@
-Автор: Назаров А.А., 2012-2023, Оренбург
-Сайт: https://htmlbuilder.onhalt.site/
-E-mail:awnlwt1ty@mozmail.com
+Автор: Назаров А.А., 2012-2024, Оренбург
+Сайт: https://htmlbuilder.onhalt.site
+E-mail:  programmist.nazarov@gmail.com
 
 Пользовательские поля
 
@@ -72,7 +72,6 @@ E-mail:awnlwt1ty@mozmail.com
 
 
 ((image_id)) - вывод иллюстрации
-
 ||attachment_id|| - вывод прикрепленного документа
 
 - Пользовательские поля

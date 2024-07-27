@@ -1,6 +1,6 @@
-Author: Nazarov A.A., 2012-2023, Orenburg
-Site: https://htmlbuilder.onhalt.site/
-E-mail:awnlwt1ty@mozmail.com
+Author: Nazarov A.A., 2012-2024, Orenburg
+Site: https://htmlbuilder.onhalt.site
+E-mail: programmist.nazarov@gmail.com
 
 Custom fields in content
 
@@ -69,7 +69,6 @@ To put a link in the text to a section by its id,
 it is enough to type <<id>> in the markup
 
 ((image_id)) - output image
-
 ||attachment_id|| - output link to attached document
 
 - Custom fields
