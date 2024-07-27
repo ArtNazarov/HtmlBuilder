@@ -7,7 +7,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  SynEdit, SynHighlighterJScript, SynCompletion, Types, LCLType;
+  SynEdit, SynHighlighterJScript, SynCompletion, Types, LCLType, FontSettings;
 
 type
 
@@ -28,6 +28,7 @@ type
 
     { Handles click of btnClose }
     procedure btnCloseClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
 
     { Handles click of panJs }
     procedure panJsClick(Sender: TObject);
@@ -62,6 +63,15 @@ procedure TfrmEditorJs.btnCloseClick(Sender: TObject);
 begin
     modalresult:=mrok;
     close;
+end;
+
+procedure TfrmEditorJs.FormCreate(Sender: TObject);
+var
+   FontManager: TFontManager;
+begin
+     FontManager := TFontManager.Create();
+     editor.Font := FontManager.Font;
+     FontManager.Free;
 end;
 
 procedure TfrmEditorJs.btnAddFunctionClick(Sender: TObject);

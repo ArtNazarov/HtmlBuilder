@@ -8,7 +8,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   SynEdit, SynHighlighterCss, SynCompletion, Types, LCLType, StrUtils,
-  css_props_dlg;
+  css_props_dlg, FontSettings;
 
 type
 
@@ -33,6 +33,7 @@ type
 
     { handles click of btnClose }
     procedure btnCloseClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
 
     { handles autocompletion for css }
     procedure SynCompletion1CodeCompletion(var Value: string;
@@ -61,6 +62,15 @@ procedure TfrmEditorCss.btnCloseClick(Sender: TObject);
 begin
    ModalResult:=mrOK;
    Close;
+end;
+
+procedure TfrmEditorCss.FormCreate(Sender: TObject);
+var
+   FontManager: TFontManager;
+begin
+     FontManager := TFontManager.Create();
+     editor.Font := FontManager.Font;
+     FontManager.Free;
 end;
 
 procedure TfrmEditorCss.SynCompletion1CodeCompletion(var Value: string;

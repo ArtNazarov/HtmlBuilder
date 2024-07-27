@@ -8,7 +8,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Menus, ActnList, SynEdit, SynHighlighterHTML, SynEditSearch, SynEditTypes,
-  SynCompletion, Types, LCLType;
+  SynCompletion, Types, LCLType, FontSettings;
 
 type
 
@@ -97,6 +97,7 @@ type
     procedure btnUnderlineClick(Sender: TObject);
     procedure btnUnorderedListClick(Sender: TObject);
     procedure editorChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure SynCompletion1CodeCompletion(var Value: string;
       SourceValue: string; var SourceStart, SourceEnd: TPoint;
       KeyChar: TUTF8Char; Shift: TShiftState);
@@ -360,6 +361,15 @@ end;
 procedure TfrmEditor.editorChange(Sender: TObject);
 begin
   markup:=editor.Text;
+end;
+
+procedure TfrmEditor.FormCreate(Sender: TObject);
+var
+   FontManager: TFontManager;
+begin
+     FontManager := TFontManager.Create();
+     editor.Font := FontManager.Font;
+     FontManager.Free;
 end;
 
 procedure TfrmEditor.SynCompletion1CodeCompletion(var Value: string;

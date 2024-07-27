@@ -1,17 +1,18 @@
 object frmEditor: TfrmEditor
   Left = 0
-  Height = 839
+  Height = 828
   Top = 0
   Width = 1600
   Caption = 'Редактор разметки'
-  ClientHeight = 812
+  ClientHeight = 828
   ClientWidth = 1600
   Menu = mmMenuEditor
-  LCLVersion = '2.2.4.0'
+  OnCreate = FormCreate
+  LCLVersion = '3.4.0.0'
   inline editor: TSynEdit
     Left = 0
-    Height = 615
-    Top = 172
+    Height = 635
+    Top = 168
     Width = 1600
     Align = alClient
     Font.Height = -16
@@ -21,7 +22,7 @@ object frmEditor: TfrmEditor
     ParentColor = False
     ParentFont = False
     TabOrder = 0
-    Gutter.Width = 61
+    Gutter.Width = 73
     Gutter.MouseActions = <>
     RightGutter.Width = 0
     RightGutter.MouseActions = <>
@@ -479,7 +480,7 @@ object frmEditor: TfrmEditor
         MouseActions = <>
       end
       object SynGutterLineNumber1: TSynGutterLineNumber
-        Width = 21
+        Width = 33
         MouseActions = <>
         MarkupInfo.Background = clBtnFace
         MarkupInfo.Foreground = clNone
@@ -512,16 +513,16 @@ object frmEditor: TfrmEditor
   object btnCloseEditor: TButton
     Left = 0
     Height = 25
-    Top = 787
+    Top = 803
     Width = 1600
     Align = alBottom
     Caption = 'ОК'
-    OnClick = btnCloseEditorClick
     TabOrder = 1
+    OnClick = btnCloseEditorClick
   end
   object Label1: TLabel
     Left = 0
-    Height = 22
+    Height = 18
     Top = 150
     Width = 1600
     Align = alTop
@@ -545,8 +546,8 @@ object frmEditor: TfrmEditor
       Width = 155
       Align = alLeft
       Caption = 'Применить тег'
-      OnClick = btnFormatterClick
       TabOrder = 0
+      OnClick = btnFormatterClick
     end
     object btnItalic: TButton
       Left = 555
@@ -555,8 +556,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Курсив'
-      OnClick = btnItalicClick
       TabOrder = 1
+      OnClick = btnItalicClick
     end
     object btnBold: TButton
       Left = 630
@@ -565,8 +566,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Обводка'
-      OnClick = btnBoldClick
       TabOrder = 2
+      OnClick = btnBoldClick
     end
     object btnUnderline: TButton
       Left = 705
@@ -575,8 +576,8 @@ object frmEditor: TfrmEditor
       Width = 83
       Align = alLeft
       Caption = 'Подчерк.'
-      OnClick = btnUnderlineClick
       TabOrder = 3
+      OnClick = btnUnderlineClick
     end
     object btnSup: TButton
       Left = 863
@@ -585,8 +586,8 @@ object frmEditor: TfrmEditor
       Width = 83
       Align = alLeft
       Caption = 'Вер.инд.'
-      OnClick = btnSupClick
       TabOrder = 4
+      OnClick = btnSupClick
     end
     object btnSub: TButton
       Left = 946
@@ -595,8 +596,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Ниж.инд'
-      OnClick = btnSubClick
       TabOrder = 5
+      OnClick = btnSubClick
     end
     object btnHref: TButton
       Left = 1021
@@ -605,8 +606,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Ссылка'
-      OnClick = btnHrefClick
       TabOrder = 6
+      OnClick = btnHrefClick
     end
     object btnPicture: TButton
       Left = 1321
@@ -615,8 +616,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Пикча'
-      OnClick = btnPictureClick
       TabOrder = 7
+      OnClick = btnPictureClick
     end
     object btnOrderedList: TButton
       Left = 1171
@@ -625,8 +626,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Нум.сп.'
-      OnClick = btnOrderedListClick
       TabOrder = 8
+      OnClick = btnOrderedListClick
     end
     object btnUnorderedList: TButton
       Left = 1246
@@ -635,8 +636,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Обыч.сп.'
-      OnClick = btnUnorderedListClick
       TabOrder = 9
+      OnClick = btnUnorderedListClick
     end
     object cboFormatting: TComboBox
       Left = 1
@@ -644,7 +645,7 @@ object frmEditor: TfrmEditor
       Top = 1
       Width = 172
       Align = alLeft
-      ItemHeight = 22
+      ItemHeight = 24
       Items.Strings = (
         'Заголовок H1'
         'Заголовок H2'
@@ -667,8 +668,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Якорь'
-      OnClick = btnAnchorClick
       TabOrder = 11
+      OnClick = btnAnchorClick
     end
     object cboFontFamily: TComboBox
       Left = 328
@@ -676,7 +677,7 @@ object frmEditor: TfrmEditor
       Top = 1
       Width = 152
       Align = alLeft
-      ItemHeight = 22
+      ItemHeight = 24
       Items.Strings = (
         'Arial'
         'Arial Black'
@@ -697,8 +698,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Шрифт'
-      OnClick = btnFontStyleClick
       TabOrder = 13
+      OnClick = btnFontStyleClick
     end
     object btnTable: TButton
       Left = 1396
@@ -707,8 +708,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Таблица'
-      OnClick = btnTableClick
       TabOrder = 14
+      OnClick = btnTableClick
     end
     object btnStrike: TButton
       Left = 788
@@ -717,8 +718,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Зачерк.'
-      OnClick = btnStrikeClick
       TabOrder = 15
+      OnClick = btnStrikeClick
     end
   end
   object Panel2: TPanel
@@ -737,8 +738,8 @@ object frmEditor: TfrmEditor
       Width = 63
       Align = alLeft
       Caption = 'Линия'
-      OnClick = btnHrClick
       TabOrder = 0
+      OnClick = btnHrClick
     end
     object btnMargin: TButton
       Left = 506
@@ -747,8 +748,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Отступ'
-      OnClick = btnMarginClick
       TabOrder = 1
+      OnClick = btnMarginClick
     end
     object cboJustify: TComboBox
       Left = 220
@@ -756,7 +757,7 @@ object frmEditor: TfrmEditor
       Top = 1
       Width = 100
       Align = alLeft
-      ItemHeight = 22
+      ItemHeight = 24
       Items.Strings = (
         'Лев'
         'Прав'
@@ -772,8 +773,8 @@ object frmEditor: TfrmEditor
       Width = 123
       Align = alLeft
       Caption = 'Выравнивание'
-      OnClick = btnJustifyClick
       TabOrder = 3
+      OnClick = btnJustifyClick
     end
     object btnBr: TButton
       Left = 581
@@ -782,8 +783,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Каретка'
-      OnClick = btnBrClick
       TabOrder = 4
+      OnClick = btnBrClick
     end
     object btnFontSizeLarger: TButton
       Left = 1
@@ -792,8 +793,8 @@ object frmEditor: TfrmEditor
       Width = 107
       Align = alLeft
       Caption = '+ размер'
-      OnClick = btnFontSizeLargerClick
       TabOrder = 5
+      OnClick = btnFontSizeLargerClick
     end
     object btnFontSizeSmaller: TButton
       Left = 108
@@ -802,8 +803,8 @@ object frmEditor: TfrmEditor
       Width = 112
       Align = alLeft
       Caption = '- размер'
-      OnClick = btnFontSizeSmallerClick
       TabOrder = 6
+      OnClick = btnFontSizeSmallerClick
     end
   end
   object panHtml5: TPanel
@@ -822,8 +823,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Секция'
-      OnClick = btnSectionClick
       TabOrder = 0
+      OnClick = btnSectionClick
     end
     object btnArticle: TButton
       Left = 76
@@ -832,8 +833,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Статья'
-      OnClick = btnArticleClick
       TabOrder = 1
+      OnClick = btnArticleClick
     end
     object btnASide: TButton
       Left = 151
@@ -842,8 +843,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Сайд'
-      OnClick = btnASideClick
       TabOrder = 2
+      OnClick = btnASideClick
     end
     object btnHeader: TButton
       Left = 226
@@ -852,8 +853,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Шапка'
-      OnClick = btnHeaderClick
       TabOrder = 3
+      OnClick = btnHeaderClick
     end
     object btnFooter: TButton
       Left = 301
@@ -862,8 +863,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Подвал'
-      OnClick = btnFooterClick
       TabOrder = 4
+      OnClick = btnFooterClick
     end
     object btnNav: TButton
       Left = 376
@@ -872,8 +873,8 @@ object frmEditor: TfrmEditor
       Width = 75
       Align = alLeft
       Caption = 'Меню'
-      OnClick = btnNavClick
       TabOrder = 5
+      OnClick = btnNavClick
     end
   end
   object SynHTMLSyn1: TSynHTMLSyn

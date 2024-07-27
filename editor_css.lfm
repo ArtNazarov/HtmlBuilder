@@ -1,26 +1,27 @@
 object frmEditorCss: TfrmEditorCss
   Left = 0
-  Height = 839
+  Height = 828
   Top = 0
   Width = 1600
   Caption = 'frmEditorCss'
-  ClientHeight = 839
+  ClientHeight = 828
   ClientWidth = 1600
-  LCLVersion = '2.2.4.0'
+  OnCreate = FormCreate
+  LCLVersion = '3.4.0.0'
   object btnClose: TButton
     Left = 0
     Height = 25
-    Top = 814
+    Top = 803
     Width = 1600
     Align = alBottom
     Caption = 'ОК'
     ModalResult = 1
-    OnClick = btnCloseClick
     TabOrder = 0
+    OnClick = btnCloseClick
   end
   object lbCss: TLabel
     Left = 0
-    Height = 22
+    Height = 18
     Top = 50
     Width = 1600
     Align = alTop
@@ -29,8 +30,8 @@ object frmEditorCss: TfrmEditorCss
   end
   inline editor: TSynEdit
     Left = 0
-    Height = 742
-    Top = 72
+    Height = 735
+    Top = 68
     Width = 1600
     Align = alClient
     Font.Height = -20
@@ -40,7 +41,7 @@ object frmEditorCss: TfrmEditorCss
     ParentColor = False
     ParentFont = False
     TabOrder = 1
-    Gutter.Width = 65
+    Gutter.Width = 81
     Gutter.MouseActions = <>
     RightGutter.Width = 0
     RightGutter.MouseActions = <>
@@ -497,7 +498,7 @@ object frmEditorCss: TfrmEditorCss
         MouseActions = <>
       end
       object SynGutterLineNumber1: TSynGutterLineNumber
-        Width = 25
+        Width = 41
         MouseActions = <>
         MarkupInfo.Background = clBtnFace
         MarkupInfo.Foreground = clNone
@@ -543,8 +544,8 @@ object frmEditorCss: TfrmEditorCss
       Width = 119
       Align = alLeft
       Caption = 'Новый класс'
-      OnClick = btnAddClassClick
       TabOrder = 0
+      OnClick = btnAddClassClick
     end
     object btnAddId: TButton
       Left = 120
@@ -553,8 +554,8 @@ object frmEditorCss: TfrmEditorCss
       Width = 115
       Align = alLeft
       Caption = 'Новый ID'
-      OnClick = btnAddIdClick
       TabOrder = 1
+      OnClick = btnAddIdClick
     end
   end
   object SynCssSyn1: TSynCssSyn

@@ -1,16 +1,17 @@
 object frmEditorJs: TfrmEditorJs
-  Left = 381
-  Height = 839
-  Top = 377
+  Left = 0
+  Height = 828
+  Top = 0
   Width = 1600
   Caption = 'Редактор JS'
-  ClientHeight = 839
+  ClientHeight = 828
   ClientWidth = 1600
-  LCLVersion = '2.2.4.0'
+  OnCreate = FormCreate
+  LCLVersion = '3.4.0.0'
   inline editor: TSynEdit
     Left = 0
-    Height = 742
-    Top = 72
+    Height = 735
+    Top = 68
     Width = 1600
     Align = alClient
     Font.Height = -20
@@ -20,7 +21,7 @@ object frmEditorJs: TfrmEditorJs
     ParentColor = False
     ParentFont = False
     TabOrder = 0
-    Gutter.Width = 65
+    Gutter.Width = 81
     Gutter.MouseActions = <>
     RightGutter.Width = 0
     RightGutter.MouseActions = <>
@@ -477,7 +478,7 @@ object frmEditorJs: TfrmEditorJs
         MouseActions = <>
       end
       object SynGutterLineNumber1: TSynGutterLineNumber
-        Width = 25
+        Width = 41
         MouseActions = <>
         MarkupInfo.Background = clBtnFace
         MarkupInfo.Foreground = clNone
@@ -510,16 +511,16 @@ object frmEditorJs: TfrmEditorJs
   object btnClose: TButton
     Left = 0
     Height = 25
-    Top = 814
+    Top = 803
     Width = 1600
     Align = alBottom
     Caption = 'ОК'
-    OnClick = btnCloseClick
     TabOrder = 1
+    OnClick = btnCloseClick
   end
   object lbScriptName: TLabel
     Left = 0
-    Height = 22
+    Height = 18
     Top = 0
     Width = 1600
     Align = alTop
@@ -529,7 +530,7 @@ object frmEditorJs: TfrmEditorJs
   object panJs: TPanel
     Left = 0
     Height = 50
-    Top = 22
+    Top = 18
     Width = 1600
     Align = alTop
     ClientHeight = 50
@@ -543,8 +544,8 @@ object frmEditorJs: TfrmEditorJs
       Width = 115
       Align = alLeft
       Caption = 'Функция'
-      OnClick = btnAddFunctionClick
       TabOrder = 0
+      OnClick = btnAddFunctionClick
     end
   end
   object SynJScriptSyn1: TSynJScriptSyn
