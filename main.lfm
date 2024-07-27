@@ -2133,9 +2133,9 @@ object Form1: TForm1
             Height = 454
             Top = 251
             Width = 1223
-            ActivePage = TabSheet13
+            ActivePage = TabSheet6
             Align = alClient
-            TabIndex = 6
+            TabIndex = 0
             TabOrder = 3
             object TabSheet6: TTabSheet
               Caption = 'Заголовок'

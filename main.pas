@@ -5896,6 +5896,18 @@ begin
     begin
       // Apply the selected font to the TDBMemo
       fContent.Font.Assign(FontDialog.Font);
+      dbmSectionFullText.Font.Assign(FontDialog.Font);
+      dbeBlockHtml.Font.Assign(FontDialog.Font);
+      dbmCssStyle.Font.Assign(FontDialog.Font);
+      dbmJsScriptFile.Font.Assign(FontDialog.Font);
+      dbmMenuTpl.Font.Assign(FontDialog.Font);
+      dbmMenuItemTpl.Font.Assign(FontDialog.Font);
+      dbmHeadTemplate.Font.Assign(FontDialog.Font);
+      dbmBodyPagesTemplate.Font.Assign(FontDialog.Font);
+      dbmBodySectionsTemplate.Font.Assign(FontDialog.Font);
+      dbmTemplateOfItem.Font.Assign(FontDialog.Font);
+      dbmTagsTemplate.Font.Assign(FontDialog.Font);
+      dbmItemTagTemplate.Font.Assign(FontDialog.Font);
     end;
   finally
     FontDialog.Free;
