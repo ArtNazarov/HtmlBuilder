@@ -59,7 +59,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="21">
+    <Units Count="22">
       <Unit0>
         <Filename Value="htmlbuilder.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -162,6 +162,11 @@
         <Filename Value="storing_attachments.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit20>
+      <Unit21>
+        <Filename Value="fontsettings.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FontSettings"/>
+      </Unit21>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

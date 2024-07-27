@@ -15,7 +15,7 @@ uses
   synaip, synsock, ftpsend, db_helpers, db_insertdemo, db_create_tables,
   replacers, editor_in_window, editor_css, editor_js, DateUtils, fgl, regexpr,
   types_for_app, selectorTagsPages, const_for_app, selectors_for_menu,
-  RenderHtml, httpsend,  storing_attachments; {Use Synaptic}
+  RenderHtml, httpsend,  storing_attachments, FontSettings; {Use Synaptic}
 
 
 
@@ -1197,6 +1197,12 @@ type
     {Выбор шрифта}
     procedure actionSetFont();
 
+    {Назначает шрифты}
+    procedure setFontsToUI(SomeFont : TFont);
+
+    {Начальная установка шрифтов}
+    procedure initFontsState();
+
 
 
        end;
@@ -1221,7 +1227,7 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-
+  initFontsState();
   if not FileExists('special_settings.dat')  then
       form1.SaveSpecialSettings('special_settings.dat')
   else
@@ -5887,31 +5893,60 @@ end;
 procedure TForm1.actionSetFont();
 var
   FontDialog: TFontDialog;
+  FontManager: TFontManager;
 begin
 
   FontDialog := TFontDialog.Create(Self);
+  FontManager := TFontManager.Create();
+
   try
-    // Show the font dialog
-    if FontDialog.Execute then
-    begin
-      // Apply the selected font to the TDBMemo
-      fContent.Font.Assign(FontDialog.Font);
-      dbmSectionFullText.Font.Assign(FontDialog.Font);
-      dbeBlockHtml.Font.Assign(FontDialog.Font);
-      dbmCssStyle.Font.Assign(FontDialog.Font);
-      dbmJsScriptFile.Font.Assign(FontDialog.Font);
-      dbmMenuTpl.Font.Assign(FontDialog.Font);
-      dbmMenuItemTpl.Font.Assign(FontDialog.Font);
-      dbmHeadTemplate.Font.Assign(FontDialog.Font);
-      dbmBodyPagesTemplate.Font.Assign(FontDialog.Font);
-      dbmBodySectionsTemplate.Font.Assign(FontDialog.Font);
-      dbmTemplateOfItem.Font.Assign(FontDialog.Font);
-      dbmTagsTemplate.Font.Assign(FontDialog.Font);
-      dbmItemTagTemplate.Font.Assign(FontDialog.Font);
-    end;
+
+   // use settings in dialog
+   FontDialog.Font.Assign(FontManager.Font);
+
+   // Show the font dialog
+   if FontDialog.Execute then
+
+       // use selected font
+       FontManager.useFont(FontDialog.Font);
+
   finally
     FontDialog.Free;
   end;
+
+
+      // Apply the selected fonts to UI
+
+      setFontsToUI(FontManager.Font);
+
+
+
+
+end;
+
+procedure TForm1.setFontsToUI(SomeFont : TFont);
+begin
+ fContent.Font :=  SomeFont;
+  dbmSectionFullText.Font :=  SomeFont;
+  dbeBlockHtml.Font :=  SomeFont;
+  dbmCssStyle.Font :=  SomeFont;
+  dbmJsScriptFile.Font :=  SomeFont;
+  dbmMenuTpl.Font := SomeFont;
+  dbmMenuItemTpl.Font :=  SomeFont;
+  dbmHeadTemplate.Font := SomeFont;
+  dbmBodyPagesTemplate.Font :=  SomeFont;
+  dbmBodySectionsTemplate.Font := SomeFont;
+  dbmTemplateOfItem.Font :=  SomeFont;
+  dbmTagsTemplate.Font := SomeFont;
+  dbmItemTagTemplate.Font :=  SomeFont;
+end;
+
+procedure TForm1.initFontsState();
+var
+   FontManager : TFontManager;
+begin
+  FontManager := TFontManager.Create();
+  setFontsToUI(FontManager.Font)
 
 end;
 
