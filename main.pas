@@ -48,6 +48,7 @@ type
     acSaveSpecialSettings: TAction;
     acRestoreSpecialSetting: TAction;
     acBuildSite: TAction;
+    acSetFont: TAction;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
     btnAttachTagToMaterial: TButton;
@@ -238,6 +239,8 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuSetFont: TMenuItem;
+    mnuInterface: TMenuItem;
     mnuBuildProject: TMenuItem;
     mnuProject: TMenuItem;
     mmDetails: TMemo;
@@ -496,6 +499,7 @@ type
     { Сохраняет специальные настройки программы}
     procedure acSaveSpecialSettingsExecute(Sender: TObject);
     procedure acBuildSiteExecute(Sender: TObject);
+    procedure acSetFontExecute(Sender: TObject);
 
     procedure AppPagesChange(Sender: TObject);
 
@@ -1189,6 +1193,9 @@ type
 
     {Сборка сайта, будет вызвано в действии}
     procedure actionBuildSite();
+
+    {Выбор шрифта}
+    procedure actionSetFont();
 
 
 
@@ -2125,6 +2132,11 @@ end;
 procedure TForm1.acBuildSiteExecute(Sender: TObject);
 begin
   actionBuildSite();
+end;
+
+procedure TForm1.acSetFontExecute(Sender: TObject);
+begin
+  actionSetFont();
 end;
 
 procedure TForm1.AppPagesChange(Sender: TObject);
@@ -5869,6 +5881,25 @@ begin
   mmRubrics.Lines.Add(FloatToStr(MilliSecondsBetween(start, stop)/1000));
 
   mmRubrics.Lines.Add('Обработано файлов: '+IntToStr(writer.last+1));
+
+end;
+
+procedure TForm1.actionSetFont();
+var
+  FontDialog: TFontDialog;
+begin
+
+  FontDialog := TFontDialog.Create(Self);
+  try
+    // Show the font dialog
+    if FontDialog.Execute then
+    begin
+      // Apply the selected font to the TDBMemo
+      fContent.Font.Assign(FontDialog.Font);
+    end;
+  finally
+    FontDialog.Free;
+  end;
 
 end;
 
