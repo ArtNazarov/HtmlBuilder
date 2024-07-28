@@ -2792,10 +2792,11 @@ object Form1: TForm1
             Width = 1590
             Align = alTop
             ItemHeight = 24
-            ItemIndex = 0
             Items.Strings = (
               'Русский - Russian'
               'Английский - English'
+              'Испанский - Spanish'
+              'Китайский - Chinese'
             )
             TabOrder = 2
             Text = 'Русский - Russian'
@@ -3640,6 +3641,9 @@ object Form1: TForm1
         object mnuSpanishLocale: TMenuItem
           Action = acSwitchToEspLocale
         end
+        object mnuChineseLocale: TMenuItem
+          Action = acSwitchToChLocale
+        end
       end
     end
   end
@@ -4040,6 +4044,10 @@ object Form1: TForm1
     object acSwitchToEspLocale: TAction
       Caption = 'Spanish'
       OnExecute = acSwitchToEspLocaleExecute
+    end
+    object acSwitchToChLocale: TAction
+      Caption = 'Chinese'
+      OnExecute = acSwitchToChLocaleExecute
     end
   end
   object ds_Tags: TDataSource
