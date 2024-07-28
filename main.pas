@@ -15,7 +15,7 @@ uses
   synaip, synsock, ftpsend, db_helpers, db_insertdemo, db_create_tables,
   replacers, editor_in_window, editor_css, editor_js, DateUtils, fgl, regexpr,
   types_for_app, selectorTagsPages, const_for_app, selectors_for_menu,
-  RenderHtml, httpsend,  storing_attachments, FontSettings; {Use Synaptic}
+  RenderHtml, httpsend,  storing_attachments, FontSettings, IniFiles; {Use Synaptic}
 
 
 
@@ -49,6 +49,8 @@ type
     acRestoreSpecialSetting: TAction;
     acBuildSite: TAction;
     acSetFont: TAction;
+    acSwitchToRusLocale: TAction;
+    acSwitchToEngLocale: TAction;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
     btnAttachTagToMaterial: TButton;
@@ -239,6 +241,9 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuRussianLocale: TMenuItem;
+    mnuEnglishLocale: TMenuItem;
+    mnuLocalizations: TMenuItem;
     mnuSetFont: TMenuItem;
     mnuInterface: TMenuItem;
     mnuBuildProject: TMenuItem;
@@ -500,6 +505,8 @@ type
     procedure acSaveSpecialSettingsExecute(Sender: TObject);
     procedure acBuildSiteExecute(Sender: TObject);
     procedure acSetFontExecute(Sender: TObject);
+    procedure acSwitchToEngLocaleExecute(Sender: TObject);
+    procedure acSwitchToRusLocaleExecute(Sender: TObject);
 
     procedure AppPagesChange(Sender: TObject);
 
@@ -1203,6 +1210,14 @@ type
     {Начальная установка шрифтов}
     procedure initFontsState();
 
+    {Загрузка перевода из INI файла}
+    procedure loadLocaleFromIni(FileName : String);
+
+    {Сохранение перевода в INI файл}
+    procedure saveLocaleToIni(FileName : String);
+
+
+
 
 
        end;
@@ -1226,6 +1241,9 @@ implementation
 { TForm1 }
 
 procedure TForm1.FormCreate(Sender: TObject);
+var
+   index : Integer;
+   Control : TControl;
 begin
   initFontsState();
   if not FileExists('special_settings.dat')  then
@@ -1273,6 +1291,9 @@ begin
 
   doScan();
   edPathToBuild.Text:=GetEnvironmentVariable('HOME')+'/mysite';
+
+
+
 end;
 
 procedure TForm1.lvTagsClick(Sender: TObject);
@@ -2143,6 +2164,16 @@ end;
 procedure TForm1.acSetFontExecute(Sender: TObject);
 begin
   actionSetFont();
+end;
+
+procedure TForm1.acSwitchToEngLocaleExecute(Sender: TObject);
+begin
+  localeEng();
+end;
+
+procedure TForm1.acSwitchToRusLocaleExecute(Sender: TObject);
+begin
+  localeRus();
 end;
 
 procedure TForm1.AppPagesChange(Sender: TObject);
@@ -3711,6 +3742,8 @@ begin
   tabWebServer.Caption := 'Веб-сервер';
   tabHelp.Caption := 'О программе';
   mmAbout.lines.LoadFromFile('russian_help.txt');
+  { translations from corresponding ini}
+  loadLocaleFromIni('ru_localization.ini');
 
 end;
 
@@ -3727,7 +3760,8 @@ begin
   tabWebServer.Caption := 'Web Server';
   tabHelp.Caption := 'About app';
   mmAbout.lines.LoadFromFile('english_help.txt');
-  { #todo :  need translation other ui elements }
+  { translations from corresponding ini}
+  loadLocaleFromIni('en_localization.ini');
 end;
 
 
@@ -5949,6 +5983,72 @@ begin
   setFontsToUI(FontManager.Font)
 
 end;
+
+{ #todo : Localization - loading from ini }
+procedure TForm1.loadLocaleFromIni(FileName: String);
+var
+  Ini: TIniFile;
+  Control: TControl;
+  CaptionValue: string;
+  index : Integer;
+ begin
+  Ini := TMemIniFile.Create(Filename);
+  try
+    // Loop through each control on the form
+    for index:=0 to self.ComponentCount-1 do begin
+      if Components[Index] is TControl then
+          if (Components[Index] is TButton) or (Components[Index] is TLabel) then
+            begin
+                  Control := TControl(Components[Index]);
+                  // Restore locale
+                   CaptionValue := Ini.ReadString('UI', Control.Name, Control.Caption);
+                   Control.Caption := CaptionValue; // Set the caption
+            end;
+    end; {for}
+    Ini.UpdateFile;
+  finally
+    Ini.Free;
+  end; {try}
+end;
+
+
+
+
+
+
+
+{ #todo : saving localization to ini }
+procedure TForm1.saveLocaleToIni(FileName: String);
+var
+  Ini: TMemIniFile;
+  Control: TControl;
+  index : Integer;
+begin
+  Ini := TMemIniFile.Create(Filename);
+  try
+    // Loop through each control on the form
+    for index:=0 to self.ComponentCount-1 do begin
+      if Components[Index] is TControl then
+          if (Components[Index] is TButton) or (Components[Index] is TLabel) then
+            begin
+                  Control := TControl(Components[Index]);
+                  // Save the caption to the INI file using the control name as the key
+                  Ini.WriteString('UI', Self.Components[index].Name, Control.Caption);
+            end;
+    end; {for}
+    Ini.UpdateFile;
+  finally
+    Ini.Free;
+  end; {try}
+end;
+
+
+
+
+
+
+
+
 
 
 
