@@ -3644,6 +3644,9 @@ object Form1: TForm1
         object mnuChineseLocale: TMenuItem
           Action = acSwitchToChLocale
         end
+        object mnuKoreanLocale: TMenuItem
+          Action = acSwitchToKoreanLocale
+        end
       end
     end
   end
@@ -4048,6 +4051,10 @@ object Form1: TForm1
     object acSwitchToChLocale: TAction
       Caption = 'Chinese'
       OnExecute = acSwitchToChLocaleExecute
+    end
+    object acSwitchToKoreanLocale: TAction
+      Caption = 'Korean'
+      OnExecute = acSwitchToKoreanLocaleExecute
     end
   end
   object ds_Tags: TDataSource

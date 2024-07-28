@@ -53,6 +53,7 @@ type
     acSwitchToEngLocale: TAction;
     acSwitchToEspLocale: TAction;
     acSwitchToChLocale: TAction;
+    acSwitchToKoreanLocale: TAction;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
     btnAttachTagToMaterial: TButton;
@@ -243,6 +244,7 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuKoreanLocale: TMenuItem;
     mnuChineseLocale: TMenuItem;
     mnuSpanishLocale: TMenuItem;
     mnuRussianLocale: TMenuItem;
@@ -512,6 +514,7 @@ type
     procedure acSwitchToChLocaleExecute(Sender: TObject);
     procedure acSwitchToEngLocaleExecute(Sender: TObject);
     procedure acSwitchToEspLocaleExecute(Sender: TObject);
+    procedure acSwitchToKoreanLocaleExecute(Sender: TObject);
     procedure acSwitchToRusLocaleExecute(Sender: TObject);
 
     procedure AppPagesChange(Sender: TObject);
@@ -953,6 +956,9 @@ type
 
     { Меняет интерфейс на китайский }
     procedure localeCn();
+
+    { Меняет интерфейс на корейский}
+    procedure localeKp();
 
     { Применяет к шаблону переключатель страниц }
     function Pager(layout: String; pages: String): String;
@@ -2193,6 +2199,11 @@ begin
   localeEsp();
 end;
 
+procedure TForm1.acSwitchToKoreanLocaleExecute(Sender: TObject);
+begin
+  localeKp();
+end;
+
 procedure TForm1.acSwitchToRusLocaleExecute(Sender: TObject);
 begin
   localeRus();
@@ -2337,6 +2348,7 @@ begin
        1  : LocaleENG();
        2  : LocaleESP();
        3  : LocaleCn();
+       4  : LocaleKp();
   end;
 end;
 
@@ -3796,6 +3808,11 @@ end;
 procedure TForm1.localeCn();
 begin
   loadLocaleFromIni('cn_localization.ini');
+end;
+
+procedure TForm1.localeKp();
+begin
+  loadLocaleFromIni('kp_localization.ini');
 end;
 
 

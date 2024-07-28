@@ -64,7 +64,7 @@ What's new / Что нового
 ((image_id))
 ```
 
-14. Translations to English, Spanish, Chinese / Переводы на английский, испанский, китайский
+14. Translations to English, Spanish, Chinese, Korean Munhwaŏ / Переводы на английский, испанский, китайский, корейский
 
 15. Storing attached documents in blob / Хранение прикрепленных документов
 Will placed in folder /files/
