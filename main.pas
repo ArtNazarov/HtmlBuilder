@@ -5996,8 +5996,16 @@ var
   try
     // Loop through each control on the form
     for index:=0 to self.ComponentCount-1 do begin
+      if Components[Index] is TMenuItem then begin
+
+                    (Self.Components[index] as TMenuItem).Caption:= Ini.ReadString('UI',
+                                                                    (Self.Components[index] as TMenuItem).Name,
+                                                                    (Self.Components[index] as TMenuItem).Caption);
+      end else
       if Components[Index] is TControl then
-          if (Components[Index] is TButton) or (Components[Index] is TLabel) then
+          if (Components[Index] is TButton) or (Components[Index] is TLabel) or
+             (Components[Index] is TTabSheet) or (Components[Index] is TMenuItem)
+                        then
             begin
                   Control := TControl(Components[Index]);
                   // Restore locale
@@ -6028,8 +6036,12 @@ begin
   try
     // Loop through each control on the form
     for index:=0 to self.ComponentCount-1 do begin
+      if Components[Index] is TMenuItem then begin
+                    Ini.WriteString('UI', Self.Components[index].Name, (Self.Components[index] as TMenuItem).Caption);
+      end else
       if Components[Index] is TControl then
-          if (Components[Index] is TButton) or (Components[Index] is TLabel) then
+          if (Components[Index] is TButton) or (Components[Index] is TLabel) or
+             (Components[Index] is TTabSheet) then
             begin
                   Control := TControl(Components[Index]);
                   // Save the caption to the INI file using the control name as the key
