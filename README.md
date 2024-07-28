@@ -5,7 +5,7 @@ Written in FreePascal/Lazarus generator of static html websites
 
 UI sample / Примерный вид интерфейса
 
-![Screen pages editor](https://htmlbuilder.onhalt.site/images/new_ui.png)
+![Screen pages editor](https://dl.dropboxusercontent.com/scl/fi/3xj9ex9tl2hmin1h6iiph/main_screen_new.png?rlkey=e3ij7tte6uyju2fbjt66yh7dn&st=o78x64zd)
 
 Built-in webserver / Встроенный веб-сервер
 
