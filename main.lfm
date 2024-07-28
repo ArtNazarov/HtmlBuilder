@@ -3637,6 +3637,9 @@ object Form1: TForm1
         object mnuEnglishLocale: TMenuItem
           Action = acSwitchToEngLocale
         end
+        object mnuSpanishLocale: TMenuItem
+          Action = acSwitchToEspLocale
+        end
       end
     end
   end
@@ -4033,6 +4036,10 @@ object Form1: TForm1
     object acSwitchToEngLocale: TAction
       Caption = 'English'
       OnExecute = acSwitchToEngLocaleExecute
+    end
+    object acSwitchToEspLocale: TAction
+      Caption = 'Spanish'
+      OnExecute = acSwitchToEspLocaleExecute
     end
   end
   object ds_Tags: TDataSource

@@ -51,6 +51,7 @@ type
     acSetFont: TAction;
     acSwitchToRusLocale: TAction;
     acSwitchToEngLocale: TAction;
+    acSwitchToEspLocale: TAction;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
     btnAttachTagToMaterial: TButton;
@@ -241,6 +242,7 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuSpanishLocale: TMenuItem;
     mnuRussianLocale: TMenuItem;
     mnuEnglishLocale: TMenuItem;
     mnuLocalizations: TMenuItem;
@@ -506,6 +508,7 @@ type
     procedure acBuildSiteExecute(Sender: TObject);
     procedure acSetFontExecute(Sender: TObject);
     procedure acSwitchToEngLocaleExecute(Sender: TObject);
+    procedure acSwitchToEspLocaleExecute(Sender: TObject);
     procedure acSwitchToRusLocaleExecute(Sender: TObject);
 
     procedure AppPagesChange(Sender: TObject);
@@ -941,6 +944,9 @@ type
 
     { Меняет интерфейс на английский }
     procedure localeENG();
+
+    { Меняет интерфейс на испанский }
+    procedure localeESP();
 
     { Применяет к шаблону переключатель страниц }
     function Pager(layout: String; pages: String): String;
@@ -2171,6 +2177,11 @@ begin
   localeEng();
 end;
 
+procedure TForm1.acSwitchToEspLocaleExecute(Sender: TObject);
+begin
+  localeEsp();
+end;
+
 procedure TForm1.acSwitchToRusLocaleExecute(Sender: TObject);
 begin
   localeRus();
@@ -2310,10 +2321,11 @@ end;
 
 procedure TForm1.cboLocaleChange(Sender: TObject);
 begin
-  if cboLocale.ItemIndex = 0 then
-    LocaleRUS()
-  else
-    LocaleENG();
+  case cboLocale.ItemIndex of
+       0  : LocaleRUS();
+       1  : LocaleENG();
+       2  : LocaleESP();
+  end;
 end;
 
 procedure TForm1.dbmSectionFullTextChange(Sender: TObject);
@@ -3762,6 +3774,11 @@ begin
   mmAbout.lines.LoadFromFile('english_help.txt');
   { translations from corresponding ini}
   loadLocaleFromIni('en_localization.ini');
+end;
+
+procedure TForm1.localeESP();
+begin
+  form1.loadLocaleFromIni('es_localization.ini');
 end;
 
 
