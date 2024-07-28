@@ -59,12 +59,14 @@ What's new / Что нового
 12. Writing builded files in separate threads / Запись собранных файлов в несколько потоков
 13. Storing images in sqlite3 blob and quick image links / Хранение иллюстраций в поле BLOB базы sqlite3
 и быстрые ссылки на изображения вида
-14. Translations to English and Spanish / Переводы на английский и испанский
+
 ```
 ((image_id))
 ```
 
-14. Storing attached documents in blob / Хранение прикрепленных документов
+14. Translations to English and Spanish / Переводы на английский и испанский
+
+15. Storing attached documents in blob / Хранение прикрепленных документов
 Will placed in folder /files/
 ```
 ||document_id||
