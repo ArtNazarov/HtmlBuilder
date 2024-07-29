@@ -96,10 +96,12 @@ Python endpoint https://github.com/ArtNazarov/htmlbuilder-python-bridge
 More info in / больше информации english_help / russian_help.txt 
 
 
-TODO / В планах
-=================
-1. Add RSS spider
-2. Make Linux packages
+Installation
+==============
+
+1) Install for Linux using [HtmlBuilder_installer](https://github.com/ArtNazarov/HtmlBuilder_installer)
+2) or download pre-release from [releases](https://github.com/ArtNazarov/HtmlBuilder/releases)
+
 
 Troubleshooting
 ================
