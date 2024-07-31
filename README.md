@@ -114,6 +114,12 @@ Install qt5pas
 ```
 yay -Sy qt5pas
 ```
+2. If running on Linux Mint 22 Wilma - should install libraries:
+
+```
+sudo apt-get install libqt5pas1
+sudo apt-get install libsqlite3-dev
+```
 
 Tests
 =====
