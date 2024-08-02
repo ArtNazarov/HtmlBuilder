@@ -120,6 +120,21 @@ yay -Sy qt5pas
 sudo apt-get install libqt5pas1
 sudo apt-get install libsqlite3-dev
 ```
+3. On RedOS should be installed shared libraries before compiling
+
+   ```
+sudo dnf install qt5pas
+sudo dnf install libcanberra-devel
+sudo dnf install libcanberra-gtk2
+sudo dnf install libcanberra-gtk3  
+sudo dnf install libcanberra 
+sudo dnf install qt5-qtbase-gui
+sudo dnf install qt5-qtbase-devel
+sudo dnf install lazarus-lcl-qt5
+sudo dnf install libsq3-devel
+   ```
+
+After installing libraries, open lpi file in Lazarus IDE and compile 
 
 Tests
 =====
