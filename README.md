@@ -133,6 +133,12 @@ sudo dnf install qt5-qtbase-devel
 sudo dnf install lazarus-lcl-qt5
 sudo dnf install libsq3-devel
 ```
+4. Compiling on MX Linux 23.3 Before installing Lazarus and fpc:
+
+   ```
+   sudo apt-get install libqt5pas-dev libqt5pas1
+   sudo apt-get install libsqlite3-0 libsqlite3-dev
+   ```
 
 After installing libraries, open lpi file in Lazarus IDE and compile 
 
