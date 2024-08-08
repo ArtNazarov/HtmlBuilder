@@ -24,7 +24,7 @@ Some articles / Некоторые статьи [blog](http://nazarow.ru/section
 
 Project / Проект
 ================
-Website in Russian / Сайт на русском 
+Website in Russian / Сайт на русском
 [HtmlBuilder project page](https://htmlbuilder.onhalt.site)
 
 Documentation for developers / Документация для разработчика
@@ -35,7 +35,7 @@ Blog with examples / Блог с примерами
 
 Usage / Использование
 ================
-Will be useful for creating websites hosted at P2P networks 
+Will be useful for creating websites hosted at P2P networks
 ( such Maelstrom, FreeNet, I2P etc ) or jamstack hostings
 like Vercel
 Может быть полезен для создания сайтов, используемых
@@ -70,7 +70,9 @@ What's new / Что нового
 Will placed in folder /files/
 ```
 ||document_id||
+
 ```
+16. Drag and drop files from file manager into templates / Перетаскивание файлов из файлового менеджера в шаблоны
 
 ![Attachments](https://htmlbuilder.onhalt.site/images/files_ui.png)
 
@@ -93,7 +95,7 @@ Docker image with NodeJs https://github.com/ArtNazarov/dockerbridgenodejs
 Python endpoint https://github.com/ArtNazarov/htmlbuilder-python-bridge
 
 
-More info in / больше информации english_help / russian_help.txt 
+More info in / больше информации english_help / russian_help.txt
 
 
 Installation
@@ -106,7 +108,7 @@ Installation
 Troubleshooting
 ================
 
-1. Error while loading shared libraries: libQt5Pas.so.1: 
+1. Error while loading shared libraries: libQt5Pas.so.1:
 cannot open shared object file: No such file or directory
 
 Install qt5pas
@@ -126,8 +128,8 @@ sudo apt-get install libsqlite3-dev
 sudo dnf install qt5pas
 sudo dnf install libcanberra-devel
 sudo dnf install libcanberra-gtk2
-sudo dnf install libcanberra-gtk3  
-sudo dnf install libcanberra 
+sudo dnf install libcanberra-gtk3
+sudo dnf install libcanberra
 sudo dnf install qt5-qtbase-gui
 sudo dnf install qt5-qtbase-devel
 sudo dnf install lazarus-lcl-qt5
@@ -140,7 +142,7 @@ sudo dnf install libsq3-devel
    sudo apt-get install libsqlite3-0 libsqlite3-dev
    ```
 
-After installing libraries, open lpi file in Lazarus IDE and compile 
+After installing libraries, open lpi file in Lazarus IDE and compile
 
 Tests
 =====

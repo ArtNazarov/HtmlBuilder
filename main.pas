@@ -595,9 +595,19 @@ type
 
     { Обработчик смены списка языка программы }
     procedure cboLocaleChange(Sender: TObject);
+    procedure dbeBlockHtmlEnter(Sender: TObject);
+    procedure dbmBodyPagesTemplateEnter(Sender: TObject);
+    procedure dbmBodySectionsTemplateEnter(Sender: TObject);
+    procedure dbmCssStyleEnter(Sender: TObject);
+    procedure dbmHeadTemplateEnter(Sender: TObject);
+    procedure dbmItemTagTemplateEnter(Sender: TObject);
+    procedure dbmJsScriptFileEnter(Sender: TObject);
 
     { Обработчик смены текста в полном описании раздела }
     procedure dbmSectionFullTextChange(Sender: TObject);
+    procedure dbmSectionFullTextEnter(Sender: TObject);
+    procedure dbmTagsTemplateEnter(Sender: TObject);
+    procedure dbmTemplateOfItemEnter(Sender: TObject);
     procedure dbNav_AttachmentsClick(Sender: TObject; Button: TDBNavButtonType);
     procedure dbNav_ImagesBeforeAction(Sender: TObject; Button: TDBNavButtonType
       );
@@ -619,6 +629,9 @@ type
       Button: TDBNavButtonType);
     procedure dbNav_SectionsBeforeAction(Sender: TObject;
       Button: TDBNavButtonType);
+    procedure fContentEnter(Sender: TObject);
+    procedure FormDropFiles(Sender: TObject; const FileNames: array of string);
+
 
 
     procedure lbFieldTypeClick(Sender: TObject);
@@ -761,6 +774,7 @@ type
   public
     { public declarations }
 
+    lastFocusedControl : TControl;
 
     { Имя файла, в котором хранится база }
     db_filename : String;
@@ -1238,6 +1252,8 @@ type
 
 
 
+
+
        end;
 
 
@@ -1263,6 +1279,7 @@ var
    index : Integer;
    Control : TControl;
 begin
+  LastFocusedControl := nil;
   initFontsState();
   if not FileExists('special_settings.dat')  then
       form1.SaveSpecialSettings('special_settings.dat')
@@ -2352,9 +2369,59 @@ begin
   end;
 end;
 
+procedure TForm1.dbeBlockHtmlEnter(Sender: TObject);
+begin
+  LastFocusedControl := dbeBlockHtml;
+end;
+
+procedure TForm1.dbmBodyPagesTemplateEnter(Sender: TObject);
+begin
+  LastFocusedControl := dbmBodyPagesTemplate;
+end;
+
+procedure TForm1.dbmBodySectionsTemplateEnter(Sender: TObject);
+begin
+  LastFocusedControl := dbmBodySectionsTemplate;
+end;
+
+procedure TForm1.dbmCssStyleEnter(Sender: TObject);
+begin
+  LastFocusedControl := dbmCssStyle;
+end;
+
+procedure TForm1.dbmHeadTemplateEnter(Sender: TObject);
+begin
+  LastFocusedControl := dbmHeadTemplate;
+end;
+
+procedure TForm1.dbmItemTagTemplateEnter(Sender: TObject);
+begin
+  LastFocusedControl := dbmItemTagTemplate;
+end;
+
+procedure TForm1.dbmJsScriptFileEnter(Sender: TObject);
+begin
+  LastFocusedControl := dbmJsScriptFile;
+end;
+
 procedure TForm1.dbmSectionFullTextChange(Sender: TObject);
 begin
 
+end;
+
+procedure TForm1.dbmSectionFullTextEnter(Sender: TObject);
+begin
+  LastFocusedControl := dbmSectionFullText;
+end;
+
+procedure TForm1.dbmTagsTemplateEnter(Sender: TObject);
+begin
+  LastFocusedControl := dbmTagsTemplate;
+end;
+
+procedure TForm1.dbmTemplateOfItemEnter(Sender: TObject);
+begin
+  LastFocusedControl :=  dbmTemplateOfItem;
 end;
 
 procedure TForm1.dbNav_AttachmentsClick(Sender: TObject;
@@ -2429,6 +2496,30 @@ begin
    trans.CommitRetaining;
   end;
 end;
+
+procedure TForm1.fContentEnter(Sender: TObject);
+begin
+  LastFocusedControl := fContent;
+end;
+
+procedure TForm1.FormDropFiles(Sender: TObject; const FileNames: array of string
+  );
+var
+  fileContent : TStringList;
+  addedText : String;
+  index  : Integer;
+begin
+  addedText := '';
+  fileContent := TStringList.Create();
+  for index:=Low(FileNames) to High(FileNames) do begin
+               fileContent.Clear;
+               fileContent.LoadFromFile(FileNames[index]);
+               addedText := addedText + fileContent.Text;
+  end;
+  if LastFocusedControl <> NIL then
+     (LastFocusedControl as tdbmemo).Text:=addedText;
+end;
+
 
 procedure TForm1.lbFieldTypeClick(Sender: TObject);
 begin
