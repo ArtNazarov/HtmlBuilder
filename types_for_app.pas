@@ -177,6 +177,16 @@ type
 
   end;
 
+  { TBufferHistoryRecord for representation info from SelectionHistory}
+   TBufferHistoryRecord = class(TObject)
+             key_buf : String;
+             value    : String;
+   end;
+   PBufferHistoryRecord = ^TBufferHistoryRecord;
+
+
+
+
 implementation
 
 end.
