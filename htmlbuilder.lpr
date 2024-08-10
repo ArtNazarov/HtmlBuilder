@@ -11,7 +11,7 @@ uses
   db_create_tables, replacers, editor_in_window, editor_css, editor_js,
   css_props_dlg, const_for_app, types_for_app, selectorTagsPages,
   selectors_for_menu, RenderHtml, AsyncQueue, storing_attachments, FontSettings,
-  selection_history_dialog;
+  selection_history_dialog, selection_history_manager;
 
 {$R *.res}
 

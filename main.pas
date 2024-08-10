@@ -16,7 +16,7 @@ uses
   replacers, editor_in_window, editor_css, editor_js, DateUtils, fgl, regexpr,
   types_for_app, selectorTagsPages, const_for_app, selectors_for_menu,
   RenderHtml, httpsend,  storing_attachments, FontSettings,
-  IniFiles, md5, selection_history_dialog; {Use Synaptic}
+  IniFiles, selection_history_dialog, selection_history_manager; {Use Synaptic}
 
 
 
@@ -785,8 +785,8 @@ type
   public
     { public declarations }
 
-    {Буфер обмена}
-    SelectionHistory : sdict;
+    {Менеджер буфера обмена}
+    SelectionHistoryManager  : TSelectionHistoryManager;
 
     {Последний получивший фокус элемент управления}
     lastFocusedControl : TControl;
@@ -1294,7 +1294,7 @@ var
    index : Integer;
    Control : TControl;
 begin
-  SelectionHistory := sdict.Create();
+  SelectionHistoryManager := TSelectionHistoryManager.Create();
 
   LastFocusedControl := nil;
   initFontsState();
@@ -2200,49 +2200,8 @@ begin
 end;
 
 procedure TForm1.acPasteTextExecute(Sender: TObject);
-var
-    dialog : TfrmSelectionHistory; // dialog from selection_history_dialog
-    key : String; // key for selection history map
-    cnt : Integer;  // count of items in history
-    index : Integer;  // current index for traverse Keys array
-    rec : TBufferHistoryRecord; // store key and value
-    prec : PBufferHistoryRecord; // pointer to object
-    Line, CharIndex : Integer;  // current line and char in tdbmemo
 begin
-     // set editing mode
-     if (lastFocusedControl as tdbMemo).DataSource.State <> dsEdit then
-        (lastFocusedControl as tdbMemo).DataSource.Edit;
-     dialog := TfrmSelectionHistory.Create(Self); // creates dialog
-
-     cnt := SelectionHistory.Count; // get count of items
-     for index:=0 to cnt - 1 do begin
-       key := SelectionHistory.Keys[index]; // get key
-       rec := TBufferHistoryRecord.Create(); // create object for storing info
-       rec.key_buf:=key; // save key
-       rec.value:= SelectionHistory.KeyData[key]; // save value
-       prec := @rec; // give address of object
-       dialog.lboSelectionHistory.AddItem(rec.value, TObject(prec)); // add item
-     end;
-     dialog.ShowModal; // show dialog
-     if dialog.ModalResult = mrOK then
-      begin
-
-
-  // Get the line number from the caret position (0-based)
-  Line := (lastFocusedControl as TDBMemo).CaretPos.Y;
-
-  // Get the character index of the start of the line
-  CharIndex := (lastFocusedControl as TDBMemo).CaretPos.X;
-
-  // Insert text
-            (lastFocusedControl as TDBMemo).Lines[Line] :=
-      Copy((lastFocusedControl as TDBMemo).Lines[Line], 1, CharIndex) +
-      dialog.InsertedText +
-      Copy((lastFocusedControl as TDBMemo).Lines[Line], CharIndex + 1,
-      Length((lastFocusedControl as TDBMemo).Lines[Line]) - CharIndex);
-    { #todo : Add moving caret }
-      end;
-     dialog.Free;
+   SelectionHistoryManager.Paste(lastFocusedControl);
 end;
 
 procedure TForm1.acRestoreSpecialSettingExecute(Sender: TObject);
@@ -2311,25 +2270,11 @@ begin
 end;
 
 procedure TForm1.acCutTextExecute(Sender: TObject);
-          var t : TDbMemo;
-             keyBuf : String;
+
+
 begin
 
-   // Set editing state in control
-   if (lastFocusedControl as tdbMemo).DataSource.State <> dsEdit then
-        (lastFocusedControl as tdbMemo).DataSource.Edit;
-
-       t := TDBMemo(form1.lastFocusedControl);
-
-         // Get the selected text from the TDBMemo
-        if Length(t.SelText) > 0 then
-        begin
-          // Add the selected text to the TStringList
-          keyBuf:=MD5Print(MD5String(t.SelText));  // compute key as md5
-          SelectionHistory.AddOrSetData(keyBuf, t.SelText); // upsert selected
-          // Cutting
-          t.SelText := '';
-        end;
+   SelectionHistoryManager.Cut(lastFocusedControl);
 
 end;
 
@@ -2895,7 +2840,7 @@ begin
   if ListenerSocket <> nil then ListenerSocket.Free;
   if ConnectionSocket <> nil then  ConnectionSocket.Free;
 
-  SelectionHistory.Free;
+  SelectionHistoryManager.Free;
 
 end;
 
