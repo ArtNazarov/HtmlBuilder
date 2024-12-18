@@ -1,5 +1,6 @@
 #!/bin/bash
 
 post_install() {
-    chown -R "$(whoami):$(whoami)" /opt/htmlbuilder
+    chmod -R 777 /opt/htmlbuilder
+    chown -R "$(id -un)" /opt/htmlbuilder
 }

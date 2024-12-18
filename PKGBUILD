@@ -28,9 +28,10 @@ source=("htmlbuilder.lpi" "htmlbuilder.lpr" "htmlbuilder.install" "asn1util.pas"
 
 install=htmlbuilder.install
 
+
 md5sums=('2f3b9d098de560079e9b51ea24e3fedf'
          'd5afd932dc498e4a61eec56a5379be3d'
-         'b5724b53a464ebedb570c52b44aa76fb'
+         'cda97082278438d1d28676c2f1ee8d7e'
          'c89a7ac8ed19cb6d1e9a51816dde38ad'
          '5f96e60bfab29dac681ff47a8be57006'
          '509d17adbc20b6b29958dc3e4a7ceed2'
@@ -125,6 +126,7 @@ md5sums=('2f3b9d098de560079e9b51ea24e3fedf'
 
 
 
+
 build() {
     cd "$srcdir"
     # Команды сборки вашего проекта
@@ -137,19 +139,19 @@ package() {
     # Исполняемый файл
     install -Dm755 htmlbuilder "$pkgdir/opt/htmlbuilder/htmlbuilder"  # Установка бинарного файла
     # Локализации
-    install -Dm755 cn_localization.ini "$pkgdir/opt/htmlbuilder/cn_localization.ini"
-    install -Dm755 en_localization.ini "$pkgdir/opt/htmlbuilder/en_localization.ini"
-    install -Dm755 ru_localization.ini "$pkgdir/opt/htmlbuilder/ru_localization.ini"
-    install -Dm755 kp_localization.ini "$pkgdir/opt/htmlbuilder/kp_localization.ini"
-    install -Dm755 es_localization.ini "$pkgdir/opt/htmlbuilder/es_localization.ini"
-    install -Dm755 css3-props-all.txt  "$pkgdir/opt/htmlbuilder/css3-props-all.txt"
+    install -Dm766 cn_localization.ini "$pkgdir/opt/htmlbuilder/cn_localization.ini"
+    install -Dm766 en_localization.ini "$pkgdir/opt/htmlbuilder/en_localization.ini"
+    install -Dm766 ru_localization.ini "$pkgdir/opt/htmlbuilder/ru_localization.ini"
+    install -Dm766 kp_localization.ini "$pkgdir/opt/htmlbuilder/kp_localization.ini"
+    install -Dm766 es_localization.ini "$pkgdir/opt/htmlbuilder/es_localization.ini"
+    install -Dm766 css3-props-all.txt  "$pkgdir/opt/htmlbuilder/css3-props-all.txt"
     # Справка
-    install -Dm755 english_help.txt  "$pkgdir/opt/htmlbuilder/english_help.txt"
-    install -Dm755 russian_help.txt  "$pkgdir/opt/htmlbuilder/russian_help.txt"
+    install -Dm766 english_help.txt  "$pkgdir/opt/htmlbuilder/english_help.txt"
+    install -Dm766 russian_help.txt  "$pkgdir/opt/htmlbuilder/russian_help.txt"
     # SQL запросы
-    install -Dm755 sql_tags_for_all.txt "$pkgdir/opt/htmlbuilder/sql_tags_for_all.txt"
-    install -Dm755  sql_pages_by_tag.txt  "$pkgdir/opt/htmlbuilder/sql_pages_by_tag.txt"
-    install -Dm755  sql_tags_for_page.txt "$pkgdir/opt/htmlbuilder/sql_tags_for_page.txt"
+    install -Dm766 sql_tags_for_all.txt "$pkgdir/opt/htmlbuilder/sql_tags_for_all.txt"
+    install -Dm766  sql_pages_by_tag.txt  "$pkgdir/opt/htmlbuilder/sql_pages_by_tag.txt"
+    install -Dm766  sql_tags_for_page.txt "$pkgdir/opt/htmlbuilder/sql_tags_for_page.txt"
     # Шрифты
-    install -Dm755 fonts.ini "$pkgdir/opt/htmlbuilder/fonts.ini"
+    install -Dm766 fonts.ini "$pkgdir/opt/htmlbuilder/fonts.ini"
 }
