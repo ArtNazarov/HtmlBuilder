@@ -17,7 +17,7 @@ uses
   types_for_app, selectorTagsPages, const_for_app, selectors_for_menu,
   RenderHtml, httpsend,  storing_attachments, FontSettings,
   IniFiles, selection_history_dialog, selection_history_manager,
-  emoji_shortcodes; {Use Synaptic}
+  emoji_shortcodes, func_str_composition; {Use Synaptic}
 
 
 
@@ -1263,6 +1263,9 @@ type
 
     {Сохранение перевода в INI файл}
     procedure saveLocaleToIni(FileName : String);
+
+    {Применение эмодзи}
+    function useEmojies(s: String): String;
 
 
 
@@ -4571,7 +4574,7 @@ var
   t : String;
   Rnr : Render;
 
-
+  Pipeline : TFuncStrArray;
 
 begin
  Rnr:=Render.Create;
@@ -4605,21 +4608,20 @@ begin
      // постобработка
 
 
+     ComposeStrFunc( Pipeline, @useEmojies);
+     ComposeStrFunc( Pipeline, @useAttachments);
+     ComposeStrFunc( Pipeline, @useImages);
+     ComposeStrFunc( Pipeline, @remotes_urls);
+     ComposeStrFunc( Pipeline, @useMenus);
+     ComposeStrFunc( Pipeline, @useModules);
+     ComposeStrFunc( Pipeline, @useOwnTags);
+     ComposeStrFunc( Pipeline, @insertSectionsAndLinks);
+     ComposeStrFunc( Pipeline, @useBlocks);
 
-     Buffer.Lines.Text :=
-                       useEmojies(
-                       useAttachments(
-                       useImages(
-                       remotes_urls(
-                       useMenus(
-                       useModules(
-                       useOwnTags(
-                       buildOwnFields(
-                       insertSectionsAndLinks(
-                       useBlocks(
-                                 buffer.Lines.Text)
-                                 ),
-                                        page))))))));
+
+     Buffer.Lines.Text := buildOwnFields(buffer.Lines.Text, page);
+
+     Buffer.Lines.Text :=  ApplyStringFunctions(Buffer.Lines.Text, Pipeline);
 
      // add custom columns with prefix custom_
      Buffer.Lines.Text:=useCustomFields( Buffer.Lines.Text, page.id);
@@ -6247,6 +6249,14 @@ begin
   finally
     Ini.Free;
   end; {try}
+end;
+
+function TForm1.useEmojies(s: String): String;
+var
+  emojies : TEmojiShortCodesArray;
+begin
+  emojies := getEmojiShortCodes();
+  Result := withEmojies(s, emojies);
 end;
 
 

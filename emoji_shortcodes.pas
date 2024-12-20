@@ -10,7 +10,7 @@ uses
 { Gets all available shortcodes }
 function getEmojiShortCodes() : TEmojiShortCodesArray;
 { Applying emojis to html text }
-function useEmojies(text : String) : String;
+function withEmojies(text : String; var emojiArray : TEmojiShortCodesArray ) : String;
 
 implementation
 
@@ -45,9 +45,8 @@ begin
 end;
 
 { Функция для применения эмодзи к тексту }
-function useEmojies(text: String): String;
+function withEmojies(text: String; var emojiArray : TEmojiShortCodesArray ): String;
 var
-  emojiArray: TEmojiShortCodesArray;
   i: Integer;
 begin
   emojiArray := getEmojiShortCodes(); // Получаем массив коротких кодов

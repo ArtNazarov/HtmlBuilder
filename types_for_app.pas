@@ -193,6 +193,15 @@ type
    { TEmojiShortCodesArray for representation dynamic array of shortcodes }
    TEmojiShortCodesArray = Array Of TEmojiShortCode;
 
+   { String function }
+   TFuncStr = function(s: String): String of object;
+
+
+
+
+   {Array of string functions}
+   TFuncStrArray = Array of TFuncStr;
+
 
 
 
