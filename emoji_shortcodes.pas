@@ -1,17 +1,16 @@
 unit emoji_shortcodes;
-(* Module for generation emojies *)
+(* Module for generation emojis *)
 {$mode ObjFPC}{$H+}
 
 interface
 
 uses
-  Classes, SysUtils, types_for_app;
+  Classes, SysUtils, fpjson, jsonparser, types_for_app;
 
 { Gets all available shortcodes }
 function getEmojiShortCodes() : TEmojiShortCodesArray;
-{ Applying emojies to html text }
+{ Applying emojis to html text }
 function useEmojies(text : String) : String;
-
 
 implementation
 
@@ -19,17 +18,30 @@ implementation
 function getEmojiShortCodes(): TEmojiShortCodesArray;
 var
   arr: TEmojiShortCodesArray;
+  jsonData: TStringList;
+  jsonObject: TJSONData;
+  emojiArray: TJSONArray;
+  i: Integer;
 begin
-  SetLength(arr, 2); // Задаем размер массива
+  jsonData := TStringList.Create;
+  try
+    jsonData.LoadFromFile('emojis.json'); // Загружаем JSON файл
+    jsonObject := GetJSON(jsonData.Text);
+    emojiArray := jsonObject.FindPath('emojis') as TJSONArray;
 
-  // Заполняем массив короткими кодами и соответствующими эмодзи
-  arr[0].shortcode := ':joy:';
-  arr[0].utf8symbol := '😂'; // Эмодзи "Смеющийся до слез"
+    SetLength(arr, emojiArray.Count); // Задаем размер массива согласно количеству эмодзи
 
-  arr[1].shortcode := ':smile:';
-  arr[1].utf8symbol := '😄'; // Эмодзи "Улыбающееся лицо"
+    // Заполняем массив короткими кодами и соответствующими эмодзи
+    for i := 0 to emojiArray.Count - 1 do
+    begin
+      arr[i].shortcode := emojiArray[i].FindPath('shortname').Value; // Получаем короткий код
+      arr[i].utf8symbol := emojiArray[i].FindPath('emoji').Value; // Получаем символ эмодзи
+    end;
 
-  Result := arr; // Возвращаем массив коротких кодов
+    Result := arr; // Возвращаем массив коротких кодов
+  finally
+    jsonData.Free;
+  end;
 end;
 
 { Функция для применения эмодзи к тексту }
