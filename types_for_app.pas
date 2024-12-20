@@ -184,6 +184,15 @@ type
    end;
    PBufferHistoryRecord = ^TBufferHistoryRecord;
 
+   { TEmojiShortCode for representation pair emoji and it shortcode }
+   TEmojiShortCode = record
+             shortcode : String;
+             utf8symbol : String;
+   end;
+
+   { TEmojiShortCodesArray for representation dynamic array of shortcodes }
+   TEmojiShortCodesArray = Array Of TEmojiShortCode;
+
 
 
 

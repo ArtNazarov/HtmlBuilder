@@ -16,7 +16,8 @@ uses
   replacers, editor_in_window, editor_css, editor_js, DateUtils, fgl, regexpr,
   types_for_app, selectorTagsPages, const_for_app, selectors_for_menu,
   RenderHtml, httpsend,  storing_attachments, FontSettings,
-  IniFiles, selection_history_dialog, selection_history_manager; {Use Synaptic}
+  IniFiles, selection_history_dialog, selection_history_manager,
+  emoji_shortcodes; {Use Synaptic}
 
 
 
@@ -4602,19 +4603,24 @@ begin
 
 
      // постобработка
+
+
+
      Buffer.Lines.Text :=
-               useAttachments(
-                    useImages(
+                       useEmojies(
+                       useAttachments(
+                       useImages(
                        remotes_urls(
-                              useMenus(
-                               useModules(
-                                useOwnTags(
-                                    buildOwnFields(
-                                           insertSectionsAndLinks(
-                                                  useBlocks(
-                                                             buffer.Lines.Text)
-                                                    ),
-                                        page)))))));
+                       useMenus(
+                       useModules(
+                       useOwnTags(
+                       buildOwnFields(
+                       insertSectionsAndLinks(
+                       useBlocks(
+                                 buffer.Lines.Text)
+                                 ),
+                                        page))))))));
+
      // add custom columns with prefix custom_
      Buffer.Lines.Text:=useCustomFields( Buffer.Lines.Text, page.id);
 
