@@ -84,6 +84,8 @@ Will placed in folder /files/
 
 ![Example4](https://htmlbuilder.onhalt.site/images/images4_demo.png)
 
+17. Emojies by shortcodes / Эмодзи по шорткодам
+
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
 
 Docker image with PHP https://github.com/ArtNazarov/dockerbridgephp
