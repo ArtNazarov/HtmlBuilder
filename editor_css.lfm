@@ -929,15 +929,19 @@ object frmEditorCss: TfrmEditorCss
       Caption = 'Выравнивание текста'
       object mnuTextAlignLeft: TMenuItem
         Action = acTextAlignLeft
+        ShortCut = 16460
       end
       object mnuTextAlignCenter: TMenuItem
         Action = acTextAlignCenter
+        ShortCut = 16453
       end
       object mnuTextAlignRight: TMenuItem
         Action = acTextAlignRight
+        ShortCut = 16466
       end
       object mnuTextAlignJustify: TMenuItem
         Action = acTextAlignJustify
+        ShortCut = 16458
       end
     end
     object mnuFontProperties: TMenuItem

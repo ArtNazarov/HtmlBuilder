@@ -95,7 +95,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="61"/>
         <CursorPos Y="69"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="197"/>
       </Unit8>
       <Unit9>
         <Filename Value="css_props_dlg.pas"/>
@@ -105,7 +105,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="5" Y="17"/>
-        <UsageCount Value="185"/>
+        <UsageCount Value="186"/>
       </Unit9>
       <Unit10>
         <Filename Value="sitemap_thread.pas"/>
@@ -113,7 +113,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos X="18" Y="36"/>
-        <UsageCount Value="178"/>
+        <UsageCount Value="179"/>
       </Unit10>
       <Unit11>
         <Filename Value="selectortagspages.pas"/>
@@ -122,7 +122,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="134"/>
         <CursorPos X="10" Y="33"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="142"/>
       </Unit11>
       <Unit12>
         <Filename Value="types_for_app.pas"/>
@@ -130,28 +130,28 @@
         <EditorIndex Value="3"/>
         <TopLine Value="186"/>
         <CursorPos X="53" Y="197"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="142"/>
         <Loaded Value="True"/>
       </Unit12>
       <Unit13>
         <Filename Value="const_for_app.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="142"/>
       </Unit13>
       <Unit14>
         <Filename Value="sql_tags_for_all.txt"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="20"/>
-        <UsageCount Value="139"/>
+        <UsageCount Value="140"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit14>
       <Unit15>
         <Filename Value="sql_tags_for_page.txt"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="137"/>
+        <UsageCount Value="138"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit15>
       <Unit16>
@@ -159,7 +159,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="35" Y="10"/>
-        <UsageCount Value="137"/>
+        <UsageCount Value="138"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit16>
       <Unit17>
@@ -167,7 +167,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="62"/>
-        <UsageCount Value="103"/>
+        <UsageCount Value="104"/>
       </Unit17>
       <Unit18>
         <Filename Value="renderhtml.pas"/>
@@ -176,7 +176,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos X="3" Y="16"/>
-        <UsageCount Value="100"/>
+        <UsageCount Value="101"/>
       </Unit18>
       <Unit19>
         <Filename Value="asyncqueue.pas"/>
@@ -185,7 +185,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="94"/>
         <CursorPos X="15" Y="104"/>
-        <UsageCount Value="77"/>
+        <UsageCount Value="78"/>
       </Unit19>
       <Unit20>
         <Filename Value="storing_attachments.pas"/>
@@ -193,7 +193,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="8"/>
         <CursorPos X="74" Y="37"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="52"/>
       </Unit20>
       <Unit21>
         <Filename Value="fontsettings.pas"/>
@@ -202,7 +202,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="18"/>
         <CursorPos X="30" Y="35"/>
-        <UsageCount Value="45"/>
+        <UsageCount Value="46"/>
       </Unit21>
       <Unit22>
         <Filename Value="selection_history_dialog.pas"/>
@@ -213,7 +213,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos X="25" Y="24"/>
-        <UsageCount Value="32"/>
+        <UsageCount Value="33"/>
       </Unit22>
       <Unit23>
         <Filename Value="selection_history_manager.pas"/>
@@ -221,7 +221,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="26"/>
         <CursorPos X="23" Y="48"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="29"/>
       </Unit23>
       <Unit24>
         <Filename Value="emoji_shortcodes.pas"/>
@@ -229,7 +229,7 @@
         <EditorIndex Value="4"/>
         <TopLine Value="7"/>
         <CursorPos X="28" Y="11"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="27"/>
         <Loaded Value="True"/>
       </Unit24>
       <Unit25>
@@ -238,7 +238,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="16"/>
         <CursorPos X="30" Y="16"/>
-        <UsageCount Value="24"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit25>
       <Unit26>
