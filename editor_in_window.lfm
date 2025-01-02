@@ -960,6 +960,12 @@ object frmEditor: TfrmEditor
       object mnuInputCheckbox: TMenuItem
         Action = acInputCheckbox
       end
+      object mnuInputRadio: TMenuItem
+        Action = acInputRadio
+      end
+      object mnuInputHidden: TMenuItem
+        Action = acInputHidden
+      end
     end
     object mnuContent: TMenuItem
       Caption = 'Содержание'
@@ -1057,6 +1063,14 @@ object frmEditor: TfrmEditor
     object acInputCheckbox: TAction
       Caption = 'Чекбокс'
       OnExecute = acInputCheckboxExecute
+    end
+    object acInputRadio: TAction
+      Caption = 'Радиопереключатель'
+      OnExecute = acInputRadioExecute
+    end
+    object acInputHidden: TAction
+      Caption = 'Скрытое поле'
+      OnExecute = acInputHiddenExecute
     end
   end
   object SynCompletion1: TSynCompletion

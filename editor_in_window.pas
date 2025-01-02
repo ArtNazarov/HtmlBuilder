@@ -35,6 +35,8 @@ type
     acInputText: TAction;
     acInputPassword: TAction;
     acInputCheckbox: TAction;
+    acInputRadio: TAction;
+    acInputHidden: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -71,6 +73,8 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuInputRadio: TMenuItem;
+    mnuInputHidden: TMenuItem;
     mnuInputCheckbox: TMenuItem;
     mnuInputPassword: TMenuItem;
     mnuVideoSource: TMenuItem;
@@ -115,7 +119,9 @@ type
     procedure acDocSectionExecute(Sender: TObject);
     procedure acDocSideExecute(Sender: TObject);
     procedure acInputCheckboxExecute(Sender: TObject);
+    procedure acInputHiddenExecute(Sender: TObject);
     procedure acInputPasswordExecute(Sender: TObject);
+    procedure acInputRadioExecute(Sender: TObject);
     procedure acInputTextExecute(Sender: TObject);
     procedure acMainTagExecute(Sender: TObject);
     procedure acNewFormExecute(Sender: TObject);
@@ -310,9 +316,19 @@ begin
   tagX('input', 'type="checkbox" name="vname" checked');
 end;
 
+procedure TfrmEditor.acInputHiddenExecute(Sender: TObject);
+begin
+    tagX('input', 'type="hidden" name="vname" value="defvalue"');
+end;
+
 procedure TfrmEditor.acInputPasswordExecute(Sender: TObject);
 begin
   tagX('input', 'type="password" name="vname" size="10" maxlength="40" value="defval"');
+end;
+
+procedure TfrmEditor.acInputRadioExecute(Sender: TObject);
+begin
+     tagX('input', 'type="radio" name="vname"');
 end;
 
 procedure TfrmEditor.acInputTextExecute(Sender: TObject);
