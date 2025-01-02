@@ -3,7 +3,7 @@ object frmEditorCss: TfrmEditorCss
   Height = 541
   Top = 204
   Width = 1064
-  Caption = 'frmEditorCss'
+  Caption = 'Редактор стилей CSS'
   ClientHeight = 541
   ClientWidth = 1064
   Menu = mnuCssEditor

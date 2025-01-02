@@ -658,6 +658,11 @@ object frmEditorJs: TfrmEditorJs
       end
       object mnuForKeyIn: TMenuItem
         Action = acForKeyInLoop
+        ShortCut = 16459
+      end
+      object mnuForValueOfIterable: TMenuItem
+        Action = acForValueOfIterable
+        ShortCut = 16463
       end
     end
   end
@@ -675,6 +680,10 @@ object frmEditorJs: TfrmEditorJs
     object acForKeyInLoop: TAction
       Caption = 'Цикл for key in'
       OnExecute = acForKeyInLoopExecute
+    end
+    object acForValueOfIterable: TAction
+      Caption = 'цикл for value of'
+      OnExecute = acForValueOfIterableExecute
     end
   end
 end

@@ -20,8 +20,10 @@ type
     acDecisionIfElse: TAction;
     aclJsEditorActions: TActionList;
     acForKeyInLoop: TAction;
+    acForValueOfIterable: TAction;
     btnClose: TButton;
     btnAddFunction: TButton;
+    mnuForValueOfIterable: TMenuItem;
     mnuForKeyIn: TMenuItem;
     mmJsEditorMenu: TMainMenu;
     mnuStatements: TMenuItem;
@@ -41,6 +43,7 @@ type
     { Handles click of btnClose }
     procedure acDecisionIfElseExecute(Sender: TObject);
     procedure acForKeyInLoopExecute(Sender: TObject);
+    procedure acForValueOfIterableExecute(Sender: TObject);
     procedure acNewJsFunctionExecute(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -94,6 +97,11 @@ end;
 procedure TfrmEditorJs.acForKeyInLoopExecute(Sender: TObject);
 begin
   editor.InsertTextAtCaret('for (let key in object) {}');
+end;
+
+procedure TfrmEditorJs.acForValueOfIterableExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('for (let value of iterable) {}');
 end;
 
 
