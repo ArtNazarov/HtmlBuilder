@@ -40,6 +40,8 @@ type
     acTextDecorationLineStrikeThrough: TAction;
     acTextDecorationLineOverline: TAction;
     acTextDecorationLineUnderline: TAction;
+    acSuperScript: TAction;
+    acSubScript: TAction;
     btnClose: TButton;
     btnAddClass: TButton;
     btnAddId: TButton;
@@ -47,6 +49,9 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
+    mnuSuperscript: TMenuItem;
+    mnuSubscript: TMenuItem;
+    mnuIndexes: TMenuItem;
     mnuOverline: TMenuItem;
     mnuStrikeThrough: TMenuItem;
     mnuUnderline: TMenuItem;
@@ -95,6 +100,8 @@ type
     procedure acPositionFixedExecute(Sender: TObject);
     procedure acPositionRelativeExecute(Sender: TObject);
     procedure acPositionStickyExecute(Sender: TObject);
+    procedure acSubScriptExecute(Sender: TObject);
+    procedure acSuperScriptExecute(Sender: TObject);
     procedure acTextAlignCenterExecute(Sender: TObject);
     procedure acTextAlignJustifyExecute(Sender: TObject);
     procedure acTextAlignLeftExecute(Sender: TObject);
@@ -112,6 +119,7 @@ type
     { handles click of btnClose }
     procedure btnCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+
 
     { handles autocompletion for css }
     procedure SynCompletion1CodeCompletion(var Value: string;
@@ -150,6 +158,8 @@ begin
      editor.Font := FontManager.Font;
      FontManager.Free;
 end;
+
+
 
 procedure TfrmEditorCss.SynCompletion1CodeCompletion(var Value: string;
   SourceValue: string; var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char;
@@ -296,6 +306,16 @@ end;
 procedure TfrmEditorCss.acPositionStickyExecute(Sender: TObject);
 begin
   editor.InsertTextAtCaret('position : sticky;');
+end;
+
+procedure TfrmEditorCss.acSubScriptExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('font-size: smaller; vertical-align: sub;');
+end;
+
+procedure TfrmEditorCss.acSuperScriptExecute(Sender: TObject);
+begin
+   editor.InsertTextAtCaret('font-size: smaller; vertical-align: super;');
 end;
 
 procedure TfrmEditorCss.acTextAlignJustifyExecute(Sender: TObject);

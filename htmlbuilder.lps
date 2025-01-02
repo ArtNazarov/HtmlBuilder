@@ -28,6 +28,7 @@
           <TopLine Value="1376"/>
           <CursorPos X="67" Y="1378"/>
         </ExtraEditor1>
+        <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -80,8 +81,9 @@
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="316"/>
-        <CursorPos X="67" Y="324"/>
+        <TopLine Value="310"/>
+        <CursorPos X="30" Y="318"/>
+        <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -435,123 +437,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="228" Column="46" TopLine="211"/>
+        <Caret Line="222" Column="38" TopLine="220"/>
       </Position1>
       <Position2>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="229" Column="46" TopLine="212"/>
+        <Caret Line="223" Column="38" TopLine="221"/>
       </Position2>
       <Position3>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="230" Column="46" TopLine="213"/>
+        <Caret Line="224" Column="38" TopLine="222"/>
       </Position3>
       <Position4>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="237" Column="46" TopLine="220"/>
+        <Caret Line="225" Column="38" TopLine="223"/>
       </Position4>
       <Position5>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="218" Column="37" TopLine="216"/>
+        <Caret Line="227" Column="86" TopLine="224"/>
       </Position5>
       <Position6>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="229" Column="32" TopLine="217"/>
+        <Caret Line="228" Column="86" TopLine="225"/>
       </Position6>
       <Position7>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="230" Column="34" TopLine="223"/>
+        <Caret Line="229" Column="86" TopLine="226"/>
       </Position7>
       <Position8>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="220" Column="38" TopLine="218"/>
+        <Caret Line="236" Column="86" TopLine="233"/>
       </Position8>
       <Position9>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="221" Column="38" TopLine="219"/>
+        <Caret Line="231" Column="59" TopLine="229"/>
       </Position9>
       <Position10>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="222" Column="38" TopLine="220"/>
+        <Caret Line="237" Column="51" TopLine="230"/>
       </Position10>
       <Position11>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="223" Column="38" TopLine="221"/>
+        <Caret Line="243" Column="49" TopLine="231"/>
       </Position11>
       <Position12>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="224" Column="38" TopLine="222"/>
+        <Caret Line="248" Column="50" TopLine="231"/>
       </Position12>
       <Position13>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="225" Column="38" TopLine="223"/>
+        <Caret Line="249" Column="50" TopLine="232"/>
       </Position13>
       <Position14>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="227" Column="86" TopLine="224"/>
+        <Caret Line="250" Column="50" TopLine="233"/>
       </Position14>
       <Position15>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="228" Column="86" TopLine="225"/>
+        <Caret Line="251" Column="50" TopLine="234"/>
       </Position15>
       <Position16>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="229" Column="86" TopLine="226"/>
+        <Caret Line="252" Column="50" TopLine="235"/>
       </Position16>
       <Position17>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="236" Column="86" TopLine="233"/>
+        <Caret Line="253" Column="50" TopLine="236"/>
       </Position17>
       <Position18>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="231" Column="59" TopLine="229"/>
+        <Caret Line="254" Column="50" TopLine="237"/>
       </Position18>
       <Position19>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="237" Column="51" TopLine="230"/>
+        <Caret Line="256" Column="50" TopLine="239"/>
       </Position19>
       <Position20>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="243" Column="49" TopLine="231"/>
+        <Caret Line="317" TopLine="317"/>
       </Position20>
       <Position21>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="248" Column="50" TopLine="231"/>
+        <Caret Line="318" Column="63" TopLine="316"/>
       </Position21>
       <Position22>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="249" Column="50" TopLine="232"/>
+        <Caret Line="324" Column="67" TopLine="316"/>
       </Position22>
       <Position23>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="250" Column="50" TopLine="233"/>
+        <Caret Line="325" Column="67" TopLine="317"/>
       </Position23>
       <Position24>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="251" Column="50" TopLine="234"/>
+        <Caret Line="332" Column="67" TopLine="324"/>
       </Position24>
       <Position25>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="252" Column="50" TopLine="235"/>
+        <Caret Line="157" Column="2" TopLine="157"/>
       </Position25>
       <Position26>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="253" Column="50" TopLine="236"/>
+        <Caret Line="117" Column="6" TopLine="106"/>
       </Position26>
       <Position27>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="254" Column="50" TopLine="237"/>
+        <Caret Line="118" Column="6" TopLine="107"/>
       </Position27>
       <Position28>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="256" Column="50" TopLine="239"/>
+        <Caret Line="119" Column="6" TopLine="108"/>
       </Position28>
       <Position29>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="317" TopLine="317"/>
+        <Caret Line="121" Column="6" TopLine="110"/>
       </Position29>
       <Position30>
         <Filename Value="editor_css.pas"/>
-        <Caret Line="318" Column="63" TopLine="316"/>
+        <Caret Line="313" Column="4" TopLine="310"/>
       </Position30>
     </JumpHistory>
     <RunParams>

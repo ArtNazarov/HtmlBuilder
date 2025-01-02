@@ -950,6 +950,14 @@ object frmEditorCss: TfrmEditorCss
       Caption = 'Перечеркнутый'
       OnExecute = acTextDecorationLineStrikeThroughExecute
     end
+    object acSuperScript: TAction
+      Caption = 'Верхний индекс'
+      OnExecute = acSuperScriptExecute
+    end
+    object acSubScript: TAction
+      Caption = 'Нижний индекс'
+      OnExecute = acSubScriptExecute
+    end
   end
   object mnuCssEditor: TMainMenu
     Left = 601
@@ -980,6 +988,15 @@ object frmEditorCss: TfrmEditorCss
         end
         object mnuUnderline: TMenuItem
           Action = acTextDecorationLineUnderline
+        end
+      end
+      object mnuIndexes: TMenuItem
+        Caption = 'Индексы'
+        object mnuSuperscript: TMenuItem
+          Action = acSuperScript
+        end
+        object mnuSubscript: TMenuItem
+          Action = acSubScript
         end
       end
     end
