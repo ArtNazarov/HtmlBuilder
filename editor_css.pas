@@ -33,6 +33,10 @@ type
     acOffsetTop: TAction;
     acOffsetRight: TAction;
     acOffsetBottom: TAction;
+    acFontStyleItalic: TAction;
+    acFontStyleOblique: TAction;
+    acFontWeightBold: TAction;
+    acFontWeightLight: TAction;
     btnClose: TButton;
     btnAddClass: TButton;
     btnAddId: TButton;
@@ -40,6 +44,11 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
+    mnuItalic: TMenuItem;
+    mnuOblique: TMenuItem;
+    mnuBold: TMenuItem;
+    mnuLight: TMenuItem;
+    mnuDecorations: TMenuItem;
     mnuBottomOffset: TMenuItem;
     mnuOffsets: TMenuItem;
     mnuPositionSticky: TMenuItem;
@@ -67,6 +76,10 @@ type
     { handles click of btnAddClass }
     procedure acBackgroundColorExecute(Sender: TObject);
     procedure acFontFamilyExecute(Sender: TObject);
+    procedure acFontStyleItalicExecute(Sender: TObject);
+    procedure acFontStyleObliqueExecute(Sender: TObject);
+    procedure acFontWeightBoldExecute(Sender: TObject);
+    procedure acFontWeightLightExecute(Sender: TObject);
     procedure acOffsetBottomExecute(Sender: TObject);
     procedure acOffsetLeftExecute(Sender: TObject);
     procedure acOffsetRightExecute(Sender: TObject);
@@ -213,6 +226,26 @@ end;
 procedure TfrmEditorCss.acFontFamilyExecute(Sender: TObject);
 begin
   editor.InsertTextAtCaret('font-family : serif;');
+end;
+
+procedure TfrmEditorCss.acFontStyleItalicExecute(Sender: TObject);
+begin
+     editor.InsertTextAtCaret('font-style : italic;');
+end;
+
+procedure TfrmEditorCss.acFontStyleObliqueExecute(Sender: TObject);
+begin
+    editor.InsertTextAtCaret('font-style : oblique;');
+end;
+
+procedure TfrmEditorCss.acFontWeightBoldExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('font-weight : bold;');
+end;
+
+procedure TfrmEditorCss.acFontWeightLightExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('font-weight : lighter;');
 end;
 
 procedure TfrmEditorCss.acOffsetBottomExecute(Sender: TObject);
