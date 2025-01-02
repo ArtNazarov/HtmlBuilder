@@ -28,7 +28,6 @@
           <TopLine Value="1376"/>
           <CursorPos X="67" Y="1378"/>
         </ExtraEditor1>
-        <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -83,7 +82,6 @@
         <EditorIndex Value="2"/>
         <TopLine Value="310"/>
         <CursorPos X="30" Y="318"/>
-        <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>

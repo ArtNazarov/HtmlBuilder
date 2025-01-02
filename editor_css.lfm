@@ -994,9 +994,11 @@ object frmEditorCss: TfrmEditorCss
         Caption = 'Индексы'
         object mnuSuperscript: TMenuItem
           Action = acSuperScript
+          ShortCut = 24763
         end
         object mnuSubscript: TMenuItem
           Action = acSubScript
+          ShortCut = 16571
         end
       end
     end
