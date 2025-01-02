@@ -7,8 +7,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  SynEdit, SynHighlighterCss, SynCompletion, Types, LCLType, StrUtils,
-  css_props_dlg, FontSettings;
+  SynEdit, SynHighlighterCss, SynCompletion, Types, LCLType, ActnList, Menus,
+  StrUtils, css_props_dlg, FontSettings;
 
 type
 
@@ -16,16 +16,45 @@ type
 
   { Dialog for css stylesheets }
   TfrmEditorCss = class(TForm)
+    acTextAlignLeft: TAction;
+    acTextAlignRight: TAction;
+    acTextAlignCenter: TAction;
+    acTextAlignJustify: TAction;
+    acTextColor: TAction;
+    acBackgroundColor: TAction;
+    actFontSize: TAction;
+    aclCssActions: TActionList;
+    acFontFamily: TAction;
     btnClose: TButton;
     btnAddClass: TButton;
     btnAddId: TButton;
     lbCss: TLabel;
+    mnuTextColor: TMenuItem;
+    mnuBackgroundColor: TMenuItem;
+    mnuColors: TMenuItem;
+    mnuFontFamily: TMenuItem;
+    mnuFontSize: TMenuItem;
+    mnuTextAlignJustify: TMenuItem;
+    mnuTextAlignRight: TMenuItem;
+    mnuTextAlignCenter: TMenuItem;
+    mnuTextAlignLeft: TMenuItem;
+    mnuCssEditor: TMainMenu;
+    mnuTextAlign: TMenuItem;
+    mnuFontProperties: TMenuItem;
     panCss: TPanel;
     SynCompletion1: TSynCompletion;
     SynCssSyn1: TSynCssSyn;
     editor: TSynEdit;
 
     { handles click of btnAddClass }
+    procedure acBackgroundColorExecute(Sender: TObject);
+    procedure acFontFamilyExecute(Sender: TObject);
+    procedure acTextAlignCenterExecute(Sender: TObject);
+    procedure acTextAlignJustifyExecute(Sender: TObject);
+    procedure acTextAlignLeftExecute(Sender: TObject);
+    procedure acTextAlignRightExecute(Sender: TObject);
+    procedure acTextColorExecute(Sender: TObject);
+    procedure actFontSizeExecute(Sender: TObject);
     procedure btnAddClassClick(Sender: TObject);
 
     { handles click of btnAddId }
@@ -139,6 +168,48 @@ begin
   addCssInstruction( classCss, list);
   list.free;
 end;
+
+procedure TfrmEditorCss.acTextAlignLeftExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('text-align : left;');
+end;
+
+procedure TfrmEditorCss.acTextAlignCenterExecute(Sender: TObject);
+begin
+    editor.InsertTextAtCaret('text-align : center;');
+end;
+
+procedure TfrmEditorCss.acBackgroundColorExecute(Sender: TObject);
+begin
+    editor.InsertTextAtCaret('background-color : white;');
+end;
+
+procedure TfrmEditorCss.acFontFamilyExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('font-family : serif;');
+end;
+
+procedure TfrmEditorCss.acTextAlignJustifyExecute(Sender: TObject);
+begin
+    editor.InsertTextAtCaret('text-align : justify;');
+end;
+
+procedure TfrmEditorCss.acTextAlignRightExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('text-align : right;');
+end;
+
+procedure TfrmEditorCss.acTextColorExecute(Sender: TObject);
+begin
+    editor.InsertTextAtCaret('color : black;');
+end;
+
+procedure TfrmEditorCss.actFontSizeExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('font-size: 14pt;');
+end;
+
+
 
 procedure TfrmEditorCss.btnAddIdClick(Sender: TObject);
 var
