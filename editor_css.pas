@@ -25,10 +25,19 @@ type
     actFontSize: TAction;
     aclCssActions: TActionList;
     acFontFamily: TAction;
+    acPositionRelative: TAction;
+    acPositionAbsolute: TAction;
+    acPositionFixed: TAction;
+    acPositionSticky: TAction;
     btnClose: TButton;
     btnAddClass: TButton;
     btnAddId: TButton;
     lbCss: TLabel;
+    mnuPositionSticky: TMenuItem;
+    mnuPositionFixed: TMenuItem;
+    mnuPositionAbsolute: TMenuItem;
+    mnuPositionRelative: TMenuItem;
+    mnuPositioning: TMenuItem;
     mnuTextColor: TMenuItem;
     mnuBackgroundColor: TMenuItem;
     mnuColors: TMenuItem;
@@ -49,6 +58,10 @@ type
     { handles click of btnAddClass }
     procedure acBackgroundColorExecute(Sender: TObject);
     procedure acFontFamilyExecute(Sender: TObject);
+    procedure acPositionAbsoluteExecute(Sender: TObject);
+    procedure acPositionFixedExecute(Sender: TObject);
+    procedure acPositionRelativeExecute(Sender: TObject);
+    procedure acPositionStickyExecute(Sender: TObject);
     procedure acTextAlignCenterExecute(Sender: TObject);
     procedure acTextAlignJustifyExecute(Sender: TObject);
     procedure acTextAlignLeftExecute(Sender: TObject);
@@ -189,9 +202,29 @@ begin
   editor.InsertTextAtCaret('font-family : serif;');
 end;
 
+procedure TfrmEditorCss.acPositionAbsoluteExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('position : absolute;');
+end;
+
+procedure TfrmEditorCss.acPositionFixedExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('position : fixed;');
+end;
+
+procedure TfrmEditorCss.acPositionRelativeExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('position : relative;');
+end;
+
+procedure TfrmEditorCss.acPositionStickyExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('position : sticky;');
+end;
+
 procedure TfrmEditorCss.acTextAlignJustifyExecute(Sender: TObject);
 begin
-    editor.InsertTextAtCaret('text-align : justify;');
+     editor.InsertTextAtCaret('text-align : justify;');
 end;
 
 procedure TfrmEditorCss.acTextAlignRightExecute(Sender: TObject);

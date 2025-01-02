@@ -855,8 +855,8 @@ object frmEditorCss: TfrmEditorCss
     Top = 16
   end
   object aclCssActions: TActionList
-    Left = 17
-    Top = 100
+    Left = 704
+    Top = 21
     object acTextAlignLeft: TAction
       Caption = 'Выровнять текст по левому краю'
       OnExecute = acTextAlignLeftExecute
@@ -888,6 +888,22 @@ object frmEditorCss: TfrmEditorCss
     object acFontFamily: TAction
       Caption = 'Семейство шрифтов'
       OnExecute = acFontFamilyExecute
+    end
+    object acPositionRelative: TAction
+      Caption = 'Относительное'
+      OnExecute = acPositionRelativeExecute
+    end
+    object acPositionAbsolute: TAction
+      Caption = 'Абсолютное'
+      OnExecute = acPositionAbsoluteExecute
+    end
+    object acPositionFixed: TAction
+      Caption = 'Фиксированное'
+      OnExecute = acPositionFixedExecute
+    end
+    object acPositionSticky: TAction
+      Caption = 'Приклеенное'
+      OnExecute = acPositionStickyExecute
     end
   end
   object mnuCssEditor: TMainMenu
@@ -924,6 +940,21 @@ object frmEditorCss: TfrmEditorCss
       end
       object mnuBackgroundColor: TMenuItem
         Action = acBackgroundColor
+      end
+    end
+    object mnuPositioning: TMenuItem
+      Caption = 'Позиционирование'
+      object mnuPositionRelative: TMenuItem
+        Action = acPositionRelative
+      end
+      object mnuPositionAbsolute: TMenuItem
+        Action = acPositionAbsolute
+      end
+      object mnuPositionFixed: TMenuItem
+        Action = acPositionFixed
+      end
+      object mnuPositionSticky: TMenuItem
+        Action = acPositionSticky
       end
     end
   end
