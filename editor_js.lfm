@@ -1,18 +1,19 @@
 object frmEditorJs: TfrmEditorJs
-  Left = 0
-  Height = 828
-  Top = 0
-  Width = 1600
+  Left = 281
+  Height = 530
+  Top = 214
+  Width = 1058
   Caption = 'Редактор JS'
-  ClientHeight = 828
-  ClientWidth = 1600
+  ClientHeight = 530
+  ClientWidth = 1058
+  Menu = MainMenu1
   OnCreate = FormCreate
-  LCLVersion = '3.4.0.0'
+  LCLVersion = '3.6.0.0'
   inline editor: TSynEdit
     Left = 0
-    Height = 735
-    Top = 68
-    Width = 1600
+    Height = 438
+    Top = 67
+    Width = 1058
     Align = alClient
     Font.Height = -20
     Font.Name = 'JetBrains Mono'
@@ -21,7 +22,7 @@ object frmEditorJs: TfrmEditorJs
     ParentColor = False
     ParentFont = False
     TabOrder = 0
-    Gutter.Width = 81
+    Gutter.Width = 79
     Gutter.MouseActions = <>
     RightGutter.Width = 0
     RightGutter.MouseActions = <>
@@ -478,7 +479,7 @@ object frmEditorJs: TfrmEditorJs
         MouseActions = <>
       end
       object SynGutterLineNumber1: TSynGutterLineNumber
-        Width = 41
+        Width = 39
         MouseActions = <>
         MarkupInfo.Background = clBtnFace
         MarkupInfo.Foreground = clNone
@@ -511,8 +512,8 @@ object frmEditorJs: TfrmEditorJs
   object btnClose: TButton
     Left = 0
     Height = 25
-    Top = 803
-    Width = 1600
+    Top = 505
+    Width = 1058
     Align = alBottom
     Caption = 'ОК'
     TabOrder = 1
@@ -520,9 +521,9 @@ object frmEditorJs: TfrmEditorJs
   end
   object lbScriptName: TLabel
     Left = 0
-    Height = 18
+    Height = 17
     Top = 0
-    Width = 1600
+    Width = 1058
     Align = alTop
     Caption = 'Текст сценария'
     ParentColor = False
@@ -530,28 +531,35 @@ object frmEditorJs: TfrmEditorJs
   object panJs: TPanel
     Left = 0
     Height = 50
-    Top = 18
-    Width = 1600
+    Top = 17
+    Width = 1058
     Align = alTop
     ClientHeight = 50
-    ClientWidth = 1600
+    ClientWidth = 1058
     TabOrder = 2
-    OnClick = panJsClick
     object btnAddFunction: TButton
       Left = 1
       Height = 48
       Top = 1
       Width = 115
+      Action = acNewJsFunction
       Align = alLeft
-      Caption = 'Функция'
       TabOrder = 0
-      OnClick = btnAddFunctionClick
+    end
+    object mnuIfElseDecision: TButton
+      Left = 116
+      Height = 48
+      Top = 1
+      Width = 108
+      Action = acDecisionIfElse
+      Align = alLeft
+      TabOrder = 1
     end
   end
   object SynJScriptSyn1: TSynJScriptSyn
     Enabled = False
-    Left = 124
-    Top = 287
+    Left = 664
+    Top = 24
   end
   object SynCompletion1: TSynCompletion
     ItemList.Strings = (
@@ -632,7 +640,34 @@ object frmEditorJs: TfrmEditorJs
     ExecCommandID = ecSynCompletionExecute
     Editor = editor
     ToggleReplaceWhole = False
-    Left = 148
-    Top = 32
+    Left = 720
+    Top = 24
+  end
+  object MainMenu1: TMainMenu
+    Left = 518
+    Top = 26
+    object mnuStatements: TMenuItem
+      Caption = 'Операторы'
+      object mnuNewFunction: TMenuItem
+        Action = acNewJsFunction
+        ShortCut = 16454
+      end
+      object mnuDecisionIfElse: TMenuItem
+        Action = acDecisionIfElse
+        ShortCut = 16457
+      end
+    end
+  end
+  object ActionList1: TActionList
+    Left = 863
+    Top = 25
+    object acNewJsFunction: TAction
+      Caption = 'Новая функция'
+      OnExecute = acNewJsFunctionExecute
+    end
+    object acDecisionIfElse: TAction
+      Caption = 'Решение if else'
+      OnExecute = acDecisionIfElseExecute
+    end
   end
 end

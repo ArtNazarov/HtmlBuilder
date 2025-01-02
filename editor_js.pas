@@ -7,7 +7,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  SynEdit, SynHighlighterJScript, SynCompletion, Types, LCLType, FontSettings;
+  SynEdit, SynHighlighterJScript, SynCompletion, Types, LCLType, Menus,
+  ActnList, FontSettings;
 
 type
 
@@ -15,8 +16,16 @@ type
 
   { Window with javascript editor }
   TfrmEditorJs = class(TForm)
+    acNewJsFunction: TAction;
+    acDecisionIfElse: TAction;
+    ActionList1: TActionList;
     btnClose: TButton;
     btnAddFunction: TButton;
+    MainMenu1: TMainMenu;
+    mnuStatements: TMenuItem;
+    mnuNewFunction: TMenuItem;
+    mnuDecisionIfElse: TMenuItem;
+    mnuIfElseDecision: TButton;
     lbScriptName: TLabel;
     editor: TSynEdit;
     panJs: TPanel;
@@ -24,14 +33,16 @@ type
     SynJScriptSyn1: TSynJScriptSyn;
 
     { Handles click of btnAddFunction }
-    procedure btnAddFunctionClick(Sender: TObject);
+
+
 
     { Handles click of btnClose }
+    procedure acDecisionIfElseExecute(Sender: TObject);
+    procedure acNewJsFunctionExecute(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
 
-    { Handles click of panJs }
-    procedure panJsClick(Sender: TObject);
+
 
     { Handles autocompletions for javascript }
     procedure SynCompletion1CodeCompletion(var Value: string;
@@ -65,6 +76,19 @@ begin
     close;
 end;
 
+procedure TfrmEditorJs.acNewJsFunctionExecute(Sender: TObject);
+var funcName : String;
+begin
+  funcName := InputBox('Новая функция', 'имя функции', 'newF');
+ editor.InsertTextAtCaret(' function '+funcName+'(){}');
+end;
+
+procedure TfrmEditorJs.acDecisionIfElseExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('if () {} else {}');
+end;
+
+
 procedure TfrmEditorJs.FormCreate(Sender: TObject);
 var
    FontManager: TFontManager;
@@ -74,18 +98,9 @@ begin
      FontManager.Free;
 end;
 
-procedure TfrmEditorJs.btnAddFunctionClick(Sender: TObject);
-var funcName : String;
-begin
-  funcName := InputBox('Новая функция', 'имя функции', 'newF');
-  editor.Lines.Add(' function '+funcName+'(){');
-  editor.Lines.Add('}');
-end;
 
-procedure TfrmEditorJs.panJsClick(Sender: TObject);
-begin
 
-end;
+
 
 procedure TfrmEditorJs.SynCompletion1CodeCompletion(var Value: string;
   SourceValue: string; var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char;
