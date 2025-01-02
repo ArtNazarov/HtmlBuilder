@@ -664,6 +664,9 @@ object frmEditorJs: TfrmEditorJs
         Action = acForValueOfIterable
         ShortCut = 16463
       end
+      object mnuTryCatch: TMenuItem
+        Action = acTryCatch
+      end
     end
   end
   object aclJsEditorActions: TActionList
@@ -684,6 +687,10 @@ object frmEditorJs: TfrmEditorJs
     object acForValueOfIterable: TAction
       Caption = 'цикл for value of'
       OnExecute = acForValueOfIterableExecute
+    end
+    object acTryCatch: TAction
+      Caption = 'блок исключений try catch'
+      OnExecute = acTryCatchExecute
     end
   end
 end

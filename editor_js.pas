@@ -21,8 +21,10 @@ type
     aclJsEditorActions: TActionList;
     acForKeyInLoop: TAction;
     acForValueOfIterable: TAction;
+    acTryCatch: TAction;
     btnClose: TButton;
     btnAddFunction: TButton;
+    mnuTryCatch: TMenuItem;
     mnuForValueOfIterable: TMenuItem;
     mnuForKeyIn: TMenuItem;
     mmJsEditorMenu: TMainMenu;
@@ -45,6 +47,7 @@ type
     procedure acForKeyInLoopExecute(Sender: TObject);
     procedure acForValueOfIterableExecute(Sender: TObject);
     procedure acNewJsFunctionExecute(Sender: TObject);
+    procedure acTryCatchExecute(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
 
@@ -74,6 +77,15 @@ implementation
 
 {$R *.lfm}
 
+function replKeys(const Input: string): string;
+begin
+  // Replace '[enter]' with Chr(13)
+  Result := StringReplace(Input, '[enter]', Chr(13), [rfReplaceAll]);
+  // Replace '[tab]' with Chr(9)
+  Result := StringReplace(Result, '[tab]', Chr(9), [rfReplaceAll]);
+end;
+
+
 { TfrmEditorJs }
 
 procedure TfrmEditorJs.btnCloseClick(Sender: TObject);
@@ -86,22 +98,27 @@ procedure TfrmEditorJs.acNewJsFunctionExecute(Sender: TObject);
 var funcName : String;
 begin
   funcName := InputBox('Новая функция', 'имя функции', 'newF');
- editor.InsertTextAtCaret(' function '+funcName+'(){}');
+ editor.InsertTextAtCaret(replKeys('function '+funcName+'(){[enter]}[enter]'));
+end;
+
+procedure TfrmEditorJs.acTryCatchExecute(Sender: TObject);
+begin
+ editor.InsertTextAtCaret(replKeys('try {[enter][tab]}[enter]catch(err) {[enter][tab]console.log(err.message);[enter]}[enter]'));
 end;
 
 procedure TfrmEditorJs.acDecisionIfElseExecute(Sender: TObject);
 begin
-  editor.InsertTextAtCaret('if () {} else {}');
+  editor.InsertTextAtCaret(replKeys('if () {[enter]} else {[enter]}[enter]'));
 end;
 
 procedure TfrmEditorJs.acForKeyInLoopExecute(Sender: TObject);
 begin
-  editor.InsertTextAtCaret('for (let key in object) {}');
+  editor.InsertTextAtCaret(replKeys('for (let key in object) {[enter]}'));
 end;
 
 procedure TfrmEditorJs.acForValueOfIterableExecute(Sender: TObject);
 begin
-  editor.InsertTextAtCaret('for (let value of iterable) {}');
+  editor.InsertTextAtCaret(replKeys('for (let value of iterable) {[enter]}[enter]'));
 end;
 
 
