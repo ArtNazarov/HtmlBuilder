@@ -18,10 +18,12 @@ type
   TfrmEditorJs = class(TForm)
     acNewJsFunction: TAction;
     acDecisionIfElse: TAction;
-    ActionList1: TActionList;
+    aclJsEditorActions: TActionList;
+    acForKeyInLoop: TAction;
     btnClose: TButton;
     btnAddFunction: TButton;
-    MainMenu1: TMainMenu;
+    mnuForKeyIn: TMenuItem;
+    mmJsEditorMenu: TMainMenu;
     mnuStatements: TMenuItem;
     mnuNewFunction: TMenuItem;
     mnuDecisionIfElse: TMenuItem;
@@ -38,6 +40,7 @@ type
 
     { Handles click of btnClose }
     procedure acDecisionIfElseExecute(Sender: TObject);
+    procedure acForKeyInLoopExecute(Sender: TObject);
     procedure acNewJsFunctionExecute(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -86,6 +89,11 @@ end;
 procedure TfrmEditorJs.acDecisionIfElseExecute(Sender: TObject);
 begin
   editor.InsertTextAtCaret('if () {} else {}');
+end;
+
+procedure TfrmEditorJs.acForKeyInLoopExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('for (let key in object) {}');
 end;
 
 

@@ -6,7 +6,7 @@ object frmEditorJs: TfrmEditorJs
   Caption = 'Редактор JS'
   ClientHeight = 530
   ClientWidth = 1058
-  Menu = MainMenu1
+  Menu = mmJsEditorMenu
   OnCreate = FormCreate
   LCLVersion = '3.6.0.0'
   inline editor: TSynEdit
@@ -643,7 +643,7 @@ object frmEditorJs: TfrmEditorJs
     Left = 720
     Top = 24
   end
-  object MainMenu1: TMainMenu
+  object mmJsEditorMenu: TMainMenu
     Left = 518
     Top = 26
     object mnuStatements: TMenuItem
@@ -656,9 +656,12 @@ object frmEditorJs: TfrmEditorJs
         Action = acDecisionIfElse
         ShortCut = 16457
       end
+      object mnuForKeyIn: TMenuItem
+        Action = acForKeyInLoop
+      end
     end
   end
-  object ActionList1: TActionList
+  object aclJsEditorActions: TActionList
     Left = 863
     Top = 25
     object acNewJsFunction: TAction
@@ -668,6 +671,10 @@ object frmEditorJs: TfrmEditorJs
     object acDecisionIfElse: TAction
       Caption = 'Решение if else'
       OnExecute = acDecisionIfElseExecute
+    end
+    object acForKeyInLoop: TAction
+      Caption = 'Цикл for key in'
+      OnExecute = acForKeyInLoopExecute
     end
   end
 end
