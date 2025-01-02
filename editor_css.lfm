@@ -937,6 +937,19 @@ object frmEditorCss: TfrmEditorCss
       Caption = 'Светлое'
       OnExecute = acFontWeightLightExecute
     end
+    object acTextDecorationLineUnderline: TAction
+      Caption = 'Подчеркнутый'
+      OnExecute = acTextDecorationLineUnderlineExecute
+      ShortCut = 16469
+    end
+    object acTextDecorationLineOverline: TAction
+      Caption = 'Надчеркнутый'
+      OnExecute = acTextDecorationLineOverlineExecute
+    end
+    object acTextDecorationLineStrikeThrough: TAction
+      Caption = 'Перечеркнутый'
+      OnExecute = acTextDecorationLineStrikeThroughExecute
+    end
   end
   object mnuCssEditor: TMainMenu
     Left = 601
@@ -945,15 +958,29 @@ object frmEditorCss: TfrmEditorCss
       Caption = 'Декорации'
       object mnuItalic: TMenuItem
         Action = acFontStyleItalic
+        ShortCut = 16457
       end
       object mnuOblique: TMenuItem
         Action = acFontStyleOblique
       end
       object mnuBold: TMenuItem
         Action = acFontWeightBold
+        ShortCut = 16450
       end
       object mnuLight: TMenuItem
         Action = acFontWeightLight
+      end
+      object mnuLineDecorations: TMenuItem
+        Caption = 'Линии'
+        object mnuOverline: TMenuItem
+          Action = acTextDecorationLineOverline
+        end
+        object mnuStrikeThrough: TMenuItem
+          Action = acTextDecorationLineStrikeThrough
+        end
+        object mnuUnderline: TMenuItem
+          Action = acTextDecorationLineUnderline
+        end
       end
     end
     object mnuTextAlign: TMenuItem

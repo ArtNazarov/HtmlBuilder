@@ -37,6 +37,9 @@ type
     acFontStyleOblique: TAction;
     acFontWeightBold: TAction;
     acFontWeightLight: TAction;
+    acTextDecorationLineStrikeThrough: TAction;
+    acTextDecorationLineOverline: TAction;
+    acTextDecorationLineUnderline: TAction;
     btnClose: TButton;
     btnAddClass: TButton;
     btnAddId: TButton;
@@ -44,6 +47,10 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
+    mnuOverline: TMenuItem;
+    mnuStrikeThrough: TMenuItem;
+    mnuUnderline: TMenuItem;
+    mnuLineDecorations: TMenuItem;
     mnuItalic: TMenuItem;
     mnuOblique: TMenuItem;
     mnuBold: TMenuItem;
@@ -93,6 +100,9 @@ type
     procedure acTextAlignLeftExecute(Sender: TObject);
     procedure acTextAlignRightExecute(Sender: TObject);
     procedure acTextColorExecute(Sender: TObject);
+    procedure acTextDecorationLineOverlineExecute(Sender: TObject);
+    procedure acTextDecorationLineStrikeThroughExecute(Sender: TObject);
+    procedure acTextDecorationLineUnderlineExecute(Sender: TObject);
     procedure actFontSizeExecute(Sender: TObject);
     procedure btnAddClassClick(Sender: TObject);
 
@@ -301,6 +311,22 @@ end;
 procedure TfrmEditorCss.acTextColorExecute(Sender: TObject);
 begin
     editor.InsertTextAtCaret('color : black;');
+end;
+
+procedure TfrmEditorCss.acTextDecorationLineOverlineExecute(Sender: TObject);
+begin
+     editor.InsertTextAtCaret('text-decoration-line : overline;');
+end;
+
+procedure TfrmEditorCss.acTextDecorationLineStrikeThroughExecute(Sender: TObject
+  );
+begin
+     editor.InsertTextAtCaret('text-decoration-line : line-through;');
+end;
+
+procedure TfrmEditorCss.acTextDecorationLineUnderlineExecute(Sender: TObject);
+begin
+   editor.InsertTextAtCaret('text-decoration-line : underline;');
 end;
 
 procedure TfrmEditorCss.actFontSizeExecute(Sender: TObject);
