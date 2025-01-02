@@ -1,19 +1,19 @@
 object frmEditor: TfrmEditor
   Left = 0
-  Height = 828
+  Height = 530
   Top = 0
-  Width = 1600
+  Width = 1058
   Caption = 'Редактор разметки'
-  ClientHeight = 828
-  ClientWidth = 1600
+  ClientHeight = 530
+  ClientWidth = 1058
   Menu = mmMenuEditor
   OnCreate = FormCreate
-  LCLVersion = '3.4.0.0'
+  LCLVersion = '3.6.0.0'
   inline editor: TSynEdit
     Left = 0
-    Height = 635
-    Top = 168
-    Width = 1600
+    Height = 338
+    Top = 167
+    Width = 1058
     Align = alClient
     Font.Height = -16
     Font.Name = 'JetBrains Mono'
@@ -513,8 +513,8 @@ object frmEditor: TfrmEditor
   object btnCloseEditor: TButton
     Left = 0
     Height = 25
-    Top = 803
-    Width = 1600
+    Top = 505
+    Width = 1058
     Align = alBottom
     Caption = 'ОК'
     TabOrder = 1
@@ -522,9 +522,9 @@ object frmEditor: TfrmEditor
   end
   object Label1: TLabel
     Left = 0
-    Height = 18
+    Height = 17
     Top = 150
-    Width = 1600
+    Width = 1058
     Align = alTop
     Caption = 'Разметка'
     ParentColor = False
@@ -533,11 +533,11 @@ object frmEditor: TfrmEditor
     Left = 0
     Height = 50
     Top = 50
-    Width = 1600
+    Width = 1058
     Align = alTop
     Caption = 'Panel1'
     ClientHeight = 50
-    ClientWidth = 1600
+    ClientWidth = 1058
     TabOrder = 2
     object btnFormatter: TButton
       Left = 173
@@ -610,7 +610,7 @@ object frmEditor: TfrmEditor
       OnClick = btnHrefClick
     end
     object btnPicture: TButton
-      Left = 1321
+      Left = 1057
       Height = 48
       Top = 1
       Width = 75
@@ -620,7 +620,7 @@ object frmEditor: TfrmEditor
       OnClick = btnPictureClick
     end
     object btnOrderedList: TButton
-      Left = 1171
+      Left = 1057
       Height = 48
       Top = 1
       Width = 75
@@ -630,7 +630,7 @@ object frmEditor: TfrmEditor
       OnClick = btnOrderedListClick
     end
     object btnUnorderedList: TButton
-      Left = 1246
+      Left = 1057
       Height = 48
       Top = 1
       Width = 75
@@ -645,7 +645,7 @@ object frmEditor: TfrmEditor
       Top = 1
       Width = 172
       Align = alLeft
-      ItemHeight = 24
+      ItemHeight = 17
       Items.Strings = (
         'Заголовок H1'
         'Заголовок H2'
@@ -662,7 +662,7 @@ object frmEditor: TfrmEditor
       TabOrder = 10
     end
     object btnAnchor: TButton
-      Left = 1096
+      Left = 1057
       Height = 48
       Top = 1
       Width = 75
@@ -677,7 +677,7 @@ object frmEditor: TfrmEditor
       Top = 1
       Width = 152
       Align = alLeft
-      ItemHeight = 24
+      ItemHeight = 17
       Items.Strings = (
         'Arial'
         'Arial Black'
@@ -702,7 +702,7 @@ object frmEditor: TfrmEditor
       OnClick = btnFontStyleClick
     end
     object btnTable: TButton
-      Left = 1396
+      Left = 1057
       Height = 48
       Top = 1
       Width = 75
@@ -726,10 +726,10 @@ object frmEditor: TfrmEditor
     Left = 0
     Height = 50
     Top = 100
-    Width = 1600
+    Width = 1058
     Align = alTop
     ClientHeight = 50
-    ClientWidth = 1600
+    ClientWidth = 1058
     TabOrder = 3
     object btnHr: TButton
       Left = 443
@@ -757,7 +757,7 @@ object frmEditor: TfrmEditor
       Top = 1
       Width = 100
       Align = alLeft
-      ItemHeight = 24
+      ItemHeight = 17
       Items.Strings = (
         'Лев'
         'Прав'
@@ -811,10 +811,10 @@ object frmEditor: TfrmEditor
     Left = 0
     Height = 50
     Top = 0
-    Width = 1600
+    Width = 1058
     Align = alTop
     ClientHeight = 50
-    ClientWidth = 1600
+    ClientWidth = 1058
     TabOrder = 4
     object btnSection: TButton
       Left = 1
@@ -904,6 +904,12 @@ object frmEditor: TfrmEditor
         Action = acRedo
       end
     end
+    object mnuForms: TMenuItem
+      Caption = 'Формы'
+      object mnuNewForm: TMenuItem
+        Action = acNewForm
+      end
+    end
   end
   object acEditor: TActionList
     Left = 724
@@ -923,6 +929,10 @@ object frmEditor: TfrmEditor
     object acRedo: TAction
       Caption = 'Повторить'
       OnExecute = acRedoExecute
+    end
+    object acNewForm: TAction
+      Caption = 'Новая форма'
+      OnExecute = acNewFormExecute
     end
   end
   object SynCompletion1: TSynCompletion

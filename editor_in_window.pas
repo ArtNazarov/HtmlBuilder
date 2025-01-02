@@ -20,6 +20,7 @@ type
     acSearch: TAction;
     acReplace: TAction;
     acRedo: TAction;
+    acNewForm: TAction;
     acUndo: TAction;
     btnCloseEditor: TButton;
     btnFormatter: TButton;
@@ -53,6 +54,8 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuNewForm: TMenuItem;
+    mnuForms: TMenuItem;
     mnuRedo: TMenuItem;
     mnuActions: TMenuItem;
     mnuUndo: TMenuItem;
@@ -65,6 +68,7 @@ type
     panHtml5: TPanel;
     SynCompletion1: TSynCompletion;
     SynHTMLSyn1: TSynHTMLSyn;
+    procedure acNewFormExecute(Sender: TObject);
     procedure acRedoExecute(Sender: TObject);
     procedure acReplaceExecute(Sender: TObject);
     procedure acSearchExecute(Sender: TObject);
@@ -228,6 +232,11 @@ end;
 procedure TfrmEditor.acRedoExecute(Sender: TObject);
 begin
   editor.Redo;
+end;
+
+procedure TfrmEditor.acNewFormExecute(Sender: TObject);
+begin
+ tagC('form', 'method="POST"');
 end;
 
 procedure TfrmEditor.btnArticleClick(Sender: TObject);
