@@ -20,11 +20,13 @@ begin
   RequireDerivedFormResource := True;
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);
+  (*
   Application.CreateForm(TfrmEditor, frmEditor);
   Application.CreateForm(TfrmEditorCss, frmEditorCss);
   Application.CreateForm(TfrmEditorJs, frmEditorJs);
   Application.CreateForm(TfrmCssProps, frmCssProps);
   Application.CreateForm(TfrmSelectionHistory, frmSelectionHistory);
+  *)
   Application.Run;
 end.
 

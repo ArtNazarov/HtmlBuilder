@@ -817,7 +817,7 @@ object frmEditor: TfrmEditor
     ClientWidth = 1058
     TabOrder = 4
     object btnSection: TButton
-      Left = 1
+      Left = 76
       Height = 48
       Top = 1
       Width = 75
@@ -826,7 +826,7 @@ object frmEditor: TfrmEditor
       TabOrder = 0
     end
     object btnArticle: TButton
-      Left = 76
+      Left = 151
       Height = 48
       Top = 1
       Width = 75
@@ -835,7 +835,7 @@ object frmEditor: TfrmEditor
       TabOrder = 1
     end
     object btnASide: TButton
-      Left = 151
+      Left = 226
       Height = 48
       Top = 1
       Width = 75
@@ -844,7 +844,7 @@ object frmEditor: TfrmEditor
       TabOrder = 2
     end
     object btnHeader: TButton
-      Left = 226
+      Left = 301
       Height = 48
       Top = 1
       Width = 75
@@ -853,7 +853,7 @@ object frmEditor: TfrmEditor
       TabOrder = 3
     end
     object btnFooter: TButton
-      Left = 301
+      Left = 376
       Height = 48
       Top = 1
       Width = 75
@@ -862,13 +862,22 @@ object frmEditor: TfrmEditor
       TabOrder = 4
     end
     object btnNav: TButton
-      Left = 376
+      Left = 451
       Height = 48
       Top = 1
       Width = 75
       Align = alLeft
       Caption = 'Меню'
       TabOrder = 5
+    end
+    object btmMainTag: TButton
+      Left = 1
+      Height = 48
+      Top = 1
+      Width = 75
+      Action = acMainTag
+      Align = alLeft
+      TabOrder = 6
     end
   end
   object SynHTMLSyn1: TSynHTMLSyn
@@ -900,6 +909,9 @@ object frmEditor: TfrmEditor
     end
     object mnuDocStructure: TMenuItem
       Caption = 'Структура'
+      object mnuMainTag: TMenuItem
+        Action = acMainTag
+      end
       object mnuDocSection: TMenuItem
         Action = acDocSection
       end
@@ -1003,6 +1015,10 @@ object frmEditor: TfrmEditor
     object acDefDefinition: TAction
       Caption = 'Определение термина DD'
       OnExecute = acDefDefinitionExecute
+    end
+    object acMainTag: TAction
+      Caption = 'Тег MAIN'
+      OnExecute = acMainTagExecute
     end
   end
   object SynCompletion1: TSynCompletion

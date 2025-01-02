@@ -31,6 +31,7 @@ type
     acDefinitionListWrapper: TAction;
     acDefTerm: TAction;
     acDefDefinition: TAction;
+    acMainTag: TAction;
     acUndo: TAction;
     btnCloseEditor: TButton;
     btnFormatter: TButton;
@@ -59,11 +60,13 @@ type
     btnNav: TButton;
     btnFontSizeLarger: TButton;
     btnFontSizeSmaller: TButton;
+    btmMainTag: TButton;
     cboFormatting: TComboBox;
     cboFontFamily: TComboBox;
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuMainTag: TMenuItem;
     mnuDefDefinition: TMenuItem;
     mnuDefTerm: TMenuItem;
     mnuDefinitionsListWrapper: TMenuItem;
@@ -100,6 +103,7 @@ type
     procedure acDocNavMenuExecute(Sender: TObject);
     procedure acDocSectionExecute(Sender: TObject);
     procedure acDocSideExecute(Sender: TObject);
+    procedure acMainTagExecute(Sender: TObject);
     procedure acNewFormExecute(Sender: TObject);
     procedure acRedoExecute(Sender: TObject);
     procedure acReplaceExecute(Sender: TObject);
@@ -273,6 +277,11 @@ end;
 procedure TfrmEditor.acDocSideExecute(Sender: TObject);
 begin
     pair('aside');
+end;
+
+procedure TfrmEditor.acMainTagExecute(Sender: TObject);
+begin
+  pair('main');
 end;
 
 procedure TfrmEditor.acDocArticleExecute(Sender: TObject);
