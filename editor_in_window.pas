@@ -27,6 +27,7 @@ type
     acDocHeader: TAction;
     acDocFooter: TAction;
     acDocNavMenu: TAction;
+    acAddress: TAction;
     acUndo: TAction;
     btnCloseEditor: TButton;
     btnFormatter: TButton;
@@ -60,6 +61,7 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuAddress: TMenuItem;
     mnuDocSection: TMenuItem;
     mnuDocArticle: TMenuItem;
     mnuDocSide: TMenuItem;
@@ -81,6 +83,7 @@ type
     panHtml5: TPanel;
     SynCompletion1: TSynCompletion;
     SynHTMLSyn1: TSynHTMLSyn;
+    procedure acAddressExecute(Sender: TObject);
     procedure acDocArticleExecute(Sender: TObject);
     procedure acDocFooterExecute(Sender: TObject);
     procedure acDocHeaderExecute(Sender: TObject);
@@ -267,6 +270,11 @@ begin
   pair('article');
 end;
 
+procedure TfrmEditor.acAddressExecute(Sender: TObject);
+begin
+  pair('address');
+end;
+
 procedure TfrmEditor.acDocFooterExecute(Sender: TObject);
 begin
     pair('footer');
@@ -429,7 +437,7 @@ begin
   if (editor.SelText <> '') then
   editor.SelText:='<'+t+'>'+  editor.SelText+'</'+t+'>'
   else
-    editor.Lines.Add('<'+t+'></'+t+'>');
+    editor.InsertTextAtCaret('<'+t+'></'+t+'>');
 end;
 
 

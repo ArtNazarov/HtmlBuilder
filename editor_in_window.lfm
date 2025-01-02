@@ -918,6 +918,9 @@ object frmEditor: TfrmEditor
       object mnuDocNavMenu: TMenuItem
         Action = acDocNavMenu
       end
+      object mnuAddress: TMenuItem
+        Action = acAddress
+      end
     end
     object mnuForms: TMenuItem
       Caption = 'Формы'
@@ -972,6 +975,10 @@ object frmEditor: TfrmEditor
     object acDocNavMenu: TAction
       Caption = 'Нав меню'
       OnExecute = acDocNavMenuExecute
+    end
+    object acAddress: TAction
+      Caption = 'Адрес'
+      OnExecute = acAddressExecute
     end
   end
   object SynCompletion1: TSynCompletion
