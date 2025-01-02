@@ -28,6 +28,9 @@ type
     acDocFooter: TAction;
     acDocNavMenu: TAction;
     acAddress: TAction;
+    acDefinitionListWrapper: TAction;
+    acDefTerm: TAction;
+    acDefDefinition: TAction;
     acUndo: TAction;
     btnCloseEditor: TButton;
     btnFormatter: TButton;
@@ -61,6 +64,10 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuDefDefinition: TMenuItem;
+    mnuDefTerm: TMenuItem;
+    mnuDefinitionsListWrapper: TMenuItem;
+    mnuDefinitions: TMenuItem;
     mnuAddress: TMenuItem;
     mnuDocSection: TMenuItem;
     mnuDocArticle: TMenuItem;
@@ -84,6 +91,9 @@ type
     SynCompletion1: TSynCompletion;
     SynHTMLSyn1: TSynHTMLSyn;
     procedure acAddressExecute(Sender: TObject);
+    procedure acDefDefinitionExecute(Sender: TObject);
+    procedure acDefinitionListWrapperExecute(Sender: TObject);
+    procedure acDefTermExecute(Sender: TObject);
     procedure acDocArticleExecute(Sender: TObject);
     procedure acDocFooterExecute(Sender: TObject);
     procedure acDocHeaderExecute(Sender: TObject);
@@ -273,6 +283,21 @@ end;
 procedure TfrmEditor.acAddressExecute(Sender: TObject);
 begin
   pair('address');
+end;
+
+procedure TfrmEditor.acDefDefinitionExecute(Sender: TObject);
+begin
+  pair('dd');
+end;
+
+procedure TfrmEditor.acDefinitionListWrapperExecute(Sender: TObject);
+begin
+  pair('dl');
+end;
+
+procedure TfrmEditor.acDefTermExecute(Sender: TObject);
+begin
+  pair('dt');
 end;
 
 procedure TfrmEditor.acDocFooterExecute(Sender: TObject);

@@ -921,6 +921,18 @@ object frmEditor: TfrmEditor
       object mnuAddress: TMenuItem
         Action = acAddress
       end
+      object mnuDefinitions: TMenuItem
+        Caption = 'Определения'
+        object mnuDefinitionsListWrapper: TMenuItem
+          Action = acDefinitionListWrapper
+        end
+        object mnuDefTerm: TMenuItem
+          Action = acDefTerm
+        end
+        object mnuDefDefinition: TMenuItem
+          Action = acDefDefinition
+        end
+      end
     end
     object mnuForms: TMenuItem
       Caption = 'Формы'
@@ -979,6 +991,18 @@ object frmEditor: TfrmEditor
     object acAddress: TAction
       Caption = 'Адрес'
       OnExecute = acAddressExecute
+    end
+    object acDefinitionListWrapper: TAction
+      Caption = 'Контейнер списка определений DL'
+      OnExecute = acDefinitionListWrapperExecute
+    end
+    object acDefTerm: TAction
+      Caption = 'Термин DT'
+      OnExecute = acDefTermExecute
+    end
+    object acDefDefinition: TAction
+      Caption = 'Определение термина DD'
+      OnExecute = acDefDefinitionExecute
     end
   end
   object SynCompletion1: TSynCompletion
