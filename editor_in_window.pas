@@ -33,6 +33,8 @@ type
     acDefDefinition: TAction;
     acMainTag: TAction;
     acInputText: TAction;
+    acVideoSourceTag: TAction;
+    acVideoTag: TAction;
     acUndo: TAction;
     btnCloseEditor: TButton;
     btnFormatter: TButton;
@@ -67,6 +69,9 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuVideoSource: TMenuItem;
+    mnuVideoTag: TMenuItem;
+    mnuContent: TMenuItem;
     mnuInputText: TMenuItem;
     mnuMainTag: TMenuItem;
     mnuDefDefinition: TMenuItem;
@@ -112,6 +117,8 @@ type
     procedure acReplaceExecute(Sender: TObject);
     procedure acSearchExecute(Sender: TObject);
     procedure acUndoExecute(Sender: TObject);
+    procedure acVideoSourceTagExecute(Sender: TObject);
+    procedure acVideoTagExecute(Sender: TObject);
     procedure btnAnchorClick(Sender: TObject);
 
 
@@ -251,6 +258,16 @@ end;
 procedure TfrmEditor.acUndoExecute(Sender: TObject);
 begin
   editor.Undo;
+end;
+
+procedure TfrmEditor.acVideoSourceTagExecute(Sender: TObject);
+begin
+  tagX('source', 'src="video.mp4" type="video/mp4"');
+end;
+
+procedure TfrmEditor.acVideoTagExecute(Sender: TObject);
+begin
+  tagC('video', 'width="640" height="360" controls');
 end;
 
 procedure TfrmEditor.acReplaceExecute(Sender: TObject);

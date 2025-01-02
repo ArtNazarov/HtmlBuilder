@@ -955,6 +955,15 @@ object frmEditor: TfrmEditor
         Action = acInputText
       end
     end
+    object mnuContent: TMenuItem
+      Caption = 'Содержание'
+      object mnuVideoTag: TMenuItem
+        Action = acVideoTag
+      end
+      object mnuVideoSource: TMenuItem
+        Action = acVideoSourceTag
+      end
+    end
   end
   object acEditor: TActionList
     Left = 724
@@ -1026,6 +1035,14 @@ object frmEditor: TfrmEditor
     object acInputText: TAction
       Caption = 'Поле ввода строки текста'
       OnExecute = acInputTextExecute
+    end
+    object acVideoTag: TAction
+      Caption = 'Видео'
+      OnExecute = acVideoTagExecute
+    end
+    object acVideoSourceTag: TAction
+      Caption = 'Источник видео'
+      OnExecute = acVideoSourceTagExecute
     end
   end
   object SynCompletion1: TSynCompletion
