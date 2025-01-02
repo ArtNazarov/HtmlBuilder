@@ -21,6 +21,12 @@ type
     acReplace: TAction;
     acRedo: TAction;
     acNewForm: TAction;
+    acDocSection: TAction;
+    acDocArticle: TAction;
+    acDocSide: TAction;
+    acDocHeader: TAction;
+    acDocFooter: TAction;
+    acDocNavMenu: TAction;
     acUndo: TAction;
     btnCloseEditor: TButton;
     btnFormatter: TButton;
@@ -54,6 +60,13 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuDocSection: TMenuItem;
+    mnuDocArticle: TMenuItem;
+    mnuDocSide: TMenuItem;
+    mnuDocHeader: TMenuItem;
+    mnuDocFooter: TMenuItem;
+    mnuDocNavMenu: TMenuItem;
+    mnuDocStructure: TMenuItem;
     mnuNewForm: TMenuItem;
     mnuForms: TMenuItem;
     mnuRedo: TMenuItem;
@@ -68,32 +81,38 @@ type
     panHtml5: TPanel;
     SynCompletion1: TSynCompletion;
     SynHTMLSyn1: TSynHTMLSyn;
+    procedure acDocArticleExecute(Sender: TObject);
+    procedure acDocFooterExecute(Sender: TObject);
+    procedure acDocHeaderExecute(Sender: TObject);
+    procedure acDocNavMenuExecute(Sender: TObject);
+    procedure acDocSectionExecute(Sender: TObject);
+    procedure acDocSideExecute(Sender: TObject);
     procedure acNewFormExecute(Sender: TObject);
     procedure acRedoExecute(Sender: TObject);
     procedure acReplaceExecute(Sender: TObject);
     procedure acSearchExecute(Sender: TObject);
     procedure acUndoExecute(Sender: TObject);
     procedure btnAnchorClick(Sender: TObject);
-    procedure btnArticleClick(Sender: TObject);
-    procedure btnASideClick(Sender: TObject);
+
+
     procedure btnBoldClick(Sender: TObject);
     procedure btnBrClick(Sender: TObject);
     procedure btnCloseEditorClick(Sender: TObject);
     procedure btnFontSizeLargerClick(Sender: TObject);
     procedure btnFontSizeSmallerClick(Sender: TObject);
     procedure btnFontStyleClick(Sender: TObject);
-    procedure btnFooterClick(Sender: TObject);
-    procedure btnHeaderClick(Sender: TObject);
+
+
     procedure btnHrClick(Sender: TObject);
     procedure btnHrefClick(Sender: TObject);
     procedure btnItalicClick(Sender: TObject);
     procedure btnJustifyClick(Sender: TObject);
     procedure btnMarginClick(Sender: TObject);
-    procedure btnNavClick(Sender: TObject);
+
     procedure btnOrderedListClick(Sender: TObject);
     procedure btnFormatterClick(Sender: TObject);
     procedure btnPictureClick(Sender: TObject);
-    procedure btnSectionClick(Sender: TObject);
+
     procedure btnStrikeClick(Sender: TObject);
     procedure btnSubClick(Sender: TObject);
     procedure btnSupClick(Sender: TObject);
@@ -170,15 +189,9 @@ begin
   tagC('span', 'style="font-family:'+cboFontFamily.Items[cboFontFamily.ItemIndex]+'"');
 end;
 
-procedure TfrmEditor.btnFooterClick(Sender: TObject);
-begin
-  pair('footer');
-end;
 
-procedure TfrmEditor.btnHeaderClick(Sender: TObject);
-begin
-  pair('header');
-end;
+
+
 
 procedure TfrmEditor.btnHrClick(Sender: TObject);
 begin
@@ -239,15 +252,39 @@ begin
  tagC('form', 'method="POST"');
 end;
 
-procedure TfrmEditor.btnArticleClick(Sender: TObject);
+procedure TfrmEditor.acDocSectionExecute(Sender: TObject);
+begin
+     pair('section');
+end;
+
+procedure TfrmEditor.acDocSideExecute(Sender: TObject);
+begin
+    pair('aside');
+end;
+
+procedure TfrmEditor.acDocArticleExecute(Sender: TObject);
 begin
   pair('article');
 end;
 
-procedure TfrmEditor.btnASideClick(Sender: TObject);
+procedure TfrmEditor.acDocFooterExecute(Sender: TObject);
 begin
-  pair('aside');
+    pair('footer');
 end;
+
+procedure TfrmEditor.acDocHeaderExecute(Sender: TObject);
+begin
+   pair('header');
+end;
+
+procedure TfrmEditor.acDocNavMenuExecute(Sender: TObject);
+begin
+   pair('nav');
+end;
+
+
+
+
 
 procedure TfrmEditor.btnItalicClick(Sender: TObject);
 begin
@@ -273,10 +310,7 @@ begin
  tagC('div', 'style="margin-left:'+IntToStr(m*k)+'px;"');
 end;
 
-procedure TfrmEditor.btnNavClick(Sender: TObject);
-begin
-  pair('nav');
-end;
+
 
 procedure TfrmEditor.btnOrderedListClick(Sender: TObject);
 begin
@@ -306,10 +340,7 @@ begin
   tagImg();
 end;
 
-procedure TfrmEditor.btnSectionClick(Sender: TObject);
-begin
-  pair('section');
-end;
+
 
 procedure TfrmEditor.btnStrikeClick(Sender: TObject);
 begin

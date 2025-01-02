@@ -1,7 +1,7 @@
 object frmEditor: TfrmEditor
-  Left = 0
+  Left = 346
   Height = 530
-  Top = 0
+  Top = 139
   Width = 1058
   Caption = 'Редактор разметки'
   ClientHeight = 530
@@ -821,10 +821,9 @@ object frmEditor: TfrmEditor
       Height = 48
       Top = 1
       Width = 75
+      Action = acDocSection
       Align = alLeft
-      Caption = 'Секция'
       TabOrder = 0
-      OnClick = btnSectionClick
     end
     object btnArticle: TButton
       Left = 76
@@ -834,7 +833,6 @@ object frmEditor: TfrmEditor
       Align = alLeft
       Caption = 'Статья'
       TabOrder = 1
-      OnClick = btnArticleClick
     end
     object btnASide: TButton
       Left = 151
@@ -844,7 +842,6 @@ object frmEditor: TfrmEditor
       Align = alLeft
       Caption = 'Сайд'
       TabOrder = 2
-      OnClick = btnASideClick
     end
     object btnHeader: TButton
       Left = 226
@@ -854,7 +851,6 @@ object frmEditor: TfrmEditor
       Align = alLeft
       Caption = 'Шапка'
       TabOrder = 3
-      OnClick = btnHeaderClick
     end
     object btnFooter: TButton
       Left = 301
@@ -864,7 +860,6 @@ object frmEditor: TfrmEditor
       Align = alLeft
       Caption = 'Подвал'
       TabOrder = 4
-      OnClick = btnFooterClick
     end
     object btnNav: TButton
       Left = 376
@@ -874,7 +869,6 @@ object frmEditor: TfrmEditor
       Align = alLeft
       Caption = 'Меню'
       TabOrder = 5
-      OnClick = btnNavClick
     end
   end
   object SynHTMLSyn1: TSynHTMLSyn
@@ -902,6 +896,27 @@ object frmEditor: TfrmEditor
       end
       object mnuRedo: TMenuItem
         Action = acRedo
+      end
+    end
+    object mnuDocStructure: TMenuItem
+      Caption = 'Структура'
+      object mnuDocSection: TMenuItem
+        Action = acDocSection
+      end
+      object mnuDocArticle: TMenuItem
+        Action = acDocArticle
+      end
+      object mnuDocSide: TMenuItem
+        Action = acDocSide
+      end
+      object mnuDocHeader: TMenuItem
+        Action = acDocHeader
+      end
+      object mnuDocFooter: TMenuItem
+        Action = acDocFooter
+      end
+      object mnuDocNavMenu: TMenuItem
+        Action = acDocNavMenu
       end
     end
     object mnuForms: TMenuItem
@@ -933,6 +948,30 @@ object frmEditor: TfrmEditor
     object acNewForm: TAction
       Caption = 'Новая форма'
       OnExecute = acNewFormExecute
+    end
+    object acDocSection: TAction
+      Caption = 'Секция'
+      OnExecute = acDocSectionExecute
+    end
+    object acDocArticle: TAction
+      Caption = 'Статья'
+      OnExecute = acDocArticleExecute
+    end
+    object acDocSide: TAction
+      Caption = 'Сайд'
+      OnExecute = acDocSideExecute
+    end
+    object acDocHeader: TAction
+      Caption = 'Шапка'
+      OnExecute = acDocHeaderExecute
+    end
+    object acDocFooter: TAction
+      Caption = 'Подвал'
+      OnExecute = acDocFooterExecute
+    end
+    object acDocNavMenu: TAction
+      Caption = 'Нав меню'
+      OnExecute = acDocNavMenuExecute
     end
   end
   object SynCompletion1: TSynCompletion
