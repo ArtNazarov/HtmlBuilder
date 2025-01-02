@@ -29,10 +29,19 @@ type
     acPositionAbsolute: TAction;
     acPositionFixed: TAction;
     acPositionSticky: TAction;
+    acOffsetLeft: TAction;
+    acOffsetTop: TAction;
+    acOffsetRight: TAction;
+    acOffsetBottom: TAction;
     btnClose: TButton;
     btnAddClass: TButton;
     btnAddId: TButton;
     lbCss: TLabel;
+    MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
+    MenuItem3: TMenuItem;
+    mnuBottomOffset: TMenuItem;
+    mnuOffsets: TMenuItem;
     mnuPositionSticky: TMenuItem;
     mnuPositionFixed: TMenuItem;
     mnuPositionAbsolute: TMenuItem;
@@ -58,6 +67,10 @@ type
     { handles click of btnAddClass }
     procedure acBackgroundColorExecute(Sender: TObject);
     procedure acFontFamilyExecute(Sender: TObject);
+    procedure acOffsetBottomExecute(Sender: TObject);
+    procedure acOffsetLeftExecute(Sender: TObject);
+    procedure acOffsetRightExecute(Sender: TObject);
+    procedure acOffsetTopExecute(Sender: TObject);
     procedure acPositionAbsoluteExecute(Sender: TObject);
     procedure acPositionFixedExecute(Sender: TObject);
     procedure acPositionRelativeExecute(Sender: TObject);
@@ -200,6 +213,26 @@ end;
 procedure TfrmEditorCss.acFontFamilyExecute(Sender: TObject);
 begin
   editor.InsertTextAtCaret('font-family : serif;');
+end;
+
+procedure TfrmEditorCss.acOffsetBottomExecute(Sender: TObject);
+begin
+     editor.InsertTextAtCaret('bottom : 0px;');
+end;
+
+procedure TfrmEditorCss.acOffsetLeftExecute(Sender: TObject);
+begin
+     editor.InsertTextAtCaret('left : 0px;');
+end;
+
+procedure TfrmEditorCss.acOffsetRightExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret('right : 0px;');
+end;
+
+procedure TfrmEditorCss.acOffsetTopExecute(Sender: TObject);
+begin
+     editor.InsertTextAtCaret('top : 0px;');
 end;
 
 procedure TfrmEditorCss.acPositionAbsoluteExecute(Sender: TObject);

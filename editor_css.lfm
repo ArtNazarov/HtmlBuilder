@@ -905,6 +905,22 @@ object frmEditorCss: TfrmEditorCss
       Caption = 'Приклеенное'
       OnExecute = acPositionStickyExecute
     end
+    object acOffsetLeft: TAction
+      Caption = 'Смещение влево'
+      OnExecute = acOffsetLeftExecute
+    end
+    object acOffsetTop: TAction
+      Caption = 'Смещение вверх'
+      OnExecute = acOffsetTopExecute
+    end
+    object acOffsetRight: TAction
+      Caption = 'Смещение вправо'
+      OnExecute = acOffsetRightExecute
+    end
+    object acOffsetBottom: TAction
+      Caption = 'Смещение вниз'
+      OnExecute = acOffsetBottomExecute
+    end
   end
   object mnuCssEditor: TMainMenu
     Left = 601
@@ -955,6 +971,21 @@ object frmEditorCss: TfrmEditorCss
       end
       object mnuPositionSticky: TMenuItem
         Action = acPositionSticky
+      end
+      object mnuOffsets: TMenuItem
+        Caption = 'Смещения'
+        object MenuItem1: TMenuItem
+          Action = acOffsetTop
+        end
+        object MenuItem2: TMenuItem
+          Action = acOffsetLeft
+        end
+        object MenuItem3: TMenuItem
+          Action = acOffsetRight
+        end
+        object mnuBottomOffset: TMenuItem
+          Action = acOffsetBottom
+        end
       end
     end
   end
