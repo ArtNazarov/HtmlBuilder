@@ -33,6 +33,7 @@ type
     acDefDefinition: TAction;
     acMainTag: TAction;
     acInputText: TAction;
+    acInputPassword: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -69,6 +70,7 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuInputPassword: TMenuItem;
     mnuVideoSource: TMenuItem;
     mnuVideoTag: TMenuItem;
     mnuContent: TMenuItem;
@@ -110,6 +112,7 @@ type
     procedure acDocNavMenuExecute(Sender: TObject);
     procedure acDocSectionExecute(Sender: TObject);
     procedure acDocSideExecute(Sender: TObject);
+    procedure acInputPasswordExecute(Sender: TObject);
     procedure acInputTextExecute(Sender: TObject);
     procedure acMainTagExecute(Sender: TObject);
     procedure acNewFormExecute(Sender: TObject);
@@ -299,9 +302,14 @@ begin
     pair('aside');
 end;
 
+procedure TfrmEditor.acInputPasswordExecute(Sender: TObject);
+begin
+  tagX('input', 'type="password" name="vname" size="10" maxlength="40" value="defval"');
+end;
+
 procedure TfrmEditor.acInputTextExecute(Sender: TObject);
 begin
-  tagX('input', 'name="vname" size="10" maxlength="40" value="defval"');
+  tagX('input', 'type="text" name="vname" size="10" maxlength="40" value="defval"');
 end;
 
 procedure TfrmEditor.acMainTagExecute(Sender: TObject);

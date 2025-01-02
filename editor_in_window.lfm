@@ -954,6 +954,9 @@ object frmEditor: TfrmEditor
       object mnuInputText: TMenuItem
         Action = acInputText
       end
+      object mnuInputPassword: TMenuItem
+        Action = acInputPassword
+      end
     end
     object mnuContent: TMenuItem
       Caption = 'Содержание'
@@ -1043,6 +1046,10 @@ object frmEditor: TfrmEditor
     object acVideoSourceTag: TAction
       Caption = 'Источник видео'
       OnExecute = acVideoSourceTagExecute
+    end
+    object acInputPassword: TAction
+      Caption = 'Ввод пароля'
+      OnExecute = acInputPasswordExecute
     end
   end
   object SynCompletion1: TSynCompletion
