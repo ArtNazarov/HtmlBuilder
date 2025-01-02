@@ -34,6 +34,7 @@ type
     acMainTag: TAction;
     acInputText: TAction;
     acInputPassword: TAction;
+    acInputCheckbox: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -70,6 +71,7 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuInputCheckbox: TMenuItem;
     mnuInputPassword: TMenuItem;
     mnuVideoSource: TMenuItem;
     mnuVideoTag: TMenuItem;
@@ -112,6 +114,7 @@ type
     procedure acDocNavMenuExecute(Sender: TObject);
     procedure acDocSectionExecute(Sender: TObject);
     procedure acDocSideExecute(Sender: TObject);
+    procedure acInputCheckboxExecute(Sender: TObject);
     procedure acInputPasswordExecute(Sender: TObject);
     procedure acInputTextExecute(Sender: TObject);
     procedure acMainTagExecute(Sender: TObject);
@@ -300,6 +303,11 @@ end;
 procedure TfrmEditor.acDocSideExecute(Sender: TObject);
 begin
     pair('aside');
+end;
+
+procedure TfrmEditor.acInputCheckboxExecute(Sender: TObject);
+begin
+  tagX('input', 'type="checkbox" name="vname" checked');
 end;
 
 procedure TfrmEditor.acInputPasswordExecute(Sender: TObject);

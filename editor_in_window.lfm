@@ -957,6 +957,9 @@ object frmEditor: TfrmEditor
       object mnuInputPassword: TMenuItem
         Action = acInputPassword
       end
+      object mnuInputCheckbox: TMenuItem
+        Action = acInputCheckbox
+      end
     end
     object mnuContent: TMenuItem
       Caption = 'Содержание'
@@ -1050,6 +1053,10 @@ object frmEditor: TfrmEditor
     object acInputPassword: TAction
       Caption = 'Ввод пароля'
       OnExecute = acInputPasswordExecute
+    end
+    object acInputCheckbox: TAction
+      Caption = 'Чекбокс'
+      OnExecute = acInputCheckboxExecute
     end
   end
   object SynCompletion1: TSynCompletion
