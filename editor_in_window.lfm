@@ -951,6 +951,9 @@ object frmEditor: TfrmEditor
       object mnuNewForm: TMenuItem
         Action = acNewForm
       end
+      object mnuInputText: TMenuItem
+        Action = acInputText
+      end
     end
   end
   object acEditor: TActionList
@@ -1019,6 +1022,10 @@ object frmEditor: TfrmEditor
     object acMainTag: TAction
       Caption = 'Тег MAIN'
       OnExecute = acMainTagExecute
+    end
+    object acInputText: TAction
+      Caption = 'Поле ввода строки текста'
+      OnExecute = acInputTextExecute
     end
   end
   object SynCompletion1: TSynCompletion

@@ -32,6 +32,7 @@ type
     acDefTerm: TAction;
     acDefDefinition: TAction;
     acMainTag: TAction;
+    acInputText: TAction;
     acUndo: TAction;
     btnCloseEditor: TButton;
     btnFormatter: TButton;
@@ -66,6 +67,7 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuInputText: TMenuItem;
     mnuMainTag: TMenuItem;
     mnuDefDefinition: TMenuItem;
     mnuDefTerm: TMenuItem;
@@ -103,6 +105,7 @@ type
     procedure acDocNavMenuExecute(Sender: TObject);
     procedure acDocSectionExecute(Sender: TObject);
     procedure acDocSideExecute(Sender: TObject);
+    procedure acInputTextExecute(Sender: TObject);
     procedure acMainTagExecute(Sender: TObject);
     procedure acNewFormExecute(Sender: TObject);
     procedure acRedoExecute(Sender: TObject);
@@ -277,6 +280,11 @@ end;
 procedure TfrmEditor.acDocSideExecute(Sender: TObject);
 begin
     pair('aside');
+end;
+
+procedure TfrmEditor.acInputTextExecute(Sender: TObject);
+begin
+  tagX('input', 'name="vname" size="10" maxlength="40" value="defval"');
 end;
 
 procedure TfrmEditor.acMainTagExecute(Sender: TObject);
@@ -518,7 +526,7 @@ procedure TfrmEditor.tagC(tg, params: String);
   if (editor.SelText <> '') then
   editor.SelText:='<'+tg+' '+params+'>'+editor.SelText+'</'+tg+'>'
   else
-    editor.Lines.Add('<'+tg+' '+params+'>'+'</'+tg+'>');
+    editor.InsertTextAtCaret('<'+tg+' '+params+'>'+'</'+tg+'>');
 end;
 
 procedure TfrmEditor.tagX(tg, params: String);
@@ -526,7 +534,7 @@ begin
      if (editor.SelText <> '') then
   editor.SelText:='<'+tg+' '+params+' />'+editor.SelText
   else
-    editor.Lines.Add('<'+tg+' '+params+' />');
+    editor.InsertTextAtCaret('<'+tg+' '+params+' />');
 end;
 
 
