@@ -966,6 +966,12 @@ object frmEditor: TfrmEditor
       object mnuInputHidden: TMenuItem
         Action = acInputHidden
       end
+      object mnuSelectTag: TMenuItem
+        Action = acSelectTag
+      end
+      object mnuOptionTag: TMenuItem
+        Action = acOptionTag
+      end
     end
     object mnuContent: TMenuItem
       Caption = 'Содержание'
@@ -1071,6 +1077,14 @@ object frmEditor: TfrmEditor
     object acInputHidden: TAction
       Caption = 'Скрытое поле'
       OnExecute = acInputHiddenExecute
+    end
+    object acSelectTag: TAction
+      Caption = 'Выбор'
+      OnExecute = acSelectTagExecute
+    end
+    object acOptionTag: TAction
+      Caption = 'Опция'
+      OnExecute = acOptionTagExecute
     end
   end
   object SynCompletion1: TSynCompletion

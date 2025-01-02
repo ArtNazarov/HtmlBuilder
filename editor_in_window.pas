@@ -37,6 +37,8 @@ type
     acInputCheckbox: TAction;
     acInputRadio: TAction;
     acInputHidden: TAction;
+    acSelectTag: TAction;
+    acOptionTag: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -73,6 +75,8 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuSelectTag: TMenuItem;
+    mnuOptionTag: TMenuItem;
     mnuInputRadio: TMenuItem;
     mnuInputHidden: TMenuItem;
     mnuInputCheckbox: TMenuItem;
@@ -125,9 +129,11 @@ type
     procedure acInputTextExecute(Sender: TObject);
     procedure acMainTagExecute(Sender: TObject);
     procedure acNewFormExecute(Sender: TObject);
+    procedure acOptionTagExecute(Sender: TObject);
     procedure acRedoExecute(Sender: TObject);
     procedure acReplaceExecute(Sender: TObject);
     procedure acSearchExecute(Sender: TObject);
+    procedure acSelectTagExecute(Sender: TObject);
     procedure acUndoExecute(Sender: TObject);
     procedure acVideoSourceTagExecute(Sender: TObject);
     procedure acVideoTagExecute(Sender: TObject);
@@ -267,6 +273,11 @@ begin
   editor.SearchReplace(str, '', [ssoMatchCase,ssoEntireScope]);
 end;
 
+procedure TfrmEditor.acSelectTagExecute(Sender: TObject);
+begin
+  tagC('select', 'name="vname"');
+end;
+
 procedure TfrmEditor.acUndoExecute(Sender: TObject);
 begin
   editor.Undo;
@@ -299,6 +310,11 @@ end;
 procedure TfrmEditor.acNewFormExecute(Sender: TObject);
 begin
  tagC('form', 'method="POST"');
+end;
+
+procedure TfrmEditor.acOptionTagExecute(Sender: TObject);
+begin
+  tagC('option', 'value="some_value"');
 end;
 
 procedure TfrmEditor.acDocSectionExecute(Sender: TObject);
