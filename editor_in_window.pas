@@ -8,7 +8,8 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Menus, ActnList, SynEdit, SynHighlighterHTML, SynEditSearch, SynEditTypes,
-  SynCompletion, Types, LCLType, FontSettings;
+  SynCompletion, Types, LCLType, FontSettings,
+  sel_char_dlg;
 
 type
 
@@ -39,6 +40,7 @@ type
     acInputHidden: TAction;
     acSelectTag: TAction;
     acOptionTag: TAction;
+    acScreenKeyboard: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -75,6 +77,7 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuScreenKeyboard: TMenuItem;
     mnuSelectTag: TMenuItem;
     mnuOptionTag: TMenuItem;
     mnuInputRadio: TMenuItem;
@@ -132,6 +135,7 @@ type
     procedure acOptionTagExecute(Sender: TObject);
     procedure acRedoExecute(Sender: TObject);
     procedure acReplaceExecute(Sender: TObject);
+    procedure acScreenKeyboardExecute(Sender: TObject);
     procedure acSearchExecute(Sender: TObject);
     procedure acSelectTagExecute(Sender: TObject);
     procedure acUndoExecute(Sender: TObject);
@@ -300,6 +304,15 @@ begin
   rep:=InputBox('Замена', 'На что меняем', '');
   if (str<>'') and (rep<>'') then
   editor.SearchReplace(str, rep,[ssoReplaceAll, ssoMatchCase,ssoEntireScope]);
+end;
+
+procedure TfrmEditor.acScreenKeyboardExecute(Sender: TObject);
+var
+  d : TSelectSpecCharDlg;
+begin
+   d := TSelectSpecCharDlg.Create(Self);
+   d.setEditor(self.editor);
+   d.Show;
 end;
 
 procedure TfrmEditor.acRedoExecute(Sender: TObject);

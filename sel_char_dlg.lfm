@@ -1,0 +1,72 @@
+object SelectSpecCharDlg: TSelectSpecCharDlg
+  Left = 331
+  Height = 258
+  Top = 337
+  Width = 951
+  Caption = 'Клавиатура HTML мнемоник'
+  ClientHeight = 258
+  ClientWidth = 951
+  LCLVersion = '3.6.0.0'
+  object btnSpace: TButton
+    Left = 0
+    Height = 25
+    Top = 233
+    Width = 951
+    Align = alBottom
+    Caption = 'Пробел (неразрывный)'
+    TabOrder = 0
+    OnClick = btnSpaceClick
+  end
+  object pcKeyboards: TPageControl
+    Left = 0
+    Height = 233
+    Top = 0
+    Width = 951
+    ActivePage = MathSheet
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 1
+    object MathSheet: TTabSheet
+      Caption = 'Математика'
+      ClientHeight = 202
+      ClientWidth = 947
+      object btnForAll: TButton
+        Left = 17
+        Height = 25
+        Top = 10
+        Width = 75
+        Caption = '∀'
+        TabOrder = 0
+      end
+      object btnPart: TButton
+        Left = 112
+        Height = 25
+        Top = 10
+        Width = 75
+        Caption = '∂'
+        TabOrder = 1
+      end
+      object btnExists: TButton
+        Left = 208
+        Height = 25
+        Top = 10
+        Width = 75
+        Caption = '∃'
+        TabOrder = 2
+      end
+    end
+    object MiscSheet: TTabSheet
+      Caption = 'Разные символы'
+      ClientHeight = 202
+      ClientWidth = 947
+      object btnCent: TButton
+        Left = 16
+        Height = 25
+        Top = 15
+        Width = 75
+        Caption = '¢'
+        TabOrder = 0
+      end
+    end
+  end
+end
