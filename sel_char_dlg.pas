@@ -31,10 +31,23 @@ type
     btnInfinity: TButton;
     btnAngle: TButton;
     btnIntegral: TButton;
+    btnAnd: TButton;
+    btnOr: TButton;
+    btnCap: TButton;
+    btnCup: TButton;
+    btnTherefore: TButton;
+    btnSimilarTo: TButton;
+    btnCongruent: TButton;
+    btnAlmostEqual: TButton;
     pcKeyboards: TPageControl;
     MathSheet: TTabSheet;
     MiscSheet: TTabSheet;
+    procedure btnAlmostEqualClick(Sender: TObject);
+    procedure btnAndClick(Sender: TObject);
     procedure btnAngleClick(Sender: TObject);
+    procedure btnCapClick(Sender: TObject);
+    procedure btnCongruentClick(Sender: TObject);
+    procedure btnCupClick(Sender: TObject);
     procedure btnEmptyClick(Sender: TObject);
     procedure btnExistsClick(Sender: TObject);
     procedure btnForAllClick(Sender: TObject);
@@ -45,12 +58,15 @@ type
     procedure btnNablaClick(Sender: TObject);
     procedure btnNiClick(Sender: TObject);
     procedure btnNotInClick(Sender: TObject);
+    procedure btnOrClick(Sender: TObject);
     procedure btnPartClick(Sender: TObject);
     procedure btnProdClick(Sender: TObject);
     procedure btnPropClick(Sender: TObject);
     procedure btnRadicClick(Sender: TObject);
+    procedure btnSimilarToClick(Sender: TObject);
     procedure btnSpaceClick(Sender: TObject);
     procedure btnSumClick(Sender: TObject);
+    procedure btnThereforeClick(Sender: TObject);
   private
 
   public
@@ -74,6 +90,11 @@ end;
 procedure TSelectSpecCharDlg.btnSumClick(Sender: TObject);
 begin
   putKeys('&sum;');
+end;
+
+procedure TSelectSpecCharDlg.btnThereforeClick(Sender: TObject);
+begin
+  putKeys('&there4;');
 end;
 
 procedure TSelectSpecCharDlg.btnForAllClick(Sender: TObject);
@@ -116,6 +137,11 @@ begin
   putKeys('&notin;');
 end;
 
+procedure TSelectSpecCharDlg.btnOrClick(Sender: TObject);
+begin
+  putKeys('&or;');
+end;
+
 procedure TSelectSpecCharDlg.btnExistsClick(Sender: TObject);
 begin
   putKeys('&part;');
@@ -129,6 +155,31 @@ end;
 procedure TSelectSpecCharDlg.btnAngleClick(Sender: TObject);
 begin
   putKeys('&ang;');
+end;
+
+procedure TSelectSpecCharDlg.btnCapClick(Sender: TObject);
+begin
+  putKeys('&cap;');
+end;
+
+procedure TSelectSpecCharDlg.btnCongruentClick(Sender: TObject);
+begin
+  putKeys('&cong;');
+end;
+
+procedure TSelectSpecCharDlg.btnCupClick(Sender: TObject);
+begin
+  putKeys('&cup;');
+end;
+
+procedure TSelectSpecCharDlg.btnAndClick(Sender: TObject);
+begin
+  putKeys('&and;');
+end;
+
+procedure TSelectSpecCharDlg.btnAlmostEqualClick(Sender: TObject);
+begin
+  putKeys('&asymp;');
 end;
 
 procedure TSelectSpecCharDlg.btnPartClick(Sender: TObject);
@@ -149,6 +200,11 @@ end;
 procedure TSelectSpecCharDlg.btnRadicClick(Sender: TObject);
 begin
   putKeys('&radic;');
+end;
+
+procedure TSelectSpecCharDlg.btnSimilarToClick(Sender: TObject);
+begin
+  putKeys('&sim;');
 end;
 
 procedure TSelectSpecCharDlg.setEditor(var some_editor: TSynEdit);
