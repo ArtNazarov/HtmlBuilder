@@ -1,7 +1,7 @@
 object SelectSpecCharDlg: TSelectSpecCharDlg
-  Left = 331
+  Left = 397
   Height = 258
-  Top = 337
+  Top = 347
   Width = 951
   Caption = 'Клавиатура HTML мнемоник'
   ClientHeight = 258
@@ -37,6 +37,7 @@ object SelectSpecCharDlg: TSelectSpecCharDlg
         Width = 75
         Caption = '∀'
         TabOrder = 0
+        OnClick = btnForAllClick
       end
       object btnPart: TButton
         Left = 112
@@ -45,6 +46,7 @@ object SelectSpecCharDlg: TSelectSpecCharDlg
         Width = 75
         Caption = '∂'
         TabOrder = 1
+        OnClick = btnPartClick
       end
       object btnExists: TButton
         Left = 208
@@ -53,6 +55,43 @@ object SelectSpecCharDlg: TSelectSpecCharDlg
         Width = 75
         Caption = '∃'
         TabOrder = 2
+        OnClick = btnExistsClick
+      end
+      object btnEmpty: TButton
+        Left = 304
+        Height = 25
+        Top = 10
+        Width = 75
+        Caption = '∅'
+        TabOrder = 3
+        OnClick = btnEmptyClick
+      end
+      object btnNabla: TButton
+        Left = 400
+        Height = 25
+        Top = 10
+        Width = 75
+        Caption = '∇'
+        TabOrder = 4
+        OnClick = btnNablaClick
+      end
+      object btnIsIn: TButton
+        Left = 496
+        Height = 25
+        Top = 10
+        Width = 75
+        Caption = '∈'
+        TabOrder = 5
+        OnClick = btnIsInClick
+      end
+      object btnNotIn: TButton
+        Left = 592
+        Height = 25
+        Top = 10
+        Width = 75
+        Caption = '∉'
+        TabOrder = 6
+        OnClick = btnNotInClick
       end
     end
     object MiscSheet: TTabSheet
