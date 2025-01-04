@@ -65,8 +65,8 @@
         <ComponentName Value="frmEditor"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
         <TopLine Value="309"/>
         <CursorPos X="11" Y="315"/>
         <UsageCount Value="202"/>

@@ -93,6 +93,87 @@ object SelectSpecCharDlg: TSelectSpecCharDlg
         TabOrder = 6
         OnClick = btnNotInClick
       end
+      object btnNi: TButton
+        Left = 16
+        Height = 25
+        Top = 48
+        Width = 75
+        Caption = '∋'
+        TabOrder = 7
+        OnClick = btnNiClick
+      end
+      object btnProd: TButton
+        Left = 688
+        Height = 25
+        Top = 10
+        Width = 75
+        Caption = '∏'
+        TabOrder = 8
+        OnClick = btnProdClick
+      end
+      object btnSum: TButton
+        Left = 112
+        Height = 25
+        Top = 48
+        Width = 75
+        Caption = '∑'
+        TabOrder = 9
+        OnClick = btnSumClick
+      end
+      object btnLowast: TButton
+        Left = 208
+        Height = 25
+        Top = 48
+        Width = 75
+        Caption = '∗'
+        TabOrder = 10
+        OnClick = btnLowastClick
+      end
+      object btnRadic: TButton
+        Left = 304
+        Height = 25
+        Top = 48
+        Width = 75
+        Caption = '√'
+        TabOrder = 11
+        OnClick = btnRadicClick
+      end
+      object btnProp: TButton
+        Left = 400
+        Height = 25
+        Top = 48
+        Width = 75
+        Caption = '∝'
+        TabOrder = 12
+        OnClick = btnPropClick
+      end
+      object btnInfinity: TButton
+        Left = 496
+        Height = 25
+        Top = 48
+        Width = 75
+        Caption = '∞'
+        TabOrder = 13
+        OnClick = btnInfinityClick
+      end
+      object btnAngle: TButton
+        Left = 592
+        Height = 25
+        Top = 48
+        Width = 75
+        Caption = '∠'
+        TabOrder = 14
+        OnClick = btnAngleClick
+      end
+      object btnIntegral: TButton
+        Left = 688
+        Height = 25
+        Top = 48
+        Width = 75
+        Caption = '∫'
+        TabOrder = 15
+        OnClick = btnIntegralClick
+      end
     end
     object MiscSheet: TTabSheet
       Caption = 'Разные символы'
