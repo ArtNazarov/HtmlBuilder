@@ -667,6 +667,9 @@ object frmEditorJs: TfrmEditorJs
       object mnuTryCatch: TMenuItem
         Action = acTryCatch
       end
+      object mnuSwitch: TMenuItem
+        Action = acSwitch
+      end
     end
   end
   object aclJsEditorActions: TActionList
@@ -691,6 +694,10 @@ object frmEditorJs: TfrmEditorJs
     object acTryCatch: TAction
       Caption = 'блок исключений try catch'
       OnExecute = acTryCatchExecute
+    end
+    object acSwitch: TAction
+      Caption = 'Блок выбора switch'
+      OnExecute = acSwitchExecute
     end
   end
 end

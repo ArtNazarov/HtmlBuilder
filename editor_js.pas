@@ -21,9 +21,11 @@ type
     aclJsEditorActions: TActionList;
     acForKeyInLoop: TAction;
     acForValueOfIterable: TAction;
+    acSwitch: TAction;
     acTryCatch: TAction;
     btnClose: TButton;
     btnAddFunction: TButton;
+    mnuSwitch: TMenuItem;
     mnuTryCatch: TMenuItem;
     mnuForValueOfIterable: TMenuItem;
     mnuForKeyIn: TMenuItem;
@@ -47,6 +49,7 @@ type
     procedure acForKeyInLoopExecute(Sender: TObject);
     procedure acForValueOfIterableExecute(Sender: TObject);
     procedure acNewJsFunctionExecute(Sender: TObject);
+    procedure acSwitchExecute(Sender: TObject);
     procedure acTryCatchExecute(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -99,6 +102,11 @@ var funcName : String;
 begin
   funcName := InputBox('Новая функция', 'имя функции', 'newF');
  editor.InsertTextAtCaret(replKeys('function '+funcName+'(){[enter]}[enter]'));
+end;
+
+procedure TfrmEditorJs.acSwitchExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret(replKeys('switch (expr) {[enter]case value1 :[enter][tab]// some actions[enter]break;[enter]default:[enter][tab]// default actions[enter]}[enter]'));
 end;
 
 procedure TfrmEditorJs.acTryCatchExecute(Sender: TObject);
