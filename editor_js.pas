@@ -22,9 +22,12 @@ type
     acForKeyInLoop: TAction;
     acForValueOfIterable: TAction;
     acSwitch: TAction;
+    acNewClass: TAction;
     acTryCatch: TAction;
     btnClose: TButton;
     btnAddFunction: TButton;
+    btnAddClass: TButton;
+    mnuAddClass: TMenuItem;
     mnuSwitch: TMenuItem;
     mnuTryCatch: TMenuItem;
     mnuForValueOfIterable: TMenuItem;
@@ -48,6 +51,7 @@ type
     procedure acDecisionIfElseExecute(Sender: TObject);
     procedure acForKeyInLoopExecute(Sender: TObject);
     procedure acForValueOfIterableExecute(Sender: TObject);
+    procedure acNewClassExecute(Sender: TObject);
     procedure acNewJsFunctionExecute(Sender: TObject);
     procedure acSwitchExecute(Sender: TObject);
     procedure acTryCatchExecute(Sender: TObject);
@@ -127,6 +131,11 @@ end;
 procedure TfrmEditorJs.acForValueOfIterableExecute(Sender: TObject);
 begin
   editor.InsertTextAtCaret(replKeys('for (let value of iterable) {[enter]}[enter]'));
+end;
+
+procedure TfrmEditorJs.acNewClassExecute(Sender: TObject);
+begin
+     editor.InsertTextAtCaret(replKeys('class ClassName {[enter][tab]constructor (){[enter][tab]// Add constructor[enter][tab]}[enter]}[enter]'));
 end;
 
 
