@@ -1,7 +1,7 @@
 object SelectSpecCharDlg: TSelectSpecCharDlg
-  Left = 397
+  Left = 276
   Height = 258
-  Top = 347
+  Top = 447
   Width = 951
   Caption = 'Клавиатура HTML мнемоник'
   ClientHeight = 258
@@ -245,6 +245,78 @@ object SelectSpecCharDlg: TSelectSpecCharDlg
         Caption = '≈'
         TabOrder = 23
         OnClick = btnAlmostEqualClick
+      end
+      object btnNotEqual: TButton
+        Left = 16
+        Height = 25
+        Top = 128
+        Width = 75
+        Caption = '≠'
+        TabOrder = 24
+        OnClick = btnNotEqualClick
+      end
+      object btnEquivalent: TButton
+        Left = 112
+        Height = 25
+        Top = 128
+        Width = 75
+        Caption = '≡'
+        TabOrder = 25
+        OnClick = btnEquivalentClick
+      end
+      object btnLessOrEqual: TButton
+        Left = 208
+        Height = 25
+        Top = 128
+        Width = 75
+        Caption = '≤'
+        TabOrder = 26
+        OnClick = btnLessOrEqualClick
+      end
+      object btnGreaterOrEqual: TButton
+        Left = 304
+        Height = 25
+        Top = 128
+        Width = 75
+        Caption = '≥'
+        TabOrder = 27
+        OnClick = btnGreaterOrEqualClick
+      end
+      object btnSubsetOf: TButton
+        Left = 400
+        Height = 25
+        Top = 128
+        Width = 75
+        Caption = '⊂'
+        TabOrder = 28
+        OnClick = btnSubsetOfClick
+      end
+      object btnSupersetOf: TButton
+        Left = 496
+        Height = 25
+        Top = 128
+        Width = 75
+        Caption = '⊃'
+        TabOrder = 29
+        OnClick = btnSupersetOfClick
+      end
+      object btnNotSubsetOf: TButton
+        Left = 592
+        Height = 25
+        Top = 128
+        Width = 75
+        Caption = '⊄'
+        TabOrder = 30
+        OnClick = btnNotSubsetOfClick
+      end
+      object btnSubsetOrEqual: TButton
+        Left = 688
+        Height = 25
+        Top = 128
+        Width = 75
+        Caption = '⊆'
+        TabOrder = 31
+        OnClick = btnSubsetOrEqualClick
       end
     end
     object MiscSheet: TTabSheet

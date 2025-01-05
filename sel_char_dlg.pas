@@ -39,6 +39,14 @@ type
     btnSimilarTo: TButton;
     btnCongruent: TButton;
     btnAlmostEqual: TButton;
+    btnNotEqual: TButton;
+    btnEquivalent: TButton;
+    btnLessOrEqual: TButton;
+    btnGreaterOrEqual: TButton;
+    btnSubsetOf: TButton;
+    btnSupersetOf: TButton;
+    btnNotSubsetOf: TButton;
+    btnSubsetOrEqual: TButton;
     pcKeyboards: TPageControl;
     MathSheet: TTabSheet;
     MiscSheet: TTabSheet;
@@ -49,15 +57,20 @@ type
     procedure btnCongruentClick(Sender: TObject);
     procedure btnCupClick(Sender: TObject);
     procedure btnEmptyClick(Sender: TObject);
+    procedure btnEquivalentClick(Sender: TObject);
     procedure btnExistsClick(Sender: TObject);
     procedure btnForAllClick(Sender: TObject);
+    procedure btnGreaterOrEqualClick(Sender: TObject);
     procedure btnInfinityClick(Sender: TObject);
     procedure btnIntegralClick(Sender: TObject);
     procedure btnIsInClick(Sender: TObject);
+    procedure btnLessOrEqualClick(Sender: TObject);
     procedure btnLowastClick(Sender: TObject);
     procedure btnNablaClick(Sender: TObject);
     procedure btnNiClick(Sender: TObject);
+    procedure btnNotEqualClick(Sender: TObject);
     procedure btnNotInClick(Sender: TObject);
+    procedure btnNotSubsetOfClick(Sender: TObject);
     procedure btnOrClick(Sender: TObject);
     procedure btnPartClick(Sender: TObject);
     procedure btnProdClick(Sender: TObject);
@@ -65,7 +78,10 @@ type
     procedure btnRadicClick(Sender: TObject);
     procedure btnSimilarToClick(Sender: TObject);
     procedure btnSpaceClick(Sender: TObject);
+    procedure btnSubsetOfClick(Sender: TObject);
+    procedure btnSubsetOrEqualClick(Sender: TObject);
     procedure btnSumClick(Sender: TObject);
+    procedure btnSupersetOfClick(Sender: TObject);
     procedure btnThereforeClick(Sender: TObject);
   private
 
@@ -87,9 +103,24 @@ begin
   putKeys('&nbsp;');
 end;
 
+procedure TSelectSpecCharDlg.btnSubsetOfClick(Sender: TObject);
+begin
+  putKeys('&sub;');
+end;
+
+procedure TSelectSpecCharDlg.btnSubsetOrEqualClick(Sender: TObject);
+begin
+  putKeys('&sube;');
+end;
+
 procedure TSelectSpecCharDlg.btnSumClick(Sender: TObject);
 begin
   putKeys('&sum;');
+end;
+
+procedure TSelectSpecCharDlg.btnSupersetOfClick(Sender: TObject);
+begin
+  putKeys('&sup;');
 end;
 
 procedure TSelectSpecCharDlg.btnThereforeClick(Sender: TObject);
@@ -100,6 +131,11 @@ end;
 procedure TSelectSpecCharDlg.btnForAllClick(Sender: TObject);
 begin
    putKeys('&forall;');
+end;
+
+procedure TSelectSpecCharDlg.btnGreaterOrEqualClick(Sender: TObject);
+begin
+  putKeys('&ge;');
 end;
 
 procedure TSelectSpecCharDlg.btnInfinityClick(Sender: TObject);
@@ -117,6 +153,11 @@ begin
   putKeys('&isin;');
 end;
 
+procedure TSelectSpecCharDlg.btnLessOrEqualClick(Sender: TObject);
+begin
+  putKeys('&le;');
+end;
+
 procedure TSelectSpecCharDlg.btnLowastClick(Sender: TObject);
 begin
    putKeys('&lowast;');
@@ -132,9 +173,19 @@ begin
   putKeys('&ni;');
 end;
 
+procedure TSelectSpecCharDlg.btnNotEqualClick(Sender: TObject);
+begin
+  putKeys('&ne;');
+end;
+
 procedure TSelectSpecCharDlg.btnNotInClick(Sender: TObject);
 begin
   putKeys('&notin;');
+end;
+
+procedure TSelectSpecCharDlg.btnNotSubsetOfClick(Sender: TObject);
+begin
+  putKeys('&nsub;');
 end;
 
 procedure TSelectSpecCharDlg.btnOrClick(Sender: TObject);
@@ -150,6 +201,11 @@ end;
 procedure TSelectSpecCharDlg.btnEmptyClick(Sender: TObject);
 begin
   putKeys('&empty;');
+end;
+
+procedure TSelectSpecCharDlg.btnEquivalentClick(Sender: TObject);
+begin
+  putKeys('&equiv;');
 end;
 
 procedure TSelectSpecCharDlg.btnAngleClick(Sender: TObject);
