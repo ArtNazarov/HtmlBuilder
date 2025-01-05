@@ -1,7 +1,7 @@
 object SelectSpecCharDlg: TSelectSpecCharDlg
-  Left = 276
+  Left = 136
   Height = 258
-  Top = 447
+  Top = 283
   Width = 951
   Caption = 'Клавиатура HTML мнемоник'
   ClientHeight = 258
@@ -317,6 +317,51 @@ object SelectSpecCharDlg: TSelectSpecCharDlg
         Caption = '⊆'
         TabOrder = 31
         OnClick = btnSubsetOrEqualClick
+      end
+      object btnSupersetOrEqual: TButton
+        Left = 16
+        Height = 25
+        Top = 168
+        Width = 75
+        Caption = '⊇'
+        TabOrder = 32
+        OnClick = btnSupersetOrEqualClick
+      end
+      object btnCircledPlus: TButton
+        Left = 304
+        Height = 25
+        Top = 167
+        Width = 75
+        Caption = '⊕'
+        TabOrder = 33
+        OnClick = btnCircledPlusClick
+      end
+      object btnCircledMult: TButton
+        Left = 400
+        Height = 25
+        Top = 167
+        Width = 75
+        Caption = '⊗'
+        TabOrder = 34
+        OnClick = btnCircledMultClick
+      end
+      object btnPerpendicular: TButton
+        Left = 496
+        Height = 25
+        Top = 168
+        Width = 75
+        Caption = '⊥'
+        TabOrder = 35
+        OnClick = btnPerpendicularClick
+      end
+      object btnDotOperator: TButton
+        Left = 688
+        Height = 25
+        Top = 168
+        Width = 75
+        Caption = '⋅'
+        TabOrder = 36
+        OnClick = btnDotOperatorClick
       end
     end
     object MiscSheet: TTabSheet

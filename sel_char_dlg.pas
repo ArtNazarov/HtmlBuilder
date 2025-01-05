@@ -47,6 +47,11 @@ type
     btnSupersetOf: TButton;
     btnNotSubsetOf: TButton;
     btnSubsetOrEqual: TButton;
+    btnSupersetOrEqual: TButton;
+    btnCircledPlus: TButton;
+    btnCircledMult: TButton;
+    btnPerpendicular: TButton;
+    btnDotOperator: TButton;
     pcKeyboards: TPageControl;
     MathSheet: TTabSheet;
     MiscSheet: TTabSheet;
@@ -54,8 +59,11 @@ type
     procedure btnAndClick(Sender: TObject);
     procedure btnAngleClick(Sender: TObject);
     procedure btnCapClick(Sender: TObject);
+    procedure btnCircledMultClick(Sender: TObject);
+    procedure btnCircledPlusClick(Sender: TObject);
     procedure btnCongruentClick(Sender: TObject);
     procedure btnCupClick(Sender: TObject);
+    procedure btnDotOperatorClick(Sender: TObject);
     procedure btnEmptyClick(Sender: TObject);
     procedure btnEquivalentClick(Sender: TObject);
     procedure btnExistsClick(Sender: TObject);
@@ -73,6 +81,7 @@ type
     procedure btnNotSubsetOfClick(Sender: TObject);
     procedure btnOrClick(Sender: TObject);
     procedure btnPartClick(Sender: TObject);
+    procedure btnPerpendicularClick(Sender: TObject);
     procedure btnProdClick(Sender: TObject);
     procedure btnPropClick(Sender: TObject);
     procedure btnRadicClick(Sender: TObject);
@@ -82,6 +91,7 @@ type
     procedure btnSubsetOrEqualClick(Sender: TObject);
     procedure btnSumClick(Sender: TObject);
     procedure btnSupersetOfClick(Sender: TObject);
+    procedure btnSupersetOrEqualClick(Sender: TObject);
     procedure btnThereforeClick(Sender: TObject);
   private
 
@@ -121,6 +131,11 @@ end;
 procedure TSelectSpecCharDlg.btnSupersetOfClick(Sender: TObject);
 begin
   putKeys('&sup;');
+end;
+
+procedure TSelectSpecCharDlg.btnSupersetOrEqualClick(Sender: TObject);
+begin
+  putKeys('&supe;');
 end;
 
 procedure TSelectSpecCharDlg.btnThereforeClick(Sender: TObject);
@@ -218,6 +233,16 @@ begin
   putKeys('&cap;');
 end;
 
+procedure TSelectSpecCharDlg.btnCircledMultClick(Sender: TObject);
+begin
+  putKeys('&otimes;');
+end;
+
+procedure TSelectSpecCharDlg.btnCircledPlusClick(Sender: TObject);
+begin
+  putKeys('&oplus;');
+end;
+
 procedure TSelectSpecCharDlg.btnCongruentClick(Sender: TObject);
 begin
   putKeys('&cong;');
@@ -226,6 +251,11 @@ end;
 procedure TSelectSpecCharDlg.btnCupClick(Sender: TObject);
 begin
   putKeys('&cup;');
+end;
+
+procedure TSelectSpecCharDlg.btnDotOperatorClick(Sender: TObject);
+begin
+  putKeys('&sdot;');
 end;
 
 procedure TSelectSpecCharDlg.btnAndClick(Sender: TObject);
@@ -241,6 +271,11 @@ end;
 procedure TSelectSpecCharDlg.btnPartClick(Sender: TObject);
 begin
   putKeys('&exist;');
+end;
+
+procedure TSelectSpecCharDlg.btnPerpendicularClick(Sender: TObject);
+begin
+  putKeys('&perp;');
 end;
 
 procedure TSelectSpecCharDlg.btnProdClick(Sender: TObject);
