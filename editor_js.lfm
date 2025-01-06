@@ -664,6 +664,14 @@ object frmEditorJs: TfrmEditorJs
         Action = acNewJsFunction
         ShortCut = 16454
       end
+      object mnuAddBinaryJsFunction: TMenuItem
+        Action = acAddBinaryJsFunction
+        ShortCut = 16434
+      end
+      object mnuAddTernaryJsFunction: TMenuItem
+        Action = acAddTernaryJsFunction
+        ShortCut = 16435
+      end
       object mnuDecisionIfElse: TMenuItem
         Action = acDecisionIfElse
         ShortCut = 16457
@@ -732,6 +740,14 @@ object frmEditorJs: TfrmEditorJs
     object acDoWhileLoop: TAction
       Caption = 'цикл do while'
       OnExecute = acDoWhileLoopExecute
+    end
+    object acAddBinaryJsFunction: TAction
+      Caption = 'Добавить функцию двух аргументов'
+      OnExecute = acAddBinaryJsFunctionExecute
+    end
+    object acAddTernaryJsFunction: TAction
+      Caption = 'Добавить функцию 3х аргументов'
+      OnExecute = acAddTernaryJsFunctionExecute
     end
   end
 end

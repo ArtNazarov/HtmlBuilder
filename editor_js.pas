@@ -24,11 +24,15 @@ type
     acSwitch: TAction;
     acNewClass: TAction;
     acDoWhileLoop: TAction;
+    acAddBinaryJsFunction: TAction;
+    acAddTernaryJsFunction: TAction;
     acWhileLoop: TAction;
     acTryCatch: TAction;
     btnClose: TButton;
     btnAddFunction: TButton;
     btnAddClass: TButton;
+    mnuAddBinaryJsFunction: TMenuItem;
+    mnuAddTernaryJsFunction: TMenuItem;
     mnuDoWhileLoop: TMenuItem;
     mnuWhileLoop: TMenuItem;
     mnuAddClass: TMenuItem;
@@ -52,6 +56,8 @@ type
 
 
     { Handles click of btnClose }
+    procedure acAddBinaryJsFunctionExecute(Sender: TObject);
+    procedure acAddTernaryJsFunctionExecute(Sender: TObject);
     procedure acDecisionIfElseExecute(Sender: TObject);
     procedure acDoWhileLoopExecute(Sender: TObject);
     procedure acForKeyInLoopExecute(Sender: TObject);
@@ -132,6 +138,22 @@ end;
 procedure TfrmEditorJs.acDecisionIfElseExecute(Sender: TObject);
 begin
   editor.InsertTextAtCaret(replKeys('if () {[enter]} else {[enter]}[enter]'));
+end;
+
+procedure TfrmEditorJs.acAddBinaryJsFunctionExecute(Sender: TObject);
+var
+  funcName : String;
+begin
+     funcName := InputBox('Новая функция', 'имя функции', 'newF');
+     editor.InsertTextAtCaret(replKeys('function '+funcName+'(p, q) {[enter]}[enter]'));
+end;
+
+procedure TfrmEditorJs.acAddTernaryJsFunctionExecute(Sender: TObject);
+var
+  funcName : String;
+begin
+     funcName := InputBox('Новая функция', 'имя функции', 'newF');
+     editor.InsertTextAtCaret(replKeys('function '+funcName+'(p, q, t) {[enter]}[enter]'));
 end;
 
 procedure TfrmEditorJs.acDoWhileLoopExecute(Sender: TObject);
