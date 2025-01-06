@@ -887,8 +887,8 @@ object frmEditor: TfrmEditor
     Top = 112
   end
   object mmMenuEditor: TMainMenu
-    Left = 575
-    Top = 19
+    Left = 816
+    Top = 8
     object mnuFinder: TMenuItem
       Caption = 'Поиск/замена'
       object mnuSearch: TMenuItem
@@ -978,6 +978,9 @@ object frmEditor: TfrmEditor
       object mnuTextArea: TMenuItem
         Action = acTextArea
       end
+      object mnuOutputTag: TMenuItem
+        Action = acOutputTag
+      end
     end
     object mnuContent: TMenuItem
       Caption = 'Содержание'
@@ -990,8 +993,8 @@ object frmEditor: TfrmEditor
     end
   end
   object acEditor: TActionList
-    Left = 724
-    Top = 13
+    Left = 888
+    Top = 8
     object acSearch: TAction
       Caption = 'Поиск'
       OnExecute = acSearchExecute
@@ -1099,6 +1102,10 @@ object frmEditor: TfrmEditor
     object acTextArea: TAction
       Caption = 'Многострочное поле ввода'
       OnExecute = acTextAreaExecute
+    end
+    object acOutputTag: TAction
+      Caption = 'Область вывода формы'
+      OnExecute = acOutputTagExecute
     end
   end
   object SynCompletion1: TSynCompletion
@@ -1220,7 +1227,7 @@ object frmEditor: TfrmEditor
     ExecCommandID = ecSynCompletionExecute
     Editor = editor
     ToggleReplaceWhole = False
-    Left = 794
-    Top = 117
+    Left = 984
+    Top = 8
   end
 end
