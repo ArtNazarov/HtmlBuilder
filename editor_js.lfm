@@ -676,6 +676,9 @@ object frmEditorJs: TfrmEditorJs
         Action = acForValueOfIterable
         ShortCut = 16463
       end
+      object mnuWhileLoop: TMenuItem
+        Action = acWhileLoop
+      end
       object mnuTryCatch: TMenuItem
         Action = acTryCatch
       end
@@ -714,6 +717,10 @@ object frmEditorJs: TfrmEditorJs
     object acNewClass: TAction
       Caption = 'Новый класс'
       OnExecute = acNewClassExecute
+    end
+    object acWhileLoop: TAction
+      Caption = 'цикл while'
+      OnExecute = acWhileLoopExecute
     end
   end
 end
