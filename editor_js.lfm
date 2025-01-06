@@ -678,15 +678,19 @@ object frmEditorJs: TfrmEditorJs
       end
       object mnuWhileLoop: TMenuItem
         Action = acWhileLoop
+        ShortCut = 16471
       end
       object mnuDoWhileLoop: TMenuItem
         Action = acDoWhileLoop
+        ShortCut = 16452
       end
       object mnuTryCatch: TMenuItem
         Action = acTryCatch
+        ShortCut = 16468
       end
       object mnuSwitch: TMenuItem
         Action = acSwitch
+        ShortCut = 16467
       end
     end
   end
