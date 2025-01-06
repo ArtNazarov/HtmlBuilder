@@ -58,6 +58,7 @@ type
     acSwitchToKoreanLocale: TAction;
     acCutText: TAction;
     acPasteText: TAction;
+    acGotoHelpSheet: TAction;
     alContextActions: TActionList;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
@@ -250,6 +251,8 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuGotoHelpSheet: TMenuItem;
+    mnuTabChanger: TMenuItem;
     mnuPasteText: TMenuItem;
     mnuCutText: TMenuItem;
     mnuKoreanLocale: TMenuItem;
@@ -514,6 +517,7 @@ type
 
     { Выполняет поиск в базе по заголовку }
     procedure acFindContentByCaptionExecute(Sender: TObject);
+    procedure acGotoHelpSheetExecute(Sender: TObject);
     procedure acPasteTextExecute(Sender: TObject);
 
     { Действие для восстановления специальных настроек }
@@ -2202,6 +2206,11 @@ begin
         end;
   end;
     end;
+end;
+
+procedure TForm1.acGotoHelpSheetExecute(Sender: TObject);
+begin
+  AppPages.ActivePage:=tabHelp;
 end;
 
 procedure TForm1.acPasteTextExecute(Sender: TObject);
