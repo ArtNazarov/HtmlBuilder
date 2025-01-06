@@ -679,6 +679,9 @@ object frmEditorJs: TfrmEditorJs
       object mnuWhileLoop: TMenuItem
         Action = acWhileLoop
       end
+      object mnuDoWhileLoop: TMenuItem
+        Action = acDoWhileLoop
+      end
       object mnuTryCatch: TMenuItem
         Action = acTryCatch
       end
@@ -721,6 +724,10 @@ object frmEditorJs: TfrmEditorJs
     object acWhileLoop: TAction
       Caption = 'цикл while'
       OnExecute = acWhileLoopExecute
+    end
+    object acDoWhileLoop: TAction
+      Caption = 'цикл do while'
+      OnExecute = acDoWhileLoopExecute
     end
   end
 end

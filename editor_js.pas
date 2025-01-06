@@ -23,11 +23,13 @@ type
     acForValueOfIterable: TAction;
     acSwitch: TAction;
     acNewClass: TAction;
+    acDoWhileLoop: TAction;
     acWhileLoop: TAction;
     acTryCatch: TAction;
     btnClose: TButton;
     btnAddFunction: TButton;
     btnAddClass: TButton;
+    mnuDoWhileLoop: TMenuItem;
     mnuWhileLoop: TMenuItem;
     mnuAddClass: TMenuItem;
     mnuSwitch: TMenuItem;
@@ -51,6 +53,7 @@ type
 
     { Handles click of btnClose }
     procedure acDecisionIfElseExecute(Sender: TObject);
+    procedure acDoWhileLoopExecute(Sender: TObject);
     procedure acForKeyInLoopExecute(Sender: TObject);
     procedure acForValueOfIterableExecute(Sender: TObject);
     procedure acNewClassExecute(Sender: TObject);
@@ -129,6 +132,11 @@ end;
 procedure TfrmEditorJs.acDecisionIfElseExecute(Sender: TObject);
 begin
   editor.InsertTextAtCaret(replKeys('if () {[enter]} else {[enter]}[enter]'));
+end;
+
+procedure TfrmEditorJs.acDoWhileLoopExecute(Sender: TObject);
+begin
+  editor.InsertTextAtCaret(replKeys('do {[enter][tab]// do while loop[enter]}[enter]while ( );[enter]'));
 end;
 
 procedure TfrmEditorJs.acForKeyInLoopExecute(Sender: TObject);
