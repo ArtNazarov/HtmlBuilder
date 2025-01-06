@@ -180,6 +180,7 @@ type
     fContent: TDBMemo;
     fID: TDBEdit;
     ImageList1: TImageList;
+    ilImagesForMenuItems: TImageList;
     Label1: TLabel;
     Label12: TLabel;
     lbIsFileUploaded: TLabel;

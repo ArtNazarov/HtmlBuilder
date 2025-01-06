@@ -3607,6 +3607,8 @@ object Form1: TForm1
     end
   end
   object mnuMainMenu: TMainMenu
+    Images = ilImagesForMenuItems
+    ImagesWidth = 16
     Left = 1480
     Top = 120
     object mnuDatabase: TMenuItem
@@ -3622,6 +3624,7 @@ object Form1: TForm1
       Caption = 'Проект'
       object mnuBuildProject: TMenuItem
         Action = acBuildSite
+        ImageIndex = 0
       end
     end
     object mnuSpecialSettings: TMenuItem
@@ -4292,5 +4295,18 @@ object Form1: TForm1
       Caption = 'Paste Text'
       OnExecute = acPasteTextExecute
     end
+  end
+  object ilImagesForMenuItems: TImageList
+    Left = 608
+    Top = 32
+    Bitmap = {
+      4C7A010000001000000010000000C00000000000000078DA6360201A30339007
+      3280F82610FF03E21740EC4D82DE0620FE8F84AF03B104917A7980F81B0EBDB2
+      40EC4F40BF219ADD89487AEF40FD820FA8A0E9FF04C4A950BD20FE2F02FAC581
+      F82F9A19C8F83C1EBDF2407C038F5E108EC5A15707889FA0A9FD85C47E0FC485
+      38F45A01F15B34BD20778842C35E19885971E805A58BAF687A1F03B11C11711D
+      0EC43FA1690CA6F70D106B1299565E01B1111483F47E06623312D2E97320B681
+      E21F40EC4A621EF181FAF50911E992AA0000B17249ED
+    }
   end
 end
