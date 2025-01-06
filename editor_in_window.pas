@@ -41,6 +41,7 @@ type
     acSelectTag: TAction;
     acOptionTag: TAction;
     acScreenKeyboard: TAction;
+    acTextArea: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -77,6 +78,7 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    mnuTextArea: TMenuItem;
     mnuScreenKeyboard: TMenuItem;
     mnuSelectTag: TMenuItem;
     mnuOptionTag: TMenuItem;
@@ -138,6 +140,7 @@ type
     procedure acScreenKeyboardExecute(Sender: TObject);
     procedure acSearchExecute(Sender: TObject);
     procedure acSelectTagExecute(Sender: TObject);
+    procedure acTextAreaExecute(Sender: TObject);
     procedure acUndoExecute(Sender: TObject);
     procedure acVideoSourceTagExecute(Sender: TObject);
     procedure acVideoTagExecute(Sender: TObject);
@@ -280,6 +283,11 @@ end;
 procedure TfrmEditor.acSelectTagExecute(Sender: TObject);
 begin
   tagC('select', 'name="vname"');
+end;
+
+procedure TfrmEditor.acTextAreaExecute(Sender: TObject);
+begin
+  tagC('textarea', 'cols="60"');
 end;
 
 procedure TfrmEditor.acUndoExecute(Sender: TObject);

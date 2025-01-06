@@ -1,7 +1,7 @@
 object frmEditor: TfrmEditor
-  Left = 384
+  Left = 279
   Height = 530
-  Top = 129
+  Top = 139
   Width = 1058
   Caption = 'Редактор разметки'
   ClientHeight = 530
@@ -975,6 +975,9 @@ object frmEditor: TfrmEditor
       object mnuOptionTag: TMenuItem
         Action = acOptionTag
       end
+      object mnuTextArea: TMenuItem
+        Action = acTextArea
+      end
     end
     object mnuContent: TMenuItem
       Caption = 'Содержание'
@@ -1092,6 +1095,10 @@ object frmEditor: TfrmEditor
     object acScreenKeyboard: TAction
       Caption = 'Экранная клавиатура'
       OnExecute = acScreenKeyboardExecute
+    end
+    object acTextArea: TAction
+      Caption = 'Многострочное поле ввода'
+      OnExecute = acTextAreaExecute
     end
   end
   object SynCompletion1: TSynCompletion
