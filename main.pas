@@ -62,6 +62,11 @@ type
     acFtpUpdaterChangeVisibility: TAction;
     acSpecialChangeVisibility: TAction;
     acCommonSettingsChangeVisibility: TAction;
+    acGotoPages: TAction;
+    acGotoSections: TAction;
+    acGotoTags: TAction;
+    acGotoTagsPages: TAction;
+    acGotoGlobalBlocks: TAction;
     acUploadingWithBridgeChangeVisibility: TAction;
     acWebServerChangeVisibility: TAction;
     alContextActions: TActionList;
@@ -256,6 +261,11 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuGotoGlobalBlocks: TMenuItem;
+    mnuGotoTagsPages: TMenuItem;
+    mnuGotoTags: TMenuItem;
+    mnuGotoSections: TMenuItem;
+    mnuGotoPages: TMenuItem;
     mnuUploadingWithBridgeVisibility: TMenuItem;
     mnuCommonSettingsChangeVisibility: TMenuItem;
     mnuSpecialVisibility: TMenuItem;
@@ -531,7 +541,12 @@ type
     { Выполняет поиск в базе по заголовку }
     procedure acFindContentByCaptionExecute(Sender: TObject);
     procedure acFtpUpdaterChangeVisibilityExecute(Sender: TObject);
+    procedure acGotoGlobalBlocksExecute(Sender: TObject);
     procedure acGotoHelpSheetExecute(Sender: TObject);
+    procedure acGotoPagesExecute(Sender: TObject);
+    procedure acGotoSectionsExecute(Sender: TObject);
+    procedure acGotoTagsExecute(Sender: TObject);
+    procedure acGotoTagsPagesExecute(Sender: TObject);
     procedure acPasteTextExecute(Sender: TObject);
 
     { Действие для восстановления специальных настроек }
@@ -2232,9 +2247,34 @@ begin
 
 end;
 
+procedure TForm1.acGotoGlobalBlocksExecute(Sender: TObject);
+begin
+  AppPages.ActivePage:=tabGlobalBlocks;
+end;
+
 procedure TForm1.acGotoHelpSheetExecute(Sender: TObject);
 begin
   AppPages.ActivePage:=tabHelp;
+end;
+
+procedure TForm1.acGotoPagesExecute(Sender: TObject);
+begin
+  AppPages.ActivePage := tabPages;
+end;
+
+procedure TForm1.acGotoSectionsExecute(Sender: TObject);
+begin
+ AppPages.ActivePage := tabSections;
+end;
+
+procedure TForm1.acGotoTagsExecute(Sender: TObject);
+begin
+  AppPages.ActivePage := tabTags;
+end;
+
+procedure TForm1.acGotoTagsPagesExecute(Sender: TObject);
+begin
+  AppPages.ActivePage := tabTagsPages;
 end;
 
 procedure TForm1.acPasteTextExecute(Sender: TObject);

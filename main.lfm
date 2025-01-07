@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 14
   Height = 794
-  Top = 60
+  Top = 0
   Width = 1584
   AllowDropFiles = True
   Caption = 'Генератор статических HTML сайтов'
@@ -557,10 +557,13 @@ object Form1: TForm1
               object tvContent: TTreeView
                 Left = 1
                 Height = 643
+                Hint = 'Список сохраненных страниц в виде дерева'
                 Top = 1
                 Width = 255
                 Align = alLeft
                 Images = ImageList1
+                ParentShowHint = False
+                ShowHint = True
                 TabOrder = 2
               end
               object Splitter1: TSplitter
@@ -3846,6 +3849,26 @@ object Form1: TForm1
     end
     object mnuTabChanger: TMenuItem
       Caption = 'Смена вкладок'
+      object mnuGotoPages: TMenuItem
+        Action = acGotoPages
+        ShortCut = 16432
+      end
+      object mnuGotoSections: TMenuItem
+        Action = acGotoSections
+        ShortCut = 16433
+      end
+      object mnuGotoTags: TMenuItem
+        Action = acGotoTags
+        ShortCut = 16434
+      end
+      object mnuGotoTagsPages: TMenuItem
+        Action = acGotoTagsPages
+        ShortCut = 16435
+      end
+      object mnuGotoGlobalBlocks: TMenuItem
+        Action = acGotoGlobalBlocks
+        ShortCut = 16436
+      end
       object mnuGotoHelpSheet: TMenuItem
         Action = acGotoHelpSheet
       end
@@ -4286,6 +4309,26 @@ object Form1: TForm1
       Caption = 'Выгрузка через мост'
       Checked = True
       OnExecute = acUploadingWithBridgeChangeVisibilityExecute
+    end
+    object acGotoPages: TAction
+      Caption = 'К страницам'
+      OnExecute = acGotoPagesExecute
+    end
+    object acGotoSections: TAction
+      Caption = 'К разделам'
+      OnExecute = acGotoSectionsExecute
+    end
+    object acGotoTags: TAction
+      Caption = 'К тегам'
+      OnExecute = acGotoTagsExecute
+    end
+    object acGotoTagsPages: TAction
+      Caption = 'К тегам для страниц'
+      OnExecute = acGotoTagsPagesExecute
+    end
+    object acGotoGlobalBlocks: TAction
+      Caption = 'К глобальным блокам'
+      OnExecute = acGotoGlobalBlocksExecute
     end
   end
   object ds_Tags: TDataSource
