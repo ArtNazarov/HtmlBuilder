@@ -59,6 +59,8 @@ type
     acCutText: TAction;
     acPasteText: TAction;
     acGotoHelpSheet: TAction;
+    acFtpUpdaterChangeVisibility: TAction;
+    acWebServerChangeVisibility: TAction;
     alContextActions: TActionList;
     actsEditors: TActionList;
     btFtpUpdate: TButton;
@@ -251,6 +253,9 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuWebServerVisibility: TMenuItem;
+    mnuFtpUpdaterVisibilityChanger: TMenuItem;
+    mnuPagesVisibility: TMenuItem;
     mnuGotoHelpSheet: TMenuItem;
     mnuTabChanger: TMenuItem;
     mnuPasteText: TMenuItem;
@@ -411,6 +416,7 @@ type
     PrefferedExtension: TComboBox;
     conn: TSQLite3Connection;
     SaveDialog1: TSaveDialog;
+    Separator1: TMenuItem;
     svdGetFromDatabase: TSaveDialog;
     selSection: TDBLookupComboBox;
     Splitter1: TSplitter;
@@ -517,6 +523,7 @@ type
 
     { Выполняет поиск в базе по заголовку }
     procedure acFindContentByCaptionExecute(Sender: TObject);
+    procedure acFtpUpdaterChangeVisibilityExecute(Sender: TObject);
     procedure acGotoHelpSheetExecute(Sender: TObject);
     procedure acPasteTextExecute(Sender: TObject);
 
@@ -532,6 +539,7 @@ type
     procedure acSwitchToEspLocaleExecute(Sender: TObject);
     procedure acSwitchToKoreanLocaleExecute(Sender: TObject);
     procedure acSwitchToRusLocaleExecute(Sender: TObject);
+    procedure acWebServerChangeVisibilityExecute(Sender: TObject);
 
     procedure AppPagesChange(Sender: TObject);
 
@@ -2208,6 +2216,13 @@ begin
     end;
 end;
 
+procedure TForm1.acFtpUpdaterChangeVisibilityExecute(Sender: TObject);
+begin
+  acFtpUpdaterChangeVisibility.Checked:=not acFtpUpdaterChangeVisibility.Checked ;
+  form1.tabUpdateByFTP.TabVisible := acFtpUpdaterChangeVisibility.Checked ;
+
+end;
+
 procedure TForm1.acGotoHelpSheetExecute(Sender: TObject);
 begin
   AppPages.ActivePage:=tabHelp;
@@ -2261,6 +2276,12 @@ end;
 procedure TForm1.acSwitchToRusLocaleExecute(Sender: TObject);
 begin
   localeRus();
+end;
+
+procedure TForm1.acWebServerChangeVisibilityExecute(Sender: TObject);
+begin
+  acWebServerChangeVisibility.Checked:=not acWebServerChangeVisibility.Checked;
+  tabWebServer.TabVisible:=acWebServerChangeVisibility.Checked;
 end;
 
 procedure TForm1.AppPagesChange(Sender: TObject);
