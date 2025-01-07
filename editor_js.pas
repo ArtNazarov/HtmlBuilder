@@ -1,21 +1,22 @@
 { Contains editor for javascript }
-unit editor_js;
+
+Unit editor_js;
 
 {$mode ObjFPC}{$H+}
 
-interface
+Interface
 
-uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  SynEdit, SynHighlighterJScript, SynCompletion, Types, LCLType, Menus,
-  ActnList, FontSettings;
+Uses 
+Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
+SynEdit, SynHighlighterJScript, SynCompletion, Types, LCLType, Menus,
+ActnList, FontSettings;
 
-type
+Type 
 
   { TfrmEditorJs }
 
   { Window with javascript editor }
-  TfrmEditorJs = class(TForm)
+  TfrmEditorJs = Class(TForm)
     acNewJsFunction: TAction;
     acDecisionIfElse: TAction;
     aclJsEditorActions: TActionList;
@@ -56,148 +57,171 @@ type
 
 
     { Handles click of btnClose }
-    procedure acAddBinaryJsFunctionExecute(Sender: TObject);
-    procedure acAddTernaryJsFunctionExecute(Sender: TObject);
-    procedure acDecisionIfElseExecute(Sender: TObject);
-    procedure acDoWhileLoopExecute(Sender: TObject);
-    procedure acForKeyInLoopExecute(Sender: TObject);
-    procedure acForValueOfIterableExecute(Sender: TObject);
-    procedure acNewClassExecute(Sender: TObject);
-    procedure acNewJsFunctionExecute(Sender: TObject);
-    procedure acSwitchExecute(Sender: TObject);
-    procedure acTryCatchExecute(Sender: TObject);
-    procedure acWhileLoopExecute(Sender: TObject);
-    procedure btnCloseClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
+    Procedure acAddBinaryJsFunctionExecute(Sender: TObject);
+    Procedure acAddTernaryJsFunctionExecute(Sender: TObject);
+    Procedure acDecisionIfElseExecute(Sender: TObject);
+    Procedure acDoWhileLoopExecute(Sender: TObject);
+    Procedure acForKeyInLoopExecute(Sender: TObject);
+    Procedure acForValueOfIterableExecute(Sender: TObject);
+    Procedure acNewClassExecute(Sender: TObject);
+    Procedure acNewJsFunctionExecute(Sender: TObject);
+    Procedure acSwitchExecute(Sender: TObject);
+    Procedure acTryCatchExecute(Sender: TObject);
+    Procedure acWhileLoopExecute(Sender: TObject);
+    Procedure btnCloseClick(Sender: TObject);
+    Procedure FormCreate(Sender: TObject);
 
 
 
     { Handles autocompletions for javascript }
-    procedure SynCompletion1CodeCompletion(var Value: string;
-      SourceValue: string; var SourceStart, SourceEnd: TPoint;
-      KeyChar: TUTF8Char; Shift: TShiftState);
+    Procedure SynCompletion1CodeCompletion(Var Value: String;
+                                           SourceValue: String; Var SourceStart,
+                                           SourceEnd: TPoint;
+                                           KeyChar: TUTF8Char; Shift:
+                                           TShiftState);
 
-  private
+    Private 
 
-  public
+    Public 
 
-    end;
-
-
-
-
+  End;
 
 
 
-var
+
+
+
+
+Var 
   frmEditorJs: TfrmEditorJs;
 
-implementation
+Implementation
 
 {$R *.lfm}
 
-function replKeys(const Input: string): string;
-begin
+Function replKeys(Const Input: String): string;
+Begin
   // Replace '[enter]' with Chr(13)
   Result := StringReplace(Input, '[enter]', Chr(13), [rfReplaceAll]);
   // Replace '[tab]' with Chr(9)
   Result := StringReplace(Result, '[tab]', Chr(9), [rfReplaceAll]);
-end;
+End;
 
 
 { TfrmEditorJs }
 
-procedure TfrmEditorJs.btnCloseClick(Sender: TObject);
-begin
-    modalresult:=mrok;
-    close;
-end;
+Procedure TfrmEditorJs.btnCloseClick(Sender: TObject);
+Begin
+  modalresult := mrok;
+  close;
+End;
 
-procedure TfrmEditorJs.acNewJsFunctionExecute(Sender: TObject);
-var funcName : String;
-begin
-  funcName := InputBox('Новая функция', 'имя функции', 'newF');
- editor.InsertTextAtCaret(replKeys('function '+funcName+'(){[enter]}[enter]'));
-end;
+Procedure TfrmEditorJs.acNewJsFunctionExecute(Sender: TObject);
 
-procedure TfrmEditorJs.acSwitchExecute(Sender: TObject);
-begin
-  editor.InsertTextAtCaret(replKeys('switch (expr) {[enter]case value1 :[enter][tab]// some actions[enter]break;[enter]default:[enter][tab]// default actions[enter]}[enter]'));
-end;
+Var funcName : String;
+Begin
+  funcName := InputBox('Новая функция', 'имя функции',
+              'newF');
+  editor.InsertTextAtCaret(replKeys('function '+funcName+'(){[enter]}[enter]'));
+End;
 
-procedure TfrmEditorJs.acTryCatchExecute(Sender: TObject);
-begin
- editor.InsertTextAtCaret(replKeys('try {[enter][tab]}[enter]catch(err) {[enter][tab]console.log(err.message);[enter]}[enter]'));
-end;
+Procedure TfrmEditorJs.acSwitchExecute(Sender: TObject);
+Begin
+  editor.InsertTextAtCaret(replKeys(
+'switch (expr) {[enter]case value1 :[enter][tab]// some actions[enter]break;[enter]default:[enter][tab]// default actions[enter]}[enter]'
+  ));
+End;
 
-procedure TfrmEditorJs.acWhileLoopExecute(Sender: TObject);
-begin
-  editor.InsertTextAtCaret(replKeys('while (){[enter][tab]// while loop[enter]}[enter]'));
-end;
+Procedure TfrmEditorJs.acTryCatchExecute(Sender: TObject);
+Begin
+  editor.InsertTextAtCaret(replKeys(
+'try {[enter][tab]}[enter]catch(err) {[enter][tab]console.log(err.message);[enter]}[enter]'
+  ));
+End;
 
-procedure TfrmEditorJs.acDecisionIfElseExecute(Sender: TObject);
-begin
+Procedure TfrmEditorJs.acWhileLoopExecute(Sender: TObject);
+Begin
+  editor.InsertTextAtCaret(replKeys(
+                           'while (){[enter][tab]// while loop[enter]}[enter]'))
+  ;
+End;
+
+Procedure TfrmEditorJs.acDecisionIfElseExecute(Sender: TObject);
+Begin
   editor.InsertTextAtCaret(replKeys('if () {[enter]} else {[enter]}[enter]'));
-end;
+End;
 
-procedure TfrmEditorJs.acAddBinaryJsFunctionExecute(Sender: TObject);
-var
+Procedure TfrmEditorJs.acAddBinaryJsFunctionExecute(Sender: TObject);
+
+Var 
   funcName : String;
-begin
-     funcName := InputBox('Новая функция', 'имя функции', 'newF');
-     editor.InsertTextAtCaret(replKeys('function '+funcName+'(p, q) {[enter]}[enter]'));
-end;
+Begin
+  funcName := InputBox('Новая функция', 'имя функции',
+              'newF');
+  editor.InsertTextAtCaret(replKeys('function '+funcName+
+                           '(p, q) {[enter]}[enter]'));
+End;
 
-procedure TfrmEditorJs.acAddTernaryJsFunctionExecute(Sender: TObject);
-var
+Procedure TfrmEditorJs.acAddTernaryJsFunctionExecute(Sender: TObject);
+
+Var 
   funcName : String;
-begin
-     funcName := InputBox('Новая функция', 'имя функции', 'newF');
-     editor.InsertTextAtCaret(replKeys('function '+funcName+'(p, q, t) {[enter]}[enter]'));
-end;
+Begin
+  funcName := InputBox('Новая функция', 'имя функции',
+              'newF');
+  editor.InsertTextAtCaret(replKeys('function '+funcName+
+                           '(p, q, t) {[enter]}[enter]'));
+End;
 
-procedure TfrmEditorJs.acDoWhileLoopExecute(Sender: TObject);
-begin
-  editor.InsertTextAtCaret(replKeys('do {[enter][tab]// do while loop[enter]}[enter]while ( );[enter]'));
-end;
+Procedure TfrmEditorJs.acDoWhileLoopExecute(Sender: TObject);
+Begin
+  editor.InsertTextAtCaret(replKeys(
+              'do {[enter][tab]// do while loop[enter]}[enter]while ( );[enter]'
+  ));
+End;
 
-procedure TfrmEditorJs.acForKeyInLoopExecute(Sender: TObject);
-begin
+Procedure TfrmEditorJs.acForKeyInLoopExecute(Sender: TObject);
+Begin
   editor.InsertTextAtCaret(replKeys('for (let key in object) {[enter]}'));
-end;
+End;
 
-procedure TfrmEditorJs.acForValueOfIterableExecute(Sender: TObject);
-begin
-  editor.InsertTextAtCaret(replKeys('for (let value of iterable) {[enter]}[enter]'));
-end;
+Procedure TfrmEditorJs.acForValueOfIterableExecute(Sender: TObject);
+Begin
+  editor.InsertTextAtCaret(replKeys(
+                           'for (let value of iterable) {[enter]}[enter]'));
+End;
 
-procedure TfrmEditorJs.acNewClassExecute(Sender: TObject);
-begin
-     editor.InsertTextAtCaret(replKeys('class ClassName {[enter][tab]constructor (){[enter][tab]// Add constructor[enter][tab]}[enter]}[enter]'));
-end;
-
-
-procedure TfrmEditorJs.FormCreate(Sender: TObject);
-var
-   FontManager: TFontManager;
-begin
-     FontManager := TFontManager.Create();
-     editor.Font := FontManager.Font;
-     FontManager.Free;
-end;
+Procedure TfrmEditorJs.acNewClassExecute(Sender: TObject);
+Begin
+  editor.InsertTextAtCaret(replKeys(
+'class ClassName {[enter][tab]constructor (){[enter][tab]// Add constructor[enter][tab]}[enter]}[enter]'
+  ));
+End;
 
 
+Procedure TfrmEditorJs.FormCreate(Sender: TObject);
 
-
-
-procedure TfrmEditorJs.SynCompletion1CodeCompletion(var Value: string;
-  SourceValue: string; var SourceStart, SourceEnd: TPoint; KeyChar: TUTF8Char;
-  Shift: TShiftState);
-begin
-
-end;
+Var 
+  FontManager: TFontManager;
+Begin
+  FontManager := TFontManager.Create();
+  editor.Font := FontManager.Font;
+  FontManager.Free;
+End;
 
 
 
-end.
 
+
+Procedure TfrmEditorJs.SynCompletion1CodeCompletion(Var Value: String;
+                                                    SourceValue: String; Var
+                                                    SourceStart, SourceEnd:
+                                                    TPoint; KeyChar: TUTF8Char;
+                                                    Shift: TShiftState);
+Begin
+
+End;
+
+
+
+End.
