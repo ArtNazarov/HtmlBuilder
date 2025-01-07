@@ -60,6 +60,9 @@ type
     acPasteText: TAction;
     acGotoHelpSheet: TAction;
     acFtpUpdaterChangeVisibility: TAction;
+    acSpecialChangeVisibility: TAction;
+    acCommonSettingsChangeVisibility: TAction;
+    acUploadingWithBridgeChangeVisibility: TAction;
     acWebServerChangeVisibility: TAction;
     alContextActions: TActionList;
     actsEditors: TActionList;
@@ -253,6 +256,9 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuUploadingWithBridgeVisibility: TMenuItem;
+    mnuCommonSettingsChangeVisibility: TMenuItem;
+    mnuSpecialVisibility: TMenuItem;
     mnuWebServerVisibility: TMenuItem;
     mnuFtpUpdaterVisibilityChanger: TMenuItem;
     mnuPagesVisibility: TMenuItem;
@@ -493,6 +499,7 @@ type
 
 
     { Действие для открытия базы данных }
+    procedure acCommonSettingsChangeVisibilityExecute(Sender: TObject);
     procedure acCutMarkupExecute(Sender: TObject);
     procedure acCutTextExecute(Sender: TObject);
     procedure acDatabaseOpenExecute(Sender: TObject);
@@ -534,11 +541,13 @@ type
     procedure acSaveSpecialSettingsExecute(Sender: TObject);
     procedure acBuildSiteExecute(Sender: TObject);
     procedure acSetFontExecute(Sender: TObject);
+    procedure acSpecialChangeVisibilityExecute(Sender: TObject);
     procedure acSwitchToChLocaleExecute(Sender: TObject);
     procedure acSwitchToEngLocaleExecute(Sender: TObject);
     procedure acSwitchToEspLocaleExecute(Sender: TObject);
     procedure acSwitchToKoreanLocaleExecute(Sender: TObject);
     procedure acSwitchToRusLocaleExecute(Sender: TObject);
+    procedure acUploadingWithBridgeChangeVisibilityExecute(Sender: TObject);
     procedure acWebServerChangeVisibilityExecute(Sender: TObject);
 
     procedure AppPagesChange(Sender: TObject);
@@ -2253,6 +2262,12 @@ begin
   actionSetFont();
 end;
 
+procedure TForm1.acSpecialChangeVisibilityExecute(Sender: TObject);
+begin
+  acSpecialChangeVisibility.Checked:=not acSpecialChangeVisibility.Checked;
+  tabSpecial.TabVisible:=acSpecialChangeVisibility.Checked;
+end;
+
 procedure TForm1.acSwitchToChLocaleExecute(Sender: TObject);
 begin
   localeCn();
@@ -2276,6 +2291,12 @@ end;
 procedure TForm1.acSwitchToRusLocaleExecute(Sender: TObject);
 begin
   localeRus();
+end;
+
+procedure TForm1.acUploadingWithBridgeChangeVisibilityExecute(Sender: TObject);
+begin
+  acUploadingWithBridgeChangeVisibility.Checked:=not acUploadingWithBridgeChangeVisibility.Checked;
+  tabUploadingWithBridge.TabVisible:=acUploadingWithBridgeChangeVisibility.Checked;
 end;
 
 procedure TForm1.acWebServerChangeVisibilityExecute(Sender: TObject);
@@ -2302,6 +2323,12 @@ end;
 procedure TForm1.acCutMarkupExecute(Sender: TObject);
 begin
 
+end;
+
+procedure TForm1.acCommonSettingsChangeVisibilityExecute(Sender: TObject);
+begin
+  acCommonSettingsChangeVisibility.Checked:=not acCommonSettingsChangeVisibility.Checked;
+  tabCommonSettings.TabVisible:=acCommonSettingsChangeVisibility.Checked;
 end;
 
 procedure TForm1.acCutTextExecute(Sender: TObject);
