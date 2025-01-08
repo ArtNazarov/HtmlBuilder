@@ -958,10 +958,20 @@ object frmEditorCss: TfrmEditorCss
       Caption = 'Нижний индекс'
       OnExecute = acSubScriptExecute
     end
+    object acApplyPrettier: TAction
+      Caption = 'Применить Prettier'
+      OnExecute = acApplyPrettierExecute
+    end
   end
   object mnuCssEditor: TMainMenu
     Left = 601
     Top = 21
+    object mnuCssActions: TMenuItem
+      Caption = 'Действия'
+      object mnuApplyPrettier: TMenuItem
+        Action = acApplyPrettier
+      end
+    end
     object mnuDecorations: TMenuItem
       Caption = 'Декорации'
       object mnuItalic: TMenuItem

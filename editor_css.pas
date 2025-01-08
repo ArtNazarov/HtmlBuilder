@@ -8,7 +8,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   SynEdit, SynHighlighterCss, SynCompletion, Types, LCLType, ActnList, Menus,
-  StrUtils, css_props_dlg, FontSettings;
+  StrUtils, css_props_dlg, FontSettings, Process;
 
 type
 
@@ -42,6 +42,7 @@ type
     acTextDecorationLineUnderline: TAction;
     acSuperScript: TAction;
     acSubScript: TAction;
+    acApplyPrettier: TAction;
     btnClose: TButton;
     btnAddClass: TButton;
     btnAddId: TButton;
@@ -49,6 +50,8 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
+    mnuApplyPrettier: TMenuItem;
+    mnuCssActions: TMenuItem;
     mnuSuperscript: TMenuItem;
     mnuSubscript: TMenuItem;
     mnuIndexes: TMenuItem;
@@ -86,6 +89,7 @@ type
     editor: TSynEdit;
 
     { handles click of btnAddClass }
+    procedure acApplyPrettierExecute(Sender: TObject);
     procedure acBackgroundColorExecute(Sender: TObject);
     procedure acFontFamilyExecute(Sender: TObject);
     procedure acFontStyleItalicExecute(Sender: TObject);
@@ -241,6 +245,36 @@ end;
 procedure TfrmEditorCss.acBackgroundColorExecute(Sender: TObject);
 begin
     editor.InsertTextAtCaret('background-color : white;');
+end;
+
+procedure TfrmEditorCss.acApplyPrettierExecute(Sender: TObject);
+var
+  Process: TProcess;
+
+begin
+  editor.Lines.SaveToFile('temp.css');
+  // Get the current directory
+
+
+  // Create and configure the process
+  Process := TProcess.Create(nil);
+  try
+    Process.Executable := '/usr/bin/prettier';
+    Process.Parameters.Add('--write');
+    Process.Parameters.Add(GetCurrentDir+'/temp.css');
+
+    // Optionally set other process options
+    Process.Options := [poWaitOnExit];
+
+    // Execute the process
+    Process.Execute;
+
+  finally
+    Process.Free;
+  end;
+  editor.Lines.LoadFromFile('temp.css');
+  DeleteFile('temp.css');
+
 end;
 
 procedure TfrmEditorCss.acFontFamilyExecute(Sender: TObject);
