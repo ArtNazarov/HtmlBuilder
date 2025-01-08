@@ -8,8 +8,8 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Menus, ActnList, SynEdit, SynHighlighterHTML, SynEditSearch, SynEditTypes,
-  SynCompletion, Types, LCLType, FontSettings,
-  sel_char_dlg;
+  SynCompletion, UTF8Process, Types, LCLType, FontSettings,
+  sel_char_dlg, Process;
 
 type
 
@@ -43,6 +43,7 @@ type
     acScreenKeyboard: TAction;
     acTextArea: TAction;
     acOutputTag: TAction;
+    acApplyPrettier: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -79,6 +80,7 @@ type
     cboJustify: TComboBox;
     Label1: TLabel;
     editor: TSynEdit;
+    MenuItem1: TMenuItem;
     mnuOutputTag: TMenuItem;
     mnuTextArea: TMenuItem;
     mnuScreenKeyboard: TMenuItem;
@@ -120,6 +122,7 @@ type
     SynCompletion1: TSynCompletion;
     SynHTMLSyn1: TSynHTMLSyn;
     procedure acAddressExecute(Sender: TObject);
+    procedure acApplyPrettierExecute(Sender: TObject);
     procedure acDefDefinitionExecute(Sender: TObject);
     procedure acDefinitionListWrapperExecute(Sender: TObject);
     procedure acDefTermExecute(Sender: TObject);
@@ -396,6 +399,34 @@ begin
   pair('address');
 end;
 
+procedure TfrmEditor.acApplyPrettierExecute(Sender: TObject);
+var
+  Process: TProcess;
+
+begin
+  editor.Lines.SaveToFile('temp.html');
+  // Get the current directory
+
+
+  // Create and configure the process
+  Process := TProcessUTF8.Create(nil);
+  try
+    Process.Executable := '/usr/bin/prettier';
+    Process.Parameters.Add('--write');
+    Process.Parameters.Add(GetCurrentDir+'/temp.html');
+
+    // Optionally set other process options
+    Process.Options := [poWaitOnExit];
+
+    // Execute the process
+    Process.Execute;
+
+  finally
+    Process.Free;
+  end;
+  editor.Lines.LoadFromFile('temp.html');
+  DeleteFile('temp.html');
+end;
 procedure TfrmEditor.acDefDefinitionExecute(Sender: TObject);
 begin
   pair('dd');

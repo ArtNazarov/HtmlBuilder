@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 14
   Height = 794
-  Top = 0
+  Top = 12
   Width = 1584
   AllowDropFiles = True
   Caption = 'Генератор статических HTML сайтов'
@@ -2858,7 +2858,7 @@ object Form1: TForm1
           object lbPathToBuild: TLabel
             Left = 1
             Height = 17
-            Top = 448
+            Top = 423
             Width = 1576
             Align = alTop
             Caption = 'Путь к архиву со сборкой'
@@ -2867,7 +2867,7 @@ object Form1: TForm1
           object edPathToBuild: TEdit
             Left = 1
             Height = 25
-            Top = 423
+            Top = 440
             Width = 1576
             Align = alTop
             TabOrder = 5
@@ -2876,7 +2876,7 @@ object Form1: TForm1
           object lbArchiveName: TLabel
             Left = 1
             Height = 17
-            Top = 406
+            Top = 381
             Width = 1576
             Align = alTop
             Caption = 'Имя архива'
@@ -2885,7 +2885,7 @@ object Form1: TForm1
           object edArchiveName: TEdit
             Left = 1
             Height = 25
-            Top = 381
+            Top = 398
             Width = 1576
             Align = alTop
             TabOrder = 6
