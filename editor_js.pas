@@ -9,7 +9,7 @@ Interface
 Uses 
 Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
 SynEdit, SynHighlighterJScript, SynCompletion, Types, LCLType, Menus,
-ActnList, FontSettings;
+ActnList, FontSettings, Process;
 
 Type 
 
@@ -27,11 +27,14 @@ Type
     acDoWhileLoop: TAction;
     acAddBinaryJsFunction: TAction;
     acAddTernaryJsFunction: TAction;
+    acApplyPrettier: TAction;
     acWhileLoop: TAction;
     acTryCatch: TAction;
     btnClose: TButton;
     btnAddFunction: TButton;
     btnAddClass: TButton;
+    mnuApplyPrettier: TMenuItem;
+    mnuJsActions: TMenuItem;
     mnuAddBinaryJsFunction: TMenuItem;
     mnuAddTernaryJsFunction: TMenuItem;
     mnuDoWhileLoop: TMenuItem;
@@ -59,6 +62,7 @@ Type
     { Handles click of btnClose }
     Procedure acAddBinaryJsFunctionExecute(Sender: TObject);
     Procedure acAddTernaryJsFunctionExecute(Sender: TObject);
+    procedure acApplyPrettierExecute(Sender: TObject);
     Procedure acDecisionIfElseExecute(Sender: TObject);
     Procedure acDoWhileLoopExecute(Sender: TObject);
     Procedure acForKeyInLoopExecute(Sender: TObject);
@@ -172,6 +176,37 @@ Begin
   editor.InsertTextAtCaret(replKeys('function '+funcName+
                            '(p, q, t) {[enter]}[enter]'));
 End;
+
+procedure TfrmEditorJs.acApplyPrettierExecute(Sender: TObject);
+var
+  Process: TProcess;
+
+begin
+  editor.Lines.SaveToFile('temp.js');
+  // Get the current directory
+
+
+  // Create and configure the process
+  Process := TProcess.Create(nil);
+  try
+    Process.Executable := '/usr/bin/prettier';
+    Process.Parameters.Add('--write');
+    Process.Parameters.Add(GetCurrentDir+'/temp.js');
+
+    // Optionally set other process options
+    Process.Options := [poWaitOnExit];
+
+    // Execute the process
+    Process.Execute;
+
+  finally
+    Process.Free;
+  end;
+  editor.Lines.LoadFromFile('temp.js');
+  DeleteFile('temp.js');
+
+end;
+
 
 Procedure TfrmEditorJs.acDoWhileLoopExecute(Sender: TObject);
 Begin

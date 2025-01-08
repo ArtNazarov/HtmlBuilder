@@ -655,6 +655,12 @@ object frmEditorJs: TfrmEditorJs
   object mmJsEditorMenu: TMainMenu
     Left = 518
     Top = 26
+    object mnuJsActions: TMenuItem
+      Caption = 'Действия'
+      object mnuApplyPrettier: TMenuItem
+        Action = acApplyPrettier
+      end
+    end
     object mnuStatements: TMenuItem
       Caption = 'Операторы'
       object mnuAddClass: TMenuItem
@@ -748,6 +754,10 @@ object frmEditorJs: TfrmEditorJs
     object acAddTernaryJsFunction: TAction
       Caption = 'Добавить функцию 3х аргументов'
       OnExecute = acAddTernaryJsFunctionExecute
+    end
+    object acApplyPrettier: TAction
+      Caption = 'Применить Prettier'
+      OnExecute = acApplyPrettierExecute
     end
   end
 end
