@@ -204,7 +204,6 @@ begin
   end;
   editor.Lines.LoadFromFile('temp.js');
   DeleteFile('temp.js');
-
 end;
 
 

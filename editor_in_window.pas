@@ -426,6 +426,7 @@ begin
   end;
   editor.Lines.LoadFromFile('temp.html');
   DeleteFile('temp.html');
+  markup := editor.Lines.Text;
 end;
 procedure TfrmEditor.acDefDefinitionExecute(Sender: TObject);
 begin
