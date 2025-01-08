@@ -86,6 +86,18 @@ Will placed in folder /files/
 
 17. Emojies by shortcodes / Эмодзи по шорткодам
 
+18. Quick add js code statements with shortcuts / Быстрое добавление операторов кода js с помощью горячих клавиш
+
+19. Screen keyboard for typing HTML mnemonics / Экранная клавиатура для набора мнемоник HTML
+
+20. Reformatting of markup / Переформатирование разметки
+
+21. Hide tabs / Скрытие вкладок
+
+22. Quick switching to tab / Быстрое переключение на вкладку
+
+23. Adding css properties using menu items / Добавление свойств CSS с помощью пунктов меню
+
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
 
 Docker image with PHP https://github.com/ArtNazarov/dockerbridgephp
@@ -150,4 +162,8 @@ Tests
 =====
 
 https://github.com/ArtNazarov/HtmlBuilder_tests
+
+Database scheme
+=====
+![Sqlite3 tables](https://dl.dropbox.com/scl/fi/2i9bdacrksh1tpbtcfm81/sqlite.png?rlkey=qvxrzy9vphfknd08krg4uzo1q&st=njck97ib)
 
