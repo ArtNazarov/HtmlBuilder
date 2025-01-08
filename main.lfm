@@ -19,11 +19,11 @@ object Form1: TForm1
     Height = 734
     Top = 0
     Width = 1584
-    ActivePage = tabPages
+    ActivePage = tabMenus
     Align = alClient
     AutoSize = True
     Images = ImageList1
-    TabIndex = 0
+    TabIndex = 7
     TabOrder = 0
     OnChange = AppPagesChange
     object tabPages: TTabSheet
@@ -87,9 +87,9 @@ object Form1: TForm1
                     Height = 639
                     Top = 1
                     Width = 1000
-                    ActivePage = tabEditorProps
+                    ActivePage = tabMainProps
                     Align = alClient
-                    TabIndex = 1
+                    TabIndex = 0
                     TabOrder = 0
                     object tabMainProps: TTabSheet
                       Caption = 'Главные свойства страницы'
@@ -3744,6 +3744,12 @@ object Form1: TForm1
         ImageIndex = 2
       end
     end
+    object mnuSetDefaultValues: TMenuItem
+      Caption = 'Установка начальных значений'
+      object mnuSetDefaultMenuItemTplValue: TMenuItem
+        Action = acSetMenuItemTplToDefault
+      end
+    end
     object mnuProject: TMenuItem
       Caption = 'Проект'
       object mnuBuildProject: TMenuItem
@@ -4329,6 +4335,10 @@ object Form1: TForm1
     object acGotoGlobalBlocks: TAction
       Caption = 'К глобальным блокам'
       OnExecute = acGotoGlobalBlocksExecute
+    end
+    object acSetMenuItemTplToDefault: TAction
+      Caption = 'Установить шаблон меню в начальное значение'
+      OnExecute = acSetMenuItemTplToDefaultExecute
     end
   end
   object ds_Tags: TDataSource

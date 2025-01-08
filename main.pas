@@ -67,6 +67,7 @@ type
     acGotoTags: TAction;
     acGotoTagsPages: TAction;
     acGotoGlobalBlocks: TAction;
+    acSetMenuItemTplToDefault: TAction;
     acUploadingWithBridgeChangeVisibility: TAction;
     acWebServerChangeVisibility: TAction;
     alContextActions: TActionList;
@@ -261,6 +262,8 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuSetDefaultMenuItemTplValue: TMenuItem;
+    mnuSetDefaultValues: TMenuItem;
     mnuGotoGlobalBlocks: TMenuItem;
     mnuGotoTagsPages: TMenuItem;
     mnuGotoTags: TMenuItem;
@@ -556,6 +559,7 @@ type
     procedure acSaveSpecialSettingsExecute(Sender: TObject);
     procedure acBuildSiteExecute(Sender: TObject);
     procedure acSetFontExecute(Sender: TObject);
+    procedure acSetMenuItemTplToDefaultExecute(Sender: TObject);
     procedure acSpecialChangeVisibilityExecute(Sender: TObject);
     procedure acSwitchToChLocaleExecute(Sender: TObject);
     procedure acSwitchToEngLocaleExecute(Sender: TObject);
@@ -2300,6 +2304,12 @@ end;
 procedure TForm1.acSetFontExecute(Sender: TObject);
 begin
   actionSetFont();
+end;
+
+procedure TForm1.acSetMenuItemTplToDefaultExecute(Sender: TObject);
+begin
+     ds_Menu.Edit;
+     dbmMenuItemTpl.Text:='<li><a href="{itemUrl}.{ext}">{itemTitle}</a><li>';
 end;
 
 procedure TForm1.acSpecialChangeVisibilityExecute(Sender: TObject);
