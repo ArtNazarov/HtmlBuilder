@@ -994,6 +994,12 @@ object frmEditor: TfrmEditor
         Action = acVideoSourceTag
       end
     end
+    object mnuMetaTags: TMenuItem
+      Caption = 'Мета-теги'
+      object mnuMetaDescription: TMenuItem
+        Action = acMetaDescription
+      end
+    end
   end
   object acEditor: TActionList
     Left = 888
@@ -1113,6 +1119,10 @@ object frmEditor: TfrmEditor
     object acApplyPrettier: TAction
       Caption = 'Применить Prettier'
       OnExecute = acApplyPrettierExecute
+    end
+    object acMetaDescription: TAction
+      Caption = 'Мета-описание'
+      OnExecute = acMetaDescriptionExecute
     end
   end
   object SynCompletion1: TSynCompletion

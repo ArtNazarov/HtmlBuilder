@@ -44,6 +44,7 @@ type
     acTextArea: TAction;
     acOutputTag: TAction;
     acApplyPrettier: TAction;
+    acMetaDescription: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -81,6 +82,8 @@ type
     Label1: TLabel;
     editor: TSynEdit;
     MenuItem1: TMenuItem;
+    mnuMetaDescription: TMenuItem;
+    mnuMetaTags: TMenuItem;
     mnuOutputTag: TMenuItem;
     mnuTextArea: TMenuItem;
     mnuScreenKeyboard: TMenuItem;
@@ -138,6 +141,7 @@ type
     procedure acInputRadioExecute(Sender: TObject);
     procedure acInputTextExecute(Sender: TObject);
     procedure acMainTagExecute(Sender: TObject);
+    procedure acMetaDescriptionExecute(Sender: TObject);
     procedure acNewFormExecute(Sender: TObject);
     procedure acOptionTagExecute(Sender: TObject);
     procedure acOutputTagExecute(Sender: TObject);
@@ -387,6 +391,11 @@ end;
 procedure TfrmEditor.acMainTagExecute(Sender: TObject);
 begin
   pair('main');
+end;
+
+procedure TfrmEditor.acMetaDescriptionExecute(Sender: TObject);
+begin
+  tagX('meta', 'name="description" content="A brief description of your page."');
 end;
 
 procedure TfrmEditor.acDocArticleExecute(Sender: TObject);

@@ -29,6 +29,7 @@
           <TopLine Value="5838"/>
           <CursorPos X="22" Y="5845"/>
         </ExtraEditor1>
+        <ComponentState Value="1"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -69,8 +70,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="420"/>
-        <CursorPos X="30" Y="429"/>
+        <TopLine Value="395"/>
+        <CursorPos X="7" Y="398"/>
         <UsageCount Value="202"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -439,7 +440,7 @@
     <OtherDefines Count="1">
       <Define0 Value="UseCThreads"/>
     </OtherDefines>
-    <JumpHistory Count="19" HistoryIndex="18">
+    <JumpHistory Count="22" HistoryIndex="21">
       <Position1>
         <Filename Value="editor_in_window.pas"/>
         <Caret Line="417" Column="31" TopLine="414"/>
@@ -516,6 +517,18 @@
         <Filename Value="editor_in_window.pas"/>
         <Caret Line="429" Column="30" TopLine="420"/>
       </Position19>
+      <Position20>
+        <Filename Value="editor_in_window.pas"/>
+        <Caret Line="430" Column="30" TopLine="421"/>
+      </Position20>
+      <Position21>
+        <Filename Value="editor_in_window.pas"/>
+        <Caret Line="431" Column="30" TopLine="422"/>
+      </Position21>
+      <Position22>
+        <Filename Value="editor_in_window.pas"/>
+        <Caret Line="438" Column="30" TopLine="429"/>
+      </Position22>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
