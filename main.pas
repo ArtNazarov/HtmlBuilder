@@ -10,12 +10,12 @@ interface
 uses
   AsyncQueue, Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics,
   Dialogs, DBCtrls, dbf, SQLite3Conn, SQLDB, process, FileUtil,
-  SynHighlighterHTML, SynEdit, DBDateTimePicker, StdCtrls, ExtCtrls, ComCtrls,
-  Menus, DBGrids, ActnList, Buttons, ExtDlgs, blcksock, sockets, Synautil,
-  synaip, synsock, ftpsend, db_helpers, db_insertdemo, db_create_tables,
-  replacers, editor_in_window, editor_css, editor_js, DateUtils, fgl, regexpr,
-  types_for_app, selectorTagsPages, const_for_app, selectors_for_menu,
-  RenderHtml, httpsend,  storing_attachments, FontSettings,
+  SynHighlighterHTML, SynEdit, DBDateTimePicker, IpHtml, StdCtrls, ExtCtrls,
+  ComCtrls, Menus, DBGrids, ActnList, Buttons, ExtDlgs, blcksock, sockets,
+  Synautil, synaip, synsock, ftpsend, db_helpers, db_insertdemo,
+  db_create_tables, replacers, editor_in_window, editor_css, editor_js,
+  DateUtils, fgl, regexpr, types_for_app, selectorTagsPages, const_for_app,
+  selectors_for_menu, RenderHtml, httpsend, storing_attachments, FontSettings,
   IniFiles, selection_history_dialog, selection_history_manager,
   emoji_shortcodes, func_str_composition; {Use Synaptic}
 
@@ -193,6 +193,7 @@ type
     fID: TDBEdit;
     ImageList1: TImageList;
     ilImagesForMenuItems: TImageList;
+    IpHtmlPanel1: TIpHtmlPanel;
     Label1: TLabel;
     Label12: TLabel;
     lbIsFileUploaded: TLabel;
@@ -466,6 +467,7 @@ type
     tabEditorProps: TTabSheet;
     tabImages: TTabSheet;
     tabAttachments: TTabSheet;
+    tabPreviewContent: TTabSheet;
     tabUploadingWithBridge: TTabSheet;
     tabTagsTemplate: TTabSheet;
     tabItemTagTemplate: TTabSheet;
@@ -681,6 +683,7 @@ type
       Button: TDBNavButtonType);
     procedure dbNav_SectionsBeforeAction(Sender: TObject;
       Button: TDBNavButtonType);
+    procedure fContentDblClick(Sender: TObject);
     procedure fContentEnter(Sender: TObject);
     procedure FormDropFiles(Sender: TObject; const FileNames: array of string);
 
@@ -2646,6 +2649,11 @@ begin
    sqlSections.ApplyUpdates();
    trans.CommitRetaining;
   end;
+end;
+
+procedure TForm1.fContentDblClick(Sender: TObject);
+begin
+   IpHtmlPanel1.SetHtmlFromStr(fContent.Text);
 end;
 
 procedure TForm1.fContentEnter(Sender: TObject);
