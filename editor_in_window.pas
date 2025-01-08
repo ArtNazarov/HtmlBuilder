@@ -45,6 +45,7 @@ type
     acOutputTag: TAction;
     acApplyPrettier: TAction;
     acMetaDescription: TAction;
+    acMetaAuthor: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -82,6 +83,7 @@ type
     Label1: TLabel;
     editor: TSynEdit;
     MenuItem1: TMenuItem;
+    mnuMetaAuthor: TMenuItem;
     mnuMetaDescription: TMenuItem;
     mnuMetaTags: TMenuItem;
     mnuOutputTag: TMenuItem;
@@ -141,6 +143,7 @@ type
     procedure acInputRadioExecute(Sender: TObject);
     procedure acInputTextExecute(Sender: TObject);
     procedure acMainTagExecute(Sender: TObject);
+    procedure acMetaAuthorExecute(Sender: TObject);
     procedure acMetaDescriptionExecute(Sender: TObject);
     procedure acNewFormExecute(Sender: TObject);
     procedure acOptionTagExecute(Sender: TObject);
@@ -391,6 +394,11 @@ end;
 procedure TfrmEditor.acMainTagExecute(Sender: TObject);
 begin
   pair('main');
+end;
+
+procedure TfrmEditor.acMetaAuthorExecute(Sender: TObject);
+begin
+  tagX('meta', 'name="author" content="Author Name"');
 end;
 
 procedure TfrmEditor.acMetaDescriptionExecute(Sender: TObject);

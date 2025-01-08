@@ -999,6 +999,9 @@ object frmEditor: TfrmEditor
       object mnuMetaDescription: TMenuItem
         Action = acMetaDescription
       end
+      object mnuMetaAuthor: TMenuItem
+        Action = acMetaAuthor
+      end
     end
   end
   object acEditor: TActionList
@@ -1123,6 +1126,10 @@ object frmEditor: TfrmEditor
     object acMetaDescription: TAction
       Caption = 'Мета-описание'
       OnExecute = acMetaDescriptionExecute
+    end
+    object acMetaAuthor: TAction
+      Caption = 'Автор '
+      OnExecute = acMetaAuthorExecute
     end
   end
   object SynCompletion1: TSynCompletion
