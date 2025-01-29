@@ -263,6 +263,7 @@ type
     lvPresets: TListView;
     lvBlocks: TListView;
     lvSections: TListView;
+    mnuBuildSite: TMenuItem;
     mnuSetDefaultMenuItemTplValue: TMenuItem;
     mnuSetDefaultValues: TMenuItem;
     mnuGotoGlobalBlocks: TMenuItem;
@@ -433,6 +434,7 @@ type
     Panel8: TPanel;
     Panel9: TPanel;
     pmContextMenu: TPopupMenu;
+    pmTrayMenu: TPopupMenu;
     PrefferedExtension: TComboBox;
     conn: TSQLite3Connection;
     SaveDialog1: TSaveDialog;
@@ -502,6 +504,7 @@ type
     tabHelp: TTabSheet;
     tabGlobalBlocks: TTabSheet;
     tabSections: TTabSheet;
+    tiTray: TTrayIcon;
     tvContent: TTreeView;
     tvSections: TTreeView;
     WebServerLog: TMemo;
@@ -821,6 +824,7 @@ type
     procedure sqlTagsPagesAfterPost(DataSet: TDataSet);
     procedure sqlTagsPagesBeforeDelete(DataSet: TDataSet);
     procedure sqlTagsPagesBeforeRefresh(DataSet: TDataSet);
+    procedure tiTrayClick(Sender: TObject);
 
 
 
@@ -1742,6 +1746,11 @@ end;
 procedure TForm1.sqlTagsPagesBeforeRefresh(DataSet: TDataSet);
 begin
   sqlTagsPages.ApplyUpdates;
+end;
+
+procedure TForm1.tiTrayClick(Sender: TObject);
+begin
+
 end;
 
 
