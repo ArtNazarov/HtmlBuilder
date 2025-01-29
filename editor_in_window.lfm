@@ -1,19 +1,19 @@
 object frmEditor: TfrmEditor
-  Left = 0
-  Height = 834
-  Top = 0
-  Width = 1600
+  Left = 174
+  Height = 530
+  Top = 180
+  Width = 1058
   Caption = 'Редактор разметки'
-  ClientHeight = 834
-  ClientWidth = 1600
+  ClientHeight = 530
+  ClientWidth = 1058
   Menu = mmMenuEditor
   OnCreate = FormCreate
   LCLVersion = '3.8.0.0'
   inline editor: TSynEdit
     Left = 0
-    Height = 642
+    Height = 338
     Top = 167
-    Width = 1600
+    Width = 1058
     Align = alClient
     Font.Height = -16
     Font.Name = 'JetBrains Mono'
@@ -513,8 +513,8 @@ object frmEditor: TfrmEditor
   object btnCloseEditor: TButton
     Left = 0
     Height = 25
-    Top = 809
-    Width = 1600
+    Top = 505
+    Width = 1058
     Align = alBottom
     Caption = 'ОК'
     TabOrder = 1
@@ -524,7 +524,7 @@ object frmEditor: TfrmEditor
     Left = 0
     Height = 17
     Top = 150
-    Width = 1600
+    Width = 1058
     Align = alTop
     Caption = 'Разметка'
     ParentColor = False
@@ -533,11 +533,11 @@ object frmEditor: TfrmEditor
     Left = 0
     Height = 50
     Top = 50
-    Width = 1600
+    Width = 1058
     Align = alTop
     Caption = 'Panel1'
     ClientHeight = 50
-    ClientWidth = 1600
+    ClientWidth = 1058
     TabOrder = 2
     object btnFormatter: TButton
       Left = 173
@@ -610,7 +610,7 @@ object frmEditor: TfrmEditor
       OnClick = btnHrefClick
     end
     object btnPicture: TButton
-      Left = 1396
+      Left = 1057
       Height = 48
       Top = 1
       Width = 75
@@ -620,7 +620,7 @@ object frmEditor: TfrmEditor
       OnClick = btnPictureClick
     end
     object btnOrderedList: TButton
-      Left = 1321
+      Left = 1057
       Height = 48
       Top = 1
       Width = 75
@@ -630,7 +630,7 @@ object frmEditor: TfrmEditor
       OnClick = btnOrderedListClick
     end
     object btnUnorderedList: TButton
-      Left = 1246
+      Left = 1057
       Height = 48
       Top = 1
       Width = 75
@@ -661,7 +661,7 @@ object frmEditor: TfrmEditor
       TabOrder = 10
     end
     object btnAnchor: TButton
-      Left = 1171
+      Left = 1057
       Height = 48
       Top = 1
       Width = 75
@@ -701,7 +701,7 @@ object frmEditor: TfrmEditor
       OnClick = btnFontStyleClick
     end
     object btnTable: TButton
-      Left = 1096
+      Left = 1057
       Height = 48
       Top = 1
       Width = 75
@@ -725,10 +725,10 @@ object frmEditor: TfrmEditor
     Left = 0
     Height = 50
     Top = 100
-    Width = 1600
+    Width = 1058
     Align = alTop
     ClientHeight = 50
-    ClientWidth = 1600
+    ClientWidth = 1058
     TabOrder = 3
     object btnHr: TButton
       Left = 443
@@ -805,15 +805,33 @@ object frmEditor: TfrmEditor
       TabOrder = 6
       OnClick = btnFontSizeSmallerClick
     end
+    object cbColors: TColorBox
+      Left = 656
+      Height = 48
+      Top = 1
+      Width = 100
+      Align = alLeft
+      ItemHeight = 28
+      TabOrder = 7
+    end
+    object btnForegroundColor: TButton
+      Left = 756
+      Height = 48
+      Top = 1
+      Width = 116
+      Action = acForegroundColor
+      Align = alLeft
+      TabOrder = 8
+    end
   end
   object panHtml5: TPanel
     Left = 0
     Height = 50
     Top = 0
-    Width = 1600
+    Width = 1058
     Align = alTop
     ClientHeight = 50
-    ClientWidth = 1600
+    ClientWidth = 1058
     TabOrder = 4
     object btnSection: TButton
       Left = 76
@@ -1143,6 +1161,10 @@ object frmEditor: TfrmEditor
     object acAudioSourceTag: TAction
       Caption = 'Источник аудио'
       OnExecute = acAudioSourceTagExecute
+    end
+    object acForegroundColor: TAction
+      Caption = 'Цвет текста(span)'
+      OnExecute = acForegroundColorExecute
     end
   end
   object SynCompletion1: TSynCompletion

@@ -8,7 +8,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Menus, ActnList, SynEdit, SynHighlighterHTML, SynEditSearch, SynEditTypes,
-  SynCompletion, UTF8Process, Types, LCLType, FontSettings,
+  SynCompletion, UTF8Process, Types, LCLType, ColorBox, FontSettings,
   sel_char_dlg, Process;
 
 type
@@ -48,6 +48,7 @@ type
     acMetaAuthor: TAction;
     acAudioTag: TAction;
     acAudioSourceTag: TAction;
+    acForegroundColor: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -79,9 +80,11 @@ type
     btnFontSizeLarger: TButton;
     btnFontSizeSmaller: TButton;
     btmMainTag: TButton;
+    btnForegroundColor: TButton;
     cboFormatting: TComboBox;
     cboFontFamily: TComboBox;
     cboJustify: TComboBox;
+    cbColors: TColorBox;
     Label1: TLabel;
     editor: TSynEdit;
     MenuItem1: TMenuItem;
@@ -143,6 +146,7 @@ type
     procedure acDocNavMenuExecute(Sender: TObject);
     procedure acDocSectionExecute(Sender: TObject);
     procedure acDocSideExecute(Sender: TObject);
+    procedure acForegroundColorExecute(Sender: TObject);
     procedure acInputCheckboxExecute(Sender: TObject);
     procedure acInputHiddenExecute(Sender: TObject);
     procedure acInputPasswordExecute(Sender: TObject);
@@ -227,6 +231,9 @@ type
 
     { Places single tag like hr}
     procedure tagX(tg, params : String);
+
+    { Get RGB color from TColorBox}
+    function getRGB(var cbSomeColorBox : TColorBox): String;
   end;
 
 var
@@ -370,6 +377,15 @@ end;
 procedure TfrmEditor.acDocSideExecute(Sender: TObject);
 begin
     pair('aside');
+end;
+
+procedure TfrmEditor.acForegroundColorExecute(Sender: TObject);
+begin
+  if cbColors.ItemIndex > 1 then begin
+     tagC('span', 'style="text-color: '+
+     getRGB(cbColors)+
+     '"');
+  end;
 end;
 
 procedure TfrmEditor.acInputCheckboxExecute(Sender: TObject);
@@ -695,6 +711,20 @@ begin
   editor.SelText:='<'+tg+' '+params+' />'+editor.SelText
   else
     editor.InsertTextAtCaret('<'+tg+' '+params+' />');
+end;
+
+function TfrmEditor.getRGB(var cbSomeColorBox: TColorBox): String;
+var
+  c: TColor;
+  r, g, b: Byte;
+begin
+  c := cbSomeColorBox.Selected;
+  r := Red(c);
+  g := Green(c);
+  b := Blue(c);
+
+  // Форматирование в строку #RRGGBB
+  Result := Format('#%2.2X%2.2X%2.2X', [r, g, b]);
 end;
 
 
