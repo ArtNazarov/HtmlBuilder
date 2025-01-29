@@ -382,7 +382,7 @@ end;
 procedure TfrmEditor.acForegroundColorExecute(Sender: TObject);
 begin
   if cbColors.ItemIndex > 1 then begin
-     tagC('span', 'style="text-color: '+
+     tagC('span', 'style="color: '+
      getRGB(cbColors)+
      '"');
   end;
