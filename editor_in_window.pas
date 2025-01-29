@@ -8,7 +8,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Menus, ActnList, SynEdit, SynHighlighterHTML, SynEditSearch, SynEditTypes,
-  SynCompletion, UTF8Process, Types, LCLType, ColorBox, FontSettings,
+  SynCompletion, UTF8Process, Types, LCLType, ColorBox, ExtDlgs, FontSettings,
   sel_char_dlg, Process;
 
 type
@@ -50,6 +50,7 @@ type
     acAudioSourceTag: TAction;
     acForegroundColor: TAction;
     acBackgroundColor: TAction;
+    acInsertDate: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -83,6 +84,7 @@ type
     btmMainTag: TButton;
     btnForegroundColor: TButton;
     btnBackgroundSpanColor: TButton;
+    cdDate: TCalendarDialog;
     cboFormatting: TComboBox;
     cboFontFamily: TComboBox;
     cboJustify: TComboBox;
@@ -90,6 +92,7 @@ type
     Label1: TLabel;
     editor: TSynEdit;
     MenuItem1: TMenuItem;
+    mnuInsertDate: TMenuItem;
     mnuAudioSourceTag: TMenuItem;
     mnuAudioTag: TMenuItem;
     mnuMetaAuthor: TMenuItem;
@@ -155,6 +158,7 @@ type
     procedure acInputPasswordExecute(Sender: TObject);
     procedure acInputRadioExecute(Sender: TObject);
     procedure acInputTextExecute(Sender: TObject);
+    procedure acInsertDateExecute(Sender: TObject);
     procedure acMainTagExecute(Sender: TObject);
     procedure acMetaAuthorExecute(Sender: TObject);
     procedure acMetaDescriptionExecute(Sender: TObject);
@@ -414,6 +418,14 @@ end;
 procedure TfrmEditor.acInputTextExecute(Sender: TObject);
 begin
   tagX('input', 'type="text" name="vname" size="10" maxlength="40" value="defval"');
+end;
+
+procedure TfrmEditor.acInsertDateExecute(Sender: TObject);
+begin
+  if cdDate.Execute then
+     begin
+        editor.InsertTextAtCaret( DateToStr(cdDate.Date) );
+     end;
 end;
 
 procedure TfrmEditor.acMainTagExecute(Sender: TObject);
