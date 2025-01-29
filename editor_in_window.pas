@@ -49,6 +49,7 @@ type
     acAudioTag: TAction;
     acAudioSourceTag: TAction;
     acForegroundColor: TAction;
+    acBackgroundColor: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -81,6 +82,7 @@ type
     btnFontSizeSmaller: TButton;
     btmMainTag: TButton;
     btnForegroundColor: TButton;
+    btnBackgroundSpanColor: TButton;
     cboFormatting: TComboBox;
     cboFontFamily: TComboBox;
     cboJustify: TComboBox;
@@ -137,6 +139,7 @@ type
     procedure acApplyPrettierExecute(Sender: TObject);
     procedure acAudioSourceTagExecute(Sender: TObject);
     procedure acAudioTagExecute(Sender: TObject);
+    procedure acBackgroundColorExecute(Sender: TObject);
     procedure acDefDefinitionExecute(Sender: TObject);
     procedure acDefinitionListWrapperExecute(Sender: TObject);
     procedure acDefTermExecute(Sender: TObject);
@@ -476,6 +479,15 @@ end;
 procedure TfrmEditor.acAudioTagExecute(Sender: TObject);
 begin
   tagC('audio', 'controls');
+end;
+
+procedure TfrmEditor.acBackgroundColorExecute(Sender: TObject);
+begin
+  if cbColors.ItemIndex > -1 then begin
+     tagC('span', 'style="background-color: '+
+     getRGB(cbColors)+
+     '"');
+  end;
 end;
 
 procedure TfrmEditor.acDefDefinitionExecute(Sender: TObject);

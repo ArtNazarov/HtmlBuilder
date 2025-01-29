@@ -823,6 +823,15 @@ object frmEditor: TfrmEditor
       Align = alLeft
       TabOrder = 8
     end
+    object btnBackgroundSpanColor: TButton
+      Left = 872
+      Height = 48
+      Top = 1
+      Width = 107
+      Action = acBackgroundColor
+      Align = alLeft
+      TabOrder = 9
+    end
   end
   object panHtml5: TPanel
     Left = 0
@@ -1165,6 +1174,10 @@ object frmEditor: TfrmEditor
     object acForegroundColor: TAction
       Caption = 'Цвет текста(span)'
       OnExecute = acForegroundColorExecute
+    end
+    object acBackgroundColor: TAction
+      Caption = 'Цвет фона(span)'
+      OnExecute = acBackgroundColorExecute
     end
   end
   object SynCompletion1: TSynCompletion
