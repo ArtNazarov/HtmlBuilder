@@ -8,7 +8,7 @@ object frmEditor: TfrmEditor
   ClientWidth = 1058
   Menu = mmMenuEditor
   OnCreate = FormCreate
-  LCLVersion = '3.6.0.0'
+  LCLVersion = '3.8.0.0'
   inline editor: TSynEdit
     Left = 0
     Height = 338
@@ -653,7 +653,6 @@ object frmEditor: TfrmEditor
         'Заголовок H4'
         'Заголовок H5'
         'Заголовок H6'
-        'Заголовок H7'
         'Параграф'
         'Код'
         'Преформат.'

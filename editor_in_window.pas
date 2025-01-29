@@ -512,17 +512,17 @@ end;
 
 procedure TfrmEditor.btnFormatterClick(Sender: TObject);
 begin
-  if cboFormatting.ItemIndex <=6 then
+  if cboFormatting.ItemIndex <=5 then
      begin
        pair('h'+IntToStr(cboFormatting.ItemIndex+1));
      end
   else
    begin
       case cboFormatting.ItemIndex of
-      7 : begin pair('p'); end;
-      8 : begin pair('code'); end;
-      9 : begin pair('pre');  end;
-      10 : begin pair('blockquote'); end;
+      6 : begin pair('p'); end;
+      7 : begin pair('code'); end;
+      8 : begin pair('pre');  end;
+      9 : begin pair('blockquote'); end;
       end;
    end;
 
