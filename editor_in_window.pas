@@ -46,6 +46,8 @@ type
     acApplyPrettier: TAction;
     acMetaDescription: TAction;
     acMetaAuthor: TAction;
+    acAudioTag: TAction;
+    acAudioSourceTag: TAction;
     acVideoSourceTag: TAction;
     acVideoTag: TAction;
     acUndo: TAction;
@@ -83,6 +85,8 @@ type
     Label1: TLabel;
     editor: TSynEdit;
     MenuItem1: TMenuItem;
+    mnuAudioSourceTag: TMenuItem;
+    mnuAudioTag: TMenuItem;
     mnuMetaAuthor: TMenuItem;
     mnuMetaDescription: TMenuItem;
     mnuMetaTags: TMenuItem;
@@ -128,6 +132,8 @@ type
     SynHTMLSyn1: TSynHTMLSyn;
     procedure acAddressExecute(Sender: TObject);
     procedure acApplyPrettierExecute(Sender: TObject);
+    procedure acAudioSourceTagExecute(Sender: TObject);
+    procedure acAudioTagExecute(Sender: TObject);
     procedure acDefDefinitionExecute(Sender: TObject);
     procedure acDefinitionListWrapperExecute(Sender: TObject);
     procedure acDefTermExecute(Sender: TObject);
@@ -445,6 +451,17 @@ begin
   DeleteFile('temp.html');
   markup := editor.Lines.Text;
 end;
+
+procedure TfrmEditor.acAudioSourceTagExecute(Sender: TObject);
+begin
+  tagX('source', 'src="/path/to/file.mp3" type="audio/mpeg"')
+end;
+
+procedure TfrmEditor.acAudioTagExecute(Sender: TObject);
+begin
+  tagC('audio', 'controls');
+end;
+
 procedure TfrmEditor.acDefDefinitionExecute(Sender: TObject);
 begin
   pair('dd');
