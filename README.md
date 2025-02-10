@@ -98,6 +98,8 @@ Will placed in folder /files/
 
 23. Adding css properties using menu items / Добавление свойств CSS с помощью пунктов меню
 
+24. Chat with Ollama AI server / Чат с AI сервером Ollama 
+
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
 
 Docker image with PHP https://github.com/ArtNazarov/dockerbridgephp
@@ -157,6 +159,22 @@ sudo dnf install libsq3-devel
    ```
 
 After installing libraries, open lpi file in Lazarus IDE and compile
+
+Ollama client
+=====
+To use LLM with HtmlBuilder, you should install ollama server using package mananger and enable ollama service, for example, on ArchLinux it is
+```
+yay -S ollama
+sudo systemctl enable ollama.service
+sudo systemctl start ollama.service   
+```
+
+After load some model, for example tinyllama.
+Run server with chosen model before launching HtmlBuilder
+```
+ ollama pull tinyllama
+ ollama run tinyllama
+```
 
 Tests
 =====
