@@ -17,7 +17,7 @@ uses
   DateUtils, fgl, regexpr, types_for_app, selectorTagsPages, const_for_app,
   selectors_for_menu, RenderHtml, httpsend, storing_attachments, FontSettings,
   IniFiles, selection_history_dialog, selection_history_manager,
-  emoji_shortcodes, func_str_composition; {Use Synaptic}
+  emoji_shortcodes, func_str_composition, chat_client_thread; {Use Synaptic}
 
 
 
@@ -1338,21 +1338,7 @@ type
 
 
 
-  { TChatClientThread }
 
-  TChatClientThread = class(TThread)
-  private
-    FChatClient: TProcess;
-    FExitCode: Integer;
-    FErrorMsg: string;
-    FResponseFile: string;
-  protected
-    procedure Execute; override;
-    procedure UpdateGUI;
-  public
-    constructor Create;
-    destructor Destroy; override;
-  end;
 
 
 
@@ -2334,7 +2320,8 @@ begin
      // Сохраняем запрос во входной файл
      mmChatCommand.Lines.SaveToFile('req.txt');
      // Создаем и запускаем поток для выполнения клиента
-     TChatClientThread.Create;
+     TChatClientThread.Create(form1.mmChat,
+     ExtractFilePath(Application.ExeName));
 end;
 procedure TForm1.acSaveSpecialSettingsExecute(Sender: TObject);
 begin
@@ -6417,71 +6404,6 @@ begin
   Result := withEmojies(s, emojies);
 end;
 
-  { TChatClientThread }
-
-  procedure TChatClientThread.Execute;
-  begin
-    FChatClient := TProcess.Create(nil);
-    try
-      // Назначаем путь к исполняемому
-      FChatClient.Executable := '/usr/bin/python';
-      // Добавляем имя скрипта клиента Python
-      FChatClient.Parameters.Add('client.py');
-      // Устанавливаем текущий каталог для процесса согласно рабочего каталога программы
-      FChatClient.CurrentDirectory := ExtractFilePath(Application.ExeName);
-      // Добавляем опции для асинхронного запуска
-      FChatClient.Options := FChatClient.Options + [poWaitOnExit]; // Дождаться завершения процесса
-      FChatClient.Execute; // Выполняем процесс клиента
-
-      // Получаем код завершения клиента
-      FExitCode := FChatClient.ExitCode;
-      if FExitCode <> 0 then
-      begin
-        // Если ненулевой, добавляем сообщение об ошибке
-        FErrorMsg := 'Error executing client.py';
-      end
-      else
-      begin
-        // Если без ошибок - забираем ответ из выходного файла
-        FResponseFile := 'resp.txt';
-      end;
-    except
-      on E: Exception do
-      begin
-        FErrorMsg := E.Message;
-      end;
-    end;
-
-    // Обновляем GUI в основном потоке
-      Synchronize(@UpdateGUI);
-  end;
-
-  procedure TChatClientThread.UpdateGUI;
-  begin
-        if FErrorMsg <> '' then
-    begin
-      // Показываем сообщение об ошибке
-      form1.mmChat.Lines.Add(FErrorMsg);
-    end
-    else if FResponseFile <> '' then
-    begin
-      // Загружаем ответ из файла
-      form1.mmChat.Lines.LoadFromFile(FResponseFile);
-    end;
-  end;
-
-  constructor TChatClientThread.Create;
-  begin
-       inherited Create(False); // Создаем и сразу запускаем поток
-       FreeOnTerminate := True; // Поток автоматически уничтожится после выполнения
-       FResponseFile := 'resp.txt';
-  end;
-
-  destructor TChatClientThread.Destroy;
-  begin
-       FChatClient.Free;
-       inherited Destroy;
-  end;
 
 
 
