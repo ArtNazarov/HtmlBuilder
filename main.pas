@@ -1338,7 +1338,21 @@ type
 
 
 
+  { TChatClientThread }
 
+  TChatClientThread = class(TThread)
+  private
+    FChatClient: TProcess;
+    FExitCode: Integer;
+    FErrorMsg: string;
+    FResponseFile: string;
+  protected
+    procedure Execute; override;
+    procedure UpdateGUI;
+  public
+    constructor Create;
+    destructor Destroy; override;
+  end;
 
 
 
@@ -2316,40 +2330,12 @@ begin
 end;
 
 procedure TForm1.acRunChatCommandExecute(Sender: TObject);
-var
-  ChatClient: TProcess; // процесс для запуска клиента
-  ExitCode: Integer; // код завершения процесса
 begin
-  // Сохраняем запрос во входной файл
-  mmChatCommand.Lines.SaveToFile('req.txt');
-  // Создаем объект для клиентского процесса
-  ChatClient := TProcess.Create(Nil);
-  // отлов исключений
-  try
-  // назначаем путь к исполняемому
-    ChatClient.Executable := '/usr/bin/python';
-  // добавляем имя скрипта клиента Python
-    ChatClient.Parameters.Add('client.py');
-  // Установим текущий каталог для процесса согласно рабочего каталога программы
-    ChatClient.CurrentDirectory := ExtractFilePath(Application.ExeName);
-    // Добавим опции для асинхронного запуска
-    ChatClient.Options := ChatClient.Options + [poWaitOnExit]; // Дождаться завершения процесса
-    ChatClient.Execute; // Выполняем процесс клиента
-    // Получить код завершения клиента
-    ExitCode := ChatClient.ExitCode;
-    if ExitCode <> 0 then
-    begin
-      // Если ненулевой, добавить сообщение об ошибке
-      mmChat.Lines.Add('Error executing client.py');
-    end else begin
-      // Если без ошибок - забираем ответ из выходного файла
-      mmChat.Lines.LoadFromFile('resp.txt');
-    end;
-  finally // вне зависимости от наличия исключений - освобождаем память
-    ChatClient.Free;
-  end;
+     // Сохраняем запрос во входной файл
+     mmChatCommand.Lines.SaveToFile('req.txt');
+     // Создаем и запускаем поток для выполнения клиента
+     TChatClientThread.Create;
 end;
-
 procedure TForm1.acSaveSpecialSettingsExecute(Sender: TObject);
 begin
   SaveSpecialSettings('');
@@ -6430,6 +6416,72 @@ begin
   emojies := getEmojiShortCodes();
   Result := withEmojies(s, emojies);
 end;
+
+  { TChatClientThread }
+
+  procedure TChatClientThread.Execute;
+  begin
+    FChatClient := TProcess.Create(nil);
+    try
+      // Назначаем путь к исполняемому
+      FChatClient.Executable := '/usr/bin/python';
+      // Добавляем имя скрипта клиента Python
+      FChatClient.Parameters.Add('client.py');
+      // Устанавливаем текущий каталог для процесса согласно рабочего каталога программы
+      FChatClient.CurrentDirectory := ExtractFilePath(Application.ExeName);
+      // Добавляем опции для асинхронного запуска
+      FChatClient.Options := FChatClient.Options + [poWaitOnExit]; // Дождаться завершения процесса
+      FChatClient.Execute; // Выполняем процесс клиента
+
+      // Получаем код завершения клиента
+      FExitCode := FChatClient.ExitCode;
+      if FExitCode <> 0 then
+      begin
+        // Если ненулевой, добавляем сообщение об ошибке
+        FErrorMsg := 'Error executing client.py';
+      end
+      else
+      begin
+        // Если без ошибок - забираем ответ из выходного файла
+        FResponseFile := 'resp.txt';
+      end;
+    except
+      on E: Exception do
+      begin
+        FErrorMsg := E.Message;
+      end;
+    end;
+
+    // Обновляем GUI в основном потоке
+      Synchronize(@UpdateGUI);
+  end;
+
+  procedure TChatClientThread.UpdateGUI;
+  begin
+        if FErrorMsg <> '' then
+    begin
+      // Показываем сообщение об ошибке
+      form1.mmChat.Lines.Add(FErrorMsg);
+    end
+    else if FResponseFile <> '' then
+    begin
+      // Загружаем ответ из файла
+      form1.mmChat.Lines.LoadFromFile(FResponseFile);
+    end;
+  end;
+
+  constructor TChatClientThread.Create;
+  begin
+       inherited Create(False); // Создаем и сразу запускаем поток
+       FreeOnTerminate := True; // Поток автоматически уничтожится после выполнения
+       FResponseFile := 'resp.txt';
+  end;
+
+  destructor TChatClientThread.Destroy;
+  begin
+       FChatClient.Free;
+       inherited Destroy;
+  end;
 
 
 
