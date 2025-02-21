@@ -100,6 +100,8 @@ Will placed in folder /files/
 
 24. Chat with Ollama AI server / Чат с AI сервером Ollama 
 
+25. Current date and time funcs / Функции текущих даты и времени
+
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
 
 Docker image with PHP https://github.com/ArtNazarov/dockerbridgephp
