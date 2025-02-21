@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 0
   Height = 794
-  Top = 35
+  Top = 29
   Width = 1584
   AllowDropFiles = True
   Caption = 'Генератор статических HTML сайтов'
@@ -3014,7 +3014,7 @@ object Form1: TForm1
               object Label12: TLabel
                 Left = 1
                 Height = 17
-                Top = 318
+                Top = 293
                 Width = 1397
                 Align = alTop
                 Caption = 'Локальный сервер визуального редактора'
@@ -3023,7 +3023,7 @@ object Form1: TForm1
               object edLocalWysigygServer: TEdit
                 Left = 1
                 Height = 25
-                Top = 293
+                Top = 310
                 Width = 1397
                 Align = alTop
                 TabOrder = 9
@@ -3032,7 +3032,7 @@ object Form1: TForm1
               object lbGithubPagesPath: TLabel
                 Left = 1
                 Height = 17
-                Top = 276
+                Top = 251
                 Width = 1397
                 Align = alTop
                 Caption = 'Путь к Github Pages'
@@ -3041,7 +3041,7 @@ object Form1: TForm1
               object edGithubPagesPath: TEdit
                 Left = 1
                 Height = 25
-                Top = 251
+                Top = 268
                 Width = 1397
                 Align = alTop
                 TabOrder = 10

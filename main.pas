@@ -17,7 +17,7 @@ uses
   DateUtils, fgl, regexpr, types_for_app, selectorTagsPages, const_for_app,
   selectors_for_menu, RenderHtml, httpsend, storing_attachments, FontSettings,
   IniFiles, selection_history_dialog, selection_history_manager,
-  emoji_shortcodes, func_str_composition, chat_client_thread; {Use Synaptic}
+  emoji_shortcodes, func_str_composition, chat_client_thread, replcallfunc; {Use Synaptic}
 
 
 
@@ -941,6 +941,9 @@ type
 
     { Применяет глобальные блоки к шаблону }
     function useBlocks(part: string): string;
+
+    { Применяем вызовы функций }
+    function useReplFunc(part: string): string;
 
 
     { ----------------------------------------------}
@@ -3122,6 +3125,16 @@ begin
   Result:=r;
 end;
 
+function TForm1.useReplFunc(part: string): string;
+var
+  rfc : TReplFuncCaller;
+begin
+    rfc := TReplFuncCaller.Create();
+    part := rfc.ReplaceDateFuncCall(part);
+    part := rfc.ReplaceTimeFuncCall(part);
+    Result := part;
+end;
+
 procedure TForm1.scanLinks;
 var
    i : integer;
@@ -4752,6 +4765,8 @@ begin
 
      // постобработка
 
+
+     ComposeStrFunc( Pipeline, @useReplFunc);
 
      ComposeStrFunc( Pipeline, @useEmojies);
      ComposeStrFunc( Pipeline, @useAttachments);

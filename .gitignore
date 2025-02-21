@@ -32,3 +32,4 @@ lib/
 sqlite.db
 htmlbuilder
 *.dbg
+git-stats.sh
