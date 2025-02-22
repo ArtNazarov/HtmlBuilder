@@ -38,7 +38,11 @@ begin
   WordToLeft := '';
   for i := Length(TextBeforeCaret) downto 1 do
   begin
-    if  (TextBeforeCaret[i] = '~') or (TextBeforeCaret[i] >= 'A') and (TextBeforeCaret[i] <= 'Z') or
+    if  (TextBeforeCaret[i] = '{') or (TextBeforeCaret[i] = '}') or
+        (TextBeforeCaret[i] = '(') or (TextBeforeCaret[i] = ')') or
+        (TextBeforeCaret[i] = '[') or (TextBeforeCaret[i] = ']') or
+        (TextBeforeCaret[i] = '<') or (TextBeforeCaret[i] = '>') or
+       (TextBeforeCaret[i] = '~') or (TextBeforeCaret[i] >= 'A') and (TextBeforeCaret[i] <= 'Z') or
        (TextBeforeCaret[i] >= 'a') and (TextBeforeCaret[i] <= 'z') or
        (TextBeforeCaret[i] >= '0') and (TextBeforeCaret[i] <= '9') then
     begin

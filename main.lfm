@@ -170,9 +170,9 @@ object Form1: TForm1
                         Height = 635
                         Top = 1
                         Width = 821
-                        ActivePage = tabEditorProps
+                        ActivePage = tabMainProps
                         Align = alClient
-                        TabIndex = 1
+                        TabIndex = 0
                         TabOrder = 0
                         object tabMainProps: TTabSheet
                           Caption = 'Главные свойства страницы'
@@ -402,6 +402,7 @@ object Form1: TForm1
                                     Width = 809
                                     Align = alClient
                                     DataField = 'content'
+                                    OnChange = fContentChange
                                     OnDblClick = fContentDblClick
                                     OnEnter = fContentEnter
                                     PopupMenu = pmContextMenu
@@ -3765,6 +3766,53 @@ object Form1: TForm1
         end
       end
     end
+  end
+  object lbAutoComplete: TListBox
+    Left = 1328
+    Height = 128
+    Top = 40
+    Width = 160
+    Font.Color = clBlue
+    Items.Strings = (
+      '[закрыть]'
+      'CHARS()'
+      'GETDATE()'
+      'GETTIME()'
+      'SENTS()'
+      'TTR()'
+      'WORDS()'
+      '{body} '
+      '{custom_name}'
+      '{dt}'
+      '{ext} '
+      '{ext} '
+      '{fX}'
+      '{id}'
+      '{itemDt} '
+      '{items} '
+      '{items}'
+      '{itemTags}'
+      '{itemTitle} '
+      '{itemTitle}'
+      '{itemUrl}'
+      '{itemUrl}'
+      '{menu=ID_MENU}'
+      '{pager} '
+      '{remote_url="https://something.com/source.txt"}'
+      '{sectionFullText}'
+      '{sectionNote}'
+      '{sectionTitle}'
+      '{sectionUrl}'
+      '{sort_order}'
+      '{tags}'
+      '{title}'
+      '{vX}'
+    )
+    ItemHeight = 17
+    ParentFont = False
+    TabOrder = 4
+    Visible = False
+    OnClick = lbAutoCompleteClick
   end
   object mnuMainMenu: TMainMenu
     Images = ilImagesForMenuItems
