@@ -12,7 +12,7 @@ uses
   css_props_dlg, const_for_app, types_for_app, selectorTagsPages,
   selectors_for_menu, RenderHtml, AsyncQueue, storing_attachments, FontSettings,
   selection_history_dialog, selection_history_manager, emoji_shortcodes, 
-func_str_composition, chat_client_thread, replcallfunc, sitestats;
+func_str_composition, chat_client_thread, replcallfunc, sitestats, dbmemo_autocomplete;
 
 {$R *.res}
 

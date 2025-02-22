@@ -65,7 +65,7 @@
         <PackageName Value="LCL"/>
       </Item7>
     </RequiredPackages>
-    <Units Count="29">
+    <Units Count="30">
       <Unit0>
         <Filename Value="htmlbuilder.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -206,6 +206,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SiteStats"/>
       </Unit28>
+      <Unit29>
+        <Filename Value="dbmemo_autocomplete.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit29>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

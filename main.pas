@@ -18,7 +18,7 @@ uses
   selectors_for_menu, RenderHtml, httpsend, storing_attachments, FontSettings,
   IniFiles, selection_history_dialog, selection_history_manager,
   emoji_shortcodes, func_str_composition, chat_client_thread, replcallfunc,
-  sitestats; {Use Synaptic}
+  sitestats, dbmemo_autocomplete; {Use Synaptic}
 
 
 
@@ -325,6 +325,7 @@ type
     lbTagsTemplate: TLabel;
     lbTree: TLabel;
     lbTreeStructure: TLabel;
+    lbAutoComplete: TListBox;
     listFields: TListBox;
     listTags: TListBox;
     lvAttachments: TListView;
@@ -699,9 +700,11 @@ type
       Button: TDBNavButtonType);
     procedure dbNav_SectionsBeforeAction(Sender: TObject;
       Button: TDBNavButtonType);
+    procedure fContentChange(Sender: TObject);
     procedure fContentDblClick(Sender: TObject);
     procedure fContentEnter(Sender: TObject);
     procedure FormDropFiles(Sender: TObject; const FileNames: array of string);
+    procedure lbAutoCompleteClick(Sender: TObject);
 
 
 
@@ -846,6 +849,9 @@ type
     { private declarations }
   public
     { public declarations }
+
+    {Текущее многострочное поле базы данных}
+    currentDBMemo : TDbMemo;
 
     {Менеджер буфера обмена}
     SelectionHistoryManager  : TSelectionHistoryManager;
@@ -2687,6 +2693,17 @@ begin
   end;
 end;
 
+procedure TForm1.fContentChange(Sender: TObject);
+var
+  currentWord : String;
+  foundWord : Boolean;
+begin
+  currentDbMemo := fContent;
+  bindAutocomplete(lbAutocomplete, fContent, currentWord,
+  foundWord);
+  form1.Caption:=currentWord;
+
+end;
 procedure TForm1.fContentDblClick(Sender: TObject);
 begin
    IpHtmlPanel1.SetHtmlFromStr(fContent.Text);
@@ -2713,6 +2730,11 @@ begin
   end;
   if LastFocusedControl <> NIL then
      (LastFocusedControl as tdbmemo).Text:=addedText;
+end;
+
+procedure TForm1.lbAutoCompleteClick(Sender: TObject);
+begin
+   bindChange(lbAutoComplete, currentDbMemo);
 end;
 
 
