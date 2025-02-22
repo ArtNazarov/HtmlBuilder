@@ -102,6 +102,13 @@ Will placed in folder /files/
 
 25. Current date and time funcs / Функции текущих даты и времени
 
+How to use: place GETDATE(), GETTIME()
+
+27. Approx. count time to reading, total amount words, sentences and characters
+/ Приблиз. подсчет времени на дочитывание, общее количество слов, предложений и символов
+
+How to use: place WORDS(), SENTS(), CHARS(), TTR()
+
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
 
 Docker image with PHP https://github.com/ArtNazarov/dockerbridgephp
