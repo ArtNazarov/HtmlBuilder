@@ -22,6 +22,8 @@ type
     function CountSentences(s: string): Integer;
     { Подсчет числа символов в строке s}
     function CountNonSpaceChars(s: string): Integer;
+    { Время на дочитывание }
+    function TimeToReadingInMinutes(words_total : Integer) : Integer;
     { Подстановка статистики в текст }
     function ReplaceStats(s: string): String;
   end;
@@ -128,11 +130,19 @@ begin
   end;
 end;
 
+function TSiteStats.TimeToReadingInMinutes(words_total : Integer): Integer;
+const
+  Words_Per_Minutes : Integer = 150;
+begin
+  Result := words_total div Words_Per_Minutes;
+end;
+
 function TSiteStats.ReplaceStats(s: string): String;
 var
   CharactersCount : Integer;
   WordsCount : Integer;
   SentencesCount : Integer;
+  TTR : Integer;
   temp : String;
 begin
      temp := s;
@@ -141,7 +151,8 @@ begin
      CharactersCount:= CountNonSpaceChars(s);
      WordsCount:=CountWords(s);
      SentencesCount:=CountSentences(s);
-
+     TTR:=TimeToReadingInMinutes(WordsCount);
+     temp := StringReplace(temp, 'TTR()', IntToStr( TTR ), [rfReplaceAll, rfIgnoreCase]);
      temp := StringReplace(temp, 'CHARS()', IntToStr( CharactersCount ), [rfReplaceAll, rfIgnoreCase]);
      temp := StringReplace(temp, 'WORDS()', IntToStr( WordsCount ), [rfReplaceAll, rfIgnoreCase]);
      Result := StringReplace(temp, 'SENTS()',  IntToStr( SentencesCount ), [rfReplaceAll, rfIgnoreCase]);
