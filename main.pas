@@ -17,7 +17,8 @@ uses
   DateUtils, fgl, regexpr, types_for_app, selectorTagsPages, const_for_app,
   selectors_for_menu, RenderHtml, httpsend, storing_attachments, FontSettings,
   IniFiles, selection_history_dialog, selection_history_manager,
-  emoji_shortcodes, func_str_composition, chat_client_thread, replcallfunc; {Use Synaptic}
+  emoji_shortcodes, func_str_composition, chat_client_thread, replcallfunc,
+  sitestats; {Use Synaptic}
 
 
 
@@ -1329,6 +1330,9 @@ type
 
     {Применение эмодзи}
     function useEmojies(s: String): String;
+
+    {Статистика}
+    function useSiteStats(s : String): String;
 
 
 
@@ -4766,6 +4770,7 @@ begin
      // постобработка
 
 
+     ComposeStrFunc( Pipeline, @useSiteStats);
      ComposeStrFunc( Pipeline, @useReplFunc);
 
      ComposeStrFunc( Pipeline, @useEmojies);
@@ -6417,6 +6422,15 @@ var
 begin
   emojies := getEmojiShortCodes();
   Result := withEmojies(s, emojies);
+end;
+
+function TForm1.useSiteStats(s: String): String;
+var
+  stat : TSiteStats;
+begin
+   stat := TSiteStats.Create();
+   Result := stat.ReplaceStats(s);
+   stat.Free;
 end;
 
 
