@@ -701,7 +701,7 @@ type
     procedure dbNav_SectionsBeforeAction(Sender: TObject;
       Button: TDBNavButtonType);
     procedure fContentChange(Sender: TObject);
-    procedure fContentDblClick(Sender: TObject);
+
     procedure fContentEnter(Sender: TObject);
     procedure FormDropFiles(Sender: TObject; const FileNames: array of string);
     procedure lbAutoCompleteClick(Sender: TObject);
@@ -2702,12 +2702,9 @@ begin
   bindAutocomplete(lbAutocomplete, fContent, currentWord,
   foundWord);
   form1.Caption:=currentWord;
+  IpHtmlPanel1.SetHtmlFromStr(fContent.Text);
+end;
 
-end;
-procedure TForm1.fContentDblClick(Sender: TObject);
-begin
-   IpHtmlPanel1.SetHtmlFromStr(fContent.Text);
-end;
 
 procedure TForm1.fContentEnter(Sender: TObject);
 begin
