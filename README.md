@@ -3,7 +3,15 @@ HtmlBuilder
 Написанный на FPC/Lazarus генератор статических сайтов
 Written in FreePascal/Lazarus generator of static html websites
 
-UI sample / Примерный вид интерфейса
+AI assistant with Ollama mode / ИИ ассистент в режиме Ollama
+
+![AI assistant](https://dl.dropbox.com/scl/fi/k80ekm0vyru76li5at73h/htmlbuilder-with-llm1.png?rlkey=hc5eb9ohb3b6yj3mdi8f8x8cp&st=08r3x8i3)
+
+Html markup preview / Превью разметки HTML
+
+![Html preview](https://dl.dropbox.com/scl/fi/h9pif4djp87pmvvaq07y3/htmlbuilder-with-llm2.png?rlkey=32lw001qazg4mx7sc83s7nq32&st=rz07uxzp)
+
+Earlier UI sample (localization) / Прежний вид интерфейса (локализация)
 
 ![Screen pages editor](https://dl.dropboxusercontent.com/scl/fi/3xj9ex9tl2hmin1h6iiph/main_screen_new.png?rlkey=e3ij7tte6uyju2fbjt66yh7dn&st=o78x64zd)
 
