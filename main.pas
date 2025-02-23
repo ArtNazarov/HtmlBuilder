@@ -70,6 +70,7 @@ type
     acGotoGlobalBlocks: TAction;
     acSetMenuItemTplToDefault: TAction;
     acRunChatCommand: TAction;
+    acCopyContent: TAction;
     acUploadingWithBridgeChangeVisibility: TAction;
     acWebServerChangeVisibility: TAction;
     alContextActions: TActionList;
@@ -340,6 +341,7 @@ type
     lvSections: TListView;
     lvTags: TListView;
     lvTagsPages: TListView;
+    MenuItem1: TMenuItem;
     mmChatCommand: TMemo;
     mmChat: TMemo;
     mmAbout: TMemo;
@@ -462,10 +464,12 @@ type
     SaveDialog1: TSaveDialog;
     selSection: TDBLookupComboBox;
     Separator1: TMenuItem;
+    Separator2: TMenuItem;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
     Splitter3: TSplitter;
     Splitter4: TSplitter;
+    sqlCopyContent: TSQLQuery;
     svdGetFromDatabase: TSaveDialog;
     sqlContent: TSQLQuery;
     sqlJoin: TSQLQuery;
@@ -533,6 +537,7 @@ type
 
     { Действие для открытия базы данных }
     procedure acCommonSettingsChangeVisibilityExecute(Sender: TObject);
+    procedure acCopyContentExecute(Sender: TObject);
     procedure acCutMarkupExecute(Sender: TObject);
     procedure acCutTextExecute(Sender: TObject);
     procedure acDatabaseOpenExecute(Sender: TObject);
@@ -2427,6 +2432,26 @@ procedure TForm1.acCommonSettingsChangeVisibilityExecute(Sender: TObject);
 begin
   acCommonSettingsChangeVisibility.Checked:=not acCommonSettingsChangeVisibility.Checked;
   tabCommonSettings.TabVisible:=acCommonSettingsChangeVisibility.Checked;
+end;
+
+{ Создает дубль страницы }
+procedure TForm1.acCopyContentExecute(Sender: TObject);
+var
+   content_id : String;
+begin
+
+     content_id := sqlContent.FieldByName('id').AsString;
+       sqlCopyContent.SQL.Clear;
+  sqlCopyContent.SQL.Text:='INSERT INTO content (id, caption, content) '
+  + ' SELECT "copy_" || content.id, caption, content FROM content WHERE '
+  + ' content.id = "' +  content_id + '"'  ;
+
+    lvContent.AddItem('copy_' + content_id, nil);
+    sqlCopyContent.ExecSQL;
+    sqlCopyContent.Active:=False;
+    sqlContent.ApplyUpdates;
+    sqlContent.Refresh;
+
 end;
 
 procedure TForm1.acCutTextExecute(Sender: TObject);

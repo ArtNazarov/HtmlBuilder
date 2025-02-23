@@ -4735,6 +4735,12 @@ object Form1: TForm1
     object mnuPasteText: TMenuItem
       Action = acPasteText
     end
+    object Separator2: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem1: TMenuItem
+      Action = acCopyContent
+    end
   end
   object alContextActions: TActionList
     Left = 1504
@@ -4746,6 +4752,10 @@ object Form1: TForm1
     object acPasteText: TAction
       Caption = 'Paste Text'
       OnExecute = acPasteTextExecute
+    end
+    object acCopyContent: TAction
+      Caption = 'Сделать копию контента'
+      OnExecute = acCopyContentExecute
     end
   end
   object ilImagesForMenuItems: TImageList
@@ -4793,5 +4803,17 @@ object Form1: TForm1
     object mnuBuildSite: TMenuItem
       Action = acBuildSite
     end
+  end
+  object sqlCopyContent: TSQLQuery
+    FieldDefs = <>
+    Database = conn
+    Transaction = trans
+    SQL.Strings = (
+      ''
+    )
+    Params = <>
+    Macros = <>
+    Left = 1391
+    Top = 321
   end
 end
