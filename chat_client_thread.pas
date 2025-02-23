@@ -22,6 +22,8 @@ type
     FResponseFile: string;
     { working dir for LLM client }
     FWorkingDir : string;
+    { client type of LM client script }
+    FClientType : Integer;
     { ui component to update GUI in synchronization }
     mmChatResponce : TMemo;
   protected
@@ -30,7 +32,7 @@ type
     { code for updating GUI to show responce }
     procedure UpdateGUI;
   public
-    constructor Create(var mmChat : TMemo; workingDir : String);
+    constructor Create(var mmChat : TMemo; workingDir : String; clientType : Integer);
     destructor Destroy; override;
   end;
 
@@ -45,7 +47,12 @@ implementation
       // Назначаем путь к исполняемому
       FChatClient.Executable := '/usr/bin/python';
       // Добавляем имя скрипта клиента Python
-      FChatClient.Parameters.Add('client.py');
+
+      if FClientType < 1 then
+         FChatClient.Parameters.Add('client.py')
+      else
+          FChatClient.Parameters.Add('client-lmstudio.py');
+
       // Устанавливаем текущий каталог для процесса согласно рабочего каталога программы
       FChatClient.CurrentDirectory := FWorkingDir;
       // Добавляем опции для асинхронного запуска
@@ -89,13 +96,14 @@ implementation
     end;
   end;
 
-  constructor TChatClientThread.Create(var mmChat: TMemo; workingDir : String);
+  constructor TChatClientThread.Create(var mmChat: TMemo; workingDir : String; clientType: Integer);
   begin
        inherited Create(False); // Создаем и сразу запускаем поток
        FreeOnTerminate := True; // Поток автоматически уничтожится после выполнения
        FResponseFile := 'resp.txt';
        mmChatResponce := mmChat;
        FWorkingDir := workingDir;
+       FClientType := clientType;
   end;
 
   destructor TChatClientThread.Destroy;

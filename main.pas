@@ -113,6 +113,7 @@ type
     chkUseModules: TCheckBox;
     chkUseTrees: TCheckBox;
     choicePreset: TDBLookupComboBox;
+    cboLmClient: TComboBox;
     DBDateTimePicker1: TDBDateTimePicker;
     dbeAttachmentCaption: TDBEdit;
     dbeAttachmentId: TDBEdit;
@@ -464,6 +465,7 @@ type
     Splitter1: TSplitter;
     Splitter2: TSplitter;
     Splitter3: TSplitter;
+    Splitter4: TSplitter;
     svdGetFromDatabase: TSaveDialog;
     sqlContent: TSQLQuery;
     sqlJoin: TSQLQuery;
@@ -2334,7 +2336,8 @@ begin
      mmChatCommand.Lines.SaveToFile('req.txt');
      // Создаем и запускаем поток для выполнения клиента
      TChatClientThread.Create(form1.mmChat,
-     ExtractFilePath(Application.ExeName));
+     ExtractFilePath(Application.ExeName),
+     cboLmClient.ItemIndex);
 end;
 procedure TForm1.acSaveSpecialSettingsExecute(Sender: TObject);
 begin
