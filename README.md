@@ -132,6 +132,10 @@ Python endpoint https://github.com/ArtNazarov/htmlbuilder-python-bridge
 
 More info in / больше информации english_help / russian_help.txt
 
+Tutorial
+==============
+Read [how to create page](https://github.com/ArtNazarov/HtmlBuilder/wiki/How-to-create-new-page) in Wiki
+
 
 Installation
 ==============
