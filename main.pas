@@ -2683,12 +2683,15 @@ var
   foundWord: boolean;
 begin
   currentDbMemo := fContent;
+
+  if pos('<img ', fContent.Text) = 0 then
+  IpHtmlPanel1.SetHtmlFromStr(fContent.Text);
+
   bindAutocomplete(lbAutocomplete, fContent, currentWord,
     foundWord);
-  form1.Caption := currentWord;
-  //  no preview if raw image tag found
-  if pos('img', fContent.Lines.Text) = -1 then
-  IpHtmlPanel1.SetHtmlFromStr(fContent.Text);
+
+  //form1.Caption := currentWord;
+
 end;
 
 

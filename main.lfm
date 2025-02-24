@@ -560,7 +560,7 @@ object Form1: TForm1
                                     object DBText5: TDBText
                                       Left = 1
                                       Height = 17
-                                      Top = 293
+                                      Top = 250
                                       Width = 807
                                       Align = alTop
                                       DataField = 'ufn5'
@@ -570,7 +570,7 @@ object Form1: TForm1
                                     object dbePageField5: TDBEdit
                                       Left = 1
                                       Height = 25
-                                      Top = 268
+                                      Top = 267
                                       Width = 807
                                       DataField = 'uf5'
                                       DataSource = ds_Content
@@ -581,7 +581,7 @@ object Form1: TForm1
                                     object DBText6: TDBText
                                       Left = 1
                                       Height = 17
-                                      Top = 251
+                                      Top = 208
                                       Width = 807
                                       Align = alTop
                                       DataField = 'ufn6'
@@ -591,7 +591,7 @@ object Form1: TForm1
                                     object dbePageField6: TDBEdit
                                       Left = 1
                                       Height = 25
-                                      Top = 226
+                                      Top = 225
                                       Width = 807
                                       DataField = 'uf6'
                                       DataSource = ds_Content
@@ -602,7 +602,7 @@ object Form1: TForm1
                                     object DBText7: TDBText
                                       Left = 1
                                       Height = 17
-                                      Top = 209
+                                      Top = 169
                                       Width = 807
                                       Align = alTop
                                       DataField = 'ufn7'
@@ -611,8 +611,8 @@ object Form1: TForm1
                                     end
                                     object dbePageField7: TDBMemo
                                       Left = 1
-                                      Height = 40
-                                      Top = 169
+                                      Height = 22
+                                      Top = 186
                                       Width = 807
                                       Align = alTop
                                       DataField = 'uf7'
