@@ -2686,6 +2686,8 @@ begin
   bindAutocomplete(lbAutocomplete, fContent, currentWord,
     foundWord);
   form1.Caption := currentWord;
+  //  no preview if raw image tag found
+  if pos('img', fContent.Lines.Text) = -1 then
   IpHtmlPanel1.SetHtmlFromStr(fContent.Text);
 end;
 

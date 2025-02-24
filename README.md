@@ -72,6 +72,8 @@ What's new / Что нового
 ((image_id))
 ```
 
+Note: the preview is disabled if the markup contains raw image tag. Use quick image links instead of img tag. 
+
 14. Translations to English, Spanish, Chinese, Korean Munhwaŏ / Переводы на английский, испанский, китайский, корейский
 
 15. Storing attached documents in blob / Хранение прикрепленных документов
@@ -201,4 +203,3 @@ https://github.com/ArtNazarov/HtmlBuilder_tests
 Database scheme
 =====
 ![Sqlite3 tables](https://dl.dropbox.com/scl/fi/2i9bdacrksh1tpbtcfm81/sqlite.png?rlkey=qvxrzy9vphfknd08krg4uzo1q&st=njck97ib)
-

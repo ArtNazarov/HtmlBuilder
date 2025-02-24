@@ -33,3 +33,6 @@ sqlite.db
 htmlbuilder
 *.dbg
 git-stats.sh
+_client.py
+req.txt
+resp.txt
