@@ -88,34 +88,89 @@ type
     SynCssSyn1: TSynCssSyn;
     editor: TSynEdit;
 
-    { handles click of btnAddClass }
+    { Обработчики событий }
+    
+    { Обрабатывает нажатие на кнопку "Применить Prettier" }
     procedure acApplyPrettierExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Цвет фона" }
     procedure acBackgroundColorExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Тип шрифта" }
     procedure acFontFamilyExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Курсив" }
     procedure acFontStyleItalicExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Наклонный" }
     procedure acFontStyleObliqueExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Полужирный" }
     procedure acFontWeightBoldExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Легкий" }
     procedure acFontWeightLightExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Отступ снизу" }
     procedure acOffsetBottomExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Отступ слева" }
     procedure acOffsetLeftExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Отступ справа" }
     procedure acOffsetRightExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Отступ сверху" }
     procedure acOffsetTopExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Абсолютное позиционирование" }
     procedure acPositionAbsoluteExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Фиксированное позиционирование" }
     procedure acPositionFixedExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Относительное позиционирование" }
     procedure acPositionRelativeExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Липкое позиционирование" }
     procedure acPositionStickyExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Нижний индекс" }
     procedure acSubScriptExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Верхний индекс" }
     procedure acSuperScriptExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Выравнивание текста по центру" }
     procedure acTextAlignCenterExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Выравнивание текста по ширине" }
     procedure acTextAlignJustifyExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Выравнивание текста по левому краю" }
     procedure acTextAlignLeftExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Выравнивание текста по правому краю" }
     procedure acTextAlignRightExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Цвет текста" }
     procedure acTextColorExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Перечеркивание текста сверху" }
     procedure acTextDecorationLineOverlineExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Перечеркивание текста снизу" }
     procedure acTextDecorationLineStrikeThroughExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Подчеркивание текста" }
     procedure acTextDecorationLineUnderlineExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Размер шрифта" }
     procedure actFontSizeExecute(Sender: TObject);
+
+    { Обрабатывает нажатие на кнопку "Добавить класс" }
     procedure btnAddClassClick(Sender: TObject);
+ 
 
     { handles click of btnAddId }
     procedure btnAddIdClick(Sender: TObject);
