@@ -3769,10 +3769,10 @@ object Form1: TForm1
             Width = 166
             Align = alTop
             ItemHeight = 17
-            ItemIndex = 0
             Items.Strings = (
               'Ollama client'
               'LmStudio client'
+              'openrouter.ai'
             )
             TabOrder = 2
             Text = 'Ollama client'

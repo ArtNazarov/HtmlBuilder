@@ -41,6 +41,10 @@ implementation
 { TChatClientThread }
 
   procedure TChatClientThread.Execute;
+  const DefaultLLM  = -1;
+  const OllamaLLM   = 0;
+  const LmStudioLLM = 1;
+  const OpenRouterAiLLM = 2;
   begin
     FChatClient := TProcess.Create(nil);
     try
@@ -48,10 +52,14 @@ implementation
       FChatClient.Executable := '/usr/bin/python';
       // Добавляем имя скрипта клиента Python
 
-      if FClientType < 1 then
-         FChatClient.Parameters.Add('client.py')
-      else
-          FChatClient.Parameters.Add('client-lmstudio.py');
+      case FClientType of
+           DefaultLLM, OllamaLLM    :   FChatClient.Parameters.Add('client.py');
+           LmStudioLLM              :   FChatClient.Parameters.Add('client-lmstudio.py');
+           OpenRouterAiLLM          :   FChatClient.Parameters.Add('client-openrouter.py');
+      end;
+
+
+
 
       // Устанавливаем текущий каталог для процесса согласно рабочего каталога программы
       FChatClient.CurrentDirectory := FWorkingDir;
