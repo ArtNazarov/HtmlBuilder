@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="64">
+    <Units Count="66">
       <Unit0>
         <Filename Value="htmlbuilder.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -485,8 +485,8 @@
         <ComponentName Value="frmEditorJs"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
         <TopLine Value="228"/>
         <CursorPos X="21" Y="241"/>
         <UsageCount Value="10"/>
@@ -507,14 +507,41 @@
         <CursorPos X="14" Y="113"/>
         <UsageCount Value="10"/>
       </Unit63>
+      <Unit64>
+        <Filename Value="..\Editor_Css_Window\cssfontsettings.pas"/>
+        <UnitName Value="CssFontSettings"/>
+        <TopLine Value="100"/>
+        <CursorPos X="15" Y="113"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit64>
+      <Unit65>
+        <Filename Value="..\Editor_Css_Window\editor_css.pas"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="209"/>
+        <CursorPos X="25" Y="216"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit65>
     </Units>
     <OtherDefines Count="1">
       <Define0 Value="UseCThreads"/>
     </OtherDefines>
-    <General>
-      <ActiveWindowIndexAtStart Value="-1"/>
-    </General>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory Count="3" HistoryIndex="2">
+      <Position1>
+        <Filename Value="..\Editor_Css_Window\cssfontsettings.pas"/>
+        <Caret Line="113" Column="15" TopLine="100"/>
+      </Position1>
+      <Position2>
+        <Filename Value="..\Editor_Css_Window\editor_css.pas"/>
+        <Caret Line="11" Column="31" TopLine="4"/>
+      </Position2>
+      <Position3>
+        <Filename Value="..\Editor_Css_Window\editor_css.pas"/>
+        <Caret Line="214" Column="21" TopLine="207"/>
+      </Position3>
+    </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode="default"/>
