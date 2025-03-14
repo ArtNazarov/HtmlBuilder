@@ -25,10 +25,10 @@
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="3"/>
       <RevisionNr Value="5"/>
-      <BuildNr Value="138"/>
+      <BuildNr Value="143"/>
       <Language Value="0419"/>
       <Attributes pvaPreRelease="True"/>
-      <StringTable CompanyName="artnazarov.ru" LegalCopyright="Artyom Nazarov (artnazarov.ru)" ProductName="HtmlBuilder"/>
+      <StringTable CompanyName="https://htmlbuilder.onhalt.site" LegalCopyright="Artyom Nazarov (https://artnazarov.github.io)" ProductName="HtmlBuilder"/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
@@ -42,31 +42,34 @@
         <Mode0 Name="default"/>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="8">
+    <RequiredPackages Count="9">
       <Item1>
-        <PackageName Value="SQLDBLaz"/>
+        <PackageName Value="Editor_Html_Window"/>
       </Item1>
       <Item2>
-        <PackageName Value="TurboPowerIPro"/>
+        <PackageName Value="SQLDBLaz"/>
       </Item2>
       <Item3>
-        <PackageName Value="LazUtils"/>
+        <PackageName Value="TurboPowerIPro"/>
       </Item3>
       <Item4>
-        <PackageName Value="DateTimeCtrls"/>
+        <PackageName Value="LazUtils"/>
       </Item4>
       <Item5>
-        <PackageName Value="SynEdit"/>
+        <PackageName Value="DateTimeCtrls"/>
       </Item5>
       <Item6>
-        <PackageName Value="DBFLaz"/>
+        <PackageName Value="SynEdit"/>
       </Item6>
       <Item7>
-        <PackageName Value="FCL"/>
+        <PackageName Value="DBFLaz"/>
       </Item7>
       <Item8>
-        <PackageName Value="LCL"/>
+        <PackageName Value="FCL"/>
       </Item8>
+      <Item9>
+        <PackageName Value="LCL"/>
+      </Item9>
     </RequiredPackages>
     <Units Count="30">
       <Unit0>
@@ -223,7 +226,6 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="C:\LAZARUS_LIB\SYNAPSE"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <CodeGeneration>

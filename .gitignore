@@ -26,13 +26,20 @@
 backup/
 *.bak
 lib/
-
+lib64/
 # Application bundle for Mac OS
 *.app/
+# Database file
 sqlite.db
+# Binaries
+bin/
 htmlbuilder
 *.dbg
+# Scripts
+include/
 git-stats.sh
 _client.py
+pyvenv.cfg
+# Optional text files
 req.txt
 resp.txt
