@@ -207,3 +207,7 @@ https://github.com/ArtNazarov/HtmlBuilder_tests
 Database scheme
 =====
 ![Sqlite3 tables](https://dl.dropbox.com/scl/fi/2i9bdacrksh1tpbtcfm81/sqlite.png?rlkey=qvxrzy9vphfknd08krg4uzo1q&st=njck97ib)
+
+MDI Interface
+===
+[MDI variant of interface, just for demo purposes](https://github.com/artNazarov/STARTER_HTMLBUILDER)
