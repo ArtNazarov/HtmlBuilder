@@ -18,7 +18,7 @@ uses
   selectors_for_menu, RenderHtml, httpsend, storing_attachments, FontSettings,
   IniFiles, selection_history_dialog, selection_history_manager,
   emoji_shortcodes, func_str_composition, chat_client_thread, replcallfunc,
-  sitestats, dbmemo_autocomplete; {Use Synaptic}
+  sitestats, dbmemo_autocomplete, internal_backlinks; {Use Synaptic}
 
 
 
@@ -895,6 +895,9 @@ type
     { Словарь для связи теги - страницы}
     mTagsPages: TagsPagesMap;
 
+    { Карта обратных ссылок }
+    map_of_backlinks : TStringToArrayOfStrings;
+
     { Словарь для связи id изображения - название изображения}
     Images: sdict;
 
@@ -936,6 +939,8 @@ type
     { Очередь для записи файлов}
     Writer: TFilesQueue;
 
+    { Получает карту обратных ссылок }
+    procedure scanBacklinks;
 
     { новая инициализация  }
     procedure initdbSQL();
@@ -1736,6 +1741,22 @@ end;
 
 procedure TForm1.tiTrayClick(Sender: TObject);
 begin
+
+end;
+
+procedure TForm1.scanBacklinks;
+var
+   sql  : TSqlQuery;
+begin
+        sql := TSqlQuery.Create(Self);
+        sql.SQLConnection := form1.conn;
+        sql.Transaction := form1.trans;
+
+        try
+            map_of_backlinks := getBacklinks(form1.conn, form1.trans, sql);
+        finally
+             sql.Free;
+        end;
 
 end;
 
@@ -3340,7 +3361,7 @@ begin
 
     link := ApplyVar(link, 'base_url', base_url);
 
-    r := StringReplace(r, '[' + Urls.Lines[i] + ']', link, [rfReplaceAll]);
+    r := StringReplace(r, '<<' + Urls.Lines[i] + '>>', link, [rfReplaceAll]);
     Inc(i);
     Application.ProcessMessages;
   end;
@@ -4733,12 +4754,17 @@ begin
     page));
 
   t := page.bodytpl;
+
+
+
   Rnr.setVar('body',
     insParamsToBody(
     buildBody(page.title, page.body, t),
     page)
     );
-  Buffer.Lines.Text := Rnr.getHtml();
+  Buffer.Lines.Text := ApplyVar( Rnr.getHtml(), 'backlinks',
+                    makeBacklinkHtml(form1.map_of_backlinks, page.id));
+
 
 
   // постобработка
@@ -6255,7 +6281,7 @@ var
 begin
 
   start := Now();
-
+  form1.scanBacklinks; // строим карту обратных ссылок
   form1.scanLinks(); // сканер ссылок нужен для автозамены
   form1.scanSections();
   // сканер секций нужен для автозамены

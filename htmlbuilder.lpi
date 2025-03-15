@@ -25,7 +25,7 @@
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="3"/>
       <RevisionNr Value="5"/>
-      <BuildNr Value="143"/>
+      <BuildNr Value="144"/>
       <Language Value="0419"/>
       <Attributes pvaPreRelease="True"/>
       <StringTable CompanyName="https://htmlbuilder.onhalt.site" LegalCopyright="Artyom Nazarov (https://artnazarov.github.io)" ProductName="HtmlBuilder"/>
@@ -80,7 +80,7 @@
         <PackageName Value="LCL"/>
       </Item12>
     </RequiredPackages>
-    <Units Count="30">
+    <Units Count="31">
       <Unit0>
         <Filename Value="htmlbuilder.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -225,6 +225,10 @@
         <Filename Value="dbmemo_autocomplete.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit29>
+      <Unit30>
+        <Filename Value="internal_backlinks.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit30>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
