@@ -119,6 +119,12 @@ How to use: place GETDATE(), GETTIME()
 
 How to use: place WORDS(), SENTS(), CHARS(), TTR()
 
+28. Internal backlinks / Обратные ссылки
+
+29. Random data at first run / Случайные данные на первом запуске
+
+# Serverside endpoints
+
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
 
 Docker image with PHP https://github.com/ArtNazarov/dockerbridgephp

@@ -8,7 +8,7 @@ interface
 uses
   Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics, Dialogs,
   DBCtrls,   SQLite3Conn, SQLDB, process, StdCtrls, ExtCtrls, ComCtrls, Menus, DBGrids,
-  db_helpers, types_for_app;
+  db_helpers, types_for_app, random_data;
 
 type
 
@@ -113,7 +113,10 @@ implementation
  procedure insertDemoDataContent(var sq : TSQLQuery; var konnect : TSQLite3Connection; var tranzact : TSQLTransaction);
  var p : tpage_record;
      FS: TFormatSettings;
+     I : Integer;
+     Categories: array of String;
  begin
+ Categories := ['blog', 'photos'];
   checkConnect(konnect, tranzact, 'нет соединения <insertDemoDataContent>!');
 
   p.id:='index';
@@ -150,6 +153,14 @@ implementation
   //or possibly CommitRetaining, depending on how your application is set up
   // SilentMessage('Демо данные установлены, страницы');
 
+  for I:=1 to 100 do begin
+    p.id:=getRandomString(32);
+    p.cap:='Caption for '+p.id;
+    p.content:=GenerateHTMLParagraphs(10) + '<p>In category:<'+p.section+'></p>';
+    p.dt:=StrToDateTime('26.11.2022');
+    p.section:=getRandomCategory(Categories);
+    addIntoContent(p, sq, konnect, tranzact);
+  end;
 
 
 end;
