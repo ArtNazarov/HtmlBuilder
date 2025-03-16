@@ -18,7 +18,8 @@ uses
   selectors_for_menu, RenderHtml, httpsend, storing_attachments, FontSettings,
   IniFiles, selection_history_dialog, selection_history_manager,
   emoji_shortcodes, func_str_composition, chat_client_thread, replcallfunc,
-  sitestats, dbmemo_autocomplete, internal_backlinks; {Use Synaptic}
+  sitestats, dbmemo_autocomplete, internal_backlinks,
+  rss_feed; {Use Synaptic}
 
 
 
@@ -1247,6 +1248,9 @@ type
 
     { Обработчик для вложенных файлов }
     procedure doAttachments();
+
+    { Обработчик для создания RSS ленты }
+    procedure doCreateRss();
 
 
     { Вставляет параметры в Head из page }
@@ -5583,6 +5587,33 @@ begin
   sqlGetAllAttachments.First;
 end;
 
+procedure TForm1.doCreateRss();
+var
+  websitePath : String;
+  Domain : String;
+begin
+
+
+   Domain := '127.0.0.1';
+   // Show the input dialog
+  if InputQuery('Input site URL', 'Please enter the domain:', Domain) then
+  begin
+    websitePath := form1.sqlPresets.FieldByName('dirpath').AsString;
+    if FileExists(  websitePath + '/latest_news.xml' ) then
+       DeleteFile(  websitePath + '/latest_news.xml' );
+    writeRssFeed(Domain, websitePath + '/latest_news.xml', form1.conn, form1.trans);
+  end
+  else
+  begin
+    ShowMessage('Rss not created');
+  end;
+
+
+
+
+
+end;
+
 function TForm1.insParamsToHead(head: string; page: page_params): string;
 var
   r: string;
@@ -6274,6 +6305,8 @@ begin
     form1.lbIsFileUploaded.Caption := 'Загружено';
 end;
 
+
+{ CENTRAL ACTION OF WHOLE APPLICATION }
 procedure TForm1.actionBuildSite();
 var
   start, stop: TDateTime;
@@ -6299,13 +6332,14 @@ begin
   doJs(); // скрипты
   doTagsMap(); // все теги на сайте
 
-  doImages();
-  doAttachments();
+  doImages(); // изображения
+  doAttachments(); // прикрепленные файлы
+
 
   Writer.processEach();
 
 
-
+  doCreateRss(); // создание RSS
   stop := Now();
 
 

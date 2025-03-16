@@ -13,7 +13,7 @@ uses
   selectors_for_menu, RenderHtml, AsyncQueue, storing_attachments, FontSettings,
   selection_history_dialog, selection_history_manager, emoji_shortcodes,
   func_str_composition, chat_client_thread, replcallfunc, sitestats,
-  dbmemo_autocomplete, internal_backlinks, random_data;
+  dbmemo_autocomplete, internal_backlinks, random_data, rss_feed;
 
 {$R *.res}
 
