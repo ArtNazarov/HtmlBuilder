@@ -5591,6 +5591,7 @@ procedure TForm1.doCreateRss();
 var
   websitePath : String;
   Domain : String;
+  mode : String;
 begin
 
 
@@ -5601,7 +5602,8 @@ begin
     websitePath := form1.sqlPresets.FieldByName('dirpath').AsString;
     if FileExists(  websitePath + '/latest_news.xml' ) then
        DeleteFile(  websitePath + '/latest_news.xml' );
-    writeRssFeed(Domain, websitePath + '/latest_news.xml', form1.conn, form1.trans);
+    if not form1.chkUseTrees.Checked then mode := 'plain' else mode := 'tree';
+    writeRssFeed(mode, Domain, websitePath + '/latest_news.xml', form1.conn, form1.trans);
   end
   else
   begin

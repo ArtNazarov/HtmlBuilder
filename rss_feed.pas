@@ -6,9 +6,10 @@ unit rss_feed;
 interface
 
 uses
-  SysUtils, Classes, SQLite3Conn, SQLDB, DateUtils ;
+  SysUtils, Classes, SQLite3Conn, SQLDB, DateUtils, url_constr ;
 
-procedure writeRssFeed(Domain : String; feedXMLFileName: String; var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+function selectByMode(Mode : String; ValuePlain : String; ValueTree : String) : String;
+procedure writeRssFeed(Mode : String; Domain : String; feedXMLFileName: String; var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
 function clearCuttedToPlainFromHtml(S: String; N: Integer): String;
 
 implementation
@@ -47,8 +48,13 @@ begin
   clearCuttedToPlainFromHtml := PlainText;
 end;
 
+function selectByMode(Mode: String; ValuePlain: String; ValueTree: String
+  ): String;
+begin
+  if mode = 'plain' then result := ValuePlain else Result:=ValueTree;
+end;
 
-procedure writeRssFeed(Domain : String; feedXMLFileName: String; var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
+procedure writeRssFeed(Mode : String; Domain : String; feedXMLFileName: String; var konnect: TSQLite3Connection; var tranzact: TSQLTransaction);
 var
   Query: TSQLQuery;
   XMLContent: TStringList;
@@ -96,8 +102,10 @@ begin
     begin
       rssItem := Format(rssItemTemplate, [
         Query.FieldByName('caption').AsString,
-        Query.FieldByName('section').AsString + '/' +
-      Query.FieldByName('id').AsString + '.html',
+         selectByMode( Mode,
+                       '/' + Query.FieldByName('id').AsString + '.html',
+                       getTreeUrl(  Query.FieldByName('id').AsString, '.html', konnect, tranzact)
+         ),
       { #note : need URLs construction for page by id }
         clearCuttedToPlainFromHtml( Query.FieldByName('content').AsString, 50) ,
         FormatDateTime('ddd, dd mmm yyyy hh:nn:ss', Query.FieldByName('dt').AsDateTime)
