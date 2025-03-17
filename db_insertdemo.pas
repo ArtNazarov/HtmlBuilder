@@ -121,7 +121,8 @@ implementation
 
   p.id:='index';
   p.cap:='Hello!';
-  p.content:= 'This is my first static page. Here link <<blog>> to section';
+  p.content:= 'This is my first static page. Here link <<blog>> to section. <br/>';
+  p.content:= 'Backlinks test: {backlinks}';
   p.section:='blog';
   FS.DateSeparator:='.';
   FS.ShortDateFormat := 'dd.mm.yyyy';
@@ -131,20 +132,20 @@ implementation
 
   p.id:='about';
   p.cap:='Other page';
-  p.content:= 'This is my second static page. See <<photos>>. Here link <<blog>> to section';
+  p.content:= 'This is my second static page. Ref to [index]. See <<photos>>. Here link <<blog>> to section';
   p.section:='blog';
   addIntoContent(p, sq, konnect, tranzact);
 
 
   p.id:='photos1';
   p.cap:='Demo image 1';
-  p.content:='<img width="640" src="https://iso.500px.com/wp-content/uploads/2015/01/50shades_17.jpg">. Here link <<blog>> to section';
+  p.content:='<img width="640" src="https://iso.500px.com/wp-content/uploads/2015/01/50shades_17.jpg">. <br/> Ref to [index] <br/> Here link <<blog>> to section';
   p.section:='photos';
   addIntoContent(p, sq, konnect, tranzact);
 
   p.id:='photos2';
   p.cap:='Demo image2';
-  p.content:='<img width="640" src="https://images.squarespace-cdn.com/content/v1/5b0cc6d2e2ccd12e7e8c03c6/1542800092550-16CBUJK7FOSVUC5SC46D/levitating_woman_hat_01.jpg?format=1000w"/>. See <<photos>>. Here link <<blog>> to section';
+  p.content:='<img width="640" src="https://images.squarespace-cdn.com/content/v1/5b0cc6d2e2ccd12e7e8c03c6/1542800092550-16CBUJK7FOSVUC5SC46D/levitating_woman_hat_01.jpg?format=1000w"/>. <br/> Ref to [index] <br/> See <<photos>>. Here link <<blog>> to section';
   p.section:='photos';
 
   addIntoContent(p, sq, konnect, tranzact);

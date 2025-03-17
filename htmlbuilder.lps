@@ -20,10 +20,9 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="5599"/>
-        <CursorPos X="37" Y="5605"/>
+        <TopLine Value="3351"/>
+        <CursorPos X="73" Y="3367"/>
         <ExtraEditorCount Value="1"/>
         <ExtraEditor1>
           <EditorIndex Value="-1"/>
@@ -32,7 +31,6 @@
         </ExtraEditor1>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="db_helpers.pas"/>
@@ -45,9 +43,10 @@
       <Unit3>
         <Filename Value="db_insertdemo.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="9"/>
-        <TopLine Value="38"/>
-        <CursorPos X="80" Y="159"/>
+        <TopLine Value="121"/>
+        <CursorPos X="43" Y="125"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit3>
@@ -126,7 +125,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="134"/>
         <CursorPos X="10" Y="33"/>
-        <UsageCount Value="192"/>
+        <UsageCount Value="193"/>
       </Unit11>
       <Unit12>
         <Filename Value="types_for_app.pas"/>
@@ -134,7 +133,7 @@
         <EditorIndex Value="8"/>
         <TopLine Value="83"/>
         <CursorPos Y="90"/>
-        <UsageCount Value="192"/>
+        <UsageCount Value="193"/>
         <Loaded Value="True"/>
       </Unit12>
       <Unit13>
@@ -142,7 +141,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="7"/>
         <TopLine Value="12"/>
-        <UsageCount Value="192"/>
+        <UsageCount Value="193"/>
         <Loaded Value="True"/>
       </Unit13>
       <Unit14>
@@ -150,14 +149,14 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="20"/>
-        <UsageCount Value="190"/>
+        <UsageCount Value="191"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit14>
       <Unit15>
         <Filename Value="sql_tags_for_page.txt"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="188"/>
+        <UsageCount Value="189"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit15>
       <Unit16>
@@ -165,7 +164,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="35" Y="10"/>
-        <UsageCount Value="188"/>
+        <UsageCount Value="189"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit16>
       <Unit17>
@@ -173,7 +172,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="62"/>
-        <UsageCount Value="154"/>
+        <UsageCount Value="155"/>
       </Unit17>
       <Unit18>
         <Filename Value="renderhtml.pas"/>
@@ -182,7 +181,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos X="3" Y="16"/>
-        <UsageCount Value="151"/>
+        <UsageCount Value="152"/>
       </Unit18>
       <Unit19>
         <Filename Value="asyncqueue.pas"/>
@@ -191,7 +190,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="94"/>
         <CursorPos X="15" Y="104"/>
-        <UsageCount Value="128"/>
+        <UsageCount Value="129"/>
       </Unit19>
       <Unit20>
         <Filename Value="storing_attachments.pas"/>
@@ -199,7 +198,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="8"/>
         <CursorPos X="74" Y="37"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="103"/>
       </Unit20>
       <Unit21>
         <Filename Value="fontsettings.pas"/>
@@ -208,7 +207,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="25"/>
         <CursorPos X="30" Y="35"/>
-        <UsageCount Value="96"/>
+        <UsageCount Value="97"/>
       </Unit21>
       <Unit22>
         <Filename Value="selection_history_dialog.pas"/>
@@ -219,7 +218,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos X="25" Y="24"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="84"/>
       </Unit22>
       <Unit23>
         <Filename Value="selection_history_manager.pas"/>
@@ -227,7 +226,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="26"/>
         <CursorPos X="23" Y="48"/>
-        <UsageCount Value="79"/>
+        <UsageCount Value="80"/>
       </Unit23>
       <Unit24>
         <Filename Value="emoji_shortcodes.pas"/>
@@ -235,7 +234,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="7"/>
         <CursorPos X="28" Y="11"/>
-        <UsageCount Value="77"/>
+        <UsageCount Value="78"/>
       </Unit24>
       <Unit25>
         <Filename Value="func_str_composition.pas"/>
@@ -243,7 +242,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="30" Y="16"/>
-        <UsageCount Value="75"/>
+        <UsageCount Value="76"/>
       </Unit25>
       <Unit26>
         <Filename Value="chat_client_thread.pas"/>
@@ -251,7 +250,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="43"/>
         <CursorPos X="27" Y="58"/>
-        <UsageCount Value="48"/>
+        <UsageCount Value="49"/>
       </Unit26>
       <Unit27>
         <Filename Value="replcallfunc.pas"/>
@@ -260,7 +259,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="21"/>
         <CursorPos X="3" Y="37"/>
-        <UsageCount Value="48"/>
+        <UsageCount Value="49"/>
       </Unit27>
       <Unit28>
         <Filename Value="sitestats.pas"/>
@@ -269,7 +268,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="144"/>
         <CursorPos X="33" Y="154"/>
-        <UsageCount Value="46"/>
+        <UsageCount Value="47"/>
       </Unit28>
       <Unit29>
         <Filename Value="dbmemo_autocomplete.pas"/>
@@ -277,15 +276,15 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="39"/>
         <CursorPos X="68" Y="44"/>
-        <UsageCount Value="43"/>
+        <UsageCount Value="44"/>
       </Unit29>
       <Unit30>
         <Filename Value="internal_backlinks.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="76"/>
-        <CursorPos X="19" Y="90"/>
-        <UsageCount Value="30"/>
+        <TopLine Value="75"/>
+        <CursorPos X="36" Y="91"/>
+        <UsageCount Value="31"/>
         <Loaded Value="True"/>
       </Unit30>
       <Unit31>
@@ -294,7 +293,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="91"/>
         <CursorPos X="45" Y="106"/>
-        <UsageCount Value="25"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit31>
       <Unit32>
@@ -302,198 +301,207 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="12"/>
         <TopLine Value="101"/>
-        <CursorPos X="98" Y="107"/>
-        <UsageCount Value="24"/>
+        <CursorPos X="6" Y="121"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit32>
       <Unit33>
+        <Filename Value="url_constr.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="11"/>
+        <TopLine Value="35"/>
+        <CursorPos X="55" Y="45"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+      </Unit33>
+      <Unit34>
         <Filename Value="E:\02 ЛИЧНОЕ\01 Документы\05 АРТЕМ [1GB]\02 ИСХОДНИКИ\Nav\modelfromdb.pas"/>
         <TopLine Value="59"/>
         <CursorPos X="27" Y="44"/>
         <UsageCount Value="6"/>
-      </Unit33>
-      <Unit34>
+      </Unit34>
+      <Unit35>
         <Filename Value="E:\02 ЛИЧНОЕ\РАЗЛИЧНЫЕ КОПИИ\COPIES\18_09_2012_12_33\pargn.lfm"/>
         <TopLine Value="31"/>
         <UsageCount Value="6"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
-      </Unit34>
-      <Unit35>
+      </Unit35>
+      <Unit36>
         <Filename Value="E:\02 ЛИЧНОЕ\РАЗЛИЧНЫЕ КОПИИ\COPIES\18_09_2012_12_31\parogenerator.lpr"/>
         <TopLine Value="6"/>
         <UsageCount Value="6"/>
-      </Unit35>
-      <Unit36>
+      </Unit36>
+      <Unit37>
         <Filename Value="E:\02 ЛИЧНОЕ\РАЗЛИЧНЫЕ КОПИИ\COPIES\18_09_2012_12_31\pargn.pas"/>
         <TopLine Value="283"/>
         <CursorPos X="7" Y="287"/>
         <UsageCount Value="6"/>
-      </Unit36>
-      <Unit37>
+      </Unit37>
+      <Unit38>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
         <TopLine Value="3261"/>
         <CursorPos Y="3270"/>
         <UsageCount Value="7"/>
-      </Unit37>
-      <Unit38>
+      </Unit38>
+      <Unit39>
         <Filename Value="C:\LAZARUS_LIB\SYNAPSE\blcksock.pas"/>
         <TopLine Value="1916"/>
         <CursorPos X="13" Y="1925"/>
         <UsageCount Value="8"/>
-      </Unit38>
-      <Unit39>
-        <Filename Value="C:\LAZARUS_LIB\SYNAPSE\ftpsend.pas"/>
-        <UsageCount Value="6"/>
       </Unit39>
       <Unit40>
+        <Filename Value="C:\LAZARUS_LIB\SYNAPSE\ftpsend.pas"/>
+        <UsageCount Value="6"/>
+      </Unit40>
+      <Unit41>
         <Filename Value="C:\lazarus\components\synedit\syneditlazdsgn.pas"/>
         <UnitName Value="SynEditLazDsgn"/>
         <TopLine Value="27"/>
         <CursorPos X="34" Y="37"/>
         <UsageCount Value="7"/>
-      </Unit40>
-      <Unit41>
+      </Unit41>
+      <Unit42>
         <Filename Value="..\..\..\usr\lib\lazarus\components\lazreport\source\lr_pars.pas"/>
         <UnitName Value="LR_Pars"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="148"/>
         <CursorPos X="34" Y="154"/>
         <UsageCount Value="6"/>
-      </Unit41>
-      <Unit42>
+      </Unit42>
+      <Unit43>
         <Filename Value="main.lfm"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6" Y="4"/>
         <UsageCount Value="6"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
-      </Unit42>
-      <Unit43>
+      </Unit43>
+      <Unit44>
         <Filename Value="asn1util.pas"/>
         <EditorIndex Value="-1"/>
         <UsageCount Value="6"/>
-      </Unit43>
-      <Unit44>
+      </Unit44>
+      <Unit45>
         <Filename Value="..\Загрузки\HtmlBuilder-master\main.lfm"/>
         <HasResources Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="15" Y="3"/>
         <UsageCount Value="6"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
-      </Unit44>
-      <Unit45>
+      </Unit45>
+      <Unit46>
         <Filename Value="..\..\..\usr\lib\lazarus\lcl\include\dbcustomnavigator.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="480"/>
         <CursorPos Y="489"/>
         <UsageCount Value="7"/>
-      </Unit45>
-      <Unit46>
+      </Unit46>
+      <Unit47>
         <Filename Value="..\..\..\usr\lib64\lazarus\lcl\interfaces\qt5\qtwidgets.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="5646"/>
         <CursorPos Y="5746"/>
         <UsageCount Value="7"/>
-      </Unit46>
-      <Unit47>
+      </Unit47>
+      <Unit48>
         <Filename Value="..\..\..\usr\lib\lazarus\lcl\interfaces\qt5\qtwidgets.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4606"/>
         <CursorPos Y="4606"/>
         <UsageCount Value="8"/>
-      </Unit47>
-      <Unit48>
+      </Unit48>
+      <Unit49>
         <Filename Value="..\..\..\usr\lib\lazarus\lcl\include\control.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3592"/>
         <CursorPos Y="3612"/>
         <UsageCount Value="25"/>
-      </Unit48>
-      <Unit49>
+      </Unit49>
+      <Unit50>
         <Filename Value="..\..\..\run\user\1000\doc\e0daf323\usr\lib\fpc\src\packages\sqlite\src\sqlite3.pp"/>
         <UnitName Value="SQLite3"/>
         <EditorIndex Value="-1"/>
         <UsageCount Value="1"/>
-      </Unit49>
-      <Unit50>
+      </Unit50>
+      <Unit51>
         <Filename Value="..\..\..\run\user\1000\doc\e0daf323\usr\lib\fpc\src\packages\fcl-db\src\sqldb\sqlite\sqlite3conn.pp"/>
         <UnitName Value="SQLite3Conn"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="871"/>
         <CursorPos X="22" Y="890"/>
         <UsageCount Value="1"/>
-      </Unit50>
-      <Unit51>
+      </Unit51>
+      <Unit52>
         <Filename Value="..\..\..\usr\lib\lazarus\components\sqldb\registersqldb.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="100"/>
         <CursorPos X="10" Y="107"/>
         <UsageCount Value="1"/>
-      </Unit51>
-      <Unit52>
+      </Unit52>
+      <Unit53>
         <Filename Value="..\..\..\usr\lib\fpc\src\packages\fcl-db\src\sqldb\sqlite\sqlite3conn.pp"/>
         <UnitName Value="SQLite3Conn"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="914"/>
         <CursorPos X="7" Y="892"/>
         <UsageCount Value="1"/>
-      </Unit52>
-      <Unit53>
+      </Unit53>
+      <Unit54>
         <Filename Value="..\..\..\usr\lib\fpc\src\packages\fcl-db\src\sqlite\sqlite3ds.pas"/>
         <UnitName Value="SQLite3DS"/>
         <EditorIndex Value="-1"/>
         <UsageCount Value="1"/>
-      </Unit53>
-      <Unit54>
+      </Unit54>
+      <Unit55>
         <Filename Value="..\..\..\usr\lib\lazarus\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2215"/>
         <CursorPos Y="2240"/>
         <UsageCount Value="23"/>
-      </Unit54>
-      <Unit55>
+      </Unit55>
+      <Unit56>
         <Filename Value="..\..\..\usr\lib\lazarus\lcl\include\treeview.inc"/>
         <EditorIndex Value="-1"/>
         <WindowIndex Value="1"/>
         <TopLine Value="482"/>
         <CursorPos Y="491"/>
         <UsageCount Value="6"/>
-      </Unit55>
-      <Unit56>
+      </Unit56>
+      <Unit57>
         <Filename Value="..\..\..\usr\lib\lazarus\lcl\include\application.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2379"/>
         <CursorPos X="64" Y="2213"/>
         <UsageCount Value="7"/>
-      </Unit56>
-      <Unit57>
+      </Unit57>
+      <Unit58>
         <Filename Value="..\..\..\usr\lib\lazarus\lcl\include\dbimage.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="123"/>
         <CursorPos X="43" Y="157"/>
         <UsageCount Value="14"/>
-      </Unit57>
-      <Unit58>
+      </Unit58>
+      <Unit59>
         <Filename Value="..\..\..\usr\lib\fpc\src\rtl\objpas\classes\classesh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="720"/>
         <CursorPos X="15" Y="739"/>
         <UsageCount Value="9"/>
-      </Unit58>
-      <Unit59>
+      </Unit59>
+      <Unit60>
         <Filename Value="..\..\..\usr\lib\lazarus\lcl\include\picture.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="595"/>
         <CursorPos X="34" Y="608"/>
         <UsageCount Value="8"/>
-      </Unit59>
-      <Unit60>
+      </Unit60>
+      <Unit61>
         <Filename Value="..\..\..\usr\lib\lazarus\lcl\include\wincontrol.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="6474"/>
         <CursorPos Y="6489"/>
         <UsageCount Value="17"/>
-      </Unit60>
-      <Unit61>
+      </Unit61>
+      <Unit62>
         <Filename Value="sel_char_dlg.pas"/>
         <ComponentName Value="SelectSpecCharDlg"/>
         <HasResources Value="True"/>
@@ -502,8 +510,8 @@
         <TopLine Value="302"/>
         <CursorPos X="4" Y="312"/>
         <UsageCount Value="9"/>
-      </Unit61>
-      <Unit62>
+      </Unit62>
+      <Unit63>
         <Filename Value="..\..\..\usr\lib64\lazarus\components\turbopower_ipro\iphtml.pas"/>
         <UnitName Value="IpHtml"/>
         <EditorIndex Value="-1"/>
@@ -511,15 +519,15 @@
         <TopLine Value="2995"/>
         <CursorPos Y="3001"/>
         <UsageCount Value="9"/>
-      </Unit62>
-      <Unit63>
+      </Unit63>
+      <Unit64>
         <Filename Value="..\..\..\usr\lib\lazarus\ide\lazarus.pp"/>
         <UnitName Value="Lazarus"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="171"/>
         <UsageCount Value="9"/>
-      </Unit63>
-      <Unit64>
+      </Unit64>
+      <Unit65>
         <Filename Value="..\Editor_Js_Window\editor_js.pas"/>
         <ComponentName Value="frmEditorJs"/>
         <HasResources Value="True"/>
@@ -529,32 +537,32 @@
         <TopLine Value="228"/>
         <CursorPos X="21" Y="241"/>
         <UsageCount Value="9"/>
-      </Unit64>
-      <Unit65>
+      </Unit65>
+      <Unit66>
         <Filename Value="..\Editor_Js_Window\fontsettings.pas"/>
         <UnitName Value="FontSettings"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="8" Y="18"/>
         <UsageCount Value="9"/>
-      </Unit65>
-      <Unit66>
+      </Unit66>
+      <Unit67>
         <Filename Value="..\Editor_Js_Window\jsfontsettings.pas"/>
         <UnitName Value="JsFontSettings"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="100"/>
         <CursorPos X="14" Y="113"/>
         <UsageCount Value="9"/>
-      </Unit66>
-      <Unit67>
+      </Unit67>
+      <Unit68>
         <Filename Value="..\Editor_Css_Window\cssfontsettings.pas"/>
         <UnitName Value="CssFontSettings"/>
         <TopLine Value="100"/>
         <CursorPos X="15" Y="113"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="17"/>
         <Loaded Value="True"/>
-      </Unit67>
-      <Unit68>
+      </Unit68>
+      <Unit69>
         <Filename Value="..\Editor_Css_Window\editor_css.pas"/>
         <ComponentName Value="frmEditorCss"/>
         <HasResources Value="True"/>
@@ -562,25 +570,16 @@
         <EditorIndex Value="1"/>
         <TopLine Value="209"/>
         <CursorPos X="25" Y="216"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="17"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
-      </Unit68>
-      <Unit69>
+      </Unit69>
+      <Unit70>
         <Filename Value="..\Synapse\synautil.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="45"/>
         <CursorPos X="2" Y="52"/>
         <UsageCount Value="9"/>
-      </Unit69>
-      <Unit70>
-        <Filename Value="url_constr.pas"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="11"/>
-        <TopLine Value="35"/>
-        <CursorPos X="55" Y="45"/>
-        <UsageCount Value="21"/>
-        <Loaded Value="True"/>
       </Unit70>
     </Units>
     <OtherDefines Count="1">
@@ -588,124 +587,124 @@
     </OtherDefines>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="random_data.pas"/>
-        <Caret Line="106" Column="45" TopLine="91"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="1252" Column="23" TopLine="1240"/>
       </Position1>
       <Position2>
         <Filename Value="main.pas"/>
-        <Caret Line="3759" Column="42" TopLine="3753"/>
+        <Caret Line="5595" Column="34" TopLine="5232"/>
       </Position2>
       <Position3>
         <Filename Value="main.pas"/>
-        <Caret Line="1252" Column="23" TopLine="1240"/>
+        <Caret Line="5490" Column="18" TopLine="5472"/>
       </Position3>
       <Position4>
         <Filename Value="main.pas"/>
-        <Caret Line="5595" Column="34" TopLine="5232"/>
+        <Caret Line="6320" Column="41" TopLine="6306"/>
       </Position4>
       <Position5>
         <Filename Value="main.pas"/>
-        <Caret Line="5490" Column="18" TopLine="5472"/>
+        <Caret Line="22" Column="11"/>
       </Position5>
       <Position6>
         <Filename Value="main.pas"/>
-        <Caret Line="6320" Column="41" TopLine="6306"/>
+        <Caret Line="6321" Column="10" TopLine="6309"/>
       </Position6>
       <Position7>
         <Filename Value="main.pas"/>
-        <Caret Line="22" Column="11"/>
+        <Caret Line="1253" Column="26" TopLine="1244"/>
       </Position7>
       <Position8>
         <Filename Value="main.pas"/>
-        <Caret Line="6321" Column="10" TopLine="6309"/>
+        <Caret Line="6321" Column="3" TopLine="6304"/>
       </Position8>
       <Position9>
         <Filename Value="main.pas"/>
-        <Caret Line="1253" Column="26" TopLine="1244"/>
+        <Caret Line="1043" Column="28" TopLine="1028"/>
       </Position9>
       <Position10>
         <Filename Value="main.pas"/>
-        <Caret Line="6321" Column="3" TopLine="6304"/>
+        <Caret Line="6321" Column="10" TopLine="6304"/>
       </Position10>
       <Position11>
         <Filename Value="main.pas"/>
-        <Caret Line="1043" Column="28" TopLine="1028"/>
+        <Caret Line="1253" Column="26" TopLine="1244"/>
       </Position11>
       <Position12>
         <Filename Value="main.pas"/>
-        <Caret Line="6321" Column="10" TopLine="6304"/>
+        <Caret Line="5590" Column="29" TopLine="5588"/>
       </Position12>
       <Position13>
         <Filename Value="main.pas"/>
-        <Caret Line="1253" Column="26" TopLine="1244"/>
+        <Caret Line="6327" Column="11" TopLine="6312"/>
       </Position13>
       <Position14>
         <Filename Value="main.pas"/>
-        <Caret Line="5590" Column="29" TopLine="5588"/>
+        <Caret Line="1253" Column="26" TopLine="1244"/>
       </Position14>
       <Position15>
         <Filename Value="main.pas"/>
-        <Caret Line="6327" Column="11" TopLine="6312"/>
+        <Caret Line="6327" Column="3" TopLine="6310"/>
       </Position15>
       <Position16>
         <Filename Value="main.pas"/>
-        <Caret Line="1253" Column="26" TopLine="1244"/>
+        <Caret Line="1253" Column="20" TopLine="1244"/>
       </Position16>
       <Position17>
-        <Filename Value="main.pas"/>
-        <Caret Line="6327" Column="3" TopLine="6310"/>
+        <Filename Value="rss_feed.pas"/>
+        <Caret Line="90" Column="79"/>
       </Position17>
       <Position18>
-        <Filename Value="main.pas"/>
-        <Caret Line="1253" Column="20" TopLine="1244"/>
+        <Filename Value="rss_feed.pas"/>
+        <Caret Line="9" Column="58" TopLine="3"/>
       </Position18>
       <Position19>
         <Filename Value="rss_feed.pas"/>
-        <Caret Line="90" Column="79"/>
+        <Caret Line="23" Column="19" TopLine="14"/>
       </Position19>
       <Position20>
-        <Filename Value="rss_feed.pas"/>
-        <Caret Line="9" Column="58" TopLine="3"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="5597" Column="14" TopLine="5588"/>
       </Position20>
       <Position21>
         <Filename Value="rss_feed.pas"/>
-        <Caret Line="23" Column="19" TopLine="14"/>
+        <Caret Line="85" Column="34" TopLine="79"/>
       </Position21>
       <Position22>
-        <Filename Value="main.pas"/>
-        <Caret Line="5597" Column="14" TopLine="5588"/>
+        <Filename Value="rss_feed.pas"/>
+        <Caret Line="100" Column="53" TopLine="82"/>
       </Position22>
       <Position23>
         <Filename Value="rss_feed.pas"/>
-        <Caret Line="85" Column="34" TopLine="79"/>
+        <Caret Line="11" Column="88" TopLine="5"/>
       </Position23>
       <Position24>
         <Filename Value="rss_feed.pas"/>
-        <Caret Line="100" Column="53" TopLine="82"/>
+        <Caret Line="9" Column="63" TopLine="4"/>
       </Position24>
       <Position25>
-        <Filename Value="rss_feed.pas"/>
-        <Caret Line="11" Column="88" TopLine="5"/>
-      </Position25>
-      <Position26>
-        <Filename Value="rss_feed.pas"/>
-        <Caret Line="9" Column="63" TopLine="4"/>
-      </Position26>
-      <Position27>
         <Filename Value="url_constr.pas"/>
         <Caret Line="44" Column="5" TopLine="35"/>
-      </Position27>
-      <Position28>
+      </Position25>
+      <Position26>
         <Filename Value="url_constr.pas"/>
         <Caret Line="45" Column="55" TopLine="39"/>
-      </Position28>
-      <Position29>
+      </Position26>
+      <Position27>
         <Filename Value="rss_feed.pas"/>
         <Caret Line="107" Column="98" TopLine="101"/>
+      </Position27>
+      <Position28>
+        <Filename Value="main.pas"/>
+        <Caret Line="5596" Column="25" TopLine="5592"/>
+      </Position28>
+      <Position29>
+        <Filename Value="main.pas"/>
+        <Caret Line="5605" Column="37" TopLine="5599"/>
       </Position29>
       <Position30>
         <Filename Value="main.pas"/>
-        <Caret Line="5596" Column="25" TopLine="5592"/>
+        <Caret Line="989" Column="22" TopLine="985"/>
       </Position30>
     </JumpHistory>
     <RunParams>

@@ -62,9 +62,10 @@ begin
 
              S.Add(  Values[ Length(Values) - 1 ] );
              sQ.Next;
+             Application.ProcessMessages;
            end;
 
-             S.SaveToFile(sQ.FieldByName('id').AsString+'.log');
+             // S.SaveToFile(sQ.FieldByName('id').AsString+'.log');
 
     end;
     sq.Active:=False;
@@ -86,8 +87,11 @@ begin
    if map_of_backlinks.TryGetData(page_id, Backlinks) then
     begin
       s := '<ul>';
-      for i := 0 to High(Backlinks) do
-         s := s + '<li>' + '<<' + Backlinks[i] + '>>' + '</li>';
+      for i := 0 to High(Backlinks) do begin
+        // used [page_id] shortcode
+         s := s + '<li>' + '[' + Backlinks[i] + ']' + '</li>';
+         Application.ProcessMessages;
+      end;
       s := s + '</ul>';
     end
     else

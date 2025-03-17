@@ -3341,7 +3341,7 @@ begin
 end;
 
 
-
+{ inserts referencies to pages by their ids}
 function TForm1.insLinks(body: string): string;
 var
   r: string;
@@ -3364,8 +3364,8 @@ begin
       PrefferedExtension.Text + '">' + Titles.Lines[i] + '</a>';
 
     link := ApplyVar(link, 'base_url', base_url);
-
-    r := StringReplace(r, '<<' + Urls.Lines[i] + '>>', link, [rfReplaceAll]);
+    // correct form is [page_id] For sections use <<section_id>> instead
+    r := StringReplace(r, '[' + Urls.Lines[i] + ']', link, [rfReplaceAll]);
     Inc(i);
     Application.ProcessMessages;
   end;
