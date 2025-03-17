@@ -157,7 +157,9 @@ implementation
   for I:=1 to 100 do begin
     p.id:=getRandomString(32);
     p.cap:='Caption for '+p.id;
-    p.content:=GenerateHTMLParagraphs(10) + '<p>In category:<'+p.section+'></p>';
+    p.content:='<p style="text-align:center"><img width="360" style="width:360px;height:auto" src="https://random-image-pepebigotes.vercel.app/api/random-image"></p>';
+    p.content:= p.content + GenerateHTMLParagraphs(10) + '<p>In category:<<'+p.section+'>></p>';
+
     p.dt:=StrToDateTime('26.11.2022');
     p.section:=getRandomCategory(Categories);
     addIntoContent(p, sq, konnect, tranzact);
