@@ -109,6 +109,7 @@ type
     btnMakeArchive: TButton;
     btnExecChatCommand: TButton;
     btnStartServerWithPhp: TButton;
+    btnStartServerWithPython: TButton;
     cboLocale: TComboBox;
     chkGetBlocksFromFile: TCheckBox;
     chkUseModules: TCheckBox;
@@ -654,6 +655,7 @@ type
     { Обработчик для загрузки в базу изображения}
     procedure btnSetImageClick(Sender: TObject);
     procedure btnStartServerWithPhpClick(Sender: TObject);
+    procedure btnStartServerWithPythonClick(Sender: TObject);
 
     { Обработчик кнопки выгрузки zip архива через мост}
     procedure btnUploadWithBridgeClick(Sender: TObject);
@@ -923,14 +925,12 @@ type
     { Список SQL запросов }
     sqls: sqls_list;
 
-    { Сокеты для сетевых соединений }
-    ListenerSocket, ConnectionSocket: TTCPBlockSocket;
+
 
     { Список глобальных блоков }
     Blocks: TStringList;
 
-    { Кеш - для веб сервера }
-    Cache: TStringList;
+
 
 
     PostsEditorState: string;
@@ -1030,17 +1030,9 @@ type
       pagesTotal: integer; orf: string; ors: string;
       useO: boolean; useTrees: boolean; tree: string): string;
 
-    { Обработчик подключений к локальному серверу}
-    procedure AttendConnection(ASocket: TTCPBlockSocket);
-
-    { Пуск локального веб-сервера }
-    procedure StartOwnServer();
-
-    { Остановка локального веб-сервера}
-    procedure StopOwnServer();
 
 
-    function OutputHTMLFile(uri: string): string;
+
 
     { Применяет к шаблону html пользовательские поля }
     function buildOwnFields(html: string; p: page_params): string;
@@ -1391,7 +1383,7 @@ begin
 
   form1.initdbSQL();
 
-  Cache := TStringList.Create;
+
 
   dbNav_Content.DataSource.AutoEdit := True;
   dbNav_Content.Enabled := True;
@@ -2219,6 +2211,25 @@ begin
 
 end;
 
+procedure TForm1.btnStartServerWithPythonClick(Sender: TObject);
+var
+  lws : TPythonServerLauncher;
+begin
+
+  lws := TPythonServerLauncher.Create(True);
+  lws.port:=form1.edPort.Text;
+  lws.ipaddress:=form1.edIpAddress.Text;
+  lws.dirpath:=form1.sqlPresets.FieldByName('dirpath').AsString;
+  lws.Start;
+  while not lws.Finished do
+        Application.ProcessMessages;
+  lws.Free;
+  btStartServer.Enabled := False;
+  btStopServer.Enabled := True;
+
+
+end;
+
 procedure TForm1.btnUploadWithBridgeClick(Sender: TObject);
 const
   scriptname: string = 'send-files.py';
@@ -2545,20 +2556,20 @@ end;
 
 
 procedure TForm1.btStartServerClick(Sender: TObject);
-var lws : TPythonServerLauncher;
-begin
-  lws := TPythonServerLauncher.Create(True);
-  lws.port:=form1.edPort.Text;
-  lws.ipaddress:=form1.edIpAddress.Text;
-  lws.dirpath:=form1.sqlPresets.FieldByName('dirpath').AsString;
-  lws.Start;
-  while not lws.Finished do
-        Application.ProcessMessages;
-  lws.Free;
-  btStartServer.Enabled := False;
-  btStopServer.Enabled := True;
-  //StartOwnServer();
+var
 
+  myWebServer : TOwnServerLauncher;
+begin
+
+    myWebServer := TOwnServerLauncher.Create(True);
+    myWebServer.PrefferedExtension:=form1.PrefferedExtension.Text;
+    myWebServer.port:=form1.edPort.text;
+    myWebServer.ipaddress:=form1.edIpAddress.text;
+    myWebServer.dirpath:=form1.sqlPresets.FieldByName('dirpath').AsString;
+    myWebServer.Start;
+    while not myWebServer.Finished do
+          Application.ProcessMessages;
+    MyWebServer.Free;
 
 end;
 
@@ -3033,8 +3044,7 @@ begin
     //showMessage('Проблема при сохранении');
   end;
 
-  if ListenerSocket <> nil then ListenerSocket.Free;
-  if ConnectionSocket <> nil then  ConnectionSocket.Free;
+
 
   SelectionHistoryManager.Free;
 
@@ -3953,142 +3963,11 @@ begin
   Result := paginator;
 end;
 
-procedure TForm1.AttendConnection(ASocket: TTCPBlockSocket);
-var
-  timeout: integer;
-  s: string;
-  method, uri, protocol: string;
-  OutputDataString: string;
-  ResultCode: integer;
-  content_type: string;
-  test_flag: boolean;
-begin
-  timeout := 120000;
-  Application.ProcessMessages;
-  //  WebServerLog.Lines.Add('Полученные заголовки, запрошенный браузером документ:');
 
-  //read request line
-  s := ASocket.RecvString(timeout);
-  WebServerLog.Lines.Add(s);
-  method := fetch(s, ' ');
-  uri := fetch(s, ' ');
-  protocol := fetch(s, ' ');
 
-  //read request headers
-  repeat
 
-    s := ASocket.RecvString(Timeout);
-    WebServerLog.Lines.Add(s);
-    Application.ProcessMessages;
-  until s = '';
 
-  // Now write the document to the output stream
 
-  content_type := 'Text/Html';
-  if (pos('.css', uri) > 0) then content_type := 'text/css';
-
-  if (pos('.jpg', uri) > 0) then content_type := 'image/jpeg';
-  if (pos('.png', uri) > 0) then content_type := 'image/png';
-  if (pos('.gif', uri) > 0) then content_type := 'image/gif';
-
-  if (pos('.js', uri) > 0) then content_type := 'application/javascript';
-
-  test_flag := False;
-  test_flag := test_flag or (pos('.jpg', uri) > 0);
-  test_flag := test_flag or (pos('.gif', uri) > 0);
-  test_flag := test_flag or (pos('.png', uri) > 0);
-
-  test_flag := test_flag or (pos('.htm', uri) > 0);
-  test_flag := test_flag or (pos('.html', uri) > 0);
-  test_flag := test_flag or (pos('.css', uri) > 0);
-  test_flag := test_flag or (pos('.js', uri) > 0);
-
-  test_flag := test_flag or (uri = '/');
-
-  if (test_flag) then
-  begin
-    // Write the output document to the stream
-    OutputDataString := OutputHTMLFile(uri) + CRLF;
-    // Write the headers back to the client
-    ASocket.SendString('HTTP/1.0 200' + CRLF);
-    ASocket.SendString('Content-type: ' + content_type + CRLF);
-    ASocket.SendString('Content-length: ' + IntToStr(Length(OutputDataString)) + CRLF);
-    ASocket.SendString('Connection: close' + CRLF);
-    ASocket.SendString('Date: ' + Rfc822DateTime(now) + CRLF);
-    ASocket.SendString('Server: HtmlBuilder' + CRLF);
-    ASocket.SendString('' + CRLF);
-
-    //  if ASocket.lasterror <> 0 then HandleError;
-
-    // Write the document back to the browser
-    ASocket.SendString(OutputDataString);
-  end
-  else
-    ASocket.SendString('HTTP/1.0 404' + CRLF);
-end;
-
-procedure TForm1.StartOwnServer;
-begin
-  ListenerSocket := TTCPBlockSocket.Create;
-  ConnectionSocket := TTCPBlockSocket.Create;
-
-  ListenerSocket.CreateSocket;
-  ListenerSocket.setLinger(True, 10);
-  ListenerSocket.bind('127.0.0.1', '8080');
-  ListenerSocket.listen;
-
-  repeat
-    Application.ProcessMessages;
-    if ListenerSocket.canread(512) then
-    begin
-      ConnectionSocket.Socket := ListenerSocket.accept;
-      WebServerLog.Lines.Add(
-        'Выполняем подключение. Код ошибки (0=Успех): '
-        +
-        IntToStr(ConnectionSocket.lasterror));
-      AttendConnection(ConnectionSocket);
-    end;
-  until ListenerSocket.StopFlag or ConnectionSocket.StopFlag;
-  ListenerSocket.Free;
-  ConnectionSocket.Free;
-end;
-
-procedure TForm1.StopOwnServer;
-begin
-  ListenerSocket.AbortSocket;
-  ConnectionSocket.AbortSocket;
-
-end;
-
-{{ ============== Чтение файла с диска / используется веб-сервером =============== }}
-
-function TForm1.OutputHTMLFile(uri: string): string;
-var
-  path: string;
-  filename: string;
-  Buf: TMemo;
-  r: string;
-  fullq: string;
-begin
-
-  if uri = '/' then uri := '/index.' + PrefferedExtension.Text;
-  path := sqlPresets.FieldByName('dirpath').AsString;
-  Buf := TMemo.Create(Self);
-  r := '';
-  fullq := path + uri;
-  if Cache.Values[uri] <> '' then r := Cache.values[uri]
-  else
-  begin
-    if FileExists(fullq) then
-    begin
-      Buf.Lines.LoadFromFile(fullq);
-      cache.values[uri] := Buf.Text;
-      r := Buf.Text;
-    end;
-  end;
-  Buf.Free;
-  Result := r;
-end;
 
 function TForm1.buildOwnFields(html: string; p: page_params): string;
 var
