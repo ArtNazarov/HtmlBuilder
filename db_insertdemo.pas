@@ -259,7 +259,7 @@ end;
      pr.ors:='asc';
      pr.tags_tpl:='{mainmenu}<h1>Тег: {tagCaption}</h1> Список страниц :<ul>{items}</ul>';
      pr.item_tag_tpl:='<li><a href="{itemUrl}.{ext}">{itemTitle}</a></li>';
-
+     pr.websiteUrl:='127.0.0.1';
      addIntoPreset(pr, sq, konnect, tranzact);
 
 
@@ -539,8 +539,10 @@ end;
 
 
    prepared_transaction_start(
-   'insert into preset (id, sitename,dirpath,headtpl,bodytpl,sectiontpl,itemtpl, ors, orf,  tags_tpl, item_tag_tpl ) values '+
-  '(:ID,:SITENAME,:DIRPATH,:HEADTPL,:BODYTPL,:SECTIONTPL,:ITEMTPL, :ORS, :ORF, :TAGS_TPL, :ITEM_TAG_TPL)',
+   'insert into preset (id, sitename,dirpath,headtpl,bodytpl,sectiontpl,itemtpl, ors, '+
+   'orf,  tags_tpl, item_tag_tpl, websiteUrl ) values '+
+  '(:ID,:SITENAME,:DIRPATH,:HEADTPL,:BODYTPL,:SECTIONTPL,:ITEMTPL, :ORS,'+
+  ' :ORF, :TAGS_TPL, :ITEM_TAG_TPL, :WEBSITE_URL)',
   sq, tranzact);
 
    with pr do begin
@@ -556,6 +558,7 @@ end;
   sq.Params.ParamByName('ORS').AsString := ors;
   sq.Params.ParamByName('TAGS_TPL').AsString := tags_tpl;
   sq.Params.ParamByName('ITEM_TAG_TPL').AsString := item_tag_tpl;
+  sq.Params.ParamByName('WEBSITE_URL').AsString := websiteUrl;
           end;
 
  prepared_transaction_end( sq, tranzact);

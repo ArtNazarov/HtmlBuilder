@@ -103,7 +103,7 @@ begin
       rssItem := Format(rssItemTemplate, [
         Query.FieldByName('caption').AsString,
          selectByMode( Mode,
-                       '/' + Query.FieldByName('id').AsString + '.html',
+                       Query.FieldByName('id').AsString + '.html',
                        getTreeUrl(  Query.FieldByName('id').AsString, '.html', konnect, tranzact)
          ),
       { #note : need URLs construction for page by id }

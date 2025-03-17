@@ -122,6 +122,7 @@ type
     dbeBlockNote: TDBMemo;
     dbeCssId: TDBEdit;
     dbeCssPath: TDBEdit;
+    dbeWebsiteUrl: TDBEdit;
     dbeImageCaption: TDBEdit;
     dbeImageId: TDBEdit;
     dbeItemMenuId: TDBEdit;
@@ -240,6 +241,7 @@ type
     Label14: TLabel;
     Label15: TLabel;
     Label16: TLabel;
+    lbWebsiteUrl: TLabel;
     lblChatCommand: TLabel;
     lbChat: TLabel;
     Label18: TLabel;
@@ -5594,24 +5596,14 @@ var
   mode : String;
 begin
 
+   // get url from preset
+   Domain := form1.sqlPresets.FieldByName('websiteUrl').AsString;
 
-   Domain := '127.0.0.1';
-   // Show the input dialog
-  if InputQuery('Input site URL', 'Please enter the domain:', Domain) then
-  begin
     websitePath := form1.sqlPresets.FieldByName('dirpath').AsString;
     if FileExists(  websitePath + '/latest_news.xml' ) then
        DeleteFile(  websitePath + '/latest_news.xml' );
     if not form1.chkUseTrees.Checked then mode := 'plain' else mode := 'tree';
     writeRssFeed(mode, Domain, websitePath + '/latest_news.xml', form1.conn, form1.trans);
-  end
-  else
-  begin
-    ShowMessage('Rss not created');
-  end;
-
-
-
 
 
 end;
