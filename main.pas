@@ -8,7 +8,7 @@ interface
 
 
 uses
-  AsyncQueue, Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics,
+  launch_web_servers, AsyncQueue, Classes, SysUtils, DB, BufDataset, Forms, Controls, Graphics,
   Dialogs, DBCtrls, dbf, SQLite3Conn, SQLDB, process, FileUtil,
   SynHighlighterHTML, SynEdit, DBDateTimePicker, IpHtml, StdCtrls, ExtCtrls,
   ComCtrls, Menus, DBGrids, ActnList, Buttons, ExtDlgs, blcksock, sockets,
@@ -2527,17 +2527,27 @@ end;
 
 
 procedure TForm1.btStartServerClick(Sender: TObject);
+var lws : TPythonServerLauncher;
 begin
+  lws := TPythonServerLauncher.Create(True);
+  lws.port:=form1.edPort.Text;
+  lws.ipaddress:=form1.edIpAddress.Text;
+  lws.dirpath:=form1.sqlPresets.FieldByName('dirpath').AsString;
+  lws.Start;
+  while not lws.Finished do
+        Application.ProcessMessages;
+  lws.Free;
   btStartServer.Enabled := False;
   btStopServer.Enabled := True;
-  StartOwnServer();
+  //StartOwnServer();
+
 
 end;
 
 procedure TForm1.btStopServerClick(Sender: TObject);
 begin
 
-  StopOwnServer();
+  //StopOwnServer();
   btStartServer.Enabled := True;
   btStopServer.Enabled := False;
 end;
