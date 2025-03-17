@@ -3295,6 +3295,16 @@ object Form1: TForm1
                   TabOrder = 2
                   OnClick = btnStartServerWithPhpClick
                 end
+                object btnStartServerWithPython: TButton
+                  Left = 372
+                  Height = 48
+                  Top = 1
+                  Width = 212
+                  Align = alLeft
+                  Caption = 'Запуск с помощью Python'
+                  TabOrder = 3
+                  OnClick = btnStartServerWithPythonClick
+                end
               end
               object lbConnectionLog: TLabel
                 Left = 1
