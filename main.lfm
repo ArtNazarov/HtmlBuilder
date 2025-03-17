@@ -3285,6 +3285,16 @@ object Form1: TForm1
                   TabOrder = 1
                   OnClick = btStartServerClick
                 end
+                object btnStartServerWithPhp: TButton
+                  Left = 193
+                  Height = 48
+                  Top = 1
+                  Width = 179
+                  Align = alLeft
+                  Caption = 'Запуск сервера с PHP'
+                  TabOrder = 2
+                  OnClick = btnStartServerWithPhpClick
+                end
               end
               object lbConnectionLog: TLabel
                 Left = 1

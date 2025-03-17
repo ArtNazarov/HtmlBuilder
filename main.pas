@@ -108,6 +108,7 @@ type
     Buffer: TMemo;
     btnMakeArchive: TButton;
     btnExecChatCommand: TButton;
+    btnStartServerWithPhp: TButton;
     cboLocale: TComboBox;
     chkGetBlocksFromFile: TCheckBox;
     chkUseModules: TCheckBox;
@@ -652,6 +653,7 @@ type
 
     { Обработчик для загрузки в базу изображения}
     procedure btnSetImageClick(Sender: TObject);
+    procedure btnStartServerWithPhpClick(Sender: TObject);
 
     { Обработчик кнопки выгрузки zip архива через мост}
     procedure btnUploadWithBridgeClick(Sender: TObject);
@@ -2199,6 +2201,22 @@ begin
   begin
     DBImage.Picture.LoadFromFile(opdSelectPicture.FileName);
   end;
+end;
+
+procedure TForm1.btnStartServerWithPhpClick(Sender: TObject);
+var lws : TPhpServerLauncher;
+begin
+  lws := TPhpServerLauncher.Create(True);
+  lws.port:=form1.edPort.Text;
+  lws.ipaddress:=form1.edIpAddress.Text;
+  lws.dirpath:=form1.sqlPresets.FieldByName('dirpath').AsString;
+  lws.Start;
+  while not lws.Finished do
+        Application.ProcessMessages;
+  lws.Free;
+
+
+
 end;
 
 procedure TForm1.btnUploadWithBridgeClick(Sender: TObject);
