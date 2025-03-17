@@ -33,6 +33,7 @@ Paste content from remote source
 {body} - html content markup
 {dt} - date of material
 {tags} - tags of material
+{backlinks} - internal backlinks from other pages to this document
 
 - Global markup blocks
 
