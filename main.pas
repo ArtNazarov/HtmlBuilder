@@ -2204,9 +2204,9 @@ begin
   lws.ipaddress:=form1.edIpAddress.Text;
   lws.dirpath:=form1.sqlPresets.FieldByName('dirpath').AsString;
   lws.Resume;
-  while not lws.Finished do
-        Application.ProcessMessages;
-  lws.Free;
+  // while not lws.Finished do
+  //      Application.ProcessMessages;
+  // lws.Free;
 
 
 
@@ -2218,14 +2218,14 @@ var
 begin
 
   lws := TPythonServerLauncher.Create(True);
-  lws.FreeOnTerminate:=True;
+  //lws.FreeOnTerminate:=True;
   lws.port:=form1.edPort.Text;
   lws.ipaddress:=form1.edIpAddress.Text;
   lws.dirpath:=form1.sqlPresets.FieldByName('dirpath').AsString;
   lws.Resume;
-  while not lws.Finished do
-        Application.ProcessMessages;
-  lws.Free;
+  // while not lws.Finished do
+  //      Application.ProcessMessages;
+  // lws.Free;
   btStartServer.Enabled := False;
   btStopServer.Enabled := True;
 
@@ -2571,9 +2571,9 @@ begin
     myWebServer.ipaddress:=form1.edIpAddress.text;
     myWebServer.dirpath:=form1.sqlPresets.FieldByName('dirpath').AsString;
     myWebServer.Resume;
-    while not myWebServer.Finished do
-          Application.ProcessMessages;
-    MyWebServer.Free;
+    // while not myWebServer.Finished do
+    //      Application.ProcessMessages;
+    // MyWebServer.Free;
 
 end;
 

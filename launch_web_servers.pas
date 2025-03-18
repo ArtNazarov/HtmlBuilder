@@ -73,10 +73,7 @@ implementation
 { TPythonServerLauncher }
 
 procedure TPythonServerLauncher.Execute;
-var
-   Output : TStringList;
 begin
-  Output := TStringList.Create();
   p := TProcessUTF8.Create(nil);
   p.executable:='konsole';
   p.parameters.Add('-e');
@@ -94,20 +91,20 @@ begin
 
 
   p.execute;
+  p.WaitOnExit();
   while p.Active do ;
-  Output.LoadFromStream(p.Output);
-  Output.SaveToFile('result.log');
-  p.Free;
-  output.Free;
+
+
+  //p.Free;
+  //output.Free;
 end;
 
 { TPhpServerLauncher }
 
 procedure TPhpServerLauncher.Execute;
-var
-   Output : TStringList;
+
 begin
-  Output := TStringList.Create();
+
   p := TProcessUTF8.Create(nil);
   p.executable:='konsole';
   p.parameters.Add('-e');
@@ -123,10 +120,9 @@ begin
 
   p.execute;
   while p.Active do ;
-  Output.LoadFromStream(p.Output);
-  Output.SaveToFile('result.log');
-  p.Free;
-  output.Free;
+
+ // p.Free;
+ // output.Free;
 end;
 
 { TOwnServerLauncher }
