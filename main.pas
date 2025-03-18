@@ -2199,10 +2199,11 @@ procedure TForm1.btnStartServerWithPhpClick(Sender: TObject);
 var lws : TPhpServerLauncher;
 begin
   lws := TPhpServerLauncher.Create(True);
+  lws.FreeOnTerminate:=True;
   lws.port:=form1.edPort.Text;
   lws.ipaddress:=form1.edIpAddress.Text;
   lws.dirpath:=form1.sqlPresets.FieldByName('dirpath').AsString;
-  lws.Start;
+  lws.Resume;
   while not lws.Finished do
         Application.ProcessMessages;
   lws.Free;
@@ -2217,10 +2218,11 @@ var
 begin
 
   lws := TPythonServerLauncher.Create(True);
+  lws.FreeOnTerminate:=True;
   lws.port:=form1.edPort.Text;
   lws.ipaddress:=form1.edIpAddress.Text;
   lws.dirpath:=form1.sqlPresets.FieldByName('dirpath').AsString;
-  lws.Start;
+  lws.Resume;
   while not lws.Finished do
         Application.ProcessMessages;
   lws.Free;
@@ -2562,11 +2564,13 @@ var
 begin
 
     myWebServer := TOwnServerLauncher.Create(True);
+    myWebServer.FreeOnTerminate:=True;
+
     myWebServer.PrefferedExtension:=form1.PrefferedExtension.Text;
     myWebServer.port:=form1.edPort.text;
     myWebServer.ipaddress:=form1.edIpAddress.text;
     myWebServer.dirpath:=form1.sqlPresets.FieldByName('dirpath').AsString;
-    myWebServer.Start;
+    myWebServer.Resume;
     while not myWebServer.Finished do
           Application.ProcessMessages;
     MyWebServer.Free;
