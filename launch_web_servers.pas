@@ -91,8 +91,14 @@ begin
 
 
   p.execute;
-  p.WaitOnExit();
-  while p.Active do ;
+
+  while not Self.Terminated do begin
+        p.WaitOnExit();
+        while p.Active do if Self.Terminated then
+              break;
+        if p.Active = False then
+           break;
+        end;
 
 
   //p.Free;

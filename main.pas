@@ -911,6 +911,11 @@ type
     { Словарь для связи id вложения - название вложения}
     Attachments: sdict;
 
+    { Свой локальный сервер }
+
+    myWebServer : TOwnServerLauncher;
+    usedOfLocalWebServer : Boolean;
+
 
     { Какое порядок используется для сортировки }
     POrs: sdict;
@@ -1364,6 +1369,11 @@ var
   index: integer;
   Control: TControl;
 begin
+
+  form1.usedOfLocalWebServer:=False;
+  form1.myWebServer:=NIL;
+
+
   SelectionHistoryManager := TSelectionHistoryManager.Create();
 
   LastFocusedControl := nil;
@@ -2558,10 +2568,10 @@ end;
 
 
 procedure TForm1.btStartServerClick(Sender: TObject);
-var
 
-  myWebServer : TOwnServerLauncher;
 begin
+    if form1.usedOfLocalWebServer then
+       Exit;
 
     myWebServer := TOwnServerLauncher.Create(True);
     myWebServer.FreeOnTerminate:=True;
@@ -2575,12 +2585,20 @@ begin
     //      Application.ProcessMessages;
     // MyWebServer.Free;
 
+    form1.usedOfLocalWebServer := True;
+    btStopServer.Enabled := form1.usedOfLocalWebServer ;
+    btStartServer.Enabled := not form1.usedOfLocalWebServer;
+
 end;
 
 procedure TForm1.btStopServerClick(Sender: TObject);
 begin
+  if not form1.usedOfLocalWebServer then Exit;
+  form1.myWebServer.StopOwnServer;
+  form1.myWebServer.Terminate;
 
-  //StopOwnServer();
+  form1.usedOfLocalWebServer:=false;
+
   btStartServer.Enabled := True;
   btStopServer.Enabled := False;
 end;
@@ -3036,6 +3054,10 @@ end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+
+  if form1.usedOfLocalWebServer then
+     form1.myWebServer.Terminate;
+
   form1.SaveSpecialSettings('special_settings.dat');
 
   Tags.Free;
