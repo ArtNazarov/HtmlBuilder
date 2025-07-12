@@ -123,6 +123,32 @@ How to use: place WORDS(), SENTS(), CHARS(), TTR()
 
 29. Random data at first run / Случайные данные на первом запуске
 
+30. Parameterizable blocks / Параметризуемые блоки
+
+For a global block to be parameterizable, it must contain at least one block variable of the form *varname
+Чтобы глобальный блок стал параметризуемым, он должен содержать хотя бы одну переменную блока вида *varname
+
+В шаблоне вывод конкретизированного блока осуществляется через передачу фактических значений переменных
+The output of concrete block is perfomed by passing actual values
+
+```
+{blockname >< varname=`value` othername=`othervalue` >< }
+```
+Note / Примечание - Между { и именем блока не должно быть пробела. There is must no space between { and block name.
+
+Пример: пусть имеются блоки, содержащие переменные блоков ```*var``` и ```*other```
+
+The example: block1 has markup ```*var``` and block2 has markup ```*other```
+
+Когда шаблон задан как / When the template is 
+```
+{block1 >< var=`Test` >< } is {block2 >< other=`great` >< }
+```
+Результат подстановки будет / The result of the substition will be
+```
+Test is great
+```
+
 # Serverside endpoints
 
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge

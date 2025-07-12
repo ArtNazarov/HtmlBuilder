@@ -43,3 +43,5 @@ pyvenv.cfg
 # Optional text files
 req.txt
 resp.txt
+some.txt
+rss.log

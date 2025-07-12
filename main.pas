@@ -19,7 +19,7 @@ uses
   IniFiles, selection_history_dialog, selection_history_manager,
   emoji_shortcodes, func_str_composition, chat_client_thread, replcallfunc,
   sitestats, dbmemo_autocomplete, internal_backlinks,
-  rss_feed; {Use Synaptic}
+  rss_feed, parametrized_blocks; {Use Synaptic}
 
 
 
@@ -1073,7 +1073,11 @@ type
     { Применяет к шаблону быстрые ссылки на вложения }
     function useAttachments(template: string): string;
 
-
+    (* Применение параметризированных глобальных блоков *)
+    (* записываются в шаблоне в виде
+    {blockname >< variable=`value` other=`something` >< } *)
+    (* сами блоки могут содержать переменные блока вида *value *something *)
+    function useParametrizedBlocks(template: string): string;
 
 
     { Выполняет инициализацию базы данных, то есть создает структуру в новом
@@ -3671,6 +3675,24 @@ begin
   Result := R;
 end;
 
+function TForm1.useParametrizedBlocks(template: string): string;
+var
+  smBlocks : TStringMap;
+begin
+  try
+     smBlocks := TStringMap.Create;
+     sqlBlocks.First; // на первый блок
+     // пока не вышли за последнюю запись
+     while not sqlBlocks.EOF do begin
+       smBlocks[ sqlBlocks.FieldByName('id').AsString ] := sqlBlocks.FieldByName('markup').AsString;
+       sqlBlocks.Next; // следующий блок
+     end;
+      Result:=makeParametrization(template, smBlocks)
+  finally
+       smBlocks.Free;
+  end;
+end;
+
 
 
 
@@ -4721,6 +4743,7 @@ begin
   ComposeStrFunc(Pipeline, @useOwnTags);
   ComposeStrFunc(Pipeline, @insertSectionsAndLinks);
   ComposeStrFunc(Pipeline, @useBlocks);
+  ComposeStrFunc(Pipeline, @useParametrizedBlocks);
 
 
   Buffer.Lines.Text := buildOwnFields(buffer.Lines.Text, page);
