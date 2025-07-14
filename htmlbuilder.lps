@@ -20,8 +20,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="4748"/>
-        <CursorPos X="49" Y="4765"/>
+        <TopLine Value="4741"/>
+        <CursorPos X="49" Y="4759"/>
         <ExtraEditorCount Value="1"/>
         <ExtraEditor1>
           <EditorIndex Value="-1"/>

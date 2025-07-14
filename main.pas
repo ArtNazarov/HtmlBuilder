@@ -4756,13 +4756,14 @@ begin
   ComposeStrFunc(Pipeline, @useImages);
   ComposeStrFunc(Pipeline, @remotes_urls);
   ComposeStrFunc(Pipeline, @useMenus);
+  ComposeStrFunc(Pipeline, @useIfElseProcessor);
   ComposeStrFunc(Pipeline, @useModules);
   ComposeStrFunc(Pipeline, @useOwnTags);
   ComposeStrFunc(Pipeline, @insertSectionsAndLinks);
   ComposeStrFunc(Pipeline, @useBlocks);
   ComposeStrFunc(Pipeline, @useParametrizedBlocks);
   ComposeStrFunc(Pipeline, @useRepeater);
-  ComposeStrFunc(Pipeline, @useIfElseProcessor);
+
 
 
   Buffer.Lines.Text := buildOwnFields(buffer.Lines.Text, page);
