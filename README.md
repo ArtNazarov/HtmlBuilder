@@ -164,6 +164,20 @@ Colors: Color: red Color: green Color: blue.
 
 Примечание / Note: вывод обрезается от пробельных символов / the output will be trimmed from space characters
 
+32 Оператор / Operator @ifelse
+
+Outputs text corresponding comparison
+Выводит текст согласно сравнения
+
+@ifelse[leftString]comparison[rightString]{stringIfTrue}{stringIfFalse};
+
+Примечание / Note  Сравнение может быть == или != не равно. Comparison maybe == or != not equal.
+
+Для примера / For example, 
+
+@ifelse[0]==[0]{A}{B}; преобразуется до / transforms to A 
+@ifelse[A]!=[B]{X}{Y}; преобразуется до / transforms to X
+
 # Serverside endpoints
 
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge

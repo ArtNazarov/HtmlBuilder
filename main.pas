@@ -19,7 +19,8 @@ uses
   IniFiles, selection_history_dialog, selection_history_manager,
   emoji_shortcodes, func_str_composition, chat_client_thread, replcallfunc,
   sitestats, dbmemo_autocomplete, internal_backlinks,
-  rss_feed, parametrized_blocks, uRepeatExpression; {Use Synaptic}
+  rss_feed, parametrized_blocks, uRepeatExpression,
+  ifelseprocessor; {Use Synaptic}
 
 
 
@@ -1014,6 +1015,9 @@ type
 
     { Задействует пресет для шаблона }
     function usePreset(app: string): string;
+
+    (* Условный оператор @ifelse[leftExp]comparison[rightExpr]{stringIfTrue}{stringIfFalse}; *)
+    function useIfElseProcessor(t : string): string;
 
     { Применяет модуль к шаблону}
     function useModules(app: string): string;
@@ -3739,6 +3743,11 @@ begin
   Result := R;
 end;
 
+function TForm1.useIfElseProcessor(t: string): string;
+begin
+  result := ProcessIfElse(t);
+end;
+
 {{ ======================== РАСШИРЕНИЕ ВОЗМОЖНОСТЕЙ МОДУЛЯМИ ================ }}
 
 function TForm1.useModules(app: string): string;
@@ -4753,6 +4762,7 @@ begin
   ComposeStrFunc(Pipeline, @useBlocks);
   ComposeStrFunc(Pipeline, @useParametrizedBlocks);
   ComposeStrFunc(Pipeline, @useRepeater);
+  ComposeStrFunc(Pipeline, @useIfElseProcessor);
 
 
   Buffer.Lines.Text := buildOwnFields(buffer.Lines.Text, page);
