@@ -149,6 +149,21 @@ The example: block1 has markup ```*var``` and block2 has markup ```*other```
 Test is great
 ```
 
+31 Оператор / Operator @repeat
+
+Размножает последовательно образец, подставляя в тиражируемый фрагмент значения переменной
+Replicates the sample sequentially, substituting the variable values into the replicated fragment
+
+Пример / Example
+
+@repeat { color = red|green|blue } [[Color: &color; ]].
+
+преобразуется до / transform to
+
+Colors: Color: red Color: green Color: blue.
+
+Примечание / Note: вывод обрезается от пробельных символов / the output will be trimmed from space characters
+
 # Serverside endpoints
 
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge

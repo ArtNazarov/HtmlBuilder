@@ -19,7 +19,7 @@ uses
   IniFiles, selection_history_dialog, selection_history_manager,
   emoji_shortcodes, func_str_composition, chat_client_thread, replcallfunc,
   sitestats, dbmemo_autocomplete, internal_backlinks,
-  rss_feed, parametrized_blocks; {Use Synaptic}
+  rss_feed, parametrized_blocks, uRepeatExpression; {Use Synaptic}
 
 
 
@@ -966,6 +966,9 @@ type
 
     { Применяем вызовы функций }
     function useReplFunc(part: string): string;
+
+    { Применяем размножитель }
+    function useRepeater(t : String): String;
 
 
     { ----------------------------------------------}
@@ -3230,6 +3233,11 @@ begin
   Result := part;
 end;
 
+function TForm1.useRepeater(t: String): String;
+begin
+  result := ProcessRepeatExpression(t);
+end;
+
 procedure TForm1.scanLinks;
 var
   i: integer;
@@ -4744,6 +4752,7 @@ begin
   ComposeStrFunc(Pipeline, @insertSectionsAndLinks);
   ComposeStrFunc(Pipeline, @useBlocks);
   ComposeStrFunc(Pipeline, @useParametrizedBlocks);
+  ComposeStrFunc(Pipeline, @useRepeater);
 
 
   Buffer.Lines.Text := buildOwnFields(buffer.Lines.Text, page);
