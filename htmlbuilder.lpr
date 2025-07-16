@@ -14,7 +14,7 @@ uses
   selection_history_dialog, selection_history_manager, emoji_shortcodes,
   func_str_composition, chat_client_thread, replcallfunc, sitestats,
   dbmemo_autocomplete, internal_backlinks, random_data, rss_feed, url_constr,
-  launch_web_servers;
+  launch_web_servers, render_custom_request;
 
 {$R *.res}
 

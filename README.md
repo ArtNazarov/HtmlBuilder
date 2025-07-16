@@ -178,6 +178,20 @@ Outputs text corresponding comparison
 @ifelse[0]==[0]{A}{B}; преобразуется до / transforms to A 
 @ifelse[A]!=[B]{X}{Y}; преобразуется до / transforms to X
 
+33 @db Рендеринг элементов по произвольному запросу к базе / Render items by custom sql request
+
+For example / Для примера 
+```
+@db(caption|content|caption LIKE 'Caption For A%')=>(<div>{caption}</div>);
+```
+создает представление / produce view:
+```
+<div>Caption for ATlj8wrAT3CcIw3d34YSuSgaacXTFXT4</div><div>Caption for auBDhpiFlfPe0V4nwCFLkNryAWKIqUau</div><div>Caption for AjwwhevKimYoFU8mstZYUs0xsNWn8suz</div><div>Caption for aaX7qPBPd6xDHC7mmOtrQ26XZCd2Jvya</div><div>Caption for A6HJ9iefcPjeghHegjb3KBKh8B7bnlNm</div><div>Caption for a9q9J1k2yNxyyzIvbCYnjB98mx30Pw1N</div><div>Caption for aQnlpeYPiJygx71SXvZXaf0DfgxXJjkf</div>
+```
+Таким образом, оператор @db имеет форму / So operator @db must have the form
+```
+@db(field1,fieldN|tableName|conditionPart)=>(templatePart);
+```
 # Serverside endpoints
 
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge

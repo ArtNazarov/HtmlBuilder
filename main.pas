@@ -20,7 +20,7 @@ uses
   emoji_shortcodes, func_str_composition, chat_client_thread, replcallfunc,
   sitestats, dbmemo_autocomplete, internal_backlinks,
   rss_feed, parametrized_blocks, uRepeatExpression,
-  ifelseprocessor; {Use Synaptic}
+  ifelseprocessor, render_custom_request; {Use Synaptic}
 
 
 
@@ -4740,8 +4740,17 @@ begin
     buildBody(page.title, page.body, t),
     page)
     );
+
   Buffer.Lines.Text := ApplyVar( Rnr.getHtml(), 'backlinks',
                     makeBacklinkHtml(form1.map_of_backlinks, page.id));
+
+  // Render custom SQL
+  Buffer.Lines.Text := renderAllCustomRequests(
+                    Buffer.Lines.Text,
+                    conn,
+                    trans,
+                    temp_sql);
+
 
 
 
@@ -4779,6 +4788,9 @@ begin
   id := Copy(id, 1, Pos('.', id) - 1);
   Buffer.Text :=
     StringReplace(Buffer.Text, '{id}', id, [rfReplaceAll]);
+
+
+
 
   Writer.addToJob(Buffer.Lines.Text, filenam);
 
