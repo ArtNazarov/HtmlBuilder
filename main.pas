@@ -950,6 +950,9 @@ type
     { Очередь для записи файлов}
     Writer: TFilesQueue;
 
+    { Применение изменений перед сборкой сайта }
+    procedure AutoPostAndApplyUpdates();
+
     { Получает карту обратных ссылок }
     procedure scanBacklinks;
 
@@ -1358,6 +1361,9 @@ type
     {Статистика}
     function useSiteStats(s: string): string;
 
+    {Автосохранение}
+    procedure AutoSave();
+
 
 
 
@@ -1762,6 +1768,66 @@ end;
 
 procedure TForm1.tiTrayClick(Sender: TObject);
 begin
+
+end;
+
+procedure TForm1.AutoPostAndApplyUpdates();
+begin
+
+   { Сохранение вложений }
+   if form1.ds_Attachments.State = dsEdit then
+     begin
+     form1.sqlGetAllAttachments.Post;
+     form1.sqlGetAllAttachments.ApplyUpdates();
+     end;
+  { Сохранение общих настроек }
+  if form1.ds_Presets.State = dsEdit then
+     begin
+      form1.sqlPresets.Post;
+      form1.sqlPresets.ApplyUpdates();
+     end;
+  { Сохранение глобальных блоков }
+  if form1.ds_Blocks.State = dsEdit then
+     begin
+      form1.sqlBlocks.Post;
+      form1.sqlBlocks.ApplyUpdates();
+     end;
+  { Сохранение материалов }
+  if form1.ds_Content.State = dsEdit then
+    begin
+    form1.sqlContent.Post;
+    form1.sqlContent.ApplyUpdates();
+    end;
+  { Сохранение стилей }
+  if form1.ds_CssStyles.State = dsEdit then
+    begin
+         form1.sqlCssStyles.Post;
+         form1.sqlCssStyles.ApplyUpdates();
+    end;
+   { Сохранение изображений }
+  if form1.ds_Images.State = dsEdit then
+     begin
+      form1.sqlGetAllImages.Post;
+      form1.sqlGetAllImages.ApplyUpdates();
+     end;
+  { Сохранение тегов }
+  if form1.ds_Tags.State = dsEdit then
+     begin
+          form1.sqlTags.Post;
+          form1.sqlTags.ApplyUpdates();
+     end;
+   { Сохранение связей теги-страницы }
+  if form1.ds_Tags_Pages.State = dsEdit then
+     begin
+      form1.sqlTagsPages.Post;
+      form1.sqlTagsPages.ApplyUpdates();
+     end;
+  { Сохранение разделов }
+  if form1.ds_Sections.State = dsEdit then
+     begin
+          form1.sqlSections.Post;
+          form1.sqlSections.ApplyUpdates();
+     end;
 
 end;
 
@@ -3084,6 +3150,12 @@ begin
 
 
   SelectionHistoryManager.Free;
+
+
+  AutoSave();
+
+
+  conn.Close();
 
 end;
 
@@ -6294,7 +6366,8 @@ var
   start, stop: TDateTime;
   ptr: Pointer;
 begin
-
+  // применяем изменения
+  AutoPostAndApplyUpdates();
   start := Now();
   form1.scanBacklinks; // строим карту обратных ссылок
   form1.scanLinks(); // сканер ссылок нужен для автозамены
@@ -6480,6 +6553,31 @@ begin
   stat := TSiteStats.Create();
   Result := stat.ReplaceStats(s);
   stat.Free;
+end;
+
+procedure TForm1.AutoSave();
+begin
+    if form1.trans.Active then  begin
+      try
+      if form1.sqlBlocks.Active then form1.sqlBlocks.ApplyUpdates;
+      if form1.sqlContent.Active then form1.sqlContent.ApplyUpdates;
+      if form1.sqlCssStyles.Active then form1.sqlCssStyles.ApplyUpdates;
+      if form1.sqlJsScripts.Active then form1.sqlJsScripts.ApplyUpdates;
+      if form1.sqlMenu.Active then form1.sqlMenu.ApplyUpdates;
+      if form1.sqlMenuItem.Active then form1.sqlMenuItem.ApplyUpdates;
+      if form1.sqlTags.Active then form1.sqlTags.ApplyUpdates;
+      if form1.sqlTagsPages.Active then form1.sqlTagsPages.ApplyUpdates;
+      if form1.sqlPresets.Active then form1.sqlPresets.ApplyUpdates;
+      if form1.sqlSections.Active then form1.sqlSections.ApplyUpdates;
+      if form1.sqlGetAllImages.Active then form1.sqlGetAllImages.ApplyUpdates;
+      if form1.sqlGetAllAttachments.Active then form1.sqlGetAllAttachments.ApplyUpdates;
+      form1.trans.Commit;
+     except
+           on E: EDatabaseError do begin
+                              ShowMessage('Ошибка автосохранения');
+                              end;
+      end;
+  end;
 end;
 
 
