@@ -180,6 +180,8 @@ Outputs text corresponding comparison
 
 33 @db Рендеринг элементов по произвольному запросу к базе / Render items by custom sql request
 
+34 Autosave Автосохранение
+
 For example / Для примера 
 ```
 @db(caption|content|caption LIKE 'Caption For A%')=>(<div>{caption}</div>);
