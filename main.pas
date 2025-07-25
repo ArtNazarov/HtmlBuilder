@@ -20,7 +20,7 @@ uses
   emoji_shortcodes, func_str_composition, chat_client_thread, replcallfunc,
   sitestats, dbmemo_autocomplete, internal_backlinks,
   rss_feed, parametrized_blocks, uRepeatExpression,
-  ifelseprocessor, render_custom_request; {Use Synaptic}
+  ifelseprocessor, render_custom_request, stringcache; {Use Synaptic}
 
 
 
@@ -864,6 +864,9 @@ type
     {Менеджер буфера обмена}
     SelectionHistoryManager: TSelectionHistoryManager;
 
+    { Кэш приложения }
+    AppCache : TStringCache;
+
     {Последний получивший фокус элемент управления}
     lastFocusedControl: TControl;
 
@@ -1386,6 +1389,8 @@ var
   index: integer;
   Control: TControl;
 begin
+
+  AppCache := TStringCache.Create;
 
   form1.usedOfLocalWebServer:=False;
   form1.myWebServer:=NIL;
@@ -3157,6 +3162,8 @@ begin
 
   conn.Close();
 
+  AppCache.Free;
+
 end;
 
 
@@ -4781,7 +4788,7 @@ var
   id: string;
   t: string;
   Rnr: Render;
-
+  Argument : String;
   Pipeline: TFuncStrArray;
 begin
   Rnr := Render.Create;
@@ -4849,23 +4856,31 @@ begin
 
   Buffer.Lines.Text := buildOwnFields(buffer.Lines.Text, page);
 
-  Buffer.Lines.Text := ApplyStringFunctions(Buffer.Lines.Text, Pipeline);
+  Argument := Buffer.Lines.Text;
 
-  // add custom columns with prefix custom_
-  Buffer.Lines.Text := useCustomFields(Buffer.Lines.Text, page.id);
+  // Try find Argument in Cache
+  if AppCache.isKeyExists(Argument) then
+     begin
+     // Don't execute main pipeline
+     Writer.AddToJob(AppCache.getValueByKey(Argument), filenam);
+     end
+  else begin
+
+      Buffer.Lines.Text := ApplyStringFunctions(Buffer.Lines.Text, Pipeline);
+
+      // add custom columns with prefix custom_
+      Buffer.Lines.Text := useCustomFields(Buffer.Lines.Text, page.id);
 
 
-  // id of pages
-  id := ExtractFileName(filenam);
-  id := Copy(id, 1, Pos('.', id) - 1);
-  Buffer.Text :=
-    StringReplace(Buffer.Text, '{id}', id, [rfReplaceAll]);
-
-
-
-
+      // id of pages
+      id := ExtractFileName(filenam);
+      id := Copy(id, 1, Pos('.', id) - 1);
+      Buffer.Text :=
+        StringReplace(Buffer.Text, '{id}', id, [rfReplaceAll]);
+  // Save to cache
+  AppCache.storeKeyValue(Argument, Buffer.Lines.Text);
   Writer.addToJob(Buffer.Lines.Text, filenam);
-
+       end;
   Rnr.Free;
 end;
 
