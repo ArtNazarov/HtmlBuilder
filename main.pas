@@ -5774,6 +5774,7 @@ var
   Rnr: Render;
   RnrHead: Render;
   RnrDoc: Render;
+  Argument : String;
 begin
 
   rubrication_query := applyvar(rubrication_query, 'ors', selected_ors);
@@ -5922,35 +5923,10 @@ begin
   RnrDoc.Free;
 
 
-
-
-  // постобработка
-
-  document :=
-    useModules(
-    useOwnTags(
-    insertSectionsAndLinks(
-    useBlocks(
-    document))));
-
-  if (logger_info) then
-    mmRubrics.Lines.Add(document);
+  // compute path
 
   so := '';
   if useO then so := 'o/' + selected_orf + '-' + selected_ors + '/';
-
-
-
-  if chkUseTrees.Checked then
-  begin
-    ProcessDir := TProcess.Create(Self);
-    ProcessDir.CommandLine :=
-      '/usr/bin/bash -c "mkdir -p ' + path_with_tree + '"';
-    ProcessDir.WaitOnExit;
-    ProcessDir.Free;
-  end;
-
-
   base_path := sqlRubrication.FieldByName('dirpath').AsString;
 
   tree := sqlRubrication.FieldByName('tree').AsString;
@@ -5984,12 +5960,39 @@ begin
 
   path := applyvar(path, 'so', so);
 
+  // постобработка
+
+  Argument := document;
+
+  if AppCache.isKeyExists(Argument) then begin
+      Writer.addToJob(AppCache.getValueByKey(document), path);
+  end else begin
+
+  document :=
+    useModules(
+    useOwnTags(
+    insertSectionsAndLinks(
+    useBlocks(
+    document))));
+
+  if (logger_info) then
+    mmRubrics.Lines.Add(document);
 
 
+  if chkUseTrees.Checked then
+  begin
+    ProcessDir := TProcess.Create(Self);
+    ProcessDir.CommandLine :=
+      '/usr/bin/bash -c "mkdir -p ' + path_with_tree + '"';
+    ProcessDir.WaitOnExit;
+    ProcessDir.Free;
+  end;
+
+  AppCache.storeKeyValue(Argument, document);
   Writer.addToJob(document,
     path
     );
-
+  end;
 
   pBar.Max := pagesInRubrics;
   pBar.Position := page;
