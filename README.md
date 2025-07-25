@@ -180,8 +180,6 @@ Outputs text corresponding comparison
 
 33 @db Рендеринг элементов по произвольному запросу к базе / Render items by custom sql request
 
-34 Autosave Автосохранение
-
 For example / Для примера 
 ```
 @db(caption|content|caption LIKE 'Caption For A%')=>(<div>{caption}</div>);
@@ -194,6 +192,12 @@ For example / Для примера
 ```
 @db(field1,fieldN|tableName|conditionPart)=>(templatePart);
 ```
+
+34 Autosave when exiting the application and before building 
+/ Автосохранение при выходе из приложения и перед сборкой
+
+35 Application's cache for rebuilds / Кеш приложения для пересборок
+
 # Serverside endpoints
 
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
