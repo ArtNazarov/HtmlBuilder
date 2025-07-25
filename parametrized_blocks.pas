@@ -78,7 +78,7 @@ var
   VarName: String;
   Map: TStringMap;
 begin
-  Writeln('К сканированию на поиск *variable1 *variable2 = ', t);
+  // Writeln('К сканированию на поиск *variable1 *variable2 = ', t);
   Map := TStringMap.Create;
   Map.Sorted := True; // Optional: keep map sorted
   // Map.Duplicates := dupIgnore; // Optional: handle duplicate keys
@@ -96,7 +96,7 @@ begin
     begin
       repeat
         VarName := Copy(Regex.Match[0], 1, Length(Regex.Match[0]));
-        Writeln('Сканировано ключ ', VarName);
+        // Writeln('Сканировано ключ ', VarName);
         Map[VarName] := ''; // Set empty string as value
       until not Regex.ExecNext;
     end;
@@ -128,7 +128,7 @@ begin
   for i := 0 to Variables.Count - 1 do
   begin
        Key := Variables.Keys[i];
-       Writeln('ключ = ', Key, ' значение = ',Variables[Key]);
+       // Writeln('ключ = ', Key, ' значение = ',Variables[Key]);
   end;
 end;
 
@@ -141,16 +141,16 @@ var
   VarName, VarValue: String;
 begin
   ResultStr := htmlTemplate;
-  Writeln('Исходное: ', resultstr);
+  // Writeln('Исходное: ', resultstr);
   for i := 0 to scannedVariables.Count - 1 do
   begin
     VarName := scannedVariables.Keys[i];
-    Writeln('Имя переменной ', VarName);
+    // Writeln('Имя переменной ', VarName);
     VarValue := scannedVariables.KeyData[VarName];
-    Writeln('Значение ', VarValue);
+    // Writeln('Значение ', VarValue);
     // Заменяем все вхождения VarName на VarValue, без учёта регистра
     ResultStr := StringReplace(ResultStr, VarName, VarValue, [rfReplaceAll, rfIgnoreCase]);
-    WriteLn('После замены ', resultstr);
+    // Writeln('После замены ', resultstr);
   end;
 
   Result := ResultStr;
@@ -204,29 +204,29 @@ variables, scannedvariables : TStringMap;
 begin
   resultstr := html;
   callsOfBlocks:=getParametrizedBlocks(html);
-  Writeln('html is ', html);
-  Writeln('globalblocks are ');
+  // Writeln('html is ', html);
+  // Writeln('globalblocks are ');
   printStringMap(GlobalBlocks);
-  Writeln('Найдено блоков:', callsOfBlocks.Count);
+  // Writeln('Найдено блоков:', callsOfBlocks.Count);
   printStringMap(callsOfBlocks);
   for I:=0 to callsOfBlocks.Count - 1 do begin
       blockname := callsOfBlocks.Keys[i];
       blockparams := callsOfBlocks[blockname];
       blockhtml := GlobalBlocks[blockname];
-      Writeln('Текущий блок ', blockhtml);
+      // Writeln('Текущий блок ', blockhtml);
       variables := ParseVariablesToMap(blockparams);
-      Writeln('Переменные для замены из блока ');
+      // Writeln('Переменные для замены из блока ');
       printStringMap(variables);
       scannedvariables := scanForPartialVariables(blockhtml);
-      Writeln('Переменные из вызова блока ');
+      // Writeln('Переменные из вызова блока ');
       printStringMap(scannedvariables);
       FillPartialVariables(scannedvariables, variables);
-      Writeln('После присваивания ');
+      // Writeln('После присваивания ');
       printStringMap(scannedvariables);
       replacement := applyPartialVariables(scannedvariables, blockhtml);
-      Writeln('Вычислена замена ', replacement);
+      // Writeln('Вычислена замена ', replacement);
       resultstr:=stringreplace(resultstr, '{'+blockname+ ' >< ' + blockparams + ' >< }', replacement,    [rfReplaceAll, rfIgnoreCase]);
-      WriteLn('Образец после замены: ', resultstr);
+      // Writeln('Образец после замены: ', resultstr);
 end;
   result:=resultstr;
        end;
