@@ -734,6 +734,8 @@ type
 
     { Выполнится при щелчке по названию страницы }
     procedure lvContentClick(Sender: TObject);
+    procedure lvContentCustomDrawItem(Sender: TCustomListView; Item: TListItem;
+      State: TCustomDrawState; var DefaultDraw: Boolean);
 
     { Выполнится при щелчке по названию CSS таблицы}
     procedure lvCSSClick(Sender: TObject);
@@ -939,7 +941,7 @@ type
     { Список глобальных блоков }
     Blocks: TStringList;
 
-
+    FindedContentIds : TStringList;
 
 
     PostsEditorState: string;
@@ -1370,6 +1372,8 @@ type
 
 
 
+
+
   end;
 
 
@@ -1390,6 +1394,7 @@ var
   Control: TControl;
 begin
 
+  FindedContentIds := TStringList.Create;
   AppCache := TStringCache.Create;
 
   form1.usedOfLocalWebServer:=False;
@@ -2383,23 +2388,35 @@ procedure TForm1.acFindContentByCaptionExecute(Sender: TObject);
 var
   q: string;
   i: integer;
-  is_find: boolean;
+  counter : Integer;
+  sqlFinder : TSqlQuery;
+  id  : String;
 begin
-  // TODO Поиск по заголовку
+
+  FindedContentIds.Clear;
+
   q := InputBox('Поиск', 'Ищем ', '');
-  is_find := sqlContent.Locate('caption', q, [loCaseInsensitive, loPartialKey]);
-  if is_find then
-  begin
-    for i := 0 to lvContent.Items.Count - 1 do
-    begin
-      if lvContent.Items[i] <> nil then
-        if lvContent.Items[i].Caption = sqlContent.FieldByName('id').AsString then
-        begin
-          lvContent.ItemIndex := i;
-          break;
-        end;
-    end;
+
+  sqlFinder := TSqlQuery.Create(nil);
+  sqlFinder.ReadOnly:=True;
+  sqlFinder.SQLConnection := conn;
+  sqlFinder.Transaction := trans;
+  sqlFinder.SQL.Clear;
+  sqlFinder.SQL.Text := 'SELECT id FROM content WHERE caption LIKE "%' +q + '%"';
+  sqlFinder.Active:=True;
+
+  // no need ExecSQL or Open
+  sqlFinder.First;
+  counter := 0;
+  while not sqlFinder.EOF do begin
+        id := sqlFinder.FieldByName('id').AsString;
+        FindedContentIds.Add(id);
+        Inc(counter);
+        sqlFinder.Next;
   end;
+  Form1.Caption:='Finded '+IntToStr(counter);
+  sqlFinder.Active:=False;
+  sqlFinder.Free;
 end;
 
 procedure TForm1.acFtpUpdaterChangeVisibilityExecute(Sender: TObject);
@@ -2915,11 +2932,48 @@ begin
   listViewClickHelper(lvBlocks, sqlBlocks, 'id');
 end;
 
+
+
 procedure TForm1.lvContentClick(Sender: TObject);
 begin
   listViewClickHelper(lvContent, sqlContent, 'id');
   showTagsOnPage(sqlContent.FieldByName('id').AsString);
 
+end;
+
+procedure TForm1.lvContentCustomDrawItem(Sender: TCustomListView;
+  Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+var
+  r: TRect;
+  i : Integer;
+  isFinded : Boolean;
+begin
+  // DefaultDraw := False;  // Disable default drawing
+
+  isFinded := False;
+  For I:= 0 to FindedContentIds.Count - 1 do
+       isFinded := isFinded or  (Item.Caption = FindedContentIds[i]);
+
+
+  // Get the rectangle area for the item's label
+  r := Item.DisplayRect(drLabel);
+
+  // Fill the background
+  Sender.Canvas.Brush.Color := clWindow; // or any custom color
+
+  // Set the font color depending on Caption or state
+  if isFinded then
+    Sender.Canvas.Brush.Color := clRed;
+
+  Sender.Canvas.FillRect(r);
+
+
+  // Optionally set other font styles
+  Sender.Canvas.Font.Style := [];
+  Sender.Canvas.Font.Size:=12;
+
+  // Draw the item caption text at the top-left corner of the label area
+  Sender.Canvas.TextOut(r.Left, r.Top, Item.Caption);
 end;
 
 procedure TForm1.lvCSSClick(Sender: TObject);
@@ -3163,6 +3217,8 @@ begin
   conn.Close();
 
   AppCache.Free;
+
+  FindedContentIds.Free;
 
 end;
 
