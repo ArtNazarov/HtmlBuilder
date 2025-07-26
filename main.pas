@@ -869,6 +869,9 @@ type
     { Кэш приложения }
     AppCache : TStringCache;
 
+    { Состояние найденных }
+    FindedContentState : sdict;
+
     {Последний получивший фокус элемент управления}
     lastFocusedControl: TControl;
 
@@ -1395,6 +1398,7 @@ var
 begin
 
   FindedContentIds := TStringList.Create;
+  FindedContentState := sdict.Create;
   AppCache := TStringCache.Create;
 
   form1.usedOfLocalWebServer:=False;
@@ -2392,6 +2396,9 @@ var
   sqlFinder : TSqlQuery;
   id  : String;
 begin
+  FindedContentState.Clear;
+  For I:=0 to lvContent.Items.Count - 1 do
+      FindedContentState.Add(  lvContent.Items[i].Caption ,   'default' );
 
   FindedContentIds.Clear;
 
@@ -2411,6 +2418,7 @@ begin
   while not sqlFinder.EOF do begin
         id := sqlFinder.FieldByName('id').AsString;
         FindedContentIds.Add(id);
+        FindedContentState[id]:='highlight';
         Inc(counter);
         sqlFinder.Next;
   end;
@@ -2947,12 +2955,10 @@ var
   r: TRect;
   i : Integer;
   isFinded : Boolean;
+  data : String;
 begin
   // DefaultDraw := False;  // Disable default drawing
 
-  isFinded := False;
-  For I:= 0 to FindedContentIds.Count - 1 do
-       isFinded := isFinded or  (Item.Caption = FindedContentIds[i]);
 
 
   // Get the rectangle area for the item's label
@@ -2960,10 +2966,11 @@ begin
 
   // Fill the background
   Sender.Canvas.Brush.Color := clWindow; // or any custom color
-
+   data := '';
+   isFinded := FindedContentState.TryGetData(Item.Caption, data);
   // Set the font color depending on Caption or state
-  if isFinded then
-    Sender.Canvas.Brush.Color := clRed;
+   if  data = 'highlight' then
+             Sender.Canvas.Brush.Color := clRed;
 
   Sender.Canvas.FillRect(r);
 
@@ -3219,6 +3226,8 @@ begin
   AppCache.Free;
 
   FindedContentIds.Free;
+
+  FindedContentState.Free;
 
 end;
 
