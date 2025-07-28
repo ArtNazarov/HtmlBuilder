@@ -202,6 +202,7 @@ For example / Для примера
 [The tool to make a palette file](https://github.com/ArtNazarov/colorpalette)
 
 Note: color alias mush have name in the template like `_color_`
+Palettes must be placed in the app folder.
 
 # Serverside endpoints
 
