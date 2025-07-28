@@ -27,19 +27,22 @@ Uploading with bridge / Выгрузка с помощью моста
 
 ![Using bridge API](http://apprr.rf.gd/upload_with_a_bridge.png)
 
-More screens / Больше скриншотов https://htmlbuilder.onhalt.site/
-Some articles / Некоторые статьи [blog](http://nazarow.ru/section_htmlbuilder.html)
+More screens / Больше скриншотов https://apprr.rf.gd/HtmlBuilder/
+Some articles / Некоторые статьи [blog](http://artnazarov.github.io/section_htmlbuilder.html)
 
 Project / Проект
 ================
 Website in Russian / Сайт на русском
-[HtmlBuilder project page](https://htmlbuilder.onhalt.site)
+[HtmlBuilder project page: actual on https://apprr.rf.gd/HtmlBuilder/](https://apprr.rf.gd/HtmlBuilder/)
 
 Documentation for developers / Документация для разработчика
-[PasDoc documention](https://htmlbuilder-docs.onhalt.site)
+[PasDoc documention: actual on https://apprr.rf.gd/HtmlBuilderDocs/main.html](https://apprr.rf.gd/HtmlBuilderDocs/main.html)
 
 Blog with examples / Блог с примерами
-[Blog](https://nazarow.ru/section_htmlbuilder.html)
+[Blog: actual on https://artnazarov.github.io/section_htmlbuilder.html](https://artnazarov.github.io/section_htmlbuilder.html)
+
+Tilda presentation
+[HtmlBuilder page on Tilda](https://htmlbuilder.tilda.ws/)
 
 Usage / Использование
 ================
