@@ -20,7 +20,7 @@ uses
   emoji_shortcodes, func_str_composition, chat_client_thread, replcallfunc,
   sitestats, dbmemo_autocomplete, internal_backlinks,
   rss_feed, parametrized_blocks, uRepeatExpression,
-  ifelseprocessor, render_custom_request, stringcache; {Use Synaptic}
+  ifelseprocessor, render_custom_request, stringcache, palette_loader; {Use Synaptic}
 
 
 
@@ -908,6 +908,9 @@ type
     { Отображение для тегов}
     Tags: sdict;
 
+    { Палитра }
+    pals : sdict;
+
     { Словарь для связи теги - страницы}
     mTagsPages: TagsPagesMap;
 
@@ -1008,6 +1011,8 @@ type
     { ----------------------------------------------}
 
 
+    { Использование палитр }
+    function usePalettes(html: string): string;
 
     { Вставляет быстрые ссылки на страницы }
     function insLinks(body: string): string;
@@ -1241,6 +1246,9 @@ type
     { Scan table tags }
     procedure scanTags();
 
+    { Автозагрузка палитр }
+    procedure AutoloadPalettes();
+
     { Scan table images for /images/ }
     procedure scanImages();
 
@@ -1396,7 +1404,8 @@ var
   index: integer;
   Control: TControl;
 begin
-
+  pals := sdict.Create;
+  form1.AutoloadPalettes();
   FindedContentIds := TStringList.Create;
   FindedContentState := sdict.Create;
   AppCache := TStringCache.Create;
@@ -3229,6 +3238,8 @@ begin
 
   FindedContentState.Free;
 
+  pals.Free;
+
 end;
 
 
@@ -3564,6 +3575,27 @@ begin
   sqlGetAllAttachments.First;
   sqlGetAllAttachments.ApplyUpdates();
   sqlGetAllAttachments.Refresh;
+end;
+
+function TForm1.usePalettes(html: string): string;
+var
+  i : Integer;
+  code_color : String;
+  rgb_value : String;
+  res : String;
+begin
+  res := html;
+  for i := 0 to pals.Count - 1 do
+      begin
+              code_color := pals.Keys[i];
+              rgb_value := pals.KeyData[code_color];
+              res := StringReplace(res, '_' + code_color+'_',  rgb_value ,[rfReplaceAll]);
+      end;
+
+  // if Res <> html then
+  //   showmessage( 'Замена ' +res+' на '+html  );
+
+  Result := Res;
 end;
 
 
@@ -4900,7 +4932,7 @@ begin
 
   // постобработка
 
-
+  ComposeStrFunc(Pipeline, @usePalettes);
   ComposeStrFunc(Pipeline, @useSiteStats);
   ComposeStrFunc(Pipeline, @useReplFunc);
 
@@ -5385,6 +5417,12 @@ begin
     application.ProcessMessages;
   end;
 
+end;
+
+procedure TForm1.AutoloadPalettes();
+begin
+  loadAllPalsFromDir(  ExtractFilePath(Application.ExeName) , pals);
+  // showmessage('В палитре цветов: ' + IntToStr(pals.count));
 end;
 
 procedure TForm1.scanImages;

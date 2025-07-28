@@ -198,6 +198,11 @@ For example / Для примера
 
 35 Application's cache for rebuilds / Кеш приложения для пересборок
 
+36 Автозагрузка и применение палитр / Autoloading and applying palettes
+[The tool to make a palette file](https://github.com/ArtNazarov/colorpalette)
+
+Note: color alias mush have name in the template like `_color_`
+
 # Serverside endpoints
 
 PHP endpoint for server https://github.com/ArtNazarov/htmlbuilder-php-bridge
